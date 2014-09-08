@@ -10,7 +10,7 @@ public class SparkMoWare {
 	private static final String MESSAGE_WELCOME = "Welcome to TextBuddy. %1$s is ready for use ";
 	private static final String MESSAGE_INVALID_FORMAT = "Invalid Format";
 
-	
+
 	// These are the possible command types
 	enum CommandType {
 		ADD_TASK, EDIT_TASK, DELETE_TASK, TENTATIVE, CONFIRM,
@@ -67,32 +67,32 @@ public class SparkMoWare {
 		}
 
 	}
-	
+
 	// 
 	private static void  createNew(userCommand){
 		userCommand// if no duration the create task
 		//otherwise create appointment
 	}
-	
+
 	private static void	  createTask(userCommand){
-	
+
 		createReminder();
 	}
-	
+
 	private static void  createAppoinment(userCommand){
-		
+
 		createReminder();
 
 	}
-	
+
 	private static void createReminder(){
-	
+
 	}
-	
+
 	private static void checkValidity(){
 		// check validity of date and time
 	}
-	
+
 	private static void edit(userCommand){
 		search(usercommand)
 		//while still a next term,switch case
@@ -102,14 +102,31 @@ public class SparkMoWare {
 		editTime();
 		editDate();
 	}
-	
+
 	private static void  search(userCommand){
 	}
-	
+
 	private static void  delete(userCommand){
 		search();
 		//remove
 	}
+
+	//private static void  convert(userCommand){
+
+	private static void showList(){
+		//
+	}
 	
+	private static void deleteAll(){
+	}
+		//search() and delete ( if == date < date or startEnd
+	}
+
+	//changeview
+
+	private static void undo(){
+	}
 	
+	private static void statistic(){
+	}
 }
