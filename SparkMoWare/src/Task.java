@@ -1,3 +1,5 @@
+import java.util.Vector;
+
 class Task {
 
 	/************** Data members **********************/
@@ -7,7 +9,8 @@ class Task {
 	private int deadline;	// in the format DDMMYY, if inactive null
 	private String description;
 	private int alarm;		// in the format HHMM, if inactive null
-
+	private Vector<String> tag;	// to support tagging
+	
 	/************** Constructors **********************/
 	// Default constructor
 	private Task() {
@@ -33,6 +36,11 @@ class Task {
 	private int getAlarm() {
 		return alarm;
 	}
+	
+	private Vector<String> getTag() {
+		return tag;
+	}
+
 
 	/**************** Mutators ************************/
 	private void setTitle(String newTitle) {
@@ -53,6 +61,10 @@ class Task {
 
 	public void setAlarm(int newAlarm) {
 		alarm = newAlarm;
+	}
+	
+	private void setTag(Vector<String> newTag) {
+		tag = newTag;
 	}
 
 }

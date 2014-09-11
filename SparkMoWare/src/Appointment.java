@@ -1,16 +1,19 @@
+import java.util.Vector;
+
 class Appointment {
 
 	/************** Data members **********************/
 	private static int numAppointment = 0;
 	private String title;
-	private int date;		// date of creation;in the format DDMMYY
-	private int startDate;	// in the format DDMMYY, if inactive null
-	private int startTime;	// in the formate HHMM, if inactive null
-	private int endDate;	// in the format DDMMYY, if inactive null
-	private int endTime;	// in the formate HHMM, if inactive null
+	private int date;			// date of creation;in the format DDMMYY
+	private int startDate;		// in the format DDMMYY, if inactive null
+	private int startTime;		// in the formate HHMM, if inactive null
+	private int endDate;		// in the format DDMMYY, if inactive null
+	private int endTime;		// in the format HHMM, if inactive null
 	private String description;
-	private int alarm;		// in the format HHMM, if inactive null
-	private int duration;	// in the formate HHMM
+	private int alarm;			// in the format HHMM, if inactive null
+	private int duration;		// in the formate HHMM
+	private Vector<String> tag;	// to support tagging
 
 	/************** Constructors **********************/
 	// Default constructor
@@ -53,6 +56,10 @@ class Appointment {
 	private int getduration() {
 		return duration;
 	}
+	
+	private Vector<String> getTag() {
+		return tag;
+	}
 
 	/**************** Mutators ************************/
 	private void setTitle(String newTitle) {
@@ -90,6 +97,10 @@ class Appointment {
 	
 	private void setDuration(int newDuration) {
 		duration = newDuration;
+	}
+	
+	private void setTag(Vector<String> newTag) {
+		tag = newTag;
 	}
 
 }
