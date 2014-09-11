@@ -1,4 +1,9 @@
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
+import java.util.Vector;
 
 public class SparkMoWare {
 
@@ -16,6 +21,9 @@ public class SparkMoWare {
 		ADD_TASK, EDIT_TASK, DELETE_TASK, TENTATIVE, CONFIRM,
 		SEARCH, SHOW_LIST, DELETE_ALL, STATISTIC, UNDO
 	};
+	
+	// This vector will be use to store the text lines
+	private static Vector<String> buffer = new Vector<String>();
 
 	private static Scanner scanner = new Scanner(System.in);
 
@@ -23,7 +31,7 @@ public class SparkMoWare {
 	private static String filePath;
 
 	public static void main(String[] args) {
-		filePath = args[0];
+		filePath = "storage.txt";
 		showToUser(MESSAGE_WELCOME,filePath,"");
 		openFile(filePath);
 		while (true) {
@@ -128,5 +136,31 @@ public class SparkMoWare {
 	}
 	
 	private static void statistic(){
+	}
+	
+	/**
+	 * This operation is used to save the changes made
+	 */
+	private static void saveFile(String filePath) {
+		File file = new File(filePath);
+		file.delete();
+		try {
+			// if file doesnt exists, then create it
+			if (!file.exists()) {
+				file.createNewFile();
+			}
+
+			FileWriter fw = new FileWriter(file.getAbsoluteFile());
+			BufferedWriter bw = new BufferedWriter(fw);
+			for(int i=0; i< buffer.size(); i++){
+				bw.write(buffer.get(i));
+				if (i<buffer.size()-1){
+					bw.newLine(); 
+				}
+			}
+			bw.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }
