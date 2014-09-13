@@ -76,9 +76,12 @@ public class SparkMoWare {
 
 	}
 
+	private static String getFirstWord(String userCommand){
+		return userCommand.substring(0, userCommand.indexOf(" "));
+	}
 	// 
 	private static void  createNew(userCommand){
-		userCommand// if no duration the create task
+		userCommand// if no duration then create task
 		//otherwise create appointment
 	}
 
@@ -125,9 +128,29 @@ public class SparkMoWare {
 		//
 	}
 	
-	private static void deleteAll(){
-	}
+	private static void deleteAll(userCommand){
 		//search() and delete ( if == date < date or startEnd
+		
+		if(usercommand.length()==10){	//user only inputs delete all
+			//delete entire file
+		}
+		else if(userCommand.contains(on)){
+			
+		}
+		else if(userCommand.contains(before)){
+			
+		}
+		else if(userCommand.contains(from)){ 
+	
+		}
+		
+		/* to deal with exceptions/errors, Below is rough version. Necessary?
+			else{
+			System.out.println(String.format(MESSAGE_INVALID_FORMAT, userCommand));
+			}*/
+	}
+		//if user inputs a date/period with nothing and thus deletes nothing
+		//are we printing error "nothing to delete" or just report "all deleted"
 	}
 
 	//changeview
