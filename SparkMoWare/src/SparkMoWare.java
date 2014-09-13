@@ -19,8 +19,8 @@ public class SparkMoWare {
 	// These are the possible command types
 	enum CommandType {
 		ADD_TASK, EDIT_TASK, DELETE_TASK, TENTATIVE, CONFIRM,
-		SEARCH, SHOW_LIST, DELETE_ALL, STATISTIC, UNDO
-	};
+		SEARCH, SHOW_LIST, DELETE_ALL, UNDO, STATISTIC 
+	};//why show list, why not display? User will input display base on the project manual
 	
 	// This vector will be use to store the text lines
 	private static Vector<String> buffer = new Vector<String>();
@@ -50,26 +50,44 @@ public class SparkMoWare {
 			String commandTypeString = getFirstWord(userCommand);
 			CommandType commandType = determineCommandType(commandTypeString);
 			switch (commandType) {
-			case ADD_LINE:
-				addLine(userCommand);
+			case ADD_TASK:
+				createNew(userCommand);
 				break;
-			case DELETE_LINE:
-				deleteLine(userCommand);
+			case EDIT_TASK:
+				edit(userCommand);
 				break;
-			case DISPLAY:
-				display();
+			case DELETE_TASK:
+				delete(userCommand);
 				break;
-			case CLEAR:
-				clearAll();
+			case TENTATIVE:
+				addTentative(userCommand);
 				break;
-			case INVALID:
+			case CONFIRM:
+				confirmTentative();
+				break;
+			case SEARCH:
+				search(userCommand);
+				break;
+			case SHOW_LIST:
+				showList();
+				break;
+			case DELETE_ALL:
+				deleteAll(userCommand);
+				break;
+			case STATISTIC:
+				statistic();
+				break;
+			case UNDO:
+				undo();
+				break;	
+			/*case INVALID:
 				System.out.println(String.format(MESSAGE_INVALID_FORMAT, userCommand));
 				break;
 			case EXIT:
 				System.exit(0);
-				break;
+				break;*/
 			default:
-				//throw an error if the command is not recognized
+				//throw an error if the command is not recognised
 				throw new Error("Unrecognized command type");
 			}
 		}
@@ -79,18 +97,56 @@ public class SparkMoWare {
 	private static String getFirstWord(String userCommand){
 		return userCommand.substring(0, userCommand.indexOf(" "));
 	}
-	// 
-	private static void  createNew(userCommand){
+	
+	private static CommandType determineCommandType(String commandType){
+		if(commandType.equalsIgnoreCase("add")){
+			return CommandType.ADD_TASK;
+		}
+		else if(commandType.equalsIgnoreCase("edit")){
+			return CommandType.EDIT_TASK;
+		}
+		else if(commandType.equalsIgnoreCase("delete")){
+			return CommandType.DELETE_TASK;
+		}
+		else if(commandType.equalsIgnoreCase("tentative")){
+			return CommandType.TENTATIVE;
+		}
+		else if(commandType.equalsIgnoreCase("confirm")){
+			return CommandType.CONFIRM;
+		}
+		else if(commandType.equalsIgnoreCase("search")){
+			return CommandType.SEARCH;
+		}
+		else if(commandType.equalsIgnoreCase("display")){
+			return CommandType.SHOW_LIST;
+		}
+		else if(commandType.equalsIgnoreCase("deleteAll")){
+			return CommandType.DELETE_ALL;
+		}
+		else if(commandType.equalsIgnoreCase("undo")){
+			return CommandType.UNDO;
+		}
+		else if(commandType.equalsIgnoreCase("statistic")){
+			return CommandType.STATISTIC;
+		}
+		/*what about invalid?
+		 *  else{
+		 *  return CommandType.Invalid; //the enum does not contain Invalid
+		 *  }
+		 */
+	}
+	
+	private static void createNew(String userCommand){
 		userCommand// if no duration then create task
 		//otherwise create appointment
 	}
 
-	private static void	  createTask(userCommand){
+	private static void createTask(String userCommand){
 
 		createReminder();
 	}
 
-	private static void  createAppoinment(userCommand){
+	private static void createAppoinment(String userCommand){
 
 		createReminder();
 
@@ -99,56 +155,60 @@ public class SparkMoWare {
 	private static void createReminder(){
 
 	}
-
-	private static void checkValidity(){
-		// check validity of date and time
-	}
-
-	private static void edit(userCommand){
-		search(usercommand)
-		//while still a next term,switch case
+	
+	private static void edit(String userCommand){
+		search(userCommand);
+		//while still a next term, switch case
 		editWhole();
 		editTitle();
 		editDescription();
 		editTime();
 		editDate();
 	}
-
-	private static void  search(userCommand){
-	}
-
-	private static void  delete(userCommand){
+	
+	private static void delete(String userCommand){
 		search();
-		//remove
+		// then remove
 	}
+	
+		//private static void convert(userCommand){
 
-	//private static void  convert(userCommand){
-
+	private static void addTentative(String userComamnd){
+		
+	}
+	
+	private static void confirmTentative(){
+		
+	}
+	
+	private static void search(String userCommand){
+		
+	}
+	
 	private static void showList(){
 		//
 	}
 	
-	private static void deleteAll(userCommand){
+	private static void deleteAll(String userCommand){
 		//search() and delete ( if == date < date or startEnd
 		
-		if(usercommand.length()==10){	//user only inputs delete all
+		if(userCommand.length()==10){	//user only inputs delete all
 			//delete entire file
 		}
-		else if(userCommand.contains(on)){
+		else if(userCommand.contains("on")){
 			
 		}
-		else if(userCommand.contains(before)){
+		else if(userCommand.contains("before")){
 			
 		}
-		else if(userCommand.contains(from)){ 
-	
+		else if(userCommand.contains("from")){
+			
 		}
-		
 		/* to deal with exceptions/errors, Below is rough version. Necessary?
-			else{
+		else{
 			System.out.println(String.format(MESSAGE_INVALID_FORMAT, userCommand));
-			}*/
-	}
+		}*/
+		
 		//if user inputs a date/period with nothing and thus deletes nothing
 		//are we printing error "nothing to delete" or just report "all deleted"
 	}
@@ -159,8 +219,12 @@ public class SparkMoWare {
 	}
 	
 	private static void statistic(){
+
 	}
 	
+	private static void checkValidity(){
+		// check validity of date and time => date exist or is clashing?
+	}	
 	/**
 	 * This operation is used to save the changes made
 	 */

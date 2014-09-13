@@ -7,12 +7,12 @@ class Appointment {
 	private String title;
 	private int date;			// date of creation;in the format DDMMYY
 	private int startDate;		// in the format DDMMYY, if inactive null
-	private int startTime;		// in the formate HHMM, if inactive null
+	private int startTime;		// in the format HHMM, if inactive null
 	private int endDate;		// in the format DDMMYY, if inactive null
 	private int endTime;		// in the format HHMM, if inactive null
 	private String description;
 	private int alarm;			// in the format HHMM, if inactive null
-	private int duration;		// in the formate HHMM
+	private int duration;		// in the format HHMM
 	private Vector<String> tag;	// to support tagging
 
 	/************** Constructors **********************/
