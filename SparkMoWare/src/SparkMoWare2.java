@@ -15,11 +15,11 @@ import textbuddy.TextBuddyPlus.CommandType;
 public class SparkMoWare2 {
 
 	// Output Messages
+	private static final String MESSAGE_WELCOME = "Welcome to SparkMoWare!";
 	private static final String MESSAGE_ADDED = "added to %1$s: \"%2$s\"";
 	private static final String MESSAGE_DELETED = "deleted from %1$s: \"%2$s\"";
 	private static final String MESSAGE_CLEARED = "all content deleted from %1$s";
 	private static final String MESSAGE_EMPTY = "%1$s is empty";
-	private static final String MESSAGE_WELCOME = "Welcome to SparkMoWare!";
 	private static final String MESSAGE_INVALID_FORMAT = "Invalid Format";
 	private static final String MESSAGE_STORAGE_FILE_ERROR = "Exception encountered while initalising the Storage file";
 
@@ -29,8 +29,8 @@ public class SparkMoWare2 {
 		DISPLAY, DELETE_ALL, UNDO, STATISTIC, EXIT, INVALID 
 	};
 	
-	private static Stack< LinkedList<String>> actionHistory = new Stack< LinkedList<String>>();
-	private static LinkedList<String> buffer = new LinkedList<String>();
+	private static Stack< LinkedList<Assignment>> actionHistory = new Stack< LinkedList<Assignment>>();
+	private static LinkedList<Assignment> buffer = new LinkedList<Assignment>();
 	private static Scanner scanner = new Scanner(System.in);
 	private static String filePath="Storage";
 
@@ -185,8 +185,21 @@ public class SparkMoWare2 {
 		return "";
 	}
 
-	private static String addTask(String commandContent) {
-		buffer.add(commandContent.trim());
+	// in the format of: (int type,String title,int startDate,int endDate,String description,int alarm,
+	Vector<String> tag,String endDate,String endTime, int duration) 
+	private static String addTask(int type,String title,int startDate,int endDate,String description,int alarm,
+			Vector<String> tag,String endDate,String endTime, int duration) {
+		Assignment newAssignment = new Assignment();
+		newAssignment.setType(type);
+		newAssignment.setTitle(title);
+		newAssignment.setStartDate(startDate);
+		newAssignment.setEndDate(endDate);
+		newAssignment.setDescription(description);
+		newAssignment.setAlarm(alarm);
+		newAssignment.setTag(tag);
+		newAssignment.setEndDate(endDate);
+		newAssignment.setEndTime(endTime);
+		buffer.add(newAssignment);
 		String confirmation = "added to " + filePath + ": \"" + commandContent + "\"";
 		return confirmation;
 	}
