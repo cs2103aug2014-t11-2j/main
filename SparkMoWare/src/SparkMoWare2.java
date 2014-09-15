@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.Scanner;
+import java.util.Stack;
 import java.util.Vector;
 
 import textbuddy.TextBuddyPlus.CommandType;
@@ -26,8 +28,9 @@ public class SparkMoWare2 {
 		ADD_TASK, EDIT_TASK, DELETE_TASK, TENTATIVE, CONFIRM, SORT, SEARCH, 
 		DISPLAY, DELETE_ALL, UNDO, STATISTIC, EXIT, INVALID 
 	};
-
-	private static Vector<String> buffer = new Vector<String>();
+	
+	private static Stack< LinkedList<String>> actionHistory = new Stack< LinkedList<String>>();
+	private static LinkedList<String> buffer = new LinkedList<String>();
 	private static Scanner scanner = new Scanner(System.in);
 	private static String filePath="Storage";
 
@@ -41,6 +44,7 @@ public class SparkMoWare2 {
 		while (true) {
 			System.out.print("command: ");
 			printToUser(executeCommand(scanner.nextLine()));
+			actionHistory.add(buffer);
 			saveFile(filePath);
 		}
 	}
@@ -245,6 +249,17 @@ public class SparkMoWare2 {
 			return "";
 		}
 		return (commandContent + " is not found within " + filePath);
+	}
+	
+	private static String undo(){
+		
+		if (actionHistory.empty()){
+			return "Undo Error, no moves to undo";
+		}
+		else{
+			buffer=actionHistory.pop();
+			return "Last action has been undo-ed";
+		}
 	}
 
 	static int getLineCount(){
