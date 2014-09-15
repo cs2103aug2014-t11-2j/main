@@ -190,6 +190,7 @@ public class SparkMoWare2 {
 	private static String addTask(int type,String title,int startDate,int endDate,String description,int alarm,
 			Vector<String> tag,String endDate,String endTime, int duration) {
 		Assignment newAssignment = new Assignment();
+		boolean isDone=false;
 		newAssignment.setType(type);
 		newAssignment.setTitle(title);
 		newAssignment.setStartDate(startDate);
@@ -197,10 +198,19 @@ public class SparkMoWare2 {
 		newAssignment.setDescription(description);
 		newAssignment.setAlarm(alarm);
 		newAssignment.setTag(tag);
-		newAssignment.setEndDate(endDate);
 		newAssignment.setEndTime(endTime);
-		buffer.add(newAssignment);
-		String confirmation = "added to " + filePath + ": \"" + commandContent + "\"";
+		
+		for (int i = 0; i<buffer.size(),i++)
+		{
+			if ( buffer.get(i).getEndDate < newAssignment.getEndDate ){
+				buffer.add(i,newAssignment);
+			}
+		}
+		if (!isDone){
+			buffer.addLast(newAssignment)
+		}
+		
+		String confirmation = "added to " + filePath + ": \"" + newAssignment.getTitle() + "\"";
 		return confirmation;
 	}
 
