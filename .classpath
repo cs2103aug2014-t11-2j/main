@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry kind="src" path="SparkMoWare"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="SparkMoWare/src/SparkMoWareGUI.java"/>
+	<classpathentry kind="lib" path="D:/eclipse/plugins/org.eclipse.wb.swt.widgets.baseline_1.7.0.r44x201405021526.jar"/>
+	<classpathentry kind="lib" path="D:/eclipse/plugins/org.eclipse.wb.swt_1.7.0.r44x201405021519.jar"/>
+	<classpathentry kind="lib" path="D:/eclipse/plugins/org.eclipse.wb.rcp.SWT_AWT_1.7.0.r44x201405021546.jar"/>
+	<classpathentry kind="lib" path="D:/eclipse/plugins/org.eclipse.swt.win32.win32.x86_64.source_3.103.0.v20140605-2012.jar"/>
+	<classpathentry kind="lib" path="D:/eclipse/plugins/org.eclipse.swt.win32.win32.x86_64_3.103.0.v20140605-2012.jar"/>
+	<classpathentry kind="lib" path="D:/eclipse/plugins/org.eclipse.swt_3.103.0.v20140605-2008.jar"/>
+	<classpathentry kind="lib" path="D:/eclipse/plugins/org.eclipse.e4.ui.css.swt.source_0.11.100.v20140522-1045.jar"/>
+	<classpathentry kind="lib" path="D:/eclipse/plugins/org.eclipse.e4.ui.css.swt.theme.source_0.9.300.v20140424-2042.jar"/>
+	<classpathentry kind="lib" path="D:/eclipse/plugins/org.eclipse.e4.ui.css.swt.theme_0.9.300.v20140424-2042.jar"/>
+	<classpathentry kind="lib" path="D:/eclipse/plugins/org.eclipse.e4.ui.css.swt_0.11.100.v20140522-1045.jar"/>
+	<classpathentry kind="lib" path="D:/eclipse/plugins/org.eclipse.e4.ui.workbench.addons.swt.source_1.1.0.v20140602-1537.jar"/>
+	<classpathentry kind="lib" path="D:/eclipse/plugins/org.eclipse.e4.ui.workbench.addons.swt_1.1.0.v20140602-1537.jar"/>
+	<classpathentry kind="lib" path="D:/eclipse/plugins/org.eclipse.e4.ui.workbench.renderers.swt.source_0.12.0.v20140521-1818.jar"/>
+	<classpathentry kind="lib" path="D:/eclipse/plugins/org.eclipse.e4.ui.workbench.renderers.swt_0.12.0.v20140521-1818.jar"/>
+	<classpathentry kind="lib" path="D:/eclipse/plugins/org.eclipse.e4.ui.workbench.swt.source_0.12.100.v20140530-1436.jar"/>
+	<classpathentry kind="lib" path="D:/eclipse/plugins/org.eclipse.e4.ui.workbench.swt_0.12.100.v20140530-1436.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
