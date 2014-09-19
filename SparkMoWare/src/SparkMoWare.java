@@ -167,26 +167,54 @@ public class SparkMoWare {
 	}
 	
 	private static void delete(String userCommand){
-		search();
+		search(userCommand);
 		// then remove
 	}
 	
 		//private static void convert(userCommand){
 
 	private static void addTentative(String userComamnd){
+
+		String[] tentativeArray = userCommand.split(" ", 2);
 		
+		for(int tentativeCount = 1; tentativeCount <= tentativeArray[1]; tentativeCount++) {
+			
+		}
 	}
 	
 	private static void confirmTentative(){
 		
 	}
 	
-	private static void search(String userCommand){
+	private static String search(String userCommand){
 		
+		String[] stringArray = userCommand.split(" ", 2);
+		String stringToSearch = stringArray[1];
+		String stringFound;
+		
+		for(int listCount = 0; listCount < buffer.size(); listCount++) {
+			if(buffer.get(listCount).getTitle().contains(stringToSearch)) {
+				
+				// When the title is only a word long
+				if(buffer.get(listCount).getTitle() == stringToSearch) {
+					stringFound = stringToSearch;
+				}
+				else {
+					String[] textArray = buffer.get(listCount).getTitle().split(" ");
+				
+					for(int textCount = 0; textCount < textArray.length; textCount++) {
+						if(textArray[textCount] == stringToSearch){
+							stringFound = buffer.get(listCount).getTitle();
+						}
+					}
+				}
+			}		
+		}
+		return stringFound;
 	}
 	
 	private static void showList(){
-		//
+		// display all the list
 	}
 	
 	private static void deleteAll(String userCommand){
