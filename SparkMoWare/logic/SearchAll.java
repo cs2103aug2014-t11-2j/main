@@ -13,6 +13,7 @@ public class SearchAll {
         LinkedList<Assignment> stringsFound = new LinkedList<Assignment>();
         int listCount;
         
+        
         if(userInput.length() >= ID_FORMAT_LENGTH) {
         	
         	for(listCount = 0; listCount < buffer.size(); listCount++) {
@@ -22,6 +23,7 @@ public class SearchAll {
         		}
         	}
         }
+        // accepts into the searchList as long as startTime or endTime is the same as input
         else if(userInput.length() == TIME_FORMAT_LENGTH && userInput.contains("[0-9]+")) {
         	
         	for(listCount = 0; listCount < buffer.size(); listCount++) {
@@ -34,6 +36,7 @@ public class SearchAll {
         		}
         	}
         }
+        // accepts into the searchList as long as startDate or endDate is the same as input
         else if(userInput.length() == DATE_FORMAT_LENGTH) {
         	
         	for(listCount =0; listCount < buffer.size(); listCount++) {
@@ -54,6 +57,7 @@ public class SearchAll {
         			if(buffer.get(listCount).getTitle().equals(userInput)) {
         				stringsFound.add(buffer.get(listCount));
         			}
+        			// Check for phrases or word in the title
         			else {
         				
         				String[] textArray = buffer.get(listCount).getTitle().split(" ");
