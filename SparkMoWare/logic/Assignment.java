@@ -2,16 +2,16 @@ package logic;
 
 import java.util.Vector;
 
-class Assignment {
+public class Assignment {
 
 	/************** Data members **********************/
 	private static int numAppointment = 0;
 	private String title;
-	private int id;				// date of creation;in the format DDMMYY
-	private int startDate;		// in the format DDMMYY, if inactive null
-	private int startTime;		// in the format HHMM, if inactive null
-	private int endDate;		// in the format DDMMYY, if inactive null
-	private int endTime;		// in the format HHMM, if inactive null
+	private String id;			// date of creation;in the format DDMMYY
+	private String startDate;		// in the format DDMMYY, if inactive null
+	private String startTime;		// in the format HHMM, if inactive null
+	private String endDate;		// in the format DDMMYY, if inactive null
+	private String endTime;		// in the format HHMM, if inactive null
 	private boolean isDone;
 	//private String description;
 	//private int alarm;			// in the format HHMM, if inactive null
@@ -21,50 +21,53 @@ class Assignment {
 	/************** Constants **********************/
 	
 	private static final String DEFAULT_STRING = "DEFAULT";
-	private static final int DEFAULT = -1;
-	@SuppressWarnings("unused")
 	private static final int TASK = 0;
-	@SuppressWarnings("unused")
+	private static final String DEFAULT = "-1";
 	private static final int APPOINTMENT = 1;
 	private static final int TENTATIVE = 2;
 	
 	/************** Constructors **********************/
 	// Default constructor
-	Assignment() {
-		id = DEFAULT;
-		title = DEFAULT_STRING;
-		type = DEFAULT;
-		startDate = DEFAULT;
-		startTime = DEFAULT;
-		endDate = DEFAULT;
-		endTime = DEFAULT;
-		isDone = false;
-		tag = new Vector<String>();
+	public Assignment() {
+		this(DEFAULT,DEFAULT_STRING,-1,DEFAULT,DEFAULT,DEFAULT,DEFAULT,false,new Vector<String>());
+	}
+	
+	public Assignment(String id, String title, int type, String startDate, String startTime,
+			String endDate, String endTime, boolean isDone, Vector<String> tag) {
+		setId(id);
+		setTitle(title);
+		setType(type);
+		setStartDate(startDate);
+		setStartTime(startTime);
+		setEndDate(endDate);
+		setEndTime(endTime);
+		setIsDone(isDone);
+		setTag(tag);
 	}
 
 	/**************** Accessors ***********************/
 	public String getTitle() {
-		return title;
+		return this.title;
 	}
 
-	public int getId() {
-		return id;
+	public String getId() {
+		return this.id;
 	}
 
-	public int getStartDate() {
-		return startDate;
+	public String getStartDate() {
+		return this.startDate;
 	}
 	
-	public int getStartTime() {
-		return startTime;
+	public String getStartTime() {
+		return this.startTime;
 	}
 	
-	public int getEndDate() {
-		return endDate;
+	public String getEndDate() {
+		return this.endDate;
 	}
 	
-	public int getEndTime() {
-		return endTime;
+	public String getEndTime() {
+		return this.endTime;
 	}
 
 	//public String getDescription() {
@@ -76,15 +79,15 @@ class Assignment {
 	//}
 	
 	public Vector<String> getTag() {
-		return tag;
+		return this.tag;
 	}
 	
 	public int getType() {
-		return type;
+		return this.type;
 	}
 	
 	public boolean getIsDone(){
-		return isDone;
+		return this.isDone;
 	}
 
 	/**************** Mutators ************************/
@@ -92,23 +95,23 @@ class Assignment {
 		title = newTitle;
 	}
 
-	public void setId(int newId) {
+	public void setId(String newId) {
 		id = newId;
 	}
 
-	public void setStartDate(int newstartDate) {
+	public void setStartDate(String newstartDate) {
 		startDate = newstartDate;
 	}
 	
-	public void setStartTime(int newStartTime) {
+	public void setStartTime(String newStartTime) {
 		startTime = newStartTime;
 	}
 	
-	public void setEndDate(int newEndDate) {
+	public void setEndDate(String newEndDate) {
 		endDate = newEndDate;
 	}
 	
-	public void setEndTime(int newEndTime) {
+	public void setEndTime(String newEndTime) {
 		endTime = newEndTime;
 	}
 
@@ -132,4 +135,12 @@ class Assignment {
 	public void setIsDone(boolean newIsDone){
 		isDone = newIsDone;
 	}
+	
+	/**************** Overriding ************************/
+	
+	@Override
+	public String toString() {
+		return getId() + "~" + getTitle() + "~" + getType() + "~" + getStartDate()+ "~" +getStartTime()+"~"+getEndDate()+"~"+getEndTime()+"~"+getIsDone();
+	}
+	
 }
