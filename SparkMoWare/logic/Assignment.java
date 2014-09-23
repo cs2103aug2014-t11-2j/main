@@ -1,11 +1,13 @@
+package logic;
+
 import java.util.Vector;
 
-class Appointment {
+class Assignment {
 
 	/************** Data members **********************/
 	private static int numAppointment = 0;
 	private String title;
-	private int date;			// date of creation;in the format DDMMYY
+	private int id;			// date of creation;in the format DDMMYY
 	private int startDate;		// in the format DDMMYY, if inactive null
 	private int startTime;		// in the format HHMM, if inactive null
 	private int endDate;		// in the format DDMMYY, if inactive null
@@ -14,60 +16,70 @@ class Appointment {
 	private int alarm;			// in the format HHMM, if inactive null
 	private int duration;		// in the format HHMM
 	private Vector<String> tag;	// to support tagging
-
+	private int type;			// type of assignment
+	
+	/************** Constants **********************/
+	private static final int TASK = 0;
+	private static final int APPOINTMENT = 1;
+	private static final int TENTATIVE = 2;
+	
 	/************** Constructors **********************/
 	// Default constructor
-	private Appointment() {
+	Assignment() {
 	}
 
 	/**************** Accessors ***********************/
-	private String getTitle() {
+	public String getTitle() {
 		return title;
 	}
 
-	private int getDate() {
-		return date;
+	public int getId() {
+		return id;
 	}
 
-	private int getStartDate() {
+	public int getStartDate() {
 		return startDate;
 	}
 	
-	private int getStartTime() {
+	public int getStartTime() {
 		return startTime;
 	}
 	
-	private int getEndDate() {
+	public int getEndDate() {
 		return endDate;
 	}
 	
-	private int getEndTime() {
+	public int getEndTime() {
 		return endTime;
 	}
 
-	private String getDescription() {
+	public String getDescription() {
 		return description;
 	}
 
-	private int getAlarm() {
+	public int getAlarm() {
 		return alarm;
 	}
 	
-	private int getduration() {
+	public int getduration() {
 		return duration;
 	}
 	
-	private Vector<String> getTag() {
+	public Vector<String> getTag() {
 		return tag;
+	}
+	
+	public int getType() {
+		return type;
 	}
 
 	/**************** Mutators ************************/
-	private void setTitle(String newTitle) {
+	public void setTitle(String newTitle) {
 		title = newTitle;
 	}
 
-	public void setDate(int newDate) {
-		date = newDate;
+	public void setId(int newId) {
+		id = newId;
 	}
 
 	public void setStartDate(int newstartDate) {
@@ -95,13 +107,15 @@ class Appointment {
 		alarm = newAlarm;
 	}
 	
-	private void setDuration(int newDuration) {
+	public void setDuration(int newDuration) {
 		duration = newDuration;
 	}
 	
-	private void setTag(Vector<String> newTag) {
+	public void setTag(Vector<String> newTag) {
 		tag = newTag;
 	}
-
+	
+	public void setType(int newType) {
+		type = newType;
+	}
 }
-

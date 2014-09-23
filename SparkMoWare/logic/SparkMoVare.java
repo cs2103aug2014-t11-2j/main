@@ -1,18 +1,19 @@
+package logic;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.Stack;
 import java.util.Vector;
 
-import textbuddy.TextBuddyPlus.CommandType;
+public class SparkMoVare {
 
-
-public class SparkMoWare2 {
 
 	// Output Messages
 	private static final String MESSAGE_WELCOME = "Welcome to SparkMoWare!";
@@ -28,8 +29,9 @@ public class SparkMoWare2 {
 		ADD_TASK, EDIT_TASK, DELETE_TASK, TENTATIVE, CONFIRM, SORT, SEARCH, 
 		DISPLAY, DELETE_ALL, UNDO, STATISTIC, EXIT, INVALID 
 	};
-	
+
 	private static Stack< LinkedList<Assignment>> actionHistory = new Stack< LinkedList<Assignment>>();
+	private static Stack< LinkedList<Assignment>> actionFuture = new Stack< LinkedList<Assignment>>();
 	private static LinkedList<Assignment> buffer = new LinkedList<Assignment>();
 	private static Scanner scanner = new Scanner(System.in);
 	private static String filePath="Storage";
@@ -43,9 +45,11 @@ public class SparkMoWare2 {
 	private static void ToDoManager() {
 		while (true) {
 			System.out.print("command: ");
+			// check here if command not redo or under, check actionFuture is empty if not purge it
 			printToUser(executeCommand(scanner.nextLine()));
 			actionHistory.add(buffer);
 			saveFile(filePath);
+	
 		}
 	}
 
@@ -63,13 +67,23 @@ public class SparkMoWare2 {
 			}
 			FileReader fileReader = new FileReader(file);
 			BufferedReader bufferedReader = new BufferedReader(fileReader);
-			String line;
-			while ((line = bufferedReader.readLine()) != null) {
-				buffer.add(line);
+			String[] line;
+			while ((line = bufferedReader.readLine().split(";")) != null) {
+				Assignment temp = new Assignment();
+				temp.setId(Integer.parseInt(line[0]));
+				temp.setTitle(line[1]);
+				temp.setType(Integer.parseInt(line[2]));
+				temp.setStartDate(Integer.parseInt(line[2]));
+				temp.setStartTime(Integer.parseInt(line[3]));
+				temp.setEndDate(Integer.parseInt(line[4]));
+				temp.setEndTime(Integer.parseInt(line[5]));
+				temp.setAlarm(Integer.parseInt(line[6]));
+				// tags to be done
+				buffer.add(temp);
 			}
 			fileReader.close();
 		} catch (IOException e) {
-			showToUser(MESSAGE_STORAGE_FILE_ERROR);
+			printToUser(MESSAGE_STORAGE_FILE_ERROR);
 			System.exit(0);
 		}
 	}
@@ -80,11 +94,31 @@ public class SparkMoWare2 {
 		try {
 			FileWriter fw = new FileWriter(file.getAbsoluteFile());
 			BufferedWriter bw = new BufferedWriter(fw);
+			String store;
 			for(int i=0; i< buffer.size(); i++){
-				bw.write(buffer.get(i));
 				if (i<buffer.size()-1){
-					bw.newLine(); 
-				}
+					store="";
+					store.concat(String.valueOf(buffer.get(i).getId()));
+					store.concat(";");
+					store.concat(buffer.get(i).getTitle());
+					store.concat(";");
+					store.concat(String.valueOf(buffer.get(i).getType()));
+					store.concat(";");
+					store.concat(String.valueOf(buffer.get(i).getStartDate()));
+					store.concat(";");
+					store.concat(String.valueOf(buffer.get(i).getStartTime()));
+					store.concat(";");
+					store.concat(String.valueOf(buffer.get(i).getEndDate()));
+					store.concat(";");
+					store.concat(String.valueOf(buffer.get(i).getEndTime()));
+					store.concat(";");
+					store.concat(String.valueOf(buffer.get(i).getAlarm()));
+					//tags to be done
+					bw.write(store);
+					if (i<buffer.size()-1){
+						bw.newLine(); 
+					}
+				}	
 			}
 			bw.close();
 		} catch (IOException e) {
@@ -186,7 +220,6 @@ public class SparkMoWare2 {
 	}
 
 	// in the format of: (int type,String title,int startDate,int endDate,String description,int alarm,
-	Vector<String> tag,String endDate,String endTime, int duration) 
 	private static String addTask(int type,String title,int startDate,int endDate,String description,int alarm,
 			Vector<String> tag,String endDate,String endTime, int duration) {
 		Assignment newAssignment = new Assignment();
@@ -199,7 +232,7 @@ public class SparkMoWare2 {
 		newAssignment.setAlarm(alarm);
 		newAssignment.setTag(tag);
 		newAssignment.setEndTime(endTime);
-		
+
 		for (int i = 0; i<buffer.size(),i++)
 		{
 			if ( buffer.get(i).getEndDate < newAssignment.getEndDate ){
@@ -209,7 +242,7 @@ public class SparkMoWare2 {
 		if (!isDone){
 			buffer.addLast(newAssignment)
 		}
-		
+
 		String confirmation = "added to " + filePath + ": \"" + newAssignment.getTitle() + "\"";
 		return confirmation;
 	}
@@ -273,17 +306,31 @@ public class SparkMoWare2 {
 		}
 		return (commandContent + " is not found within " + filePath);
 	}
-	
+
 	private static String undo(){
-		
+
 		if (actionHistory.empty()){
 			return "Undo Error, no moves to undo";
 		}
 		else{
-			buffer=actionHistory.pop();
+			actionFuture.push(actionHistory.pop());
+			buffer=actionHistory.peek();
 			return "Last action has been undo-ed";
 		}
 	}
+	
+	private static String redo(){
+
+		if (actionFuture.empty()){
+			return "Redo Error, no moves to redo";
+		}
+		else{
+			actionHistory.push(actionFuture.pop());
+			buffer=actionHistory.peek();
+			return "Last action has been redo-ed";
+		}
+	}
+
 
 	static int getLineCount(){
 		return buffer.size();
