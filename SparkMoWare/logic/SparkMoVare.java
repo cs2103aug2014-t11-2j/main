@@ -38,7 +38,9 @@ public class SparkMoVare {
 	public static void main(String[] args) {
 		printToUser(MESSAGE_WELCOME);
 		openFile(filePath);
-		ToDoManager();
+		//ToDoManager();
+		System.out.println(addTask("555","testing this is 123", 0, "230914", "2359", "010101","0000",false, new Vector<String>()));
+		saveFile(filePath);
 	}
 
 	public static void ToDoManager() {
@@ -66,17 +68,17 @@ public class SparkMoVare {
 			FileReader fileReader = new FileReader(file);
 			BufferedReader bufferedReader = new BufferedReader(fileReader);
 			String line;
-			
+
 			while ((line = bufferedReader.readLine()) != null ) {
 				String lineArray[] = line.split(";");
 				Assignment temp = new Assignment();
-				temp.setId(Integer.parseInt(lineArray[0]));
+				temp.setId(lineArray[0]);
 				temp.setTitle(lineArray[1]);
 				temp.setType(Integer.parseInt(lineArray[2]));
-				temp.setStartDate(Integer.parseInt(lineArray[2]));
-				temp.setStartTime(Integer.parseInt(lineArray[3]));
-				temp.setEndDate(Integer.parseInt(lineArray[4]));
-				temp.setEndTime(Integer.parseInt(lineArray[5]));
+				temp.setStartDate(lineArray[2]);
+				temp.setStartTime(lineArray[3]);
+				temp.setEndDate(lineArray[4]);
+				temp.setEndTime(lineArray[5]);
 				temp.setIsDone(Boolean.parseBoolean(lineArray[6]));
 				//temp.setAlarm(Integer.parseInt(lineArray[7]));
 				// tags to be done
@@ -99,32 +101,30 @@ public class SparkMoVare {
 			for(int i=0; i< buffer.size(); i++){
 				if (i<buffer.size()-1){
 					store="";
-					store.concat(String.valueOf(buffer.get(i).getId()));
-					store.concat(";");
-					store.concat(buffer.get(i).getTitle());
-					store.concat(";");
-					store.concat(String.valueOf(buffer.get(i).getType()));
-					store.concat(";");
-					store.concat(String.valueOf(buffer.get(i).getStartDate()));
-					store.concat(";");
-					store.concat(String.valueOf(buffer.get(i).getStartTime()));
-					store.concat(";");
-					store.concat(String.valueOf(buffer.get(i).getEndDate()));
-					store.concat(";");
-					store.concat(String.valueOf(buffer.get(i).getEndTime()));
-					store.concat(";");
-					store.concat(Boolean.toString(buffer.get(i).getIsDone()));
+					store+=String.valueOf(buffer.get(i).getId());
+					store+=(";");
+					store+=(buffer.get(i).getTitle());
+					store+=(";");
+					store+=(String.valueOf(buffer.get(i).getType()));
+					store+=(";");
+					store+=(String.valueOf(buffer.get(i).getStartDate()));
+					store+=(";");
+					store+=(String.valueOf(buffer.get(i).getStartTime()));
+					store+=(";");
+					store+=(String.valueOf(buffer.get(i).getEndDate()));
+					store+=(";");
+					store+=(String.valueOf(buffer.get(i).getEndTime()));
+					store+=(";");
+					store+=(Boolean.toString(buffer.get(i).getIsDone()));
 					//store.concat(String.valueOf(buffer.get(i).getAlarm()));
 					//tags to be done
-					System.out.println(store);
 					bw.write(store);
 					if (i<buffer.size()-1){
 						bw.newLine(); 
 					}
-				}	
-			}
-			bw.close();
-		} catch (IOException e) {
+				}
+				bw.close();}
+		}catch (IOException e) {
 			System.out.println("Exception encountered while saving the textfile");
 			System.exit(0);
 		}
@@ -196,7 +196,10 @@ public class SparkMoVare {
 		}
 		switch (command) {
 		case ADD_TASK:
-			return addTask(01, getCommandContent(userInput), 1, 1, 1, 1, false, null);
+			String line[] = getCommandContent(userInput).split("*");
+			return addTask(line[0], line[1], Integer.parseInt(line[2]),line[3], line[4]
+					, line[5], line[6], Boolean.parseBoolean(line[7]), new Vector<String>());
+
 			//		case EDIT_TASK:
 			//			return editTask(getCommandContent(userInput));
 			//		case DELETE_TASK:
@@ -233,12 +236,12 @@ public class SparkMoVare {
 		return "";
 	}
 
-	// in the format of: (int type,String title,int startDate,int endDate,String description,int alarm,
-	public static String addTask(int type,String title,int startDate,int startTime,
-			int endDate,int endTime, boolean isDone, Vector<String> tag) {
+	public static String addTask(String id,String title,int type, String startDate,String startTime,
+			String endDate,String endTime, boolean isDone, Vector<String> tag) {
 		Assignment newAssignment = new Assignment();
-		newAssignment.setType(type);
+		newAssignment.setId(id);
 		newAssignment.setTitle(title);
+		newAssignment.setType(type);
 		newAssignment.setStartDate(startDate);
 		newAssignment.setStartTime(startTime);
 		newAssignment.setEndDate(endDate);
@@ -251,16 +254,15 @@ public class SparkMoVare {
 			buffer.addLast(newAssignment);
 		}
 		else{
-			for (int i = 0; i<buffer.size(); i++){
-				if ( buffer.get(i).getEndDate() < newAssignment.getEndDate() ){
-					buffer.add(i,newAssignment);
-				}
-			}
+			//				for (int i = 0; i<buffer.size(); i++){
+			//					if (1>2){
+			buffer.add(newAssignment);
+			//					}
+			//				}
 		}
-
-		String confirmation = "added to " + filePath + ": \"" + newAssignment.getTitle() + "\"";
-		return confirmation;
-
+		//String confirmation = "added to " + filePath + ": \"" + newAssignment.getTitle() + "\"";
+		//return confirmation;
+		return newAssignment.toString();
 	}
 
 	//TODO	public static String editTask(String commandContent){
@@ -346,8 +348,14 @@ public class SparkMoVare {
 	}
 
 
-	static int getLineCount(){
+	public static int getLineCount(){
 		return buffer.size();
+	}
+
+	public static void display(){
+
+		System.out.println( buffer.getFirst().toString());
+
 	}
 
 
