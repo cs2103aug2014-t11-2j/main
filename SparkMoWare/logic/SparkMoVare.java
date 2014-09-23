@@ -33,13 +33,14 @@ public class SparkMoVare {
 	private static Stack< LinkedList<Assignment>> actionFuture = new Stack< LinkedList<Assignment>>();
 	private static LinkedList<Assignment> buffer = new LinkedList<Assignment>();
 	private static Scanner scanner = new Scanner(System.in);
-	private static String filePath = "Storage";
+	private static String filePath = "Storage.txt";
 
 	public static void main(String[] args) {
 		printToUser(MESSAGE_WELCOME);
 		openFile(filePath);
-		//ToDoManager();
-		System.out.println(addTask("555","testing this is 123", 0, "230914", "2359", "010101","0000",false, new Vector<String>()));
+		ToDoManager();
+//		addTask("555","testing this is 123", 0, "230914", "2359", "010101","0000",false, new Vector<String>());
+//		addTask("556","testing this is 321", 1, "230915", "2360", "210101","0100",true, new Vector<String>());
 		saveFile(filePath);
 	}
 
@@ -68,18 +69,17 @@ public class SparkMoVare {
 			FileReader fileReader = new FileReader(file);
 			BufferedReader bufferedReader = new BufferedReader(fileReader);
 			String line;
-
-			while ((line = bufferedReader.readLine()) != null ) {
-				String lineArray[] = line.split(";");
+			while ((line = bufferedReader.readLine())  != null ) {
+				String lineArray[] = line.split("~");
 				Assignment temp = new Assignment();
 				temp.setId(lineArray[0]);
 				temp.setTitle(lineArray[1]);
 				temp.setType(Integer.parseInt(lineArray[2]));
-				temp.setStartDate(lineArray[2]);
-				temp.setStartTime(lineArray[3]);
-				temp.setEndDate(lineArray[4]);
-				temp.setEndTime(lineArray[5]);
-				temp.setIsDone(Boolean.parseBoolean(lineArray[6]));
+				temp.setStartDate(lineArray[3]);
+				temp.setStartTime(lineArray[4]);
+				temp.setEndDate(lineArray[5]);
+				temp.setEndTime(lineArray[6]);
+				temp.setIsDone(Boolean.parseBoolean(lineArray[7]));
 				//temp.setAlarm(Integer.parseInt(lineArray[7]));
 				// tags to be done
 				buffer.add(temp);
@@ -91,40 +91,20 @@ public class SparkMoVare {
 		}
 	}
 
-	public static void saveFile(String filePath) {
+	private static void saveFile(String filePath) {
 		File file = new File(filePath);
 		file.delete();
 		try {
 			FileWriter fw = new FileWriter(file.getAbsoluteFile());
 			BufferedWriter bw = new BufferedWriter(fw);
-			String store;
 			for(int i=0; i< buffer.size(); i++){
+				bw.write(buffer.get(i).toString());
 				if (i<buffer.size()-1){
-					store="";
-					store+=String.valueOf(buffer.get(i).getId());
-					store+=(";");
-					store+=(buffer.get(i).getTitle());
-					store+=(";");
-					store+=(String.valueOf(buffer.get(i).getType()));
-					store+=(";");
-					store+=(String.valueOf(buffer.get(i).getStartDate()));
-					store+=(";");
-					store+=(String.valueOf(buffer.get(i).getStartTime()));
-					store+=(";");
-					store+=(String.valueOf(buffer.get(i).getEndDate()));
-					store+=(";");
-					store+=(String.valueOf(buffer.get(i).getEndTime()));
-					store+=(";");
-					store+=(Boolean.toString(buffer.get(i).getIsDone()));
-					//store.concat(String.valueOf(buffer.get(i).getAlarm()));
-					//tags to be done
-					bw.write(store);
-					if (i<buffer.size()-1){
-						bw.newLine(); 
-					}
+					bw.newLine(); 
 				}
-				bw.close();}
-		}catch (IOException e) {
+			}
+			bw.close();
+		} catch (IOException e) {
 			System.out.println("Exception encountered while saving the textfile");
 			System.exit(0);
 		}
@@ -196,7 +176,7 @@ public class SparkMoVare {
 		}
 		switch (command) {
 		case ADD_TASK:
-			String line[] = getCommandContent(userInput).split("*");
+			String line[] = getCommandContent(userInput).split("~");
 			return addTask(line[0], line[1], Integer.parseInt(line[2]),line[3], line[4]
 					, line[5], line[6], Boolean.parseBoolean(line[7]), new Vector<String>());
 

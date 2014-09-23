@@ -22,14 +22,14 @@ public class Assignment {
 	
 	private static final String DEFAULT_STRING = "DEFAULT";
 	private static final int TASK = 0;
-	private static final int DEFAULT = -1;
+	private static final String DEFAULT = "-1";
 	private static final int APPOINTMENT = 1;
 	private static final int TENTATIVE = 2;
 	
 	/************** Constructors **********************/
 	// Default constructor
 	public Assignment() {
-		this("1234","default",-1,"-1","-1","-1","-1",false,new Vector<String>());
+		this(DEFAULT,DEFAULT_STRING,-1,DEFAULT,DEFAULT,DEFAULT,DEFAULT,false,new Vector<String>());
 	}
 	
 	public Assignment(String id, String title, int type, String startDate, String startTime,
@@ -140,7 +140,7 @@ public class Assignment {
 	
 	@Override
 	public String toString() {
-		return getId() + "*" + getTitle() + "*" + getType() + "*" + getStartDate()+ "*" +getStartTime()+"*"+getEndDate()+"*"+getEndTime()+"*"+getIsDone();
+		return getId() + "~" + getTitle() + "~" + getType() + "~" + getStartDate()+ "~" +getStartTime()+"~"+getEndDate()+"~"+getEndTime()+"~"+getIsDone();
 	}
 	
 }

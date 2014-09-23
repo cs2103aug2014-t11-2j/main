@@ -15,7 +15,7 @@ public class SparkMoVareTest {
 	public void test() {
 		// add status
 		assertEquals(SparkMoVare.addTask("666","testing adding",1,"010101","1010",
-				"101010","2359",false, new Vector<String>() ),"666*testing adding*1*010101*1010*101010*2359*false");
+				"101010","2359",false, new Vector<String>() ),"666~testing adding~1~010101~1010~101010~2359~false");
 		//saving
 		SparkMoVare.display();
 	}
