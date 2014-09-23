@@ -1,19 +1,15 @@
 package logic;
 
+import java.util.*;
 
-public class tentative {
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
-	}
+public class Tentative {
 	
 	public static final int TYPE_TENTATIVE = 2;
 	
-	private static tentative(String userInput) {
-		
-	    String[] stringArray = userCommand.split(" ", 2);
-        String numOfTentative = stringArray[1];
+	public static Scanner scanner = new Scanner(System.in);
+	
+	private static void addTentative(String numOfTentative) {
+
         int tentativeNum = Integer.parseInt(numOfTentative);
         
         for(int tentativeCount = 1; tentativeCount < tentativeNum; tentativeCount++) {
@@ -28,14 +24,14 @@ public class tentative {
         	StringBuilder title = new StringBuilder(inputArray[0]);
         	
         	for(int titleLength = 1; titleLength < inputArray.length - 4; titleLength++) {
-        		title.append(inputArray[titleLength]);
-        		if(titleLength == inputArray.length-5) {
-        			title.append("[tentative]");
-        		}
-        			
+        		title.append(inputArray[titleLength]);        			
         	}
+        	
+        	title.append("[tentative]");
+        	
+        	String idGen = "";
         	//addTask(ID, title, type, startDate, startTime, endDate, endTime, isCompletion)
-        	addTask(TYPE_TENTATIVE, title, startDate, endDate, startTime, endTime);
+        	addTask(idGen, title, TYPE_TENTATIVE, startDate, startTime, endDate, endTime, false);
         }
 	}
 }
