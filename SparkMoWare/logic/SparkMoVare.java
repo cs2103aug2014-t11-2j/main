@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.Stack;
@@ -27,14 +26,14 @@ public class SparkMoVare {
 	// These are the possible command types
 	enum CommandType {
 		ADD_TASK, EDIT_TASK, DELETE_TASK, TENTATIVE, CONFIRM, SORT, SEARCH, 
-		DISPLAY, DELETE_ALL, UNDO, STATISTIC, EXIT, INVALID 
+		DISPLAY, DELETE_ALL, UNDO, REDO, STATISTIC, EXIT, INVALID 
 	};
 
 	private static Stack< LinkedList<Assignment>> actionHistory = new Stack< LinkedList<Assignment>>();
 	private static Stack< LinkedList<Assignment>> actionFuture = new Stack< LinkedList<Assignment>>();
 	private static LinkedList<Assignment> buffer = new LinkedList<Assignment>();
 	private static Scanner scanner = new Scanner(System.in);
-	private static String filePath="Storage";
+	private static String filePath = "Storage";
 
 	public static void main(String[] args) {
 		printToUser(MESSAGE_WELCOME);
@@ -42,24 +41,23 @@ public class SparkMoVare {
 		ToDoManager();
 	}
 
-	private static void ToDoManager() {
+	public static void ToDoManager() {
 		while (true) {
 			System.out.print("command: ");
-			// check here if command not redo or under, check actionFuture is empty if not purge it
 			printToUser(executeCommand(scanner.nextLine()));
 			actionHistory.add(buffer);
 			saveFile(filePath);
-	
+
 		}
 	}
 
-	private static void printToUser(String output){
+	public static void printToUser(String output){
 		if (!output.equals("")){
 			System.out.println(output);
 		}
 	}
 
-	private static void openFile(String filePath) {
+	public static void openFile(String filePath) {
 		try { // check if file exist if not create a new file with that name
 			File file = new File(filePath);
 			if (!file.exists()) {
@@ -67,17 +65,20 @@ public class SparkMoVare {
 			}
 			FileReader fileReader = new FileReader(file);
 			BufferedReader bufferedReader = new BufferedReader(fileReader);
-			String[] line;
-			while ((line = bufferedReader.readLine().split(";")) != null) {
+			String line;
+			
+			while ((line = bufferedReader.readLine()) != null ) {
+				String lineArray[] = line.split(";");
 				Assignment temp = new Assignment();
-				temp.setId(Integer.parseInt(line[0]));
-				temp.setTitle(line[1]);
-				temp.setType(Integer.parseInt(line[2]));
-				temp.setStartDate(Integer.parseInt(line[2]));
-				temp.setStartTime(Integer.parseInt(line[3]));
-				temp.setEndDate(Integer.parseInt(line[4]));
-				temp.setEndTime(Integer.parseInt(line[5]));
-				temp.setAlarm(Integer.parseInt(line[6]));
+				temp.setId(Integer.parseInt(lineArray[0]));
+				temp.setTitle(lineArray[1]);
+				temp.setType(Integer.parseInt(lineArray[2]));
+				temp.setStartDate(Integer.parseInt(lineArray[2]));
+				temp.setStartTime(Integer.parseInt(lineArray[3]));
+				temp.setEndDate(Integer.parseInt(lineArray[4]));
+				temp.setEndTime(Integer.parseInt(lineArray[5]));
+				temp.setIsDone(Boolean.parseBoolean(lineArray[6]));
+				//temp.setAlarm(Integer.parseInt(lineArray[7]));
 				// tags to be done
 				buffer.add(temp);
 			}
@@ -88,7 +89,7 @@ public class SparkMoVare {
 		}
 	}
 
-	private static void saveFile(String filePath) {
+	public static void saveFile(String filePath) {
 		File file = new File(filePath);
 		file.delete();
 		try {
@@ -112,8 +113,10 @@ public class SparkMoVare {
 					store.concat(";");
 					store.concat(String.valueOf(buffer.get(i).getEndTime()));
 					store.concat(";");
-					store.concat(String.valueOf(buffer.get(i).getAlarm()));
+					store.concat(Boolean.toString(buffer.get(i).getIsDone()));
+					//store.concat(String.valueOf(buffer.get(i).getAlarm()));
 					//tags to be done
+					System.out.println(store);
 					bw.write(store);
 					if (i<buffer.size()-1){
 						bw.newLine(); 
@@ -127,11 +130,11 @@ public class SparkMoVare {
 		}
 	}
 
-	private static String getCommandContent(String userInput) {
+	public static String getCommandContent(String userInput) {
 		return userInput.substring(userInput.indexOf(' ')+1);
 	}
 
-	private static CommandType getCommandType(String userInput) {
+	public static CommandType getCommandType(String userInput) {
 		if (userInput.split(" ").length<1){
 			return CommandType.INVALID;
 		}
@@ -174,6 +177,8 @@ public class SparkMoVare {
 				return CommandType.STATISTIC;
 			}  else if (userInputSubstring.equalsIgnoreCase("undo")) {
 				return CommandType.UNDO;
+			}else if (userInputSubstring.equalsIgnoreCase("redo")) {
+				return CommandType.REDO;
 			} else if (userInputSubstring.equalsIgnoreCase("exit")) {
 				return CommandType.EXIT;
 			} else {
@@ -182,32 +187,41 @@ public class SparkMoVare {
 		}
 	}
 
-	static String executeCommand(String userInput) {
-		switch (getCommandType(userInput)) {
+	public static String executeCommand(String userInput) {
+		CommandType command = getCommandType(userInput);
+		if (command != CommandType.UNDO && command != CommandType.REDO ){
+			while (!actionFuture.empty()){
+				actionFuture.pop();
+			}
+		}
+		switch (command) {
 		case ADD_TASK:
-			return addTask(getCommandContent(userInput));
-		case EDIT_TASK:
-			return editTask(getCommandContent(userInput));
-		case DELETE_TASK:
-			return deleteTask(getCommandContent(userInput));
-		case TENTATIVE:
-			return tentative(getCommandContent(userInput));
-		case CONFIRM:
-			return confirm(getCommandContent(userInput))
-		case DISPLAY:
-			return display();
-		case DELETE_ALL:
-			return DELETE_ALL();
-		case SORT:
-			return sort();
-		case SEARCH:
-			return search(getCommandContent(userInput));
-		case STATISTIC:
-			statistic();
-			break;
+			return addTask(01, getCommandContent(userInput), 1, 1, 1, 1, false, null);
+			//		case EDIT_TASK:
+			//			return editTask(getCommandContent(userInput));
+			//		case DELETE_TASK:
+			//			return deleteTask(getCommandContent(userInput));
+			//		case TENTATIVE:
+			//			return tentative(getCommandContent(userInput));
+			//		case CONFIRM:
+			//			return confirm(getCommandContent(userInput))
+			//		case DISPLAY:
+			//			return display();
+			//		case DELETE_ALL:
+			//			return DELETE_ALL();
+			//		case SORT:
+			//			return sort();
+			//		case SEARCH:
+			//			return search(getCommandContent(userInput));
+			//		case STATISTIC:
+			//			statistic();
+			//			break;
 		case UNDO:
 			undo();
 			break;	
+		case REDO:
+			redo();
+			break;
 		case EXIT:
 			System.exit(0);
 			break;
@@ -220,94 +234,94 @@ public class SparkMoVare {
 	}
 
 	// in the format of: (int type,String title,int startDate,int endDate,String description,int alarm,
-	private static String addTask(int type,String title,int startDate,int endDate,String description,int alarm,
-			Vector<String> tag,String endDate,String endTime, int duration) {
+	public static String addTask(int type,String title,int startDate,int startTime,
+			int endDate,int endTime, boolean isDone, Vector<String> tag) {
 		Assignment newAssignment = new Assignment();
-		boolean isDone=false;
 		newAssignment.setType(type);
 		newAssignment.setTitle(title);
 		newAssignment.setStartDate(startDate);
+		newAssignment.setStartTime(startTime);
 		newAssignment.setEndDate(endDate);
-		newAssignment.setDescription(description);
-		newAssignment.setAlarm(alarm);
-		newAssignment.setTag(tag);
 		newAssignment.setEndTime(endTime);
-
-		for (int i = 0; i<buffer.size(),i++)
-		{
-			if ( buffer.get(i).getEndDate < newAssignment.getEndDate ){
-				buffer.add(i,newAssignment);
-			}
+		newAssignment.setIsDone(isDone);
+		//newAssignment.setDescription(description);
+		//newAssignment.setAlarm(alarm);
+		newAssignment.setTag(tag);
+		if ( buffer.isEmpty() ){
+			buffer.addLast(newAssignment);
 		}
-		if (!isDone){
-			buffer.addLast(newAssignment)
+		else{
+			for (int i = 0; i<buffer.size(); i++){
+				if ( buffer.get(i).getEndDate() < newAssignment.getEndDate() ){
+					buffer.add(i,newAssignment);
+				}
+			}
 		}
 
 		String confirmation = "added to " + filePath + ": \"" + newAssignment.getTitle() + "\"";
 		return confirmation;
+
 	}
 
-	private static String editTask(String commandContent){
-		//TODO
-	}
+	//TODO	public static String editTask(String commandContent){
+	//		
+	//	}
 
-	private static String deleteTask(String commandContent) {
+	//TODO	public static String deleteTask(String commandContent) {	
+	//		int lineNumber=Integer.parseInt(commandContent);
+	//		if (lineNumber<1||lineNumber>buffer.size()){
+	//			return "Trying to delete invalid line";
+	//		}
+	//		else{
+	//			String stringDeleted="";
+	//			stringDeleted=buffer.get(lineNumber-1);
+	//			buffer.remove(lineNumber-1);
+	//			return ("deleted from " + filePath + ": " + "\"" + stringDeleted + "\"");
+	//		}
+	//	}
 
-		int lineNumber=Integer.parseInt(commandContent);
-		if (lineNumber<1||lineNumber>buffer.size()){
-			return "Trying to delete invalid line";
-		}
-		else{
-			String stringDeleted="";
-			stringDeleted=buffer.get(lineNumber-1);
-			buffer.remove(lineNumber-1);
-			return ("deleted from " + filePath + ": " + "\"" + stringDeleted + "\"");
-		}
-	}
+	//TODO	public static String display() {
+	//		for(int i=0; i< buffer.size(); i++){
+	//			String lineToAdd="";
+	//			lineToAdd+=String.valueOf(i+1);
+	//			lineToAdd+=". ";
+	//			lineToAdd+=buffer.get(i);
+	//			System.out.println(lineToAdd);
+	//		}
+	//
+	//		if (getLineCount()==0){
+	//			return (filePath + " is empty");
+	//		}
+	//		else{
+	//			return "";
+	//		}	
+	//	}
 
-	private static String display() {
-		for(int i=0; i< buffer.size(); i++){
-			String lineToAdd="";
-			lineToAdd+=String.valueOf(i+1);
-			lineToAdd+=". ";
-			lineToAdd+=buffer.get(i);
-			System.out.println(lineToAdd);
-		}
-
-		if (getLineCount()==0){
-			return (filePath + " is empty");
-		}
-		else{
-			return "";
-		}	
-	}
-
-	private static String DELETE_ALL() {
-		buffer.clear();
-		return ("all content deleted from "+ filePath);
-	}
+	//TODO	public static String DELETE_ALL() {
+	//		buffer.clear();
+	//		return ("all content deleted from "+ filePath);
+	//	}
 
 
-	private static String sort() {
-		Collections.sort(buffer);
-		return "To do list has been sorted";
-	}
+	//	public static String sort() {
+	//TODO
+	//	}
 
-	static String search(String commandContent) {
-		boolean isFound = false;
-		for(int i=0; i< buffer.size(); i++){
-			if (buffer.get(i).toLowerCase().indexOf(commandContent.toLowerCase())>-1){
-				printToUser(commandContent + " has been found in: " +String.valueOf(i+1)+ ". "+ buffer.get(i));
-				isFound = true;
-			}
-		}
-		if (isFound){
-			return "";
-		}
-		return (commandContent + " is not found within " + filePath);
-	}
+	//TODO static String search(String commandContent) {
+	//	boolean isFound = false;
+	//	for(int i=0; i< buffer.size(); i++){
+	//		if (buffer.get(i).toLowerCase().indexOf(commandContent.toLowerCase())>-1){
+	//			printToUser(commandContent + " has been found in: " +String.valueOf(i+1)+ ". "+ buffer.get(i));
+	//			isFound = true;
+	//		}
+	//	}
+	//	if (isFound){
+	//		return "";
+	//	}
+	//	return (commandContent + " is not found within " + filePath);
+	//}
 
-	private static String undo(){
+	public static String undo(){
 
 		if (actionHistory.empty()){
 			return "Undo Error, no moves to undo";
@@ -318,8 +332,8 @@ public class SparkMoVare {
 			return "Last action has been undo-ed";
 		}
 	}
-	
-	private static String redo(){
+
+	public static String redo(){
 
 		if (actionFuture.empty()){
 			return "Redo Error, no moves to redo";

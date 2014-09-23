@@ -12,20 +12,34 @@ class Assignment {
 	private int startTime;		// in the format HHMM, if inactive null
 	private int endDate;		// in the format DDMMYY, if inactive null
 	private int endTime;		// in the format HHMM, if inactive null
-	private String description;
-	private int alarm;			// in the format HHMM, if inactive null
-	private int duration;		// in the format HHMM
+	private boolean isDone;
+	//private String description;
+	//private int alarm;			// in the format HHMM, if inactive null
 	private Vector<String> tag;	// to support tagging
 	private int type;			// type of assignment
 	
 	/************** Constants **********************/
+	
+	private static final String DEFAULT_STRING = "DEFAULT";
+	private static final int DEFAULT = -1;
+	@SuppressWarnings("unused")
 	private static final int TASK = 0;
+	@SuppressWarnings("unused")
 	private static final int APPOINTMENT = 1;
 	private static final int TENTATIVE = 2;
 	
 	/************** Constructors **********************/
 	// Default constructor
 	Assignment() {
+		id = DEFAULT;
+		title = DEFAULT_STRING;
+		type = DEFAULT;
+		startDate = DEFAULT;
+		startTime = DEFAULT;
+		endDate = DEFAULT;
+		endTime = DEFAULT;
+		isDone = false;
+		tag = new Vector<String>();
 	}
 
 	/**************** Accessors ***********************/
@@ -53,17 +67,13 @@ class Assignment {
 		return endTime;
 	}
 
-	public String getDescription() {
-		return description;
-	}
+	//public String getDescription() {
+	//	return description;
+	//}
 
-	public int getAlarm() {
-		return alarm;
-	}
-	
-	public int getduration() {
-		return duration;
-	}
+	//public int getAlarm() {
+	//	return alarm;
+	//}
 	
 	public Vector<String> getTag() {
 		return tag;
@@ -71,6 +81,10 @@ class Assignment {
 	
 	public int getType() {
 		return type;
+	}
+	
+	public boolean getIsDone(){
+		return isDone;
 	}
 
 	/**************** Mutators ************************/
@@ -99,23 +113,23 @@ class Assignment {
 	}
 
 
-	public void setDescription(String newDescription) {
-		description = newDescription;
-	}
+	//public void setDescription(String newDescription) {
+	//	description = newDescription;
+	//}
 
-	public void setAlarm(int newAlarm) {
-		alarm = newAlarm;
-	}
-	
-	public void setDuration(int newDuration) {
-		duration = newDuration;
-	}
-	
+	//public void setAlarm(int newAlarm) {
+	//	alarm = newAlarm;
+	//}
+		
 	public void setTag(Vector<String> newTag) {
 		tag = newTag;
 	}
 	
 	public void setType(int newType) {
 		type = newType;
+	}
+	
+	public void setIsDone(boolean newIsDone){
+		isDone = newIsDone;
 	}
 }
