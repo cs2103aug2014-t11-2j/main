@@ -23,12 +23,18 @@ public class SparkMoVare {
 	private static final String MESSAGE_INVALID_FORMAT = "Invalid Format";
 	private static final String MESSAGE_STORAGE_FILE_ERROR = "Exception encountered while initalising the Storage file";
 
+	private static final String MESSAGE_INVALID_SEARCH_PARAMETER = "Invalid search parameter entered";
+	
 	// These are the possible command types
 	enum CommandType {
 		ADD_TASK, EDIT_TASK, DELETE_TASK, TENTATIVE, CONFIRM, SORT, SEARCH, 
 		DISPLAY, DELETE_ALL, UNDO, REDO, STATISTIC, EXIT, INVALID 
 	};
 
+	enum EditType{
+		TITLE, START_DATE, START_TIME, END_DATE, END_TIME, INVALID
+	}
+	
 	private static Stack< LinkedList<Assignment>> actionHistory = new Stack< LinkedList<Assignment>>();
 	private static Stack< LinkedList<Assignment>> actionFuture = new Stack< LinkedList<Assignment>>();
 	private static LinkedList<Assignment> buffer = new LinkedList<Assignment>();
@@ -263,9 +269,74 @@ public class SparkMoVare {
 
 	}
 
-	//TODO	public static String editTask(String commandContent){
-	//		
-	//	}
+	private static String editTask(String commandContent){ //assuming user input is as follows edit <id>
+														   //<title/startdate> <new Title/startdate>
+		String[] commandContentArray = commandContent.split(" ", 4); //not sure if 4 is accurate
+		int bufferPosition = idSearcher(Integer.parseInt(commandContentArray[1]));
+
+		if(bufferPosition==-1){
+			return "search is false statement";
+		}
+		switch(getEditType(commandContentArray[2])){
+		case TITLE:
+			buffer.get(bufferPosition).setTitle(commandContentArray[3]);
+			break;
+		case START_DATE:
+			buffer.get(bufferPosition).setStartDate(Integer.parseInt(commandContentArray[3]));
+			break;
+		case START_TIME:
+			buffer.get(bufferPosition).setStartTime(Integer.parseInt(commandContentArray[3]));
+			break;
+		case END_DATE:
+			buffer.get(bufferPosition).setEndDate(Integer.parseInt(commandContentArray[3]));
+			break;
+		case END_TIME:
+			buffer.get(bufferPosition).setEndTime(Integer.parseInt(commandContentArray[3]));
+			break;
+		case INVALID:
+			return MESSAGE_INVALID_SEARCH_PARAMETER;
+		default:
+			return MESSAGE_INVALID_SEARCH_PARAMETER;
+		}
+
+		return "statement";
+	}
+	//returns the position in the buffer of the id
+	//returning -1 means does not exist
+	private static int idSearcher(int id){ //there should be easier way to search for it
+		//such as search for the date first then the id
+		for(int i=0; i<buffer.size(); i++){
+			if(buffer.get(i).getId()==id){
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	private static EditType getEditType(String attributeName){
+		if (attributeName.length()<1){
+			return EditType.INVALID;
+		}
+		if (attributeName.equalsIgnoreCase("title")){
+			return EditType.TITLE;
+		}
+		else if (attributeName.equalsIgnoreCase("start date")){
+			return EditType.START_DATE;
+		}
+		else if (attributeName.equalsIgnoreCase("start time")){
+			return EditType.START_TIME;
+		}
+		else if (attributeName.equalsIgnoreCase("end date")){
+			return EditType.END_DATE;
+		}
+		else if (attributeName.equalsIgnoreCase("end time")){
+			return EditType.END_TIME;
+		}
+		else{
+			return EditType.INVALID;
+		}
+	}
+
 
 	//TODO	public static String deleteTask(String commandContent) {	
 	//		int lineNumber=Integer.parseInt(commandContent);
