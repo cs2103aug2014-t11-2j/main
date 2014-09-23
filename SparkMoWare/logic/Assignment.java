@@ -7,7 +7,7 @@ class Assignment {
 	/************** Data members **********************/
 	private static int numAppointment = 0;
 	private String title;
-	private int id;			// date of creation;in the format DDMMYY
+	private int id;				// date of creation;in the format DDMMYY
 	private int startDate;		// in the format DDMMYY, if inactive null
 	private int startTime;		// in the format HHMM, if inactive null
 	private int endDate;		// in the format DDMMYY, if inactive null
