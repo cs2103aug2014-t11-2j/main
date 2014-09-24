@@ -87,7 +87,7 @@ public class SparkMoVare {
 	}
 
 	public static void printToUser(String output){
-		if (!output.equals("")){ //is the if necessary?
+		if (!output.equals("")){ //is the if necessary? >> this is incase if we wanna return "" and dun wan a extra new space to appear (more for testing)
 			System.out.println(output);
 		}
 	}
@@ -119,7 +119,7 @@ public class SparkMoVare {
 					latestSerialNumber = lineArray[0];
 				}
 				else{
-					if( SerialNumbercomparator(lineArray[0],latestSerialNumber)){
+					if( serialNumberComparator(lineArray[0],latestSerialNumber)){
 						latestSerialNumber = lineArray[0];
 					}
 				}
@@ -140,7 +140,7 @@ public class SparkMoVare {
 			actionHistory.add(buffer);
 			saveFile(filePath);
 		}
-	}
+	} 
 
 	private static void saveFile(String filePath) {
 		File file = new File(filePath);
@@ -293,7 +293,7 @@ public class SparkMoVare {
 		Date todayDate = new Date();
 		serialNum += dateFormat.format(todayDate);
 		serialNum += "0001";
-		if(latestSerialNumber.equals("") || SerialNumbercomparator(serialNum,latestSerialNumber)){
+		if(latestSerialNumber.equals("") || serialNumberComparator(serialNum,latestSerialNumber)){
 			return serialNum;
 		}
 		else{
@@ -700,15 +700,16 @@ public class SparkMoVare {
 		//newAssignment.setDescription(description);
 		//newAssignment.setAlarm(alarm);
 		newAssignment.setTag(tag);
-		if ( buffer.isEmpty() ){
-			buffer.addLast(newAssignment);
+		
+		// adding task to buffer according to date
+		for(int i=0; i<buffer.size(); i++)
+		{
+			if (dateComparator(newAssignment.getEndDate(), buffer.get(i).getEndDate())){
+				buffer.add(i, newAssignment);
+				return newAssignment.toString();
+			}
 		}
-		else{
-			// to implement insert by deadline
-			buffer.add(newAssignment);
-		}
-
-		// to implement format
+		buffer.addLast(newAssignment);
 		return newAssignment.toString();
 	}
 
@@ -837,8 +838,8 @@ public class SparkMoVare {
 		}
 	}
 
-	// compares id with nextId, return true if id is bigger else return false the format is 250920140001
-	static boolean SerialNumbercomparator(String idA, String idB){
+	// compares id with nextId, return true if idA is bigger else return false the format is 250920140001
+	static boolean serialNumberComparator(String idA, String idB){
 		// check year
 		if (Integer.parseInt(idA.substring(4, 8))>Integer.parseInt(idB.substring(4, 8))){
 			return true;
@@ -862,6 +863,28 @@ public class SparkMoVare {
 			return true;
 		}
 		return false;	
+	}
+
+	// compares id with nextId, return true if dateA is bigger else return false the format is 25092014
+	static boolean dateComparator(String dateA, String dateB){
+		// check year
+		if (Integer.parseInt(dateA.substring(4, 8))>Integer.parseInt(dateB.substring(4, 8))){
+			return true;
+		}else if (Integer.parseInt(dateA.substring(4, 8))<Integer.parseInt(dateB.substring(4, 8))){
+			return false;
+		}
+		// check month
+		else if (Integer.parseInt(dateA.substring(2, 4))>Integer.parseInt(dateB.substring(2, 4))){
+			return true;
+		}else if (Integer.parseInt(dateA.substring(2, 4))<Integer.parseInt(dateB.substring(2, 4))){
+			return false;
+		}
+		// check day
+		else if (Integer.parseInt(dateA.substring(0, 2))>Integer.parseInt(dateB.substring(0, 2))){
+			return true;
+		}
+		return false;
+
 	}
 
 	// for testing purpose
