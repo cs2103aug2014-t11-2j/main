@@ -23,26 +23,26 @@ public class SparkMoVare {
 	private static final String MESSAGE_CLEARED = "all content deleted from %1$s";
 	private static final String MESSAGE_EMPTY = "%1$s is empty";
 	//private static final String
-	
+
 	private static final String MESSAGE_INVALID_FORMAT = "Invalid Format";
 	private static final String MESSAGE_FORMAT_PROMPT = "Please type the %1$s again: ";
-	
+
 	private static final String MESSAGE_INVALID_SEARCH_PARAMETER = "Invalid search parameter entered";
-	
+
 	private static final String MESSAGE_STORAGE_FILE_ERROR = "Exception encountered while initalising the Storage file";
 	private static final String MESSAGE_SAVE_FILE_ERROR = "Exception encountered while saving the textfile";
-	private static int SYSTEM_EXIT_NO_ERROR = 0;
-	private static int SYSTEM_EXIT_ERROR = 1;
-	
+	private static final int SYSTEM_EXIT_NO_ERROR = 0;
+	private static final int SYSTEM_EXIT_ERROR = 1;
+
 	private static Stack< LinkedList<Assignment>> actionHistory = new Stack< LinkedList<Assignment>>();
 	private static Stack< LinkedList<Assignment>> actionFuture = new Stack< LinkedList<Assignment>>();
 	private static LinkedList<Assignment> buffer = new LinkedList<Assignment>();
 	private static Scanner scanner = new Scanner(System.in);
 	private static String filePath = "Storage";
-	
+
 	private static int counter = 0;
 	private static int size = 0;
-	
+
 	private static String[] refinedUserInput = new String[9];
 	/*each index of refinedUserinput represent something
 	 *0:The command string
@@ -55,12 +55,12 @@ public class SparkMoVare {
 	 *7:Type: Task(0), Appointment(1) and Tentative(2)
 	 *8:Either the command type for delete all (on, before, during) or new content for edit command 
 	 */
-	
+
 	enum CommandType {
 		ADD_TASK, EDIT_TASK, DELETE_TASK, TENTATIVE, CONFIRM, SORT, SEARCH, 
 		DISPLAY, DELETE_ALL, UNDO, REDO, STATISTIC, EXIT, INVALID 
 	};
-	
+
 	//Fundamentally the same as CommandType, but without single word commands 
 	enum RefinementType {
 		ADD_TASK, EDIT_TASK, DELETE_TASK, TENTATIVE, CONFIRM, SORT, SEARCH, 
@@ -76,13 +76,13 @@ public class SparkMoVare {
 		openFile(filePath);
 		toDoManager();
 	}
-	
+
 	public static void printToUser(String output){
 		if (!output.equals("")){ //is the if necessary?
 			System.out.println(output);
 		}
 	}
-	
+
 	public static void openFile(String filePath) {
 		try { // check if file exist if not create a new file with that name
 			File file = new File(filePath);
@@ -92,18 +92,17 @@ public class SparkMoVare {
 			FileReader fileReader = new FileReader(file);
 			BufferedReader bufferedReader = new BufferedReader(fileReader);
 			String line;
-			
-			while ((line = bufferedReader.readLine()) != null ) {
-				String lineArray[] = line.split(";");
+			while ((line = bufferedReader.readLine())  != null ) {
+				String lineArray[] = line.split("~");
 				Assignment temp = new Assignment();
-				temp.setId(Integer.parseInt(lineArray[0]));
+				temp.setId(lineArray[0]);
 				temp.setTitle(lineArray[1]);
 				temp.setType(Integer.parseInt(lineArray[2]));
-				temp.setStartDate(Integer.parseInt(lineArray[2]));
-				temp.setStartTime(Integer.parseInt(lineArray[3]));
-				temp.setEndDate(Integer.parseInt(lineArray[4]));
-				temp.setEndTime(Integer.parseInt(lineArray[5]));
-				temp.setIsDone(Boolean.parseBoolean(lineArray[6]));
+				temp.setStartDate(lineArray[3]);
+				temp.setStartTime(lineArray[4]);
+				temp.setEndDate(lineArray[5]);
+				temp.setEndTime(lineArray[6]);
+				temp.setIsDone(Boolean.parseBoolean(lineArray[7]));
 				//temp.setAlarm(Integer.parseInt(lineArray[7]));
 				// tags to be done
 				buffer.add(temp);
@@ -123,44 +122,22 @@ public class SparkMoVare {
 			saveFile(filePath);
 		}
 	}
-	
-	public static void saveFile(String filePath) {
+
+	private static void saveFile(String filePath) {
 		File file = new File(filePath);
 		file.delete();
 		try {
 			FileWriter fw = new FileWriter(file.getAbsoluteFile());
 			BufferedWriter bw = new BufferedWriter(fw);
-			String store;
-			for(counter=0; counter< buffer.size(); counter++){
-				if (counter<buffer.size()-1){
-					store="";
-					store.concat(String.valueOf(buffer.get(counter).getId()));
-					store.concat(";");
-					store.concat(buffer.get(counter).getTitle());
-					store.concat(";");
-					store.concat(String.valueOf(buffer.get(counter).getType()));
-					store.concat(";");
-					store.concat(String.valueOf(buffer.get(counter).getStartDate()));
-					store.concat(";");
-					store.concat(String.valueOf(buffer.get(counter).getStartTime()));
-					store.concat(";");
-					store.concat(String.valueOf(buffer.get(counter).getEndDate()));
-					store.concat(";");
-					store.concat(String.valueOf(buffer.get(counter).getEndTime()));
-					store.concat(";");
-					store.concat(Boolean.toString(buffer.get(counter).getIsDone()));
-					//store.concat(String.valueOf(buffer.get(counter).getAlarm()));
-					//tags to be done
-					printToUser(store);
-					bw.write(store);
-					if (counter<buffer.size()-1){
-						bw.newLine(); 
-					}
-				}	
+			for(int i=0; i< buffer.size(); i++){
+				bw.write(buffer.get(i).toString());
+				if (i<buffer.size()-1){
+					bw.newLine(); 
+				}
 			}
 			bw.close();
 		} catch (IOException e) {
-			printToUser(MESSAGE_SAVE_FILE_ERROR);
+			System.out.println("Exception encountered while saving the textfile");
 			System.exit(SYSTEM_EXIT_ERROR);
 		}
 	}
@@ -197,7 +174,7 @@ public class SparkMoVare {
 
 	public static RefinementType getRefinementType(String userInput) {
 		String refinement;
-		
+
 		if (userInput.split(" ").length>1){
 			refinement = userInput.substring(0,userInput.indexOf(' '));
 		}
@@ -258,9 +235,9 @@ public class SparkMoVare {
 		}		
 		else{
 			refinedUserInput[0] = "invalid";
-			
+
 			//currently change command input to invalid
-			
+
 			//what to do here? It's not possible to prompt the user to change the input.
 			//It will go back into the determineUserInput method.
 			//Exit the system, exception/error handling or is there a way to fix this?
@@ -374,7 +351,7 @@ public class SparkMoVare {
 		default:
 		}
 	}
-			
+
 	private static EditType getEditType(String attributeName){
 		if (attributeName.length()<1){
 			return EditType.INVALID;
@@ -407,7 +384,7 @@ public class SparkMoVare {
 		}
 		return ID;
 	}
-	
+
 	public static boolean _IDFormatValid(String ID){
 
 		if(ID.length() != 10){
@@ -442,7 +419,6 @@ public class SparkMoVare {
 		}
 		switch (command) {
 		case ADD_TASK:
-
 			return addTask(01, getCommandContent(userInput), 1, 1, 1, 1, false, null);
 			//		case EDIT_TASK:
 			//			return editTask(getCommandContent(userInput));
@@ -483,16 +459,16 @@ public class SparkMoVare {
 	public static String determineTitle(String[] userInputArray){
 		size = userInputArray.length;
 		String title = userInputArray[3];
-		
+
 		while(!titleExists(title)){
 			printToUser(MESSAGE_INVALID_FORMAT);
 			printToUser(String.format(MESSAGE_FORMAT_PROMPT, "Title"));		
 			title = scanner.nextLine();				
 		}
-		
+
 		//issue, what if new title input just above is more than one word?
 		//need to split again
-		
+
 		for(counter=1; counter+3<size; counter++){
 			title.concat(userInputArray[counter+3]);
 		}
@@ -505,7 +481,7 @@ public class SparkMoVare {
 		}
 		return true;
 	}
-	
+
 	public static String getCommandContent(String userInput) {
 		return userInput.substring(userInput.indexOf(' ')+1);
 	}
@@ -577,12 +553,12 @@ public class SparkMoVare {
 		}		
 	}
 
-	// in the format of: (int type,String title,int startDate,int endDate,String description,int alarm,
-	public static String addTask(int type,String title,int startDate,int startTime,
-			int endDate,int endTime, boolean isDone, Vector<String> tag) {
+	public static String addTask(String id,String title,int type, String startDate,String startTime,
+			String endDate,String endTime, boolean isDone, Vector<String> tag) {
 		Assignment newAssignment = new Assignment();
-		newAssignment.setType(type);
+		newAssignment.setId(id);
 		newAssignment.setTitle(title);
+		newAssignment.setType(type);
 		newAssignment.setStartDate(startDate);
 		newAssignment.setStartTime(startTime);
 		newAssignment.setEndDate(endDate);
@@ -595,20 +571,16 @@ public class SparkMoVare {
 			buffer.addLast(newAssignment);
 		}
 		else{
-			for (counter = 0; counter<buffer.size(); counter++){
-				if ( buffer.get(counter).getEndDate() < newAssignment.getEndDate() ){
-					buffer.add(counter,newAssignment);
-				}
-			}
+			// to implement insert by deadline
+			buffer.add(newAssignment);
 		}
-
-		String confirmation = "added to " + filePath + ": \"" + newAssignment.getTitle() + "\"";
-		return confirmation;
-
+		
+		// to implement format
+		return newAssignment.toString();
 	}
 
 	private static String editTask(String commandContent){ //assuming user input is as follows edit <id>
-														   //<title/startdate> <new Title/startdate>
+		//<title/startdate> <new Title/startdate>
 		String[] commandContentArray = commandContent.split(" ", 4); //not sure if 4 is accurate
 		int bufferPosition = idSearcher(Integer.parseInt(commandContentArray[1]));
 
@@ -644,7 +616,7 @@ public class SparkMoVare {
 	private static int idSearcher(int id){ //there should be easier way to search for it
 		//such as search for the date first then the id
 		for(counter=0; counter<buffer.size(); counter++){
-			if(buffer.get(counter).getId()==id){
+			if(Integer.parseInt(buffer.get(counter).getId())==id){
 				return counter;
 			}
 		}
