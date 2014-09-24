@@ -2,6 +2,9 @@ package logic;
 
 import java.util.*;
 
+/*
+ * Onli error is the ID auto-generator.
+ */
 public class Tentative {
 	
 	public static final int TYPE_TENTATIVE = 2;

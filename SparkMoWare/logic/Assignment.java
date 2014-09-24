@@ -21,10 +21,10 @@ public class Assignment {
 	/************** Constants **********************/
 	
 	private static final String DEFAULT_STRING = "DEFAULT";
-	private static final int TASK = 0;
+	private static final int TYPE_TASK = 0;
 	private static final String DEFAULT = "-1";
-	private static final int APPOINTMENT = 1;
-	private static final int TENTATIVE = 2;
+	private static final int TYPE_APPOINTMENT = 1;
+	private static final int TYPE_TENTATIVE = 2;
 	
 	/************** Constructors **********************/
 	// Default constructor
