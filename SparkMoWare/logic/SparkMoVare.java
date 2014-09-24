@@ -22,9 +22,10 @@ public class SparkMoVare {
 	private static final String MESSAGE_DELETED = "deleted from %1$s: \"%2$s\"";
 	private static final String MESSAGE_CLEARED = "all content deleted from %1$s";
 	private static final String MESSAGE_EMPTY = "%1$s is empty";
-	//private static final String
-
+	
+	private static final String MESSAGE_DOES_NOT_EXISTS = "%1$s does not exists";
 	private static final String MESSAGE_INVALID_FORMAT = "Invalid Format";
+	private static final String MESSAGE_NO_TITLE = "Title is blank";
 	private static final String MESSAGE_FORMAT_PROMPT = "Please type the %1$s again: ";
 
 	private static final String MESSAGE_INVALID_SEARCH_PARAMETER = "Invalid search parameter entered";
@@ -46,27 +47,31 @@ public class SparkMoVare {
 	private static String[] refinedUserInput = new String[9];
 	/*each index of refinedUserinput represent something
 	 *0:The command string
-	 *1:Serial Number (S/N) of the Assignment ASSUMPTION: serial number length is at most 4 digits aka 1000
+	 *1:Serial Number (S/N) of the Assignment ASSUMPTION: serial number length is at most 10 digits DD/MM/YY/0000
 	 *2:Title of the Assignment
 	 *3:Start Date
 	 *4:Start Time
 	 *5:End Date
 	 *6:End Time
 	 *7:Type: Task(0), Appointment(1) and Tentative(2)
-	 *8:Either the command type for delete all (on, before, during) or new content for edit command 
+	 *8:For command types: delete all (on, before, during)
+	 *					   edit which is to be edited, such as title or start date
+	 *					   tentative (number of days)
+	 *					   sort and search by date, serial number, etc. 
 	 */
 
 	enum CommandType {
 		ADD_TASK, EDIT_TASK, DELETE_TASK, TENTATIVE, CONFIRM, SORT, SEARCH, 
 		DISPLAY, DELETE_ALL, UNDO, REDO, STATISTIC, EXIT, INVALID 
-	};
+	}
 
 	//Fundamentally the same as CommandType, but without single word commands 
 	enum RefinementType {
 		ADD_TASK, EDIT_TASK, DELETE_TASK, TENTATIVE, CONFIRM, SORT, SEARCH, 
-		DELETE_ALL, INVALID
+		DELETE_ALL, INVALID, OTHERS
 	}
 
+	//Enum for determining which assignment attribute is being edited
 	enum EditType {
 		TITLE, START_DATE, START_TIME, END_DATE, END_TIME, INVALID
 	}
@@ -118,6 +123,7 @@ public class SparkMoVare {
 		while (true) {
 			printToUser(MESSAGE_PROMPT);
 			determineUserInput(scanner.nextLine());
+			executeCommand(refinedUserInput[0]);
 			actionHistory.add(buffer);
 			saveFile(filePath);
 		}
@@ -142,6 +148,7 @@ public class SparkMoVare {
 		}
 	}
 
+	//Otherwise known as the Passer. Determines from the user input: command and content, if any.
 	public static void determineUserInput(String userInput){
 		Arrays.fill(refinedUserInput, null); //initialises the array for new user input
 		String[] userInputArray = userInput.split(" ");
@@ -154,24 +161,32 @@ public class SparkMoVare {
 			userInputEdit(userInputArray);
 			break;
 		case DELETE_TASK:
+			userInputDelete(userInputArray);
 			break;
 		case TENTATIVE:
+			userInputTentative(userInputArray);
 			break;
 		case CONFIRM:
+			userInputConfirm(userInputArray);
 			break;
 		case DELETE_ALL:
+			userInputDeleteAll(userInputArray);
 			break;
 		case SORT:
+			userInputSort(userInputArray);
 			break;
 		case SEARCH:
+			userInputSearch(userInputArray);
 			break;
 		case INVALID:
 			refinedUserInput[0] = "invalid";
 			break;
+		case OTHERS://for single commands that require no refinement
 		default: //does nothing
 		}
 	}
 
+	//Checks validity of the user input command
 	public static RefinementType getRefinementType(String userInput) {
 		String refinement;
 
@@ -217,13 +232,24 @@ public class SparkMoVare {
 		else if (refinement.equalsIgnoreCase("sort")) {
 			return RefinementType.SORT;
 		}
-		else {
-			return RefinementType.INVALID;
-		}		
+		else{
+			return RefinementType.OTHERS;
+		}
 	}
 
+	/*Refines the user input into the String[] refinedUserInput for passing on to addCommand() later
+	 * FATAL ERROR: Cannot cope if title if longer than a single word.
+	 * FATAL ERROR: Even if format is <ddmmyy><hhmm><title> no way to determine is user has a title more than
+	 * 2 words long with one of the words consisting of only numbers and is leaving the time and/or date blank.
+	 * FATAL ERROR: method cannot cope if date or time is left blank.
+	 * 
+	 * Yet to add way to determine type. Most likely will involve checking if start date and start time exists.
+	 * If exists then assign assignment type appropriately. 0 for task, 1 for appointment, 2 for tentative*/
 	public static void userInputAdd(String[] userInputArray){
-		if(userInputArray.length==4){
+		refinedUserInput[1] = serialNumGen("date");
+		refinedUserInput[2] = userInputArray[1];
+		
+		if(userInputArray.length==4){//ASSUMPTION: format is <add><title><ddmmyy><hhmm>
 			refinedUserInput[5] = determineDate(userInputArray[2]);
 			refinedUserInput[6] = determineTime(userInputArray[3]);
 		}
@@ -244,9 +270,19 @@ public class SparkMoVare {
 
 		}
 	}
+	
+	public static String serialNumGen(String date){
+		/*TODO
+		 * ASSUMING serial number is base on end date input
+		 * if end date is empty, clock will generate date BEFORE entering thhis method, and pass that on as the input variable
+		 * search command is called for the date to check if there are any other assignments on that date
+		 * for each assignment, add 1 to number eg if there are 4: from 2412140001 to 2412140005
+		*/
+		return null;//this is a stub
+	}
 
 	public static String determineDate(String inputDate){
-		while(!dateFormatValid(inputDate)){
+		while(!dateFormatValid(inputDate)){//will continuously prompt user for correct date format currently no way to exit
 			printToUser(MESSAGE_INVALID_FORMAT);
 			printToUser(String.format(MESSAGE_FORMAT_PROMPT, "date"));
 			inputDate = scanner.nextLine();
@@ -297,7 +333,7 @@ public class SparkMoVare {
 	}
 
 	public static String determineTime(String inputTime){
-		while(!timeFormatValid(inputTime)){
+		while(!timeFormatValid(inputTime)){//will continuously prompt user for correct time format currently no way to exit
 			printToUser(MESSAGE_INVALID_FORMAT);
 			printToUser(String.format(MESSAGE_FORMAT_PROMPT, "time"));
 			inputTime = scanner.nextLine();			
@@ -332,18 +368,28 @@ public class SparkMoVare {
 		return true;
 	}
 
+	//Refines the user input into the String[] refinedUserInput for passing on to editCommand() later 
 	public static void userInputEdit(String[] userInputArray){ //User must use S/N
 		refinedUserInput[1] = determineID(userInputArray[1]);
-		switch(getEditType(refinedUserInput[2])){
+		/*if(refinedUserInput[1].equalsIgnoreCase("exit")){//Method for dealing with fatal error
+			refinedUserInput[0] = "invalid";
+		}*/
+		refinedUserInput[8] = userInputArray[2];
+		switch(getEditType(userInputArray[2])){
 		case TITLE:
+			refinedUserInput[2] = determineTitle(userInputArray);
 			break;
 		case START_DATE:
+			refinedUserInput[3] = userInputArray[3];
 			break;
 		case START_TIME:
+			refinedUserInput[4] = userInputArray[3];
 			break;
 		case END_DATE:
+			refinedUserInput[5] = userInputArray[3];
 			break;
 		case END_TIME:
+			refinedUserInput[6] = userInputArray[3];
 			break;
 		case INVALID:
 			refinedUserInput[0] = "invalid";
@@ -351,24 +397,61 @@ public class SparkMoVare {
 		default:
 		}
 	}
+	
+	public static String determineID(String id){
+		while(!_IDFormatValid(id)){//will continuously prompt user for correct ID format currently no way to exit
+								   //FATAL ERROR: if user enters edit command while file/program is empty, this prompt will run forever. 
+			printToUser(MESSAGE_INVALID_FORMAT);
+			printToUser(String.format(MESSAGE_FORMAT_PROMPT, "ID"));		
+			id = scanner.nextLine();			
+		}
+		return id;
+	}
 
-	private static EditType getEditType(String attributeName){
+	public static boolean _IDFormatValid(String id){
+		if(id.length() != 10){
+			return false;
+		}
+		/*else if(id.equalsIgnoreCase("exit")){ //Method for dealing with fatal error
+			return true;
+		}*/
+		else if(id.matches(".*\\D+.*")){
+			return false;
+		}
+		else if(!_IDExists(Integer.parseInt(id))){
+			return false;
+		}
+		else{
+			return true;
+		}
+	}
+
+	public static boolean _IDExists(int id){
+		if(dateExists(id/10000)){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+	
+	private static EditType getEditType(String attributeName){ //ASSUMPTION: user input attribute to change as a single word eg startdate
 		if (attributeName.length()<1){
 			return EditType.INVALID;
 		}
 		if (attributeName.equalsIgnoreCase("title")){
 			return EditType.TITLE;
 		}
-		else if (attributeName.equalsIgnoreCase("start date")){ //2 words?
+		else if (attributeName.equalsIgnoreCase("startdate")){
 			return EditType.START_DATE;
 		}
-		else if (attributeName.equalsIgnoreCase("start time")){
+		else if (attributeName.equalsIgnoreCase("starttime")){
 			return EditType.START_TIME;
 		}
-		else if (attributeName.equalsIgnoreCase("end date")){
+		else if (attributeName.equalsIgnoreCase("enddate")){
 			return EditType.END_DATE;
 		}
-		else if (attributeName.equalsIgnoreCase("end time")){
+		else if (attributeName.equalsIgnoreCase("endtime")){
 			return EditType.END_TIME;
 		}
 		else{
@@ -376,42 +459,97 @@ public class SparkMoVare {
 		}
 	}
 
-	public static String determineID(String ID){
-		while(!_IDFormatValid(ID)){
+	//For now, this method is simply to refine the content that is to replace the title.
+	private static String determineTitle(String [] userInputArray){//What if title is empty?
+		size = userInputArray.length;
+		if(size==4){
+			return userInputArray[3];
+		}
+		
+		else if(size<4){//title is blank
+			return promptForTitle();			
+		}
+		
+		String temp = new String();
+		for(counter=0; counter+3<size; counter++){
+			temp.concat(userInputArray[counter]);
+			temp.concat(" ");
+		}
+		return temp.trim();
+	}
+	
+	private static String promptForTitle(){
+		String title = new String();
+		
+		while(title.isEmpty()){//will continuously prompt user for any input
+			printToUser(MESSAGE_NO_TITLE);
+			printToUser(String.format(MESSAGE_FORMAT_PROMPT, "title"));
+			title = scanner.nextLine();
+		}
+		
+		return title;
+	}
+	
+	//Refines the user input into the String[] refinedUserInput for passing on to deleteCommand() later
+	private static void userInputDelete(String[] userInputArray){
+		refinedUserInput[1] = userInputArray[1];
+	}
+	
+	//Refines the user input into the String[] refinedUserInput for passing on to tentativeCommand() later
+	private static void userInputTentative(String[] userInputArray){
+		refinedUserInput[8] = validTentative(userInputArray[1]);
+		refinedUserInput[7] = "2";
+	}
+	
+	private static String validTentative(String num){
+		while(num.matches(".*\\D+.*")){
 			printToUser(MESSAGE_INVALID_FORMAT);
-			printToUser(String.format(MESSAGE_FORMAT_PROMPT, "ID"));		
-			ID = scanner.nextLine();			
+			printToUser(String.format(MESSAGE_FORMAT_PROMPT, "number of tentative days"));	
+			num = scanner.nextLine();
 		}
-		return ID;
+		return num;
 	}
-
-	public static boolean _IDFormatValid(String ID){
-
-		if(ID.length() != 10){
-			return false;
-		}
-		else if(ID.matches(".*\\D+.*")){
-			return false;
-		}
-		else if(!_IDExists(Integer.parseInt(ID))){
-			return false;
+	
+	//Refines the user input into the String[] refinedUserInput for passing on to confirmCommand() later
+	private static void userInputConfirm(String[] userInputArray){//ASSUMPTION: array size is 4 in format <confirm><S/N><ddmmyy><hhmm>		
+		if(userInputArray.length==4){
+			refinedUserInput[1] = userInputArray[1];
+			refinedUserInput[3] = determineDate(userInputArray[2]);
+			refinedUserInput[4] = determineTime(userInputArray[3]);
 		}
 		else{
-			return true;
+			refinedUserInput[0] = "invalid";
 		}
 	}
-
-	public static boolean _IDExists(int ID){
-		if(dateExists(ID/10000)){
-			return true;
+	
+	//Refines the user input into the String[] refinedUserInput for passing on to deleteAllCommand() later
+	private static void userInputDeleteAll(String[] userInputArray){
+		if(userInputArray.length==4){//deleteall between command
+			refinedUserInput[8] = userInputArray[1];
+			refinedUserInput[3] = determineDate(userInputArray[2]);
+			refinedUserInput[5] = determineDate(userInputArray[3]);
+		}
+		else if(userInputArray.length==4){//deleteall on or before command
+			refinedUserInput[8] = userInputArray[1];
+			refinedUserInput[5] = determineDate(userInputArray[2]);
 		}
 		else{
-			return false;
+			refinedUserInput[0] = "invalid";
 		}
 	}
+	
+	//Refines the user input into the String[] refinedUserInput for passing on to sortCommand() later
+	private static void userInputSort(String[] userInputArray){
+		refinedUserInput[8] = userInputArray[1];
+	}
 
-	public static String executeCommand(String userInput) {
-		CommandType command = getCommandType(userInput);
+	//Refines the user input into the String[] refinedUserInput for passing on to searchCommand() later
+	private static void userInputSearch(String[] userInputArray){
+		refinedUserInput[8] = userInputArray[1];
+	}
+	
+	public static String executeCommand(String inputCommand) {
+		CommandType command = getCommandType(inputCommand);
 		if (command != CommandType.UNDO && command != CommandType.REDO ){
 			while (!actionFuture.empty()){
 				actionFuture.pop();
@@ -419,15 +557,17 @@ public class SparkMoVare {
 		}
 		switch (command) {
 		case ADD_TASK:
-			return addTask(01, getCommandContent(userInput), 1, 1, 1, 1, false, null);
-			//		case EDIT_TASK:
-			//			return editTask(getCommandContent(userInput));
+			return addTask(refinedUserInput[1], refinedUserInput[2], Integer.parseInt(refinedUserInput[7]),
+							refinedUserInput[3], refinedUserInput[4], refinedUserInput[5], refinedUserInput[6], 
+							false, null);
+		case EDIT_TASK:
+			editTask();
 			//		case DELETE_TASK:
-			//			return deleteTask(getCommandContent(userInput));
+			//			return deleteTask();
 			//		case TENTATIVE:
-			//			return tentative(getCommandContent(userInput));
+			//			return tentative();
 			//		case CONFIRM:
-			//			return confirm(getCommandContent(userInput))
+			//			return confirm()
 			//		case DISPLAY:
 			//			return display();
 			//		case DELETE_ALL:
@@ -435,7 +575,7 @@ public class SparkMoVare {
 			//		case SORT:
 			//			return sort();
 			//		case SEARCH:
-			//			return search(getCommandContent(userInput));
+			//			return search();
 			//		case STATISTIC:
 			//			statistic();
 			//			break;
@@ -454,36 +594,6 @@ public class SparkMoVare {
 			return "Invalid Command issued!";
 		}
 		return "";
-	}
-
-	public static String determineTitle(String[] userInputArray){
-		size = userInputArray.length;
-		String title = userInputArray[3];
-
-		while(!titleExists(title)){
-			printToUser(MESSAGE_INVALID_FORMAT);
-			printToUser(String.format(MESSAGE_FORMAT_PROMPT, "Title"));		
-			title = scanner.nextLine();				
-		}
-
-		//issue, what if new title input just above is more than one word?
-		//need to split again
-
-		for(counter=1; counter+3<size; counter++){
-			title.concat(userInputArray[counter+3]);
-		}
-		return title;
-	}
-
-	public  static boolean titleExists(String title){
-		if(title.length()==0){
-			return false;
-		}
-		return true;
-	}
-
-	public static String getCommandContent(String userInput) {
-		return userInput.substring(userInput.indexOf(' ')+1);
 	}
 
 	public static CommandType getCommandType(String userInput) {
@@ -554,7 +664,7 @@ public class SparkMoVare {
 	}
 
 	public static String addTask(String id,String title,int type, String startDate,String startTime,
-			String endDate,String endTime, boolean isDone, Vector<String> tag) {
+								 String endDate,String endTime, boolean isDone, Vector<String> tag) {
 		Assignment newAssignment = new Assignment();
 		newAssignment.setId(id);
 		newAssignment.setTitle(title);
@@ -579,48 +689,50 @@ public class SparkMoVare {
 		return newAssignment.toString();
 	}
 
-	private static String editTask(String commandContent){ //assuming user input is as follows edit <id>
-		//<title/startdate> <new Title/startdate>
-		String[] commandContentArray = commandContent.split(" ", 4); //not sure if 4 is accurate
-		int bufferPosition = idSearcher(Integer.parseInt(commandContentArray[1]));
+	private static void editTask(){
+		int id = Integer.parseInt(refinedUserInput[1]);
 
-		if(bufferPosition==-1){
-			return "search is false statement";
+		LinkedList<Assignment> idFound = new LinkedList<Assignment>(); //this will be equal to the result of the search
+		//call the SearchAll function using id
+		if(idFound.size()==0){
+			printToUser(String.format(MESSAGE_DOES_NOT_EXISTS, "Serial Number" + refinedUserInput[1]));
+			return;//don't do anything since not ID does not exists
 		}
-		switch(getEditType(commandContentArray[2])){
+		
+		int bufferPosition = idSearcher(id);
+		
+		switch(getEditType(refinedUserInput[8])){
 		case TITLE:
-			buffer.get(bufferPosition).setTitle(commandContentArray[3]);
+			buffer.get(bufferPosition).setTitle(refinedUserInput[2]);
 			break;
 		case START_DATE:
-			buffer.get(bufferPosition).setStartDate(commandContentArray[3]);
+			buffer.get(bufferPosition).setStartDate(refinedUserInput[3]);
 			break;
 		case START_TIME:
-			buffer.get(bufferPosition).setStartTime(commandContentArray[3]);
+			buffer.get(bufferPosition).setStartTime(refinedUserInput[4]);
 			break;
 		case END_DATE:
-			buffer.get(bufferPosition).setEndDate(commandContentArray[3]);
+			buffer.get(bufferPosition).setEndDate(refinedUserInput[5]);
 			break;
 		case END_TIME:
-			buffer.get(bufferPosition).setEndTime(commandContentArray[3]);
+			buffer.get(bufferPosition).setEndTime(refinedUserInput[6]);
 			break;
 		case INVALID:
-			return MESSAGE_INVALID_SEARCH_PARAMETER;
+			printToUser(MESSAGE_INVALID_SEARCH_PARAMETER);
 		default:
-			return MESSAGE_INVALID_SEARCH_PARAMETER;
+			printToUser(MESSAGE_INVALID_SEARCH_PARAMETER);
 		}
-
-		return "statement";
 	}
+	
 	//returns the position in the buffer of the id
-	//returning -1 means does not exist
-	private static int idSearcher(int id){ //there should be easier way to search for it
-		//such as search for the date first then the id
-		for(counter=0; counter<buffer.size(); counter++){
-			if(Integer.parseInt(buffer.get(counter).getId())==id){
-				return counter;
-			}
+	private static int idSearcher(int id){ //there should be easier way to search for it such as search for the date first then the id
+		size = buffer.size();
+		counter = 0;
+
+		while(Integer.parseInt(buffer.get(counter).getId())!=id && counter<size){
+			counter++;
 		}
-		return -1;
+		return counter;
 	}
 
 
