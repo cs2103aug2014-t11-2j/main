@@ -34,6 +34,7 @@ public class Assignment {
 	
 	public Assignment(String id, String title, int type, String startDate, String startTime,
 			String endDate, String endTime, boolean isDone, Vector<String> tag) {
+		
 		setId(id);
 		setTitle(title);
 		setType(type);
@@ -86,7 +87,7 @@ public class Assignment {
 		return this.type;
 	}
 	
-	public boolean getIsDone(){
+	public boolean getIsDone() {
 		return this.isDone;
 	}
 
