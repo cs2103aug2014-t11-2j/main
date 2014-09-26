@@ -35,7 +35,7 @@ public class Tentative {
         	String idGen = "";
         	
         	//addTask(ID, title, type, startDate, startTime, endDate, endTime, isCompletion)
-        	AddTask.addTask(idGen, title, TYPE_TENTATIVE, startDate, startTime, endDate, endTime, false);
+        	AddTask.addTask(idGen, title, TYPE_TENTATIVE, startDate, startTime, endDate, endTime, false, null);
         }
 	}
 }

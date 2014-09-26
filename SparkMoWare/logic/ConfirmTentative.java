@@ -18,7 +18,7 @@ public class ConfirmTentative {
 				
 				if(tentativeNeeded.get(listCheck).getStartTime().equals(confirmTime)) {
 					confirmAssignment = tentativeNeeded.get(listCheck);
-					confirmAssignment.setId(serialNumGen());
+					confirmAssignment.setId(Id.serialNumGen());
 				}
 			}
 		}

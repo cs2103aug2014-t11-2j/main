@@ -18,10 +18,10 @@ public class Id {
 		serialNum += dateFormat.format(todayDate);
 		serialNum += "0001";
 		
-		if(latestSerialNumber.equals("") || serialNumberComparator(serialNum,latestSerialNumber)) {
+		if(SparkMoVare.latestSerialNumber.isEmpty() || Comparator.serialNumberComparator(serialNum,SparkMoVare.latestSerialNumber)) {
 			return serialNum;
 		} else {
-			Long Sn = Long.parseLong(latestSerialNumber);
+			Long Sn = Long.parseLong(SparkMoVare.latestSerialNumber);
 			System.out.println("test" + Sn.toString());
 			Sn++;
 			
