@@ -6,14 +6,10 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.Stack;
-import java.util.Vector;
 
 public class SparkMoVare {
 
@@ -125,7 +121,7 @@ public class SparkMoVare {
 				if( latestSerialNumber.equals("")) {
 					latestSerialNumber = lineArray[0];
 				} else {
-					if( serialNumberComparator(lineArray[0],latestSerialNumber)) {
+					if(Comparator.serialNumberComparator(lineArray[0], latestSerialNumber)) {
 						latestSerialNumber = lineArray[0];
 					}
 				}
@@ -158,9 +154,9 @@ public class SparkMoVare {
 			FileWriter fw = new FileWriter(file.getAbsoluteFile());
 			BufferedWriter bw = new BufferedWriter(fw);
 			
-			for(int i=0; i< buffer.size(); i++){
+			for(int i = 0; i< buffer.size(); i++){
 				bw.write(buffer.get(i).toString());
-				if (i<buffer.size()-1){
+				if (i<buffer.size() - 1){
 					bw.newLine(); 
 				}
 			}
@@ -225,33 +221,33 @@ public class SparkMoVare {
 	public static RefinementType getRefinementType(String userInput) {
 		String refinement;
 
-		if (userInput.split(" ").length>1) {
+		if (userInput.split(" ").length > 1) {
 			refinement = userInput.substring(0,userInput.indexOf(' '));
 		} else {
 			refinement = userInput;
 		}		
 		if (refinement.equalsIgnoreCase("add")) {
-			if (userInput.split(" ").length<2) {
+			if (userInput.split(" ").length < 2) {
 				return RefinementType.INVALID;
 			}
 			return RefinementType.ADD_TASK;
 		} else if (refinement.equalsIgnoreCase("confirm")) {
-			if (userInput.split(" ").length<2) {
+			if (userInput.split(" ").length < 2) {
 				return RefinementType.INVALID;
 			}
 			return RefinementType.CONFIRM;
 		} else if (refinement.equalsIgnoreCase("delete")) {
-			if (userInput.split(" ").length<2) {
+			if (userInput.split(" ").length < 2) {
 				return RefinementType.INVALID;
 			}
 			return RefinementType.DELETE_TASK;
 		} else if (refinement.equalsIgnoreCase("search")) {
-			if (userInput.split(" ").length<2) {
+			if (userInput.split(" ").length < 2) {
 				return RefinementType.INVALID;
 			}
 			return RefinementType.SEARCH;
 		} else if (refinement.equalsIgnoreCase("edit")) {
-			if (userInput.split(" ").length<2){
+			if (userInput.split(" ").length < 2){
 				return RefinementType.INVALID;
 			}
 			return RefinementType.EDIT_TASK;
@@ -274,15 +270,15 @@ public class SparkMoVare {
 	 * If exists then assign assignment type appropriately. 0 for task, 1 for appointment, 2 for tentative
 	 */
 	public static void userInputAdd(String[] userInputArray) {
-		refinedUserInput[1] = serialNumGen();
+		refinedUserInput[1] = Id.serialNumGen();
 		refinedUserInput[2] = userInputArray[1];
 
-		if(userInputArray.length==4) {//ASSUMPTION: format is <add><title><ddmmyyyy><hhmm>
+		if(userInputArray.length == 4) {//ASSUMPTION: format is <add><title><ddmmyyyy><hhmm>
 			refinedUserInput[5] = determineDate(userInputArray[2]);
 			refinedUserInput[6] = determineTime(userInputArray[3]);
-		} else if(userInputArray.length==3 && userInputArray[2].length()==6) { //last input is date
+		} else if(userInputArray.length == 3 && userInputArray[2].length() == 6) { //last input is date
 			refinedUserInput[5] = determineDate(userInputArray[2]);
-		} else if(userInputArray.length==3 && userInputArray[2].length()==4) { //last input is time
+		} else if(userInputArray.length == 3 && userInputArray[2].length() == 4) { //last input is time
 			refinedUserInput[6] = determineDate(userInputArray[2]);
 		} else{
 			refinedUserInput[0] = "invalid";
@@ -306,7 +302,7 @@ public class SparkMoVare {
 	}
 
 	public static boolean dateFormatValid(String date) {
-		if(date.length()!=6) {
+		if(date.length() != 6) {
 			return false;
 		} else if(date.matches(".*\\D+.*")) { //not sure if this checks if there are any chars in the input
 			return false;
@@ -320,11 +316,11 @@ public class SparkMoVare {
 	public static boolean dateExists(int date) {
 		
 		boolean leapYear = false;
-		int day = date/10000;
-		int month = (date/100)%100;
-		int year = date%10000;
+		int day = date / 10000;
+		int month = (date / 100) % 100;
+		int year = date % 10000;
 
-		if(date % 4 == 0) {
+		if(year % 4 == 0) {
 			leapYear = true;
 		}
 		if(month > 12 || month < 1) {
@@ -366,8 +362,8 @@ public class SparkMoVare {
 	}
 
 	public static boolean timeExists(int time) {
-		int min = time%100;
-		int hr = time%100;
+		int min = time % 100;
+		int hr = time % 100;
 
 		if(min > 59) {
 			return false;
@@ -443,7 +439,7 @@ public class SparkMoVare {
 	}
 
 	public static boolean _IDExists(int id) {
-		if(dateExists(id/10000)) {
+		if(dateExists(id / 10000)) {
 			return true;
 		} else{
 			return false;
@@ -451,7 +447,7 @@ public class SparkMoVare {
 	}
 
 	protected static EditType getEditType(String attributeName) { //ASSUMPTION: user input attribute to change as a single word eg startdate
-		if (attributeName.length()<1) {
+		if (attributeName.length() < 1) {
 			return EditType.INVALID;
 		}
 		if (attributeName.equalsIgnoreCase("title")) {
@@ -473,14 +469,14 @@ public class SparkMoVare {
 	protected static String determineTitle(String [] userInputArray) {
 		size = userInputArray.length;
 		
-		if(size==4) {
+		if(size == 4) {
 			return userInputArray[3];
-		} else if(size<4) { //title is blank
+		} else if(size < 4) { //title is blank
 			return promptForTitle();			
 		}
 
 		String temp = new String();
-		for(counter=0; counter+3<size; counter++) {
+		for(counter = 0; counter + 3 < size; counter++) {
 			temp.concat(userInputArray[counter]);
 			temp.concat(" ");
 		}
@@ -524,7 +520,7 @@ public class SparkMoVare {
 
 	//Refines the user input into the String[] refinedUserInput for passing on to confirmCommand() later
 	protected static void userInputConfirm(String[] userInputArray) {//ASSUMPTION: array size is 4 in format <confirm><S/N><ddmmyy><hhmm>		
-		if(userInputArray.length==4) {
+		if(userInputArray.length == 4) {
 			
 			refinedUserInput[1] = userInputArray[1];
 			refinedUserInput[3] = determineDate(userInputArray[2]);
@@ -537,7 +533,7 @@ public class SparkMoVare {
 
 	//Refines the user input into the String[] refinedUserInput for passing on to clearCommand() later
 	protected static void userInputclear(String[] userInputArray) {
-		if(userInputArray.length==4){//clear between command
+		if(userInputArray.length == 4){//clear between command
 			
 			refinedUserInput[8] = userInputArray[1];
 			refinedUserInput[3] = determineDate(userInputArray[2]);
@@ -571,7 +567,7 @@ public class SparkMoVare {
 		}
 		switch (command) {
 		case ADD_TASK:
-			return addTask(refinedUserInput[1], refinedUserInput[2], Integer.parseInt(refinedUserInput[7]),
+			return AddTask.addTask(refinedUserInput[1], refinedUserInput[2], Integer.parseInt(refinedUserInput[7]),
 					refinedUserInput[3], refinedUserInput[4], refinedUserInput[5], refinedUserInput[6], 
 					false, null);
 			
@@ -600,11 +596,11 @@ public class SparkMoVare {
 			//			statistic();
 			//			break;
 		case UNDO:
-			undo();
+			redoUndo.undo();
 			break;
 			
 		case REDO:
-			redo();
+			redoUndo.redo();
 			break;
 			
 		case EXIT:
@@ -622,40 +618,40 @@ public class SparkMoVare {
 
 	// Returns commandType back to the system before executing the logics
 	public static CommandType getCommandType(String userInput) {
-		if (userInput.split(" ").length<1) {
+		if (userInput.split(" ").length < 1) {
 			return CommandType.INVALID;
 		}
 		
 		String command;
 		
-		if (userInput.split(" ").length>1) {
+		if (userInput.split(" ").length > 1) {
 			command = userInput.substring(0,userInput.indexOf(' '));
 		} else {
 			command = userInput;
 		}
 
 		if (command.equalsIgnoreCase("add")) {
-			if (userInput.split(" ").length<2) {
+			if (userInput.split(" ").length < 2) {
 				return CommandType.INVALID;
 			}
 			return CommandType.ADD_TASK;
 		} else if (command.equalsIgnoreCase("confirm")) {
-			if (userInput.split(" ").length<2) {
+			if (userInput.split(" ").length < 2) {
 				return CommandType.INVALID;
 			}
 			return CommandType.CONFIRM;
 		} else if (command.equalsIgnoreCase("delete")) {
-			if (userInput.split(" ").length<2) {
+			if (userInput.split(" ").length < 2) {
 				return CommandType.INVALID;
 			}
 			return CommandType.DELETE_TASK;
 		} else if (command.equalsIgnoreCase("search")) {
-			if (userInput.split(" ").length<2) {
+			if (userInput.split(" ").length < 2) {
 				return CommandType.INVALID;
 			}
 			return CommandType.SEARCH;
 		} else if (command.equalsIgnoreCase("edit")) {
-			if (userInput.split(" ").length<2) {
+			if (userInput.split(" ").length < 2) {
 				return CommandType.INVALID;
 			}
 			return CommandType.EDIT_TASK;
@@ -709,6 +705,6 @@ public class SparkMoVare {
 	}
 
 	public static void setLatestSerialNumber(String newSn) {
-		latestSerialNumber=newSn;
+		latestSerialNumber = newSn;
 	}
 }
