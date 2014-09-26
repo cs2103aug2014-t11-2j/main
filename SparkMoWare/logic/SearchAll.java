@@ -27,9 +27,9 @@ public class SearchAll {
 		} else if(userInput.length() == DATE_FORMAT_LENGTH && userInput.contains("[0-9]+")) {
 			stringsFound = searchByDate(userInput);
 		} else if(userInput.length() == IS_COMPLETED) {
-			stringsFound = searchByCompletion(userInput);
+			stringsFound = searchByCompletion();
 		} else if(userInput.length() == IS_ON_TIME) {
-			stringsFound = searchByOnTime(userInput);
+			stringsFound = searchByOnTime();
 		} else {
 			stringsFound = searchByWords(userInput);
 		}
@@ -43,7 +43,7 @@ public class SearchAll {
 		}
 	}
 
-	private static LinkedList<Assignment> searchByCompletion(String searchCompletion) {
+	private static LinkedList<Assignment> searchByCompletion() {
 
 		LinkedList<Assignment> completionFound = new LinkedList<Assignment>();
 		
