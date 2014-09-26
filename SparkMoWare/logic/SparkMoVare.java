@@ -24,6 +24,7 @@ public class SparkMoVare {
 	protected static final String MESSAGE_DOES_NOT_EXISTS = "%1$s does not exists";
 	protected static final String MESSAGE_INVALID_FORMAT = "Invalid Format";
 	protected static final String MESSAGE_NO_TITLE = "Title is blank";
+	protected static final String MESSAGE_NOTHING_COMPLETED = "Nothing has been completed";
 	protected static final String MESSAGE_FORMAT_PROMPT = "Please type the %1$s again: ";
 
 	protected static final String MESSAGE_INVALID_SEARCH_PARAMETER = "Invalid search parameter entered";
