@@ -9,8 +9,12 @@ public class Delete {
 	}
 
 	public static String delete(String id) {
+		
 		LinkedList<Assignment> idFound = new LinkedList<Assignment>();
 		idFound = SearchAll.searchAll(id);
+		
+		Assignment nullAssignment = new Assignment();
+		nullAssignment.setNumAppointment(nullAssignment.getNumAppointment() - 1 );
 		
 		if(idFound.size() == 0) {
 			return String.format(SparkMoVare.MESSAGE_DOES_NOT_EXISTS, "Serial Number" + id);
@@ -20,12 +24,14 @@ public class Delete {
 			
 			stringDeleted = SparkMoVare.buffer.get(bufferPosition).getTitle();
 			SparkMoVare.buffer.remove(bufferPosition);
-
+			
+			nullAssignment.setNumAppointment(nullAssignment.getNumAppointment() - 1);
+			
 			return String.format(SparkMoVare.MESSAGE_DELETED, SparkMoVare.filePath, stringDeleted);
 		}
 	}
 
-	private static String deleteAll(String duration, String endDate, String startDate) {
+	protected static String deleteAll(String duration, String endDate, String startDate) {
 
 		/*
 		 * the method below passes linked list element to deleteTask to delete
@@ -36,53 +42,39 @@ public class Delete {
 		switch (convertToEnum(duration)) {
 
 		case DELETEALL_ON:
-
 			deleteOn(endDate);
 			return ("all content(s) of date " + endDate + " is(are) deleted");
 
 		case DELETEALL_BEFORE:
-
 			startDate = SparkMoVare.buffer.getFirst().getEndDate();
 			deleteBetween(endDate, startDate);
 			return ("all content(s) before date " + endDate + " is(are) deleted");
 
 		case DELETEALL_BETWEEN:
-
 			deleteBetween(endDate, startDate);
 			return ("all content(s) from date " + endDate + "to date "
 					+ startDate + " is(are) deleted");
 
 		default:
-
 			SparkMoVare.buffer.clear();
 			return ("all content deleted from " + SparkMoVare.filePath);
-
 		}
-
 	}
 
 	private static DeleteAllType convertToEnum(String duration) {
 
 		if (duration.length() == 2) {
-
 			return DeleteAllType.DELETEALL_ON;
-
 		} else if (duration.length() == 6) {
-
 			return DeleteAllType.DELETEALL_BEFORE;
-
 		} else if (duration.length() == 7) {
-
 			return DeleteAllType.DELETEALL_BETWEEN;
-
 		} else {
-
 			return null;
 		}
-
 	}
 
-	private static DeleteAllType getDuration(String userInput) {
+	protected static DeleteAllType getDuration(String userInput) {
 
 		String[] checkDuration = userInput.split(" ");
 
@@ -95,7 +87,6 @@ public class Delete {
 		} else {
 			return null;
 		}
-
 	}
 
 	private static void deleteOn(String deleteOnDate) {
@@ -103,37 +94,32 @@ public class Delete {
 		// following lines are to store & delete assignments on the particular
 		// date
 		LinkedList<Assignment> toDelete = new LinkedList<Assignment>();
-		toDelete = SparkMoVare.search(" " + deleteOnDate);
+		toDelete = SearchAll.searchAll(" " + deleteOnDate);
 
 		for (int i = 0; i < toDelete.size(); i++) {
-
 			delete(toDelete.get(i).getId());
-
 		}
 	}
 
 	private static void deleteBetween(String deleteTill, String startDate) {
 
-		String[] endDate = deleteTill.split("(?<=\\G.{2})");
-
 		while (!deleteTill.equals(startDate)) {
-
 			deleteOn(deleteTill);
 			deleteTill = updateDate(deleteTill);
-
 		}
-
 		deleteOn(startDate);
 	}
 
 	// decrementing date
 	private static String updateDate(String date) {
 
+		String[] endDate = date.split("(?<=\\G.{2})");
+		int[] intEndDate = new int[3];
+		String updatedDate = "";
 		
-		int[] intEndDate = Integer.parseInt(date); // if not use a for-loop to
-													// convert strings to int n
-													// store into the int array
-		String updatedDate;
+		for(int dateCharCount = 0; dateCharCount < endDate.length; dateCharCount++) {
+			intEndDate[dateCharCount] = Integer.parseInt(endDate[dateCharCount]); 
+		}
 
 		if ((intEndDate[0] - 1) == 0) {
 			if ((intEndDate[1] - 1) < 0) {
@@ -147,30 +133,24 @@ public class Delete {
 		} else {
 			intEndDate[0]--;
 		}
-
-		updatedDate = String.valueOf(Arrays.toString(intEndDate));
+		
+		for(int dateIntCount = 0; dateIntCount < intEndDate.length; dateIntCount++) {
+			updatedDate += String.valueOf(intEndDate[dateIntCount]);
+		}
 		return date = updatedDate.toString();
-
 	}
 
 	private static int updateMonth(int intEndMonth, int intEndYear) {
 
-		
-		if(intEndMonth == 2){
-			
-			if (intEndYear%4 == 0){
+		if(intEndMonth == 2){			
+			if (intEndYear % 4 == 0){
 				return 29;
 			} else {
 				return 28;
-			}
-				
+			}				
 		} else if(intEndMonth == 4 || intEndMonth == 6 || intEndMonth == 9 || intEndMonth == 11) {
-			
 			return 30;
 		}
-		
-			return 31;
-			
+			return 31;	
 		}
 	}
-
