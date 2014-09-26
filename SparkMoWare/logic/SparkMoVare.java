@@ -698,80 +698,8 @@ public class SparkMoVare {
 		}		
 	}
 
-	// Add tasks and appointment into the system.
-	public static String addTask(String id,String title,int type, String startDate,String startTime,
-			String endDate,String endTime, boolean isDone, Vector<String> tag) {
-		
-		Assignment newAssignment = new Assignment();
-		
-		newAssignment.setId(id);
-		newAssignment.setTitle(title);
-		newAssignment.setType(type);
-		newAssignment.setStartDate(startDate);
-		newAssignment.setStartTime(startTime);
-		newAssignment.setEndDate(endDate);
-		newAssignment.setEndTime(endTime);
-		newAssignment.setIsDone(isDone);
-		//newAssignment.setDescription(description);
-		//newAssignment.setAlarm(alarm);
-		newAssignment.setTag(tag);
-		
-		// adding task to buffer according to date
-		for(int i=0; i<buffer.size(); i++) {
-			if (dateComparator(newAssignment.getEndDate(), buffer.get(i).getEndDate())) {
-				buffer.add(i, newAssignment);
-				
-				return newAssignment.toString();
-			}
-		}
-		buffer.addLast(newAssignment);
-		
-		return newAssignment.toString();
-	}
-
-	private static void editTask(String id) {
-		int idIntForm = Integer.parseInt(id);
-
-		LinkedList<Assignment> idFound = new LinkedList<Assignment>(); //this will be equal to the result of the search
-		
-		//call the SearchAll function using id
-		if(idFound.size() == 0) {
-			printToUser(String.format(MESSAGE_DOES_NOT_EXISTS, "Serial Number" + refinedUserInput[1]));
-			
-			return;//don't do anything since not ID does not exists
-		}
-
-		int bufferPosition = idSearcher(idIntForm);
-
-		switch(getEditType(refinedUserInput[8])) {
-		case TITLE:
-			buffer.get(bufferPosition).setTitle(refinedUserInput[2]);
-			break;
-			
-		case START_DATE:
-			buffer.get(bufferPosition).setStartDate(refinedUserInput[3]);
-			break;
-			
-		case START_TIME:
-			buffer.get(bufferPosition).setStartTime(refinedUserInput[4]);
-			break;
-			
-		case END_DATE:
-			buffer.get(bufferPosition).setEndDate(refinedUserInput[5]);
-			break;
-			
-		case END_TIME:
-			buffer.get(bufferPosition).setEndTime(refinedUserInput[6]);
-			break;
-			
-		case INVALID:
-			printToUser(MESSAGE_INVALID_SEARCH_PARAMETER);
-			
-		default:
-			printToUser(MESSAGE_INVALID_SEARCH_PARAMETER);
-		}
-	}
-
+	
+	
 	//returns the position in the buffer of the id
 	private static int idSearcher(int id) { //there should be easier way to search for it such as search for the date first then the id
 		size = buffer.size();

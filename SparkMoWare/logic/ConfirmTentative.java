@@ -18,10 +18,11 @@ public class ConfirmTentative {
 				
 				if(tentativeNeeded.get(listCheck).getStartTime().equals(confirmTime)) {
 					confirmAssignment = tentativeNeeded.get(listCheck);
+					confirmAssignment.setId(serialNumGen());
 				}
 			}
 		}
-		deleteAll(tentativeNeeded);
+		Delete.delete(tentativeNeeded.get(listCheck).getId());
 		
 		return confirmAssignment;
 	}
