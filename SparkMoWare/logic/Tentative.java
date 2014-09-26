@@ -11,7 +11,7 @@ public class Tentative {
 	
 	public static Scanner scanner = new Scanner(System.in);
 	
-	private static void addTentative(String numOfTentative) {
+	public static void addTentative(String numOfTentative) {
 
         int tentativeNum = Integer.parseInt(numOfTentative);
         
@@ -24,15 +24,16 @@ public class Tentative {
         	String startTime = inputArray[inputArray.length - 3];
         	String startDate = inputArray[inputArray.length - 4];
         	
-        	StringBuilder title = new StringBuilder(inputArray[0]);
+        	String title = inputArray[0];
         	
         	for(int titleLength = 1; titleLength < inputArray.length - 4; titleLength++) {
-        		title.append(inputArray[titleLength]);        			
+        		title += inputArray[titleLength];        			
         	}
         	
-        	title.append("[tentative]");
+        	title += "[tentative]";
         	
         	String idGen = "";
+        	
         	//addTask(ID, title, type, startDate, startTime, endDate, endTime, isCompletion)
         	addTask(idGen, title, TYPE_TENTATIVE, startDate, startTime, endDate, endTime, false);
         }

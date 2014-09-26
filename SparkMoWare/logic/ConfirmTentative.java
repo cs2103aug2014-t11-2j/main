@@ -21,7 +21,7 @@ public class ConfirmTentative {
 				}
 			}
 		}
-		DeleteAll(tentativeNeeded);
+		deleteAll(tentativeNeeded);
 		
 		return confirmAssignment;
 	}

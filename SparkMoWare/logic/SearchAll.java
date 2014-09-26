@@ -4,11 +4,10 @@ import java.util.*;
 
 /*
  * Errors are all related to buffer.
- * 
  */
 public class SearchAll {
 
-	private static final int ID_FORMAT_LENGTH = 8;
+	private static final int ID_FORMAT_LENGTH = 12;
 	private static final int TIME_FORMAT_LENGTH = 4;
 	private static final int DATE_FORMAT_LENGTH = 6;
     private static int listCount;
@@ -26,6 +25,7 @@ public class SearchAll {
     	return idFound;
 	}
 	
+	// accepts into the searchedList as long as startDate or endDate is the same as input
 	private static LinkedList<Assignment> searchByDate(String searchTime) {
 		
 		LinkedList<Assignment> timeFound = new LinkedList<Assignment>();
@@ -42,6 +42,7 @@ public class SearchAll {
     	return timeFound;
 	}
 	
+	// accepts into the searchedList as long as startTime or endTime is the same as input
 	private static LinkedList<Assignment> searchByTime(String searchDate) {
 		
 		LinkedList<Assignment> datesFound = new LinkedList<Assignment>();
@@ -58,6 +59,11 @@ public class SearchAll {
     	return datesFound;
 	}
     
+	/*
+	 * Method will check for key phrases or keyword in the title
+	 * or
+	 * When the title is only a word long or equals to the sentence
+	 */
 	private static LinkedList<Assignment> searchByWords(String searchKeyWord) {
 		
 		LinkedList<Assignment> keysFound = new LinkedList<Assignment> ();
@@ -65,12 +71,9 @@ public class SearchAll {
 		for(listCount = 0; listCount < buffer.size(); listCount++) {
     		if(buffer.get(listCount).getTitle().contains(searchKeyWord)) {
             
-    			// When the title is only a word long or equals to the sentence
     			if(buffer.get(listCount).getTitle().equals(searchKeyWord)) {
     				keysFound.add(buffer.get(listCount));
-    			}
-    			// Check for key phrases or keyword in the title
-    			else {
+    			} else {
     				
     				String[] textArray = buffer.get(listCount).getTitle().split(" ");
             
@@ -90,23 +93,18 @@ public class SearchAll {
     	}
 		return keysFound;
 	}
-	
+
 	public static LinkedList<Assignment> searchAll(String userInput){
         
     	LinkedList<Assignment> stringsFound = new LinkedList<Assignment>();
     	
         if(userInput.length() >= ID_FORMAT_LENGTH) {
         	stringsFound = searchById(userInput);
-        }
-        // accepts into the searchedList as long as startTime or endTime is the same as input
-        else if(userInput.length() == TIME_FORMAT_LENGTH && userInput.contains("[0-9]+")) {
+        } else if(userInput.length() == TIME_FORMAT_LENGTH && userInput.contains("[0-9]+")) {
         	stringsFound = searchByTime(userInput);
-        }
-        // accepts into the searchedList as long as startDate or endDate is the same as input
-        else if(userInput.length() == DATE_FORMAT_LENGTH && userInput.contains("[0-9]+")) {
+        } else if(userInput.length() == DATE_FORMAT_LENGTH && userInput.contains("[0-9]+")) {
         	stringsFound = searchByDate(userInput);
-        }
-        else {
+        } else {
         	stringsFound = searchByWords(userInput);
         }
         return stringsFound;
