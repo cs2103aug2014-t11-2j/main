@@ -17,8 +17,8 @@ public class SparkMoVareTest {
 	@Test
 	public void test() {
 		// add status
-		assertEquals(SparkMoVare.addTask("666","testing adding",1,"010101","1010",
-				"101010","2359",false, new Vector<String>() ),"666~testing adding~1~010101~1010~101010~2359~false");
+		//assertEquals(SparkMoVare.addTask("666","testing adding",1,"010101","1010",
+		//		"101010","2359",false, new Vector<String>() ),"666~testing adding~1~010101~1010~101010~2359~false");
 		//saving
 		//SparkMoVare.display();
 		DateFormat dateFormat = new SimpleDateFormat("ddMMyyyy");
@@ -35,7 +35,8 @@ public class SparkMoVareTest {
 		else
 			System.out.println("False");
 		
-		System.out.println(SparkMoVare.serialNumGen());
+		System.out.println("ddMMyyyyhhmm".substring(0,8));
+		System.out.println("ddMMyyyyhhmm".substring(8));
 	}
 	
 	

@@ -72,7 +72,7 @@ public class SparkMoVare {
 
 	//Enum for determining which assignment attribute is being edited
 	enum EditType {
-		TITLE, START_DATE, START_TIME, END_DATE, END_TIME, INVALID
+		TITLE, START_DATE, START_TIME, END_DATE, END_TIME, INVALID, PRIORITY, DONE
 	}
 
 	public static void main(String[] args) {
