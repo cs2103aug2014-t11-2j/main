@@ -3,7 +3,8 @@ package logic;
 import java.util.*;
 
 /*
- * Onli error is the ID auto-generator.
+ * Allows the user to create a number of tentative dates 
+ * before confirming to have only one date for user's assignment
  */
 public class Tentative {
 	
@@ -32,10 +33,8 @@ public class Tentative {
         	
         	title += "[tentative]";
         	
-        	String idGen = "";
-        	
         	//addTask(ID, title, type, startDate, startTime, endDate, endTime, isCompletion)
-        	AddTask.addTask(idGen, title, TYPE_TENTATIVE, startDate, startTime, endDate, endTime, false, null);
+        	AddTask.addTask(Id.serialNumGen(), title, TYPE_TENTATIVE, startDate, startTime, endDate, endTime, false, null);
         }
 	}
 }
