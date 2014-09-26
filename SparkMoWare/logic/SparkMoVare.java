@@ -576,36 +576,36 @@ public class SparkMoVare {
 			
 		case EDIT_TASK:
 			EditTask.editTask(refinedUserInput);
-			
-			//		case DELETE_TASK:
-			//			return deleteTask();
-			
-			//		case TENTATIVE:
-			//			return tentative();
-			
-			//		case CONFIRM:
-			//			return confirm()
-			
-			//		case CLEAR:
-			//			return CLEAR();
-			
-			//		case SORT:
-			//			return sort();
-			
-			//		case SEARCH:
-			//			return search();
-			
-			//		case STATISTIC:
-			//			statistic();
-			//			break;
+
+		case DELETE_TASK:
+			return deleteTask();
+
+		case TENTATIVE:
+			return tentative();
+
+		case CONFIRM:
+			return confirm()
+
+		case CLEAR:
+			return CLEAR();
+
+		case SORT:
+			return sort();
+
+		case SEARCH:
+			return search();
+
+		case STATISTIC:
+			statistic();
+			break;
 		case UNDO:
 			redoUndo.undo();
 			break;
-			
+
 		case REDO:
 			redoUndo.redo();
 			break;
-			
+
 		case EXIT:
 			System.exit(SYSTEM_EXIT_NO_ERROR);
 			break;
