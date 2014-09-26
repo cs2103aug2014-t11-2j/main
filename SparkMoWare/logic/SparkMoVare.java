@@ -114,6 +114,8 @@ public class SparkMoVare {
 				temp.setEndDate(lineArray[5]);
 				temp.setEndTime(lineArray[6]);
 				temp.setIsDone(Boolean.parseBoolean(lineArray[7]));
+				temp.setIsOnTime(Boolean.parseBoolean(lineArray[8]));
+				temp.setPriority(Integer.parseInt(lineArray[9]));
 				//temp.setAlarm(Integer.parseInt(lineArray[7]));
 				// tags to be done
 				// updates the latest serial number

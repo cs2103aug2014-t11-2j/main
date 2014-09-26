@@ -8,15 +8,18 @@ public class Assignment {
 	private static int numAppointment = 0;
 	private String title;
 	private String id;			// date of creation;in the format DDMMYY
-	private String startDate;		// in the format DDMMYY, if inactive null
-	private String startTime;		// in the format HHMM, if inactive null
+	private String startDate;	// in the format DDMMYY, if inactive null
+	private String startTime;	// in the format HHMM, if inactive null
 	private String endDate;		// in the format DDMMYY, if inactive null
 	private String endTime;		// in the format HHMM, if inactive null
 	private boolean isDone;
-	//private String description;
-	//private int alarm;			// in the format HHMM, if inactive null
-	private Vector<String> tag;	// to support tagging
+	private boolean isOnTime;
 	private int type;			// type of assignment
+	private int priority;		// 0 1 2 where 0 is low 1 is normal 2 is high
+	//private String description;
+	//private int alarm;		// in the format HHMM, if inactive null
+	private Vector<String> tag;	// to support tagging
+
 	
 	/************** Constants **********************/
 	
@@ -29,11 +32,11 @@ public class Assignment {
 	/************** Constructors **********************/
 	// Default constructor
 	public Assignment() {
-		this(DEFAULT,DEFAULT_STRING,-1,DEFAULT,DEFAULT,DEFAULT,DEFAULT,false,new Vector<String>());
+		this(DEFAULT, DEFAULT_STRING, -1, DEFAULT, DEFAULT, DEFAULT, DEFAULT, false, false, 1, new Vector<String>());
 	}
 	
 	public Assignment(String id, String title, int type, String startDate, String startTime,
-			String endDate, String endTime, boolean isDone, Vector<String> tag) {
+			String endDate, String endTime, boolean isDone, boolean isOnTime, int priority, Vector<String> tag) {
 		
 		setId(id);
 		setTitle(title);
@@ -43,7 +46,10 @@ public class Assignment {
 		setEndDate(endDate);
 		setEndTime(endTime);
 		setIsDone(isDone);
+		setIsOnTime(isOnTime);
+		setPriority(priority);
 		setTag(tag);
+		numAppointment++;
 	}
 
 	/**************** Accessors ***********************/
@@ -89,6 +95,18 @@ public class Assignment {
 	
 	public boolean getIsDone() {
 		return this.isDone;
+	}
+	
+	public boolean getIsOnTime() {
+		return this.isOnTime;
+	}
+	
+	public int getPriority() {
+		return this.priority;
+	}
+	
+	public int getNumAppointment() {
+		return numAppointment;
 	}
 
 	/**************** Mutators ************************/
@@ -137,11 +155,23 @@ public class Assignment {
 		isDone = newIsDone;
 	}
 	
+	public void setIsOnTime(boolean newIsOnTime){
+		isOnTime = newIsOnTime;
+	}
+	
+	public void setPriority(int newPriority){
+		priority = newPriority;
+	}
+	
+	public void setNumAppointment(int newNumAppointment){
+		numAppointment = newNumAppointment;
+	}
+	
 	/**************** Overriding ************************/
 	
 	@Override
 	public String toString() {
-		return getId() + "~" + getTitle() + "~" + getType() + "~" + getStartDate()+ "~" +getStartTime()+"~"+getEndDate()+"~"+getEndTime()+"~"+getIsDone();
+		return getId() + "~" + getTitle() + "~" + getType() + "~" + getStartDate()+ "~" +getStartTime()+"~"+getEndDate()+"~"+getEndTime()+"~"+getIsDone()+"~"+getIsOnTime()+"~"+getPriority();
 	}
 	
 }
