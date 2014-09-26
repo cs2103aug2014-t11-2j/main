@@ -1,2 +1,5 @@
-/logic/
+/.classpath
+/.project
+/gui/
 /junit/
+/logic/
