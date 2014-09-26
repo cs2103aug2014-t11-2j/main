@@ -295,28 +295,6 @@ public class SparkMoVare {
 		}
 	}
 
-	// only work till Sn 9999 otherwise the year will be corrupted
-	// Malfunctions if latestSerialNumber is in the future (in theory should not happen? unless system clock change)
-	public static String serialNumGen() {
-		String serialNum="";
-		DateFormat dateFormat = new SimpleDateFormat("ddMMyyyy");
-		//get current date time with Date()
-		Date todayDate = new Date();
-		
-		serialNum += dateFormat.format(todayDate);
-		serialNum += "0001";
-		
-		if(latestSerialNumber.equals("") || serialNumberComparator(serialNum,latestSerialNumber)) {
-			return serialNum;
-		} else {
-			Long Sn = Long.parseLong(latestSerialNumber);
-			System.out.println("test" + Sn.toString());
-			Sn++;
-			
-			return Long.toString(Sn);
-		}
-	}
-
 	public static String determineDate(String inputDate) {
 		while(!dateFormatValid(inputDate)) {//will continuously prompt user for correct date format currently no way to exit
 			
@@ -698,36 +676,6 @@ public class SparkMoVare {
 		}		
 	}
 
-	
-	
-	//returns the position in the buffer of the id
-	//there should be easier way to search for it such as search for the date first then the id
-	protected static int idSearcher(int id) { 
-		size = buffer.size();
-		counter = 0;
-
-		while(Integer.parseInt(buffer.get(counter).getId()) != id && counter < size){
-			counter++;
-		}
-		return counter;
-	}
-
-
-	//TODO	public static String deleteTask(String commandContent) {
-	
-	//		int lineNumber=Integer.parseInt(commandContent);
-	
-	//		if (lineNumber<1||lineNumber>buffer.size()){
-	//			return "Trying to delete invalid line";
-	//		}
-	//		else{
-	//			String stringDeleted="";
-	//			stringDeleted=buffer.get(lineNumber-1);
-	//			buffer.remove(lineNumber-1);
-	//			return ("deleted from " + filePath + ": " + "\"" + stringDeleted + "\"");
-	//		}
-	//	}
-
 	//TODO	public static String display() {
 	//		for(int i=0; i< buffer.size(); i++){
 	//			String lineToAdd="";
@@ -744,32 +692,6 @@ public class SparkMoVare {
 	//			return "";
 	//		}	
 	//	}
-
-	//TODO	public static String clear() {
-	//		buffer.clear();
-	//		return ("all content deleted from "+ filePath);
-	//	}
-
-
-	//	public static String sort() {
-	//TODO
-	//	}
-
-	//TODO static String search(String commandContent) {
-	//	boolean isFound = false;
-	//	for(int i=0; i< buffer.size(); i++){
-	//		if (buffer.get(i).toLowerCase().indexOf(commandContent.toLowerCase())>-1){
-	//			printToUser(commandContent + " has been found in: " +String.valueOf(i+1)+ ". "+ buffer.get(i));
-	//			isFound = true;
-	//		}
-	//	}
-	//	if (isFound){
-	//		return "";
-	//	}
-	//	return (commandContent + " is not found within " + filePath);
-	//}
-
-
 	// for testing purpose
 
 	static int getLineCount() {
