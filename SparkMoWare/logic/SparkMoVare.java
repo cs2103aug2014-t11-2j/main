@@ -18,36 +18,36 @@ import java.util.Vector;
 public class SparkMoVare {
 
 	// Output Messages
-	private static final String MESSAGE_WELCOME = "Welcome to SparkMoWare!";
-	private static final String MESSAGE_PROMPT = "command: ";
-	private static final String MESSAGE_ADDED = "added to %1$s: \"%2$s\"";
-	private static final String MESSAGE_DELETED = "deleted from %1$s: \"%2$s\"";
-	private static final String MESSAGE_CLEARED = "all content deleted from %1$s";
-	private static final String MESSAGE_EMPTY = "%1$s is empty";
+	protected static final String MESSAGE_WELCOME = "Welcome to SparkMoWare!";
+	protected static final String MESSAGE_PROMPT = "command: ";
+	protected static final String MESSAGE_ADDED = "added to %1$s: \"%2$s\"";
+	protected static final String MESSAGE_DELETED = "deleted from %1$s: \"%2$s\"";
+	protected static final String MESSAGE_CLEARED = "all content deleted from %1$s";
+	protected static final String MESSAGE_EMPTY = "%1$s is empty";
 
-	private static final String MESSAGE_DOES_NOT_EXISTS = "%1$s does not exists";
-	private static final String MESSAGE_INVALID_FORMAT = "Invalid Format";
-	private static final String MESSAGE_NO_TITLE = "Title is blank";
-	private static final String MESSAGE_FORMAT_PROMPT = "Please type the %1$s again: ";
+	protected static final String MESSAGE_DOES_NOT_EXISTS = "%1$s does not exists";
+	protected static final String MESSAGE_INVALID_FORMAT = "Invalid Format";
+	protected static final String MESSAGE_NO_TITLE = "Title is blank";
+	protected static final String MESSAGE_FORMAT_PROMPT = "Please type the %1$s again: ";
 
-	private static final String MESSAGE_INVALID_SEARCH_PARAMETER = "Invalid search parameter entered";
+	protected static final String MESSAGE_INVALID_SEARCH_PARAMETER = "Invalid search parameter entered";
 
-	private static final String MESSAGE_STORAGE_FILE_ERROR = "Exception encountered while initalising the Storage file";
-	private static final String MESSAGE_SAVE_FILE_ERROR = "Exception encountered while saving the textfile";
-	private static final int SYSTEM_EXIT_NO_ERROR = 0;
-	private static final int SYSTEM_EXIT_ERROR = 1;
+	protected static final String MESSAGE_STORAGE_FILE_ERROR = "Exception encountered while initalising the Storage file";
+	protected static final String MESSAGE_SAVE_FILE_ERROR = "Exception encountered while saving the textfile";
+	protected static final int SYSTEM_EXIT_NO_ERROR = 0;
+	protected static final int SYSTEM_EXIT_ERROR = 1;
 
-	private static Stack< LinkedList<Assignment>> actionHistory = new Stack< LinkedList<Assignment>>();
-	private static Stack< LinkedList<Assignment>> actionFuture = new Stack< LinkedList<Assignment>>();
-	private static LinkedList<Assignment> buffer = new LinkedList<Assignment>();
-	private static Scanner scanner = new Scanner(System.in);
-	private static String filePath = "Storage";
-	private static String latestSerialNumber="";
+	protected static Stack< LinkedList<Assignment>> actionHistory = new Stack< LinkedList<Assignment>>();
+	protected static Stack< LinkedList<Assignment>> actionFuture = new Stack< LinkedList<Assignment>>();
+	protected static LinkedList<Assignment> buffer = new LinkedList<Assignment>();
+	protected static Scanner scanner = new Scanner(System.in);
+	protected static String filePath = "Storage";
+	protected static String latestSerialNumber="";
 
-	private static int counter = 0;
-	private static int size = 0;
+	protected static int counter = 0;
+	protected static int size = 0;
 
-	private static String[] refinedUserInput = new String[9];
+	protected static String[] refinedUserInput = new String[9];
 	/*each index of refinedUserinput represent something
 	 *0:The command string
 	 *1:Serial Number (S/N) of the Assignment ASSUMPTION: serial number length is at most 12 digits DD/MM/YYYY/0000
@@ -150,7 +150,7 @@ public class SparkMoVare {
 		}
 	} 
 
-	private static void saveFile(String filePath) {
+	protected static void saveFile(String filePath) {
 		
 		File file = new File(filePath);
 		file.delete();
@@ -472,7 +472,7 @@ public class SparkMoVare {
 		}
 	}
 
-	private static EditType getEditType(String attributeName) { //ASSUMPTION: user input attribute to change as a single word eg startdate
+	protected static EditType getEditType(String attributeName) { //ASSUMPTION: user input attribute to change as a single word eg startdate
 		if (attributeName.length()<1) {
 			return EditType.INVALID;
 		}
@@ -492,7 +492,7 @@ public class SparkMoVare {
 	}
 
 	//For now, this method is simply to refine the content that is to replace the title.
-	private static String determineTitle(String [] userInputArray) {
+	protected static String determineTitle(String [] userInputArray) {
 		size = userInputArray.length;
 		
 		if(size==4) {
@@ -510,7 +510,7 @@ public class SparkMoVare {
 	}
 
 	// This is to ensure that the user has a title for each respective assignment 
-	private static String promptForTitle() {
+	protected static String promptForTitle() {
 		String title = new String();
 
 		while(title.isEmpty()) {//will continuously prompt user for any input
@@ -523,18 +523,18 @@ public class SparkMoVare {
 	}
 
 	//Refines the user input into the String[] refinedUserInput for passing on to deleteCommand() later
-	private static void userInputDelete(String[] userInputArray) {
+	protected static void userInputDelete(String[] userInputArray) {
 		refinedUserInput[1] = userInputArray[1];
 	}
 
 	//Refines the user input into the String[] refinedUserInput for passing on to tentativeCommand() later
-	private static void userInputTentative(String[] userInputArray) {
+	protected static void userInputTentative(String[] userInputArray) {
 		refinedUserInput[8] = validTentative(userInputArray[1]);
 		refinedUserInput[7] = "2";
 	}
 
 	// Check if the number of tentative dates are given in integer format
-	private static String validTentative(String numOfTentative) {
+	protected static String validTentative(String numOfTentative) {
 		while(numOfTentative.matches(".*\\D+.*")) {
 			
 			printToUser(MESSAGE_INVALID_FORMAT);
@@ -545,7 +545,7 @@ public class SparkMoVare {
 	}
 
 	//Refines the user input into the String[] refinedUserInput for passing on to confirmCommand() later
-	private static void userInputConfirm(String[] userInputArray) {//ASSUMPTION: array size is 4 in format <confirm><S/N><ddmmyy><hhmm>		
+	protected static void userInputConfirm(String[] userInputArray) {//ASSUMPTION: array size is 4 in format <confirm><S/N><ddmmyy><hhmm>		
 		if(userInputArray.length==4) {
 			
 			refinedUserInput[1] = userInputArray[1];
@@ -558,7 +558,7 @@ public class SparkMoVare {
 	}
 
 	//Refines the user input into the String[] refinedUserInput for passing on to clearCommand() later
-	private static void userInputclear(String[] userInputArray) {
+	protected static void userInputclear(String[] userInputArray) {
 		if(userInputArray.length==4){//clear between command
 			
 			refinedUserInput[8] = userInputArray[1];
@@ -574,12 +574,12 @@ public class SparkMoVare {
 	}
 
 	//Refines the user input into the String[] refinedUserInput for passing on to sortCommand() later
-	private static void userInputSort(String[] userInputArray) {
+	protected static void userInputSort(String[] userInputArray) {
 		refinedUserInput[8] = userInputArray[1];
 	}
 
 	//Refines the user input into the String[] refinedUserInput for passing on to searchCommand() later
-	private static void userInputSearch(String[] userInputArray) {
+	protected static void userInputSearch(String[] userInputArray) {
 		refinedUserInput[8] = userInputArray[1];
 	}
 
