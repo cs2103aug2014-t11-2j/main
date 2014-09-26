@@ -1,41 +1,45 @@
 package logic;
 
-
+import logic.Assignment;
 
 import java.util.LinkedList;
 
 public class Sort {
 
 	enum SortType {
-		DEADLINES, TASKS, APPOINTMENTS;
+		DEADLINES, TASKS, APPOINTMENTS, ID;
 	}
 
-	private static LinkedList<Assignment> sortClassify(String sortType, String endDate, String startDate) {
+	private static LinkedList<Assignment> sortClassify(String sortType,
+			String endDate, String startDate) {
 
 		switch (convertToSortEnum(sortType)) {
 
-		case DEADLINES:
-
-			return sort(endDate, startDate);
-
 		case TASKS:
 
-			return sortTasks(endDate, startDate);
+			return sort(0, endDate, startDate);
 
 		case APPOINTMENTS:
 
-			return sortAppointments(endDate, startDate);
+			return sort(1, endDate, startDate);
+
+		case DEADLINES:
+
+			return sort(-1, endDate, startDate);
+
+		case ID:
+
+			return sortId(endDate, startDate);
 
 		default:
 			// check for just "sort" input by user, then print out current
 			// linked list as it is chronological already
 			// sort according to a particular title or ID. parse for int? or
 			// directly search for those first, then use
-			// null is  a stub
+			// null is a stub
 			return null;
 		}
 	}
-
 
 	private static SortType convertToSortEnum(String duration) {
 
@@ -58,47 +62,123 @@ public class Sort {
 
 	}
 
-	private static LinkedList<Assignment> sortAppointments(String endDate,
+	/*
+	 * sorting by tasks/appt/deadlines, all use this method. As assigned in
+	 * assignment class, task is type int 0, appointment is type int 1. Deadline
+	 * is set to type int -1.
+	 */
+	private static LinkedList<Assignment> sort(int type, String endDate,
 			String startDate) {
 
 		LinkedList<Assignment> sortedList = new LinkedList<Assignment>();
-		sortedList = sort(endDate, startDate);
+		sortedList = trancateList(endDate, startDate);
 
-		for(int i=0; i<sortedList.size(); i++){
-			if(sortedList.get(i).getType() != 1)
-				sortedList.remove(i);
-		}
+		if (type != -1) {
 
-		return sortedList;
-	}
+			for (int i = 0; i < sortedList.size(); i++) {
+				if (sortedList.get(i).getType() != type)
+					sortedList.remove(i);
+			}
 
-	private static LinkedList<Assignment> sortTasks(String endDate,
-			String startDate) {
-
-		LinkedList<Assignment> sortedList = new LinkedList<Assignment>();
-		sortedList = sort(endDate, startDate);
-
-		for(int i=0; i<sortedList.size(); i++){
-			if(sortedList.get(i).getType() != 0)
-				sortedList.remove(i);
 		}
 
 		return sortedList;
 
 	}
 
+	private static LinkedList<Assignment> trancateList(String endDate,
+			String startDate) {
+
+		LinkedList<Assignment> trancatedList = new LinkedList<Assignment>();
+		trancatedList = SparkMoVare.buffer;
+
+		int lowerLimit = trancatedList.indexOf(startDate);
+		int upperLimit = trancatedList.lastIndexOf(endDate);
+
+		for (int i = 0; i < lowerLimit; i++) {
+			trancatedList.remove(i);
+		}
+
+		for (int j = trancatedList.size(); j > upperLimit; j--) {
+			trancatedList.remove(j);
+		}
+
+		return trancatedList;
+	}
+
+	/*
+	 * this method works in the following steps: 1. searches the assignments in
+	 * end date 2. sorts according to Id 3. adds the sorted Id list to the back
+	 * of final sortedList 4. decrements date towards start date
+	 */
+	private static LinkedList<Assignment> sortId(String endDate,
+			String startDate) {
+
+		LinkedList<Assignment> sortedList = new LinkedList<Assignment>();
+		LinkedList<Assignment> tempList = new LinkedList<Assignment>();
+
+		while (Comparator.dateComparator(endDate, startDate) != -1) {
+
+			tempList = SearchAll.searchAll(endDate);
+			tempList = bubbleIdSort(tempList);
+
+			for (int i = 0; i < tempList.size(); i++) {
+				sortedList.addLast(tempList.get(i));
+			}
+
+			endDate = Delete.updateDate(endDate);
+		}
+
+		return sortedList;
+	}
+
+	private static LinkedList<Assignment> bubbleIdSort(
+			LinkedList<Assignment> sortingList) {
+
+		for (int i = 1; i < sortingList.size(); i++) {
+
+			boolean isSorted = true;
+
+			for (int j = 0; j < sortingList.size() - i; j++) {
+
+				if (Comparator.serialNumberComparator(sortingList.get(j)
+						.getId(), sortingList.get(j + 1).getId())) {
+
+					Assignment temp = sortingList.get(j);
+					Assignment temp2 = sortingList.get(j + 1);
+					sortingList.add(j, temp2);
+					sortingList.add(j + 1, temp);
+					isSorted = false;
+				}
+
+				if (isSorted) {
+					return sortingList;
+				}
+
+			}
+		}
+		
+		return sortingList;
+
+	}
+
+	// following lines of code are for general date sort usage with an intrinsic
+	// time sort
 	private static LinkedList<Assignment> sort(String end, String start) {
 
 		String timeEnd;
 		String timeStart;
 		String dateEnd;
 		String dateStart;
+		Assignment temp;
+		Assignment temp2;
 		LinkedList<Assignment> tempList = new LinkedList<Assignment>();
 		LinkedList<Assignment> sortingList = new LinkedList<Assignment>();
 
 		// checking if input is date or time
 		if (end.length() == 4) {
 			timeEnd = end;
+
 			if (start == null) {
 				SparkMoVare.buffer.getFirst().getStartTime();
 			} else {
@@ -127,78 +207,76 @@ public class Sort {
 		return bubbleSort(sortingList);
 	}
 
-	private static LinkedList<Assignment> bubbleSort(LinkedList<Assignment> sortingList) {
+	private static LinkedList<Assignment> bubbleSort(
+			LinkedList<Assignment> sortingList) {
 
-		Assignment temp;
-		Assignment temp2;
-
-		for(int i=1; i<sortingList.size(); i++){
+		for (int i = 1; i < sortingList.size(); i++) {
 
 			boolean isSorted = true;
 
-			for(int j=0; j<sortingList.size()-i; j++){
+			for (int j = 0; j < sortingList.size() - i; j++) {
 
-				if(Comparator.dateComparator(sortingList.get(j).getEndDate(), sortingList.get(j+1).getEndDate()) != 1){
+				if (Comparator.dateComparator(sortingList.get(j).getEndDate(),
+						sortingList.get(j + 1).getEndDate()) != 1) {
 
-					temp = sortingList.get(j);
-					temp2 = sortingList.get(j+1);
+					Assignment temp = sortingList.get(j);
+					Assignment temp2 = sortingList.get(j + 1);
 					sortingList.add(j, temp2);
-					sortingList.add(j+1, temp);
+					sortingList.add(j + 1, temp);
 					isSorted = false;
 
-					if(Comparator.timeComparator(sortingList.get(j).getStartTime(), sortingList.get(j+1).getStartTime()) != 1){
+					if (Comparator.timeComparator(sortingList.get(j)
+							.getStartTime(), sortingList.get(j + 1)
+							.getStartTime()) != 1) {
 
 						temp = sortingList.get(j);
-						temp2 = sortingList.get(j+1);
+						temp2 = sortingList.get(j + 1);
 						sortingList.add(j, temp2);
-						sortingList.add(j+1, temp);
+						sortingList.add(j + 1, temp);
 						isSorted = false;
 
 					}
 				}
 
-				if(isSorted){
+				if (isSorted) {
 					return sortingList;
 				}
 			}
+
 		}
+
 		return sortingList;
 	}
-
-
-
-	/*
-	// merge sort algorithm to sort sortingList
-	private static void mergeSort(LinkedList<Assignment> sortingList,
-			String start, String end) {
-
-		if (SparkMoVare.dateComparator(end, start) != -1) {
-
-			int mid = sortingList.size() / 2;
-			mergeSort(sortingList, start, sortingList.get(mid).getEndDate());
-			mergeSort(sortingList, sortingList.get(mid + 1).getEndDate(), end);
-			merge(sortingList, start, sortingList.get(mid), end);
-
-		}
-
-	}
-
-	private static void merge(LinkedList<Assignment> sortingList,
-				String start, Assignment mid, String end) {
-
-			LinkedList<Assignment> temporary = new LinkedList<Assignment>();
-			String left = start;
-			String right = sortingList.get((sortingList.size()/2)+1).getEndDate();
-			String it = " ";
-
-			while (SparkMoVare.dateComparator(sortingList.get(sortingList.size()/2).getEndDate(),left) != -1 
-					&& SparkMoVare.dateComparator(end, right) != -1) {
-
-				if(dateComparator(right, left) != -1){
-
-				}
-			}
-
-	 */
-
 }
+
+/*
+ * // merge sort algorithm to sort sortingList private static void
+ * mergeSort(LinkedList<Assignment> sortingList, String start, String end) {
+ * 
+ * if (SparkMoVare.dateComparator(end, start) != -1) {
+ * 
+ * int mid = sortingList.size() / 2; mergeSort(sortingList, start,
+ * sortingList.get(mid).getEndDate()); mergeSort(sortingList,
+ * sortingList.get(mid + 1).getEndDate(), end); merge(sortingList, start,
+ * sortingList.get(mid), end);
+ * 
+ * }
+ * 
+ * }
+ * 
+ * private static void merge(LinkedList<Assignment> sortingList, String start,
+ * Assignment mid, String end) {
+ * 
+ * LinkedList<Assignment> temporary = new LinkedList<Assignment>(); String left
+ * = start; String right =
+ * sortingList.get((sortingList.size()/2)+1).getEndDate(); String it = " ";
+ * 
+ * while
+ * (SparkMoVare.dateComparator(sortingList.get(sortingList.size()/2).getEndDate
+ * (),left) != -1 && SparkMoVare.dateComparator(end, right) != -1) {
+ * 
+ * if(dateComparator(right, left) != -1){
+ * 
+ * } }
+ */
+
