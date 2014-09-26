@@ -694,6 +694,16 @@ public class SparkMoVare {
 	//	}
 	// for testing purpose
 
+	protected static int getBufferPosition(String id) {
+		counter = 0;
+		size = buffer.size();
+		
+		while(counter<size && !buffer.get(counter).getId().contentEquals(id)){
+			counter++;
+		}	
+		return counter;
+	}
+	
 	static int getLineCount() {
 		return buffer.size();
 	}

@@ -23,14 +23,14 @@ public class AddTask {
 			newAssignment.setTag(tag);
 			
 			// adding task to buffer according to date
-			for(int bufferCount = 0; bufferCount < buffer.size(); bufferCount++) {
-				if (dateComparator(newAssignment.getEndDate(), buffer.get(bufferCount).getEndDate())) {
-					buffer.add(bufferCount, newAssignment);
+			for(int bufferCount = 0; bufferCount < SparkMoVare.buffer.size(); bufferCount++) {
+				if (dateComparator(newAssignment.getEndDate(), SparkMoVare.buffer.get(bufferCount).getEndDate())) {
+					SparkMoVare.buffer.add(bufferCount, newAssignment);
 					
 					return newAssignment.toString();
 				}
 			}
-			buffer.addLast(newAssignment);
+			SparkMoVare.buffer.addLast(newAssignment);
 			
 			return newAssignment.toString();
 		}

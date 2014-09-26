@@ -10,47 +10,45 @@ public class EditTask {
 	}
 	
 	protected static String editTask(String[] refinedUserInput) {
-		
 
-		LinkedList<Assignment> idFound = new LinkedList<Assignment>(); //this will be equal to the result of the search
+		LinkedList<Assignment> idFound = new LinkedList<Assignment>();
 		idFound = SearchAll.searchAll(refinedUserInput[1]);
 		
 		if(idFound.size() == 0) {
-			printToUser(String.format(SparkMoVare.MESSAGE_DOES_NOT_EXISTS, "Serial Number" + refinedUserInput[1]));
+			SparkMoVare.printToUser(String.format(SparkMoVare.MESSAGE_DOES_NOT_EXISTS, "Serial Number" + refinedUserInput[1]));
 			
 			return null;//don't do anything since not ID does not exists
 		}
 		
-		int idIntForm = Integer.parseInt(refinedUserInput[1]);
-		int bufferPosition = SparkMoVare.idSearcher(idIntForm);
+		int bufferPosition = SparkMoVare.getBufferPosition(refinedUserInput[1]);
 
 		switch(SparkMoVare.getEditType(refinedUserInput[8])) {
 		case TITLE:
-			buffer.get(bufferPosition).setTitle(refinedUserInput[2]);
+			SparkMoVare.buffer.get(bufferPosition).setTitle(refinedUserInput[2]);
 			break;
 			
 		case START_DATE:
-			buffer.get(bufferPosition).setStartDate(refinedUserInput[3]);
+			SparkMoVare.buffer.get(bufferPosition).setStartDate(refinedUserInput[3]);
 			break;
 			
 		case START_TIME:
-			buffer.get(bufferPosition).setStartTime(refinedUserInput[4]);
+			SparkMoVare.buffer.get(bufferPosition).setStartTime(refinedUserInput[4]);
 			break;
 			
 		case END_DATE:
-			buffer.get(bufferPosition).setEndDate(refinedUserInput[5]);
+			SparkMoVare.buffer.get(bufferPosition).setEndDate(refinedUserInput[5]);
 			break;
 			
 		case END_TIME:
-			buffer.get(bufferPosition).setEndTime(refinedUserInput[6]);
+			SparkMoVare.buffer.get(bufferPosition).setEndTime(refinedUserInput[6]);
 			break;
 			
 		case INVALID:
-			printToUser(MESSAGE_INVALID_SEARCH_PARAMETER);
-			
+			SparkMoVare.printToUser(SparkMoVare.MESSAGE_INVALID_SEARCH_PARAMETER);
+
 		default:
-			printToUser(MESSAGE_INVALID_SEARCH_PARAMETER);
+			SparkMoVare.printToUser(SparkMoVare.MESSAGE_INVALID_SEARCH_PARAMETER);
 		}
+		return null; //This is a stub
 	}
-	return null; //This is a stub
 }

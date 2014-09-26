@@ -1,31 +1,31 @@
 package logic;
 
+import java.util.LinkedList;
+
 public class Delete {
 
 	enum DeleteAllType {
 		DELETEALL_ON, DELETEALL_BEFORE, DELETEALL_BETWEEN;
 	}
 
-	public static String delete(String commandContent) {
-
-		int lineNumber = Integer.parseInt(commandContent);
-
-		if (lineNumber < 1 || lineNumber > SparkMoVare.buffer.size()) {
-
-			return "Trying to delete invalid line";
-
+	public static String delete(String id) {
+		LinkedList<Assignment> idFound = new LinkedList<Assignment>();
+		idFound = SearchAll.searchAll(id);
+		
+		if(idFound.size() == 0) {
+			return String.format(SparkMoVare.MESSAGE_DOES_NOT_EXISTS, "Serial Number" + id);
 		} else {
 			String stringDeleted = "";
-			stringDeleted = SparkMoVare.buffer.get(lineNumber - 1).getTitle();
-			SparkMoVare.buffer.remove(lineNumber - 1);
+			int bufferPosition = SparkMoVare.getBufferPosition(id);
+			
+			stringDeleted = SparkMoVare.buffer.get(bufferPosition).getTitle();
+			SparkMoVare.buffer.remove(bufferPosition);
 
-			return ("deleted from " + filePath + ": " + "\"" + stringDeleted + "\"");
-
+			return String.format(SparkMoVare.MESSAGE_DELETED, SparkMoVare.filePath, stringDeleted);
 		}
 	}
 
-	private static String deleteAll(String duration, String endDate,
-			String startDate) {
+	private static String deleteAll(String duration, String endDate, String startDate) {
 
 		/*
 		 * the method below passes linked list element to deleteTask to delete
