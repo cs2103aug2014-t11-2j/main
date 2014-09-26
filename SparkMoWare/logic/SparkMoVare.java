@@ -42,7 +42,7 @@ public class SparkMoVare {
 	protected static LinkedList<Assignment> buffer = new LinkedList<Assignment>();
 	protected static Scanner scanner = new Scanner(System.in);
 	protected static String filePath = "Storage";
-	protected static String latestSerialNumber="";
+	protected static String latestSerialNumber = "";
 
 	protected static int counter = 0;
 	protected static int size = 0;
