@@ -10,8 +10,12 @@ public class SearchAll {
 	private static final int ID_FORMAT_LENGTH = 12;
 	private static final int TIME_FORMAT_LENGTH = 4;
 	private static final int DATE_FORMAT_LENGTH = 6;
+	
     private static int listCount;
-
+    
+    private static final int IS_COMPLETED = 9;
+    private static final int IS_ON_TIME = 8;
+    
 	public static LinkedList<Assignment> searchAll(String userInput){
         
     	LinkedList<Assignment> stringsFound = new LinkedList<Assignment>();
@@ -25,7 +29,12 @@ public class SearchAll {
         } else {
         	stringsFound = searchByWords(userInput);
         }
-        return stringsFound;
+        
+        if(stringsFound.isEmpty()) {
+        	string.format(SparkMoVare.MESSAGE_INVALID_SEARCH_PARAMETER);
+        } else {
+        	return stringsFound;
+        }
     }
 	
 	private static LinkedList<Assignment> searchById(String searchId) {

@@ -31,7 +31,7 @@ public class Comparator {
 			checkDate = 1;
 		}
 
-	return checkDate;
+		return checkDate;
 	}
 	
 	protected static int timeComparator(String timeA, String timeB) {
