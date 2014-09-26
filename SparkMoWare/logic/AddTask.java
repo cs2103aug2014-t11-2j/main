@@ -22,6 +22,7 @@ public class AddTask {
 		// newAssignment.setDescription(description);
 		// newAssignment.setAlarm(alarm);
 		newAssignment.setTag(tag);
+		System.out.println(newAssignment.toString());
 
 		// adding task to buffer according to date
 		for (int bufferCount = 0; bufferCount < SparkMoVare.buffer.size(); bufferCount++) {

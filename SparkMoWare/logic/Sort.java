@@ -4,8 +4,6 @@ package logic;
 
 import java.util.LinkedList;
 
-import logic.Delete.DeleteAllType;
-
 public class Sort {
 
 	enum SortType {
@@ -33,10 +31,12 @@ public class Sort {
 			// linked list as it is chronological already
 			// sort according to a particular title or ID. parse for int? or
 			// directly search for those first, then use
+			// null is  a stub
+			return null;
 		}
 	}
 
-	
+
 	private static SortType convertToSortEnum(String duration) {
 
 		if (duration.length() == 9) {
@@ -60,33 +60,33 @@ public class Sort {
 
 	private static LinkedList<Assignment> sortAppointments(String endDate,
 			String startDate) {
-		
+
 		LinkedList<Assignment> sortedList = new LinkedList<Assignment>();
 		sortedList = sort(endDate, startDate);
-		
+
 		for(int i=0; i<sortedList.size(); i++){
 			if(sortedList.get(i).getType() != 1)
 				sortedList.remove(i);
 		}
-		
+
 		return sortedList;
 	}
 
 	private static LinkedList<Assignment> sortTasks(String endDate,
 			String startDate) {
-		
+
 		LinkedList<Assignment> sortedList = new LinkedList<Assignment>();
 		sortedList = sort(endDate, startDate);
-		
+
 		for(int i=0; i<sortedList.size(); i++){
 			if(sortedList.get(i).getType() != 0)
 				sortedList.remove(i);
 		}
-				
+
 		return sortedList;
 
 	}
-	
+
 	private static LinkedList<Assignment> sort(String end, String start) {
 
 		String timeEnd;
@@ -114,57 +114,60 @@ public class Sort {
 		}
 
 		// compare dates/timings and add into sortedList
-		while (SparkMoVare.dateComparator(end, start) != -1) {
+		while (Comparator.dateComparator(end, start) != -1) {
 
-			tempList = SparkMoVare.search(" " + end);
+			tempList = SearchAll.searchAll(end);
 			for (int i = 0; i < tempList.size(); i++) {
 				sortingList.add(tempList.get(i));
 			}
 
-			end = SparkMoVare.updateDate(end);
+			end = Delete.updateDate(end);
 		}
 
 		return bubbleSort(sortingList);
 	}
 
 	private static LinkedList<Assignment> bubbleSort(LinkedList<Assignment> sortingList) {
-		
+
+		Assignment temp;
+		Assignment temp2;
+
 		for(int i=1; i<sortingList.size(); i++){
-			
+
 			boolean isSorted = true;
-			
+
 			for(int j=0; j<sortingList.size()-i; j++){
-				
-				if(dateComparator(sortingList.get(j).getEndDate(), sortingList.get(j+1).getEndDate()) != 1){
-					
-					Assignment temp = sortingList.get(j);
-					Assignment temp2 = sortingList.get(j+1);
+
+				if(Comparator.dateComparator(sortingList.get(j).getEndDate(), sortingList.get(j+1).getEndDate()) != 1){
+
+					temp = sortingList.get(j);
+					temp2 = sortingList.get(j+1);
 					sortingList.add(j, temp2);
 					sortingList.add(j+1, temp);
 					isSorted = false;
-					
-					if(timeComparator(sortingList.get(j).getStartTime(), sortingList.get(j+1).getStartTime()) != 1){
-						
-						Assignment temp = sortingList.get(j);
-						Assignment temp2 = sortingList.get(j+1);
+
+					if(Comparator.timeComparator(sortingList.get(j).getStartTime(), sortingList.get(j+1).getStartTime()) != 1){
+
+						temp = sortingList.get(j);
+						temp2 = sortingList.get(j+1);
 						sortingList.add(j, temp2);
 						sortingList.add(j+1, temp);
 						isSorted = false;
-						
+
+					}
+				}
+
+				if(isSorted){
+					return sortingList;
 				}
 			}
-			
-			if(isSorted){
-				return sortingList;
-			}
 		}
-		
+		return sortingList;
 	}
-		
-	
-	
-	
-/*
+
+
+
+	/*
 	// merge sort algorithm to sort sortingList
 	private static void mergeSort(LinkedList<Assignment> sortingList,
 			String start, String end) {
@@ -182,21 +185,20 @@ public class Sort {
 
 	private static void merge(LinkedList<Assignment> sortingList,
 				String start, Assignment mid, String end) {
-			
+
 			LinkedList<Assignment> temporary = new LinkedList<Assignment>();
 			String left = start;
 			String right = sortingList.get((sortingList.size()/2)+1).getEndDate();
 			String it = " ";
-			
+
 			while (SparkMoVare.dateComparator(sortingList.get(sortingList.size()/2).getEndDate(),left) != -1 
 					&& SparkMoVare.dateComparator(end, right) != -1) {
-				
+
 				if(dateComparator(right, left) != -1){
-					
+
 				}
 			}
-			
-*/
-			
-		}
+
+	 */
+
 }

@@ -94,7 +94,7 @@ public class Delete {
 		// following lines are to store & delete assignments on the particular
 		// date
 		LinkedList<Assignment> toDelete = new LinkedList<Assignment>();
-		toDelete = SearchAll.searchAll(" " + deleteOnDate);
+		toDelete = SearchAll.searchAll(deleteOnDate);
 
 		for (int i = 0; i < toDelete.size(); i++) {
 			delete(toDelete.get(i).getId());
@@ -111,7 +111,7 @@ public class Delete {
 	}
 
 	// decrementing date
-	private static String updateDate(String date) {
+	static String updateDate(String date) {
 
 		String[] endDate = date.split("(?<=\\G.{2})");
 		int[] intEndDate = new int[3];

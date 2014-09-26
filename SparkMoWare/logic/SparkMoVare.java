@@ -38,7 +38,7 @@ public class SparkMoVare {
 	protected static Stack< LinkedList<Assignment>> actionFuture = new Stack< LinkedList<Assignment>>();
 	protected static LinkedList<Assignment> buffer = new LinkedList<Assignment>();
 	protected static Scanner scanner = new Scanner(System.in);
-	protected static String filePath = "Storage";
+	protected static String filePath = "Storage.txt";
 	protected static String latestSerialNumber = "";
 
 	protected static int counter = 0;
@@ -101,6 +101,7 @@ public class SparkMoVare {
 			FileReader fileReader = new FileReader(file);
 			BufferedReader bufferedReader = new BufferedReader(fileReader);
 			String line;
+		
 			
 			while ((line = bufferedReader.readLine())  != null ) {
 				
@@ -150,7 +151,6 @@ public class SparkMoVare {
 	} 
 
 	protected static void saveFile(String filePath) {
-		
 		File file = new File(filePath);
 		file.delete();
 		try {
@@ -561,6 +561,7 @@ public class SparkMoVare {
 	}
 
 	public static String executeCommand(String inputCommand) {
+		System.out.println("blarrr");
 		CommandType command = getCommandType(inputCommand);
 		
 		if (command != CommandType.UNDO && command != CommandType.REDO ) {
@@ -578,25 +579,27 @@ public class SparkMoVare {
 			EditTask.editTask(refinedUserInput);
 
 		case DELETE_TASK:
-			return deleteTask();
+			return Delete.delete(refinedUserInput[1]);
 
 		case TENTATIVE:
-			return tentative();
+			Tentative.addTentative(refinedUserInput[8]);
+			break;
 
 		case CONFIRM:
-			return confirm()
-
+			ConfirmTentative.confirmTentative(refinedUserInput[1], refinedUserInput[3], refinedUserInput[4]);
+			break;
+			
 		case CLEAR:
-			return CLEAR();
+			return Delete.deleteAll(refinedUserInput[8], refinedUserInput[5], refinedUserInput[3]);
 
 		case SORT:
-			return sort();
+	//		return Sort.sort();
 
 		case SEARCH:
-			return search();
+	//		return search();
 
 		case STATISTIC:
-			statistic();
+	//		Statisics.statistic();
 			break;
 		case UNDO:
 			redoUndo.undo();
