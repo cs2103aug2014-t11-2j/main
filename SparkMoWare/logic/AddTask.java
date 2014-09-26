@@ -23,9 +23,9 @@ public class AddTask {
 			newAssignment.setTag(tag);
 			
 			// adding task to buffer according to date
-			for(int i=0; i<buffer.size(); i++) {
-				if (dateComparator(newAssignment.getEndDate(), buffer.get(i).getEndDate())) {
-					buffer.add(i, newAssignment);
+			for(int bufferCount = 0; bufferCount < buffer.size(); bufferCount++) {
+				if (dateComparator(newAssignment.getEndDate(), buffer.get(bufferCount).getEndDate())) {
+					buffer.add(bufferCount, newAssignment);
 					
 					return newAssignment.toString();
 				}

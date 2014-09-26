@@ -22,7 +22,7 @@ public class ConfirmTentative {
 				}
 			}
 		}
-		Delete.delete(tentativeNeeded.get(listCheck).getId());
+		Delete.delete(tentativeNeeded.get(1).getId());
 		
 		return confirmAssignment;
 	}
