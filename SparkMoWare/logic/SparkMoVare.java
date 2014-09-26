@@ -65,13 +65,13 @@ public class SparkMoVare {
 
 	enum CommandType {
 		ADD_TASK, EDIT_TASK, DELETE_TASK, TENTATIVE, CONFIRM, SORT, SEARCH, 
-		DELETE_ALL, UNDO, REDO, STATISTIC, EXIT, INVALID 
+		CLEAR, UNDO, REDO, STATISTIC, EXIT, INVALID 
 	}
 
 	//Fundamentally the same as CommandType, but without single word commands 
 	enum RefinementType {
 		ADD_TASK, EDIT_TASK, DELETE_TASK, TENTATIVE, CONFIRM, SORT, SEARCH, 
-		DELETE_ALL, INVALID, OTHERS
+		CLEAR, INVALID, OTHERS
 	}
 
 	//Enum for determining which assignment attribute is being edited
@@ -199,8 +199,8 @@ public class SparkMoVare {
 			userInputConfirm(userInputArray);
 			break;
 			
-		case DELETE_ALL:
-			userInputDeleteAll(userInputArray);
+		case CLEAR:
+			userInputclear(userInputArray);
 			break;
 			
 		case SORT:
@@ -255,8 +255,8 @@ public class SparkMoVare {
 				return RefinementType.INVALID;
 			}
 			return RefinementType.EDIT_TASK;
-		} else if (refinement.equalsIgnoreCase("deleteall")) { 
-			return RefinementType.DELETE_ALL;
+		} else if (refinement.equalsIgnoreCase("clear")) { 
+			return RefinementType.CLEAR;
 		} else if (refinement.equalsIgnoreCase("sort")) {
 			return RefinementType.SORT;
 		} else {
@@ -557,15 +557,15 @@ public class SparkMoVare {
 		}
 	}
 
-	//Refines the user input into the String[] refinedUserInput for passing on to deleteAllCommand() later
-	private static void userInputDeleteAll(String[] userInputArray) {
-		if(userInputArray.length==4){//deleteall between command
+	//Refines the user input into the String[] refinedUserInput for passing on to clearCommand() later
+	private static void userInputclear(String[] userInputArray) {
+		if(userInputArray.length==4){//clear between command
 			
 			refinedUserInput[8] = userInputArray[1];
 			refinedUserInput[3] = determineDate(userInputArray[2]);
 			refinedUserInput[5] = determineDate(userInputArray[3]);
 			
-		} else if(userInputArray.length==4) {//deleteall on or before command
+		} else if(userInputArray.length==4) {//clear on or before command
 			refinedUserInput[8] = userInputArray[1];
 			refinedUserInput[5] = determineDate(userInputArray[2]);
 		} else{
@@ -598,7 +598,7 @@ public class SparkMoVare {
 					false, null);
 			
 		case EDIT_TASK:
-			editTask(refinedUserInput[1]);
+			EditTask.editTask(refinedUserInput);
 			
 			//		case DELETE_TASK:
 			//			return deleteTask();
@@ -609,8 +609,8 @@ public class SparkMoVare {
 			//		case CONFIRM:
 			//			return confirm()
 			
-			//		case DELETE_ALL:
-			//			return DELETE_ALL();
+			//		case CLEAR:
+			//			return CLEAR();
 			
 			//		case SORT:
 			//			return sort();
@@ -681,8 +681,8 @@ public class SparkMoVare {
 				return CommandType.INVALID;
 			}
 			return CommandType.EDIT_TASK;
-		} else if (command.equalsIgnoreCase("deleteall")) { //2 words or 1 word?
-			return CommandType.DELETE_ALL;
+		} else if (command.equalsIgnoreCase("clear")) {
+			return CommandType.CLEAR;
 		} else if (command.equalsIgnoreCase("sort")) {
 			return CommandType.SORT;
 		} else if (command.equalsIgnoreCase("statistic")) {
@@ -701,7 +701,8 @@ public class SparkMoVare {
 	
 	
 	//returns the position in the buffer of the id
-	private static int idSearcher(int id) { //there should be easier way to search for it such as search for the date first then the id
+	//there should be easier way to search for it such as search for the date first then the id
+	protected static int idSearcher(int id) { 
 		size = buffer.size();
 		counter = 0;
 
@@ -744,7 +745,7 @@ public class SparkMoVare {
 	//		}	
 	//	}
 
-	//TODO	public static String DELETE_ALL() {
+	//TODO	public static String clear() {
 	//		buffer.clear();
 	//		return ("all content deleted from "+ filePath);
 	//	}

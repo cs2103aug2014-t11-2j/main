@@ -3,24 +3,28 @@ package logic;
 import java.util.LinkedList;
 
 public class EditTask {
+
+	//Enum for determining which assignment attribute is being edited
+	enum EditType {
+		TITLE, START_DATE, START_TIME, END_DATE, END_TIME, INVALID
+	}
 	
-	private static void editTask(String id) {
-		int idIntForm = Integer.parseInt(id);
+	protected static String editTask(String[] refinedUserInput) {
+		
 
 		LinkedList<Assignment> idFound = new LinkedList<Assignment>(); //this will be equal to the result of the search
+		idFound = SearchAll.searchAll(refinedUserInput[1]);
 		
-		//call the SearchAll function using id
-		idFound = SearchAll.searchAll(id);
-
 		if(idFound.size() == 0) {
-			printToUser(String.format(MESSAGE_DOES_NOT_EXISTS, "Serial Number" + refinedUserInput[1]));
+			printToUser(String.format(SparkMoVare.MESSAGE_DOES_NOT_EXISTS, "Serial Number" + refinedUserInput[1]));
 			
-			return;//don't do anything since not ID does not exists
+			return null;//don't do anything since not ID does not exists
 		}
+		
+		int idIntForm = Integer.parseInt(refinedUserInput[1]);
+		int bufferPosition = SparkMoVare.idSearcher(idIntForm);
 
-		int bufferPosition = idSearcher(idIntForm);
-
-		switch(getEditType(refinedUserInput[8])) {
+		switch(SparkMoVare.getEditType(refinedUserInput[8])) {
 		case TITLE:
 			buffer.get(bufferPosition).setTitle(refinedUserInput[2]);
 			break;
@@ -48,5 +52,5 @@ public class EditTask {
 			printToUser(MESSAGE_INVALID_SEARCH_PARAMETER);
 		}
 	}
-
+	return null; //This is a stub
 }
