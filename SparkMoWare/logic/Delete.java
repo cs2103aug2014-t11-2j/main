@@ -150,7 +150,7 @@ public class Delete {
 			}				
 		} else if(intEndMonth == 4 || intEndMonth == 6 || intEndMonth == 9 || intEndMonth == 11) {
 			return 30;
-		}
-			return 31;	
-		}
+		} 
+		return 31;	
 	}
+}

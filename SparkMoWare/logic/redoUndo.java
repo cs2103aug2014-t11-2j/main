@@ -11,7 +11,7 @@ public class redoUndo {
 			SparkMoVare.actionFuture.push(SparkMoVare.actionHistory.pop());
 			SparkMoVare.buffer = SparkMoVare.actionHistory.peek();
 			
-			return "Last action has been undo-ed";
+			return "Last action has been undo";
 		}
 	}
 
@@ -24,8 +24,7 @@ public class redoUndo {
 			SparkMoVare.actionHistory.push(SparkMoVare.actionFuture.pop());
 			SparkMoVare.buffer = SparkMoVare.actionHistory.peek();
 			
-			return "Last action has been redo-ed";
+			return "Last action has been redo";
 		}
 	}
-
 }

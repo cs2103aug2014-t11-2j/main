@@ -3,7 +3,8 @@ package logic;
 import java.util.*;
 
 /*
- * Left with deleteAll to pass the result to
+ * This will delete all the tentative
+ * and save the confirmed one with new SIN
  */
 public class ConfirmTentative {
 

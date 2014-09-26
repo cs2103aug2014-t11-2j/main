@@ -53,16 +53,16 @@ public class EditTask {
 			String currentTime = dateFormat.format(todayDate).substring(8);
 			SparkMoVare.buffer.get(bufferPosition).setIsDone(true);
 			
-			if (refinedUserInput[5]!=null) {
+			if (refinedUserInput[5] != null) {
 				currentDate=refinedUserInput[5];
 			}
-			if (refinedUserInput[6]!=null) {
+			if (refinedUserInput[6] != null) {
 				currentTime=refinedUserInput[6];
 			}
-			if (Comparator.dateComparator(currentDate,SparkMoVare.buffer.get(bufferPosition).getEndDate())==-1) {
+			if (Comparator.dateComparator(currentDate,SparkMoVare.buffer.get(bufferPosition).getEndDate()) == -1) {
 				SparkMoVare.buffer.get(bufferPosition).setIsOnTime(true);
-			} else if (Comparator.dateComparator(currentDate,SparkMoVare.buffer.get(bufferPosition).getEndDate())==0) {
-				if (Comparator.timeComparator(currentTime,SparkMoVare.buffer.get(bufferPosition).getEndTime())==-1) {
+			} else if (Comparator.dateComparator(currentDate,SparkMoVare.buffer.get(bufferPosition).getEndDate()) == 0) {
+				if (Comparator.timeComparator(currentTime,SparkMoVare.buffer.get(bufferPosition).getEndTime()) == -1) {
 					SparkMoVare.buffer.get(bufferPosition).setIsOnTime(true);
 				}
 			}	

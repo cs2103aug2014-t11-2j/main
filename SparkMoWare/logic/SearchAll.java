@@ -16,7 +16,7 @@ public class SearchAll {
 	private static final int IS_COMPLETED = 9;
 	private static final int IS_ON_TIME = 8;
 
-	public static LinkedList<Assignment> searchAll(String userInput){
+	protected static LinkedList<Assignment> searchAll(String userInput){
 
 		LinkedList<Assignment> stringsFound = new LinkedList<Assignment>();
 
@@ -82,8 +82,8 @@ public class SearchAll {
 		return idFound;
 	}
 
-	// accepts into the searchedList as long as startDate or endDate is the same as input
-	private static LinkedList<Assignment> searchByDate(String searchTime) {
+	// accepts into the searchedList as long as startTime or endTime is the same as input
+	private static LinkedList<Assignment> searchByTime(String searchTime) {
 
 		LinkedList<Assignment> timeFound = new LinkedList<Assignment>();
 
@@ -99,8 +99,8 @@ public class SearchAll {
 		return timeFound;
 	}
 
-	// accepts into the searchedList as long as startTime or endTime is the same as input
-	private static LinkedList<Assignment> searchByTime(String searchDate) {
+	// accepts into the searchedList as long as startDate or endDate is the same as input
+	private static LinkedList<Assignment> searchByDate(String searchDate) {
 
 		LinkedList<Assignment> datesFound = new LinkedList<Assignment>();
 

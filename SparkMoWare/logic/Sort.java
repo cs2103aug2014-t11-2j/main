@@ -10,25 +10,21 @@ public class Sort {
 		DEADLINES, TASKS, APPOINTMENTS, ID;
 	}
 
-	private static LinkedList<Assignment> sortClassify(String sortType,
+	protected static LinkedList<Assignment> sortClassify(String sortType,
 			String endDate, String startDate) {
 
 		switch (convertToSortEnum(sortType)) {
 
 		case TASKS:
-
 			return sort(0, endDate, startDate);
 
 		case APPOINTMENTS:
-
 			return sort(1, endDate, startDate);
 
 		case DEADLINES:
-
 			return sort(-1, endDate, startDate);
 
 		case ID:
-
 			return sortId(endDate, startDate);
 
 		default:
@@ -44,22 +40,14 @@ public class Sort {
 	private static SortType convertToSortEnum(String duration) {
 
 		if (duration.length() == 9) {
-
 			return SortType.DEADLINES;
-
 		} else if (duration.length() == 5) {
-
 			return SortType.TASKS;
-
 		} else if (duration.length() == 12) {
-
 			return SortType.APPOINTMENTS;
-
 		} else {
-
 			return null;
 		}
-
 	}
 
 	/*
@@ -81,9 +69,7 @@ public class Sort {
 			}
 
 		}
-
 		return sortedList;
-
 	}
 
 	private static LinkedList<Assignment> trancateList(String endDate,
@@ -102,7 +88,6 @@ public class Sort {
 		for (int j = trancatedList.size(); j > upperLimit; j--) {
 			trancatedList.remove(j);
 		}
-
 		return trancatedList;
 	}
 
@@ -125,10 +110,8 @@ public class Sort {
 			for (int i = 0; i < tempList.size(); i++) {
 				sortedList.addLast(tempList.get(i));
 			}
-
 			endDate = Delete.updateDate(endDate);
 		}
-
 		return sortedList;
 	}
 
@@ -154,17 +137,14 @@ public class Sort {
 				if (isSorted) {
 					return sortingList;
 				}
-
 			}
 		}
-		
 		return sortingList;
-
 	}
 
 	// following lines of code are for general date sort usage with an intrinsic
 	// time sort
-	private static LinkedList<Assignment> sort(String end, String start) {
+	protected static LinkedList<Assignment> sort(String end, String start) {
 
 		String timeEnd;
 		String timeStart;
@@ -200,10 +180,8 @@ public class Sort {
 			for (int i = 0; i < tempList.size(); i++) {
 				sortingList.add(tempList.get(i));
 			}
-
 			end = Delete.updateDate(end);
 		}
-
 		return bubbleSort(sortingList);
 	}
 
@@ -234,17 +212,13 @@ public class Sort {
 						sortingList.add(j, temp2);
 						sortingList.add(j + 1, temp);
 						isSorted = false;
-
 					}
 				}
-
 				if (isSorted) {
 					return sortingList;
 				}
 			}
-
 		}
-
 		return sortingList;
 	}
 }
