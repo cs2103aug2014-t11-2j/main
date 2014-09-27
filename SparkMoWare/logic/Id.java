@@ -3,7 +3,6 @@ package logic;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Scanner;
 
 /* 
  * only work till Sn 9999 otherwise the year will be corrupted
@@ -11,9 +10,9 @@ import java.util.Scanner;
  */
 public class Id {
 	
-	protected static Scanner scanner = new Scanner(System.in);
+	private static final int SERIAL_LENGTH = 12;
 	
-	public static String serialNumGen() {
+	protected static String serialNumGen() {
 		
 		String serialNum = "";
 		DateFormat dateFormat = new SimpleDateFormat("ddMMyyyy");
@@ -35,44 +34,43 @@ public class Id {
 		}
 	}
 	
+	/* 
+	 * will continuously prompt user for correct ID format currently no way to exit
+	 * FATAL ERROR: if user enters edit command while file/program is empty, this prompt will run forever.
+	 */
 	protected static String determineID(String id){
 		
-		while(!_IDFormatValid(id)) {//will continuously prompt user for correct ID format currently no way to exit
-			//FATAL ERROR: if user enters edit command while file/program is empty, this prompt will run forever.
+		while(!_IDFormatValid(id)) {
 			
 			Message.printToUser(Message.INVALID_FORMAT);
 			Message.printToUser(String.format(Message.FORMAT_PROMPT, "ID"));		
-			id = scanner.nextLine();			
+			id = SparkMoVare.scanner.nextLine();			
 		}
 		return id;
 	}
 
 	public static boolean _IDFormatValid(String id) {
 		
-		if(id.length() != 10) {
+		if(id.length() != SERIAL_LENGTH) {
 			return false;
 		} 
-		/*else if(id.equalsIgnoreCase("exit")){ //Method for dealing with fatal error
+		/* else if(id.equalsIgnoreCase("exit")){ //Method for dealing with fatal error
 			return true;
 		}*/
 		else if(id.matches(".*\\D+.*")) {
 			return false;
 		} else if(!_IDExists(Integer.parseInt(id))) {
 			return false;
-		} else {
-			return true;
 		}
+		return true;
 	}
 
 	public static boolean _IDExists(int id) {
 		
-		if(DateLocal.dateExists(id /10000)) {
+		if(DateLocal.dateExists(id / 10000)) {
 			return true;
 		} else{
 			return false;
 		}
 	}
-
-
-
 }

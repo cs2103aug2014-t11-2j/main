@@ -1,15 +1,18 @@
 package logic;
 
 /*
- * The class for printing messages to the user and storing all the statements for printing
+ * One class to store all the printing messages
  */
-
 public class Message {
 	
 	protected static final String WELCOME = "Welcome to SparkMoWare!";
 	protected static final String PROMPT = "command: ";
 	protected static final String ADDED = "added to %1$s: \"%2$s\"";
 	protected static final String EDITED = "content has already been edited";
+<<<<<<< HEAD
+=======
+	protected static final String TENTATIVE_ADDED = "All of your tentative appointments have been added";
+>>>>>>> dee22b8d549482c1fa434bc42f335a0f22c08a5f
 	
 	protected static final String DELETED = "deleted from %1$s: \"%2$s\"";
 	protected static final String DELETE_ON = "all content(s) of date %1$s is(are) deleted";
@@ -28,8 +31,12 @@ public class Message {
 	
 	protected static final String UNABLE_TO_REDO = "Error: Unable to redo";
 	protected static final String UNABLE_TO_UNDO = "Error: Unable to undo";
+<<<<<<< HEAD
 
 	protected static final String INVALID_COMMAND = "Invalid Commad Issued";
+=======
+	
+>>>>>>> dee22b8d549482c1fa434bc42f335a0f22c08a5f
 	protected static final String INVALID_FORMAT = "Invalid Format";	
 	protected static final String INVALID_SEARCH_PARAMETER = "Invalid search parameter entered";
 

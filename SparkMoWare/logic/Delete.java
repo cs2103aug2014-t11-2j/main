@@ -22,7 +22,7 @@ public class Delete {
 		LinkedList<Assignment> idFound = new LinkedList<Assignment>();
 		idFound = SearchAll.searchAll(id);
 		
-		// PS:Have to check if nullAssignment will increase the numAppointment by 1
+		// PS: Have to check if nullAssignment will increase the numAppointment by 1
 		Assignment nullAssignment = new Assignment();
 		nullAssignment.setNumAppointment(nullAssignment.getNumAppointment() - 1 ); 
 		

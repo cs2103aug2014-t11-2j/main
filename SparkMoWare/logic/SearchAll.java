@@ -3,8 +3,8 @@ package logic;
 import java.util.*;
 
 /*
- * Able to search for 
- * ID, Date, Time, Completion and OnTime and Title
+ * Able to search for:
+ * ID, Date, Time, Completion, OnTime or Title
  * 
  * It will return a linkedlist back to the system
  */

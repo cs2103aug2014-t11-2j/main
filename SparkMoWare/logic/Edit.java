@@ -27,7 +27,7 @@ public class Edit {
 			
 			Message.printToUser(toUser);
 
-			return toUser;//don't do anything since not ID does not exists
+			return toUser;
 		}
 
 		int bufferPosition = SparkMoVare.getBufferPosition(refinedUserInput[1]);
@@ -86,10 +86,11 @@ public class Edit {
 		default:
 			Message.printToUser(Message.INVALID_SEARCH_PARAMETER);
 		}
-		return Message.EDITED; //This is a stub
+		return Message.EDITED; 
 	}
-
-	protected static EditType getEditType(String attributeName) { //ASSUMPTION: user input attribute to change as a single word eg startdate
+	
+	//ASSUMPTION: user input attribute to change as a single word eg startdate
+	protected static EditType getEditType(String attributeName) { 
 		
 		if (attributeName.length() < 1) {
 			return EditType.INVALID;
@@ -108,5 +109,4 @@ public class Edit {
 			return EditType.INVALID;
 		}
 	}
-
 }
