@@ -1,5 +1,8 @@
 package logic;
 
+/*
+ * Use 2 different stacks to redo or undo the actions respectively
+ */
 public class redoUndo {
 	
 	protected static final String MESSAGE_UNABLE_TO_REDO = "Error: Unable to redo";

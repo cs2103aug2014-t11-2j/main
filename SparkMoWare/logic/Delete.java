@@ -2,24 +2,39 @@ package logic;
 
 import java.util.LinkedList;
 
+/*
+ * Able to delete individual assignment as per requested
+ * or
+ * delete the period where all the assignments have
+ * 
+ * Other than deleting individually,
+ * all methods will call search function and receive a linkedlist before 
+ * deleting them one by one
+ */
 public class Delete {
 
 	enum DeleteAllType {
 		DELETEALL_ON, DELETEALL_BEFORE, DELETEALL_BETWEEN;
 	}
-
-	public static String delete(String id) {
+	
+	private static final String MESSAGE_DELETE_ON = "all content(s) of date %1$s is(are) deleted";
+	private static final String MESSAGE_DELETE_BEFORE = "all content(s) before date %1$s is(are) deleted";
+	private static final String MESSAGE_DELETE_BETWEEN = "all content(s) from date %1$s to date %2$s is(are) deleted";
+	private static final String MESSAGE_DELETE = "all content deleted from %1$s";
+	
+	protected static String delete(String id) {
 		
 		LinkedList<Assignment> idFound = new LinkedList<Assignment>();
 		idFound = SearchAll.searchAll(id);
 		
+		// PS:Have to check if nullAssignment will increase the numAppointment by 1
 		Assignment nullAssignment = new Assignment();
-		nullAssignment.setNumAppointment(nullAssignment.getNumAppointment() - 1 );
+		nullAssignment.setNumAppointment(nullAssignment.getNumAppointment() - 1 ); 
 		
 		if(idFound.size() == 0) {
-			return String.format(SparkMoVare.MESSAGE_DOES_NOT_EXISTS, "Serial Number" + id);
+			return String.format(SparkMoVare.MESSAGE_DOES_NOT_EXISTS, "Serial Number " + id);
 		} else {
-			String stringDeleted = "";
+			String stringDeleted;
 			int bufferPosition = SparkMoVare.getBufferPosition(id);
 			
 			stringDeleted = SparkMoVare.buffer.get(bufferPosition).getTitle();
@@ -33,35 +48,28 @@ public class Delete {
 
 	protected static String deleteAll(String duration, String endDate, String startDate) {
 
-		/*
-		 * the method below passes linked list element to deleteTask to delete
-		 * that element. May need to change according to input parameter of
-		 * deleteTask method.
-		 */
-
-		switch (convertToEnum(duration)) {
+		switch (getDuration(duration)) {
 
 		case DELETEALL_ON:
 			deleteOn(endDate);
-			return ("all content(s) of date " + endDate + " is(are) deleted");
+			return String.format(MESSAGE_DELETE_ON, endDate);
 
 		case DELETEALL_BEFORE:
 			startDate = SparkMoVare.buffer.getFirst().getEndDate();
 			deleteBetween(endDate, startDate);
-			return ("all content(s) before date " + endDate + " is(are) deleted");
+			return String.format(MESSAGE_DELETE_BEFORE, endDate);
 
 		case DELETEALL_BETWEEN:
 			deleteBetween(endDate, startDate);
-			return ("all content(s) from date " + endDate + "to date "
-					+ startDate + " is(are) deleted");
+			return String.format(MESSAGE_DELETE_BETWEEN, endDate, startDate);
 
 		default:
 			SparkMoVare.buffer.clear();
-			return ("all content deleted from " + SparkMoVare.filePath);
+			return String.format(MESSAGE_DELETE, SparkMoVare.filePath);
 		}
 	}
 
-	private static DeleteAllType convertToEnum(String duration) {
+	private static DeleteAllType getDuration(String duration) {
 
 		if (duration.length() == 2) {
 			return DeleteAllType.DELETEALL_ON;
@@ -74,30 +82,13 @@ public class Delete {
 		}
 	}
 
-	protected static DeleteAllType getDuration(String userInput) {
-
-		String[] checkDuration = userInput.split(" ");
-
-		if (checkDuration[1].length() == 2) {
-			return DeleteAllType.DELETEALL_ON;
-		} else if (checkDuration[1].length() == 6) {
-			return DeleteAllType.DELETEALL_BEFORE;
-		} else if (checkDuration[1].length() == 7) {
-			return DeleteAllType.DELETEALL_BETWEEN;
-		} else {
-			return null;
-		}
-	}
-
 	private static void deleteOn(String deleteOnDate) {
 
-		// following lines are to store & delete assignments on the particular
-		// date
 		LinkedList<Assignment> toDelete = new LinkedList<Assignment>();
 		toDelete = SearchAll.searchAll(deleteOnDate);
 
-		for (int i = 0; i < toDelete.size(); i++) {
-			delete(toDelete.get(i).getId());
+		for (int toDeleteCount = 0; toDeleteCount < toDelete.size(); toDeleteCount++) {
+			delete(toDelete.get(toDeleteCount).getId());
 		}
 	}
 
@@ -111,9 +102,14 @@ public class Delete {
 	}
 
 	// decrementing date
-	static String updateDate(String date) {
+	protected static String updateDate(String date) {
 
-		String[] endDate = date.split("(?<=\\G.{2})");
+		String[] endDate = new String[3];
+
+		endDate[0] = date.substring(0, 2);
+		endDate[1] = date.substring(2, 4);
+		endDate[2] = date.substring(4, 8);
+		
 		int[] intEndDate = new int[3];
 		String updatedDate = "";
 		
@@ -122,12 +118,11 @@ public class Delete {
 		}
 
 		if ((intEndDate[0] - 1) == 0) {
-			if ((intEndDate[1] - 1) < 0) {
+			if ((intEndDate[1] - 1) == 0) {
 				intEndDate[2]--;
 				intEndDate[1] = 12;
 				intEndDate[0] = 31;
 			} else {
-				intEndDate[2]--;
 				intEndDate[1] = updateMonth(intEndDate[1], intEndDate[2]);
 			}
 		} else {
@@ -137,7 +132,8 @@ public class Delete {
 		for(int dateIntCount = 0; dateIntCount < intEndDate.length; dateIntCount++) {
 			updatedDate += String.valueOf(intEndDate[dateIntCount]);
 		}
-		return date = updatedDate.toString();
+		
+		return updatedDate;
 	}
 
 	private static int updateMonth(int intEndMonth, int intEndYear) {
