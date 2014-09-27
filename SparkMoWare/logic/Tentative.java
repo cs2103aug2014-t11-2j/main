@@ -43,7 +43,7 @@ public class Tentative {
 				title += " [tentative]";
 
 				//addTask(ID, title, type, startDate, startTime, endDate, endTime, isCompletion, isOnTime)
-				tentativeAdded = AddTask.addTask(tentativeIdGenerated, title, TYPE_TENTATIVE, startDate, startTime, endDate, endTime, false, null);
+				tentativeAdded = AddAssignment.addAssignment(tentativeIdGenerated, title, TYPE_TENTATIVE, startDate, startTime, endDate, endTime, false, null);
 			}
 			return tentativeAdded;
 		}

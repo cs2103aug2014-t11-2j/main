@@ -19,15 +19,15 @@ public class SparkMoVare {
 	protected static final String MESSAGE_ADDED = "added to %1$s: \"%2$s\"";
 	protected static final String MESSAGE_DELETED = "deleted from %1$s: \"%2$s\"";
 	protected static final String MESSAGE_CLEARED = "all content deleted from %1$s";
-	protected static final String MESSAGE_EMPTY = "%1$s is empty";
 	protected static final String MESSAGE_EDITED = "content has already been edited";
 	
 	protected static final String MESSAGE_DOES_NOT_EXISTS = "%1$s does not exists";
-	protected static final String MESSAGE_INVALID_FORMAT = "Invalid Format";
 	protected static final String MESSAGE_NO_TITLE = "Title is blank";
 	protected static final String MESSAGE_NOTHING_COMPLETED = "Nothing has been completed";
 	protected static final String MESSAGE_FORMAT_PROMPT = "Please type the %1$s again: ";
+	protected static final String MESSAGE_EMPTY = "%1$s is empty";	
 
+	protected static final String MESSAGE_INVALID_FORMAT = "Invalid Format";	
 	protected static final String MESSAGE_INVALID_SEARCH_PARAMETER = "Invalid search parameter entered";
 
 	protected static final String MESSAGE_STORAGE_FILE_ERROR = "Exception encountered while initalising the Storage file";
@@ -62,13 +62,13 @@ public class SparkMoVare {
 	 */
 
 	enum CommandType {
-		ADD_TASK, EDIT_TASK, DELETE_TASK, TENTATIVE, CONFIRM, SORT, SEARCH, 
+		ADD, EDIT, DELETE, TENTATIVE, CONFIRM, SORT, SEARCH, 
 		CLEAR, UNDO, REDO, STATISTIC, EXIT, INVALID 
 	}
 
 	//Fundamentally the same as CommandType, but without single word commands 
 	enum RefinementType {
-		ADD_TASK, EDIT_TASK, DELETE_TASK, TENTATIVE, CONFIRM, SORT, SEARCH, 
+		ADD, EDIT, DELETE, TENTATIVE, CONFIRM, SORT, SEARCH, 
 		CLEAR, INVALID, OTHERS
 	}
 
@@ -182,15 +182,15 @@ public class SparkMoVare {
 		refinedUserInput[0] = userInputArray[0];
 		
 		switch(getRefinementType(userInput)) {
-		case ADD_TASK:
+		case ADD:
 			userInputAdd(userInputArray);
 			break;
 			
-		case EDIT_TASK:
+		case EDIT:
 			userInputEdit(userInputArray);
 			break;
 			
-		case DELETE_TASK:
+		case DELETE:
 			userInputDelete(userInputArray);
 			break;
 			
@@ -239,7 +239,7 @@ public class SparkMoVare {
 			if (userInputArray.length < 2) {
 				return RefinementType.INVALID;
 			}
-			return RefinementType.ADD_TASK;
+			return RefinementType.ADD;
 			
 		} else if (refinement.equalsIgnoreCase("confirm")) {
 			if (userInputArray.length < 2) {
@@ -251,7 +251,7 @@ public class SparkMoVare {
 			if (userInputArray.length < 2) {
 				return RefinementType.INVALID;
 			}
-			return RefinementType.DELETE_TASK;
+			return RefinementType.DELETE;
 			
 		} else if (refinement.equalsIgnoreCase("search")) {
 			if (userInputArray.length < 2) {
@@ -260,10 +260,10 @@ public class SparkMoVare {
 			return RefinementType.SEARCH;
 			
 		} else if (refinement.equalsIgnoreCase("edit")) {
-			if (userInputArray.length < 2){
+			if (userInputArray.length < 4){
 				return RefinementType.INVALID;
 			}
-			return RefinementType.EDIT_TASK;
+			return RefinementType.EDIT;
 			
 		} else if (refinement.equalsIgnoreCase("clear")) { 
 			return RefinementType.CLEAR;
@@ -337,8 +337,8 @@ public class SparkMoVare {
 		boolean leapYear = false;
 		
 		int day = date / 10000;
-		int month = (date / 10000) % 100;
-		int year = date % 10000;
+		int month = (date % 10000) / 100;
+		int year = date % 100;
 
 		if(year % 4 == 0) {
 			leapYear = true;
@@ -601,15 +601,16 @@ public class SparkMoVare {
 		}
 		
 		switch (command) {
-		case ADD_TASK:
-			return AddTask.addTask(refinedUserInput[1], refinedUserInput[2], Integer.parseInt(refinedUserInput[7]),
+		case ADD:
+			return AddAssignment.addAssignment(refinedUserInput[1], refinedUserInput[2], Integer.parseInt(refinedUserInput[7]),
 					refinedUserInput[3], refinedUserInput[4], refinedUserInput[5], refinedUserInput[6], 
 					false, null);
 			
-		case EDIT_TASK:
-			EditTask.editTask(refinedUserInput);
+		case EDIT:
+			EditAssignment.editAssignment(refinedUserInput);
+			break;
 
-		case DELETE_TASK:
+		case DELETE:
 			return Delete.delete(refinedUserInput[1]);
 
 		case TENTATIVE:
@@ -657,44 +658,18 @@ public class SparkMoVare {
 	}
 
 	// Returns commandType back to the system before executing the logics
-	public static CommandType getCommandType(String userInput) {
-		
-		String[] userInputArray = userInput.split(" ");
-		String command;
-		
-		if (userInputArray.length < 1) {
-			return CommandType.INVALID;
-		} else if (userInputArray.length > 1) {
-			command = userInputArray[0];
-		} else {
-			command = userInput;
-		}
+	public static CommandType getCommandType(String command) {
 
 		if (command.equalsIgnoreCase("add")) {
-			if (userInputArray.length < 2) {
-				return CommandType.INVALID;
-			}
-			return CommandType.ADD_TASK;
+			return CommandType.ADD;
 		} else if (command.equalsIgnoreCase("confirm")) {
-			if (userInputArray.length < 2) {
-				return CommandType.INVALID;
-			}
 			return CommandType.CONFIRM;
 		} else if (command.equalsIgnoreCase("delete")) {
-			if (userInputArray.length < 2) {
-				return CommandType.INVALID;
-			}
-			return CommandType.DELETE_TASK;
+			return CommandType.DELETE;
 		} else if (command.equalsIgnoreCase("search")) {
-			if (userInputArray.length < 2) {
-				return CommandType.INVALID;
-			}
 			return CommandType.SEARCH;
 		} else if (command.equalsIgnoreCase("edit")) {
-			if (userInputArray.length < 2) {
-				return CommandType.INVALID;
-			}
-			return CommandType.EDIT_TASK;
+			return CommandType.EDIT;
 		} else if (command.equalsIgnoreCase("clear")) {
 			return CommandType.CLEAR;
 		} else if (command.equalsIgnoreCase("sort")) {

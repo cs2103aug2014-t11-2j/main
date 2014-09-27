@@ -9,16 +9,16 @@ import java.util.LinkedList;
  * This edit method will edit any part of the assignment requested by the user
  * It will return to the user whether if the assignment has been edited
  */
-public class EditTask {
+public class EditAssignment {
 
-	protected static String editTask(String[] refinedUserInput) {
+	protected static String editAssignment(String[] refinedUserInput) {
 
 		LinkedList<Assignment> idFound = new LinkedList<Assignment>();
 		idFound = SearchAll.searchAll(refinedUserInput[1]);
 
 		if(idFound.size() == 0) {
 			
-			String toUser = String.format(SparkMoVare.MESSAGE_DOES_NOT_EXISTS, "Serial Number" + refinedUserInput[1]);
+			String toUser = String.format(SparkMoVare.MESSAGE_DOES_NOT_EXISTS, "Serial Number " + refinedUserInput[1]);
 			
 			SparkMoVare.printToUser(toUser);
 

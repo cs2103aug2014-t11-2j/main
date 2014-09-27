@@ -8,10 +8,10 @@ import java.util.*;
  * it will be a appointment
  * Assignment will be added to the buffer according to the date of creation
  */
-public class AddTask {
+public class AddAssignment {
 
 	// Add tasks and appointment into the system.
-	public static String addTask(String id, String title, int type,
+	public static String addAssignment(String id, String title, int type,
 			String startDate, String startTime, String endDate, String endTime,
 			boolean isDone, Vector<String> tag) {
 
