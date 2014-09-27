@@ -1,20 +1,16 @@
 package logic;
 
-<<<<<<< HEAD
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Scanner;
-import java.util.GregorianCalendar;
 
-=======
 /*
  * Prompt the user for a valid date
  * Check for date validity with the format <ddmmyyyy>
  * and
  * Check if the given date exists
  */
->>>>>>> dee22b8d549482c1fa434bc42f335a0f22c08a5f
+
 public class DateLocal {
 	
 	protected static String determineDate(String inputDate) {

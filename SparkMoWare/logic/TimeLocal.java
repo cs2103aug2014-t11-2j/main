@@ -1,18 +1,15 @@
 package logic;
 
-<<<<<<< HEAD
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.Scanner;
 
-=======
 /*
  * This is to check time format and its validity
  * Prompt the user until the user input the correct format <hhmm>
  */
->>>>>>> dee22b8d549482c1fa434bc42f335a0f22c08a5f
 public class TimeLocal {
 	
 	public static String determineTime(String inputTime) {
@@ -54,7 +51,7 @@ public class TimeLocal {
 		}
 		return timeExist;
 	}
-<<<<<<< HEAD
+
 
 	protected static String timeString(){
 		DateFormat dateFormat = new SimpleDateFormat("HHmm");
@@ -62,7 +59,4 @@ public class TimeLocal {
 		
 		return dateFormat.format(todayDate);
 	}
-	
-=======
->>>>>>> dee22b8d549482c1fa434bc42f335a0f22c08a5f
 }
