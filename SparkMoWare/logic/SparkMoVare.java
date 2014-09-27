@@ -192,11 +192,11 @@ public class SparkMoVare {
 			break;
 			
 		case UNDO:
-			redoUndo.undo();
+			RedoUndo.undo();
 			break;
 
 		case REDO:
-			redoUndo.redo();
+			RedoUndo.redo();
 			break;
 
 		case EXIT:
