@@ -3,13 +3,16 @@ package logic;
 import java.util.*;
 
 /*
- * Errors are all related to buffer.
+ * Able to search for 
+ * ID, Date, Time, Completion and OnTime and Title
+ * 
+ * It will return a linkedlist back to the system
  */
 public class SearchAll {
 
 	private static final int ID_FORMAT_LENGTH = 12;
 	private static final int TIME_FORMAT_LENGTH = 4;
-	private static final int DATE_FORMAT_LENGTH = 6;
+	private static final int DATE_FORMAT_LENGTH = 8;
 
 	private static int listCount;
 
@@ -146,8 +149,8 @@ public class SearchAll {
 						}
 					}
 				}
-			}        
+			}
 		}
 		return keysFound;
-	}    
+	}
 }

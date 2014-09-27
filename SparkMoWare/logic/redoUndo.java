@@ -2,16 +2,22 @@ package logic;
 
 public class redoUndo {
 	
+	protected static final String MESSAGE_UNABLE_TO_REDO = "Error: Unable to redo";
+	protected static final String MESSAGE_UNABLE_TO_UNDO = "Error: Unable to undo";
+	
+	protected static final String MESSAGE_REDO = "Forward action has been reverted";
+	protected static final String MESSAGE_UNDO = "Last action has been reverted";
+	
 	// undo using stack, can be done before stack overflows
 	public static String undo() {
 
 		if (SparkMoVare.actionHistory.empty()) {
-			return "Undo Error, no moves to undo";
+			return MESSAGE_UNABLE_TO_UNDO;
 		} else {
 			SparkMoVare.actionFuture.push(SparkMoVare.actionHistory.pop());
 			SparkMoVare.buffer = SparkMoVare.actionHistory.peek();
 			
-			return "Last action has been undo";
+			return MESSAGE_UNDO;
 		}
 	}
 
@@ -19,12 +25,12 @@ public class redoUndo {
 	public static String redo() {
 
 		if (SparkMoVare.actionFuture.empty()) {
-			return "Redo Error, no moves to redo";
+			return MESSAGE_UNABLE_TO_REDO;
 		} else {
 			SparkMoVare.actionHistory.push(SparkMoVare.actionFuture.pop());
 			SparkMoVare.buffer = SparkMoVare.actionHistory.peek();
 			
-			return "Last action has been redo";
+			return MESSAGE_REDO;
 		}
 	}
 }

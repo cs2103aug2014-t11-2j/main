@@ -2,9 +2,13 @@ package logic;
 
 import java.util.*;
 
+/* 
+ * Statistic is to show the user the efficiency rate of the user
+ * From the statistic, we will encourage user with some quotes (shown in the GUI)
+ */
 public class Statistic {
 	
-	private static LinkedList<Assignment> temp = new LinkedList<Assignment>();
+	private static LinkedList<Assignment> required = new LinkedList<Assignment>();
 	
 	protected static String getStats() {
 		
@@ -16,21 +20,23 @@ public class Statistic {
 		} else if(isOnTime == 0) {
 			return SparkMoVare.MESSAGE_NOTHING_COMPLETED + " on time";
 		} else {
-			return Integer.toString((isOnTime/completed) * 100);
+			String precentageOnTime = Integer.toString((isOnTime/completed) * 100);
+			
+			return precentageOnTime;
 		}
 	}
 	
 	private static int getCompleted() {
 		
-		temp = SearchAll.searchAll("completed");
+		required = SearchAll.searchAll("completed");
 		
-		return temp.size();
+		return required.size();
 	}
 
 	private static int getIsOnTime() {
 
-		temp = SearchAll.searchAll("isontime");
+		required = SearchAll.searchAll("isontime");
 		
-		return temp.size();
+		return required.size();
 	}
 }

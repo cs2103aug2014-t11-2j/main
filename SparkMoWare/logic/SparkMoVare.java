@@ -20,7 +20,8 @@ public class SparkMoVare {
 	protected static final String MESSAGE_DELETED = "deleted from %1$s: \"%2$s\"";
 	protected static final String MESSAGE_CLEARED = "all content deleted from %1$s";
 	protected static final String MESSAGE_EMPTY = "%1$s is empty";
-
+	protected static final String MESSAGE_EDITED = "content has already been edited";
+	
 	protected static final String MESSAGE_DOES_NOT_EXISTS = "%1$s does not exists";
 	protected static final String MESSAGE_INVALID_FORMAT = "Invalid Format";
 	protected static final String MESSAGE_NO_TITLE = "Title is blank";

@@ -3,7 +3,7 @@ package logic;
 import java.util.*;
 
 /*
- * This will delete all the tentative
+ * This will delete all the tentative with the same SIN
  * and save the confirmed one with new SIN
  */
 public class ConfirmTentative {
@@ -24,6 +24,10 @@ public class ConfirmTentative {
 			}
 		}
 		Delete.delete(tentativeNeeded.get(1).getId());
+		
+		String newTitle = confirmAssignment.getTitle().substring(0, confirmAssignment.getTitle().lastIndexOf(' '));
+		
+		confirmAssignment.setTitle(newTitle);
 		
 		return confirmAssignment;
 	}

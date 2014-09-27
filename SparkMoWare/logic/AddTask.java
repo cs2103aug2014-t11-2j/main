@@ -2,6 +2,12 @@ package logic;
 
 import java.util.*;
 
+/*
+ * If the startDate and startTime = null, it will be task
+ * else
+ * it will be a appointment
+ * Assignment will be added to the buffer according to the date of creation
+ */
 public class AddTask {
 
 	// Add tasks and appointment into the system.
@@ -22,12 +28,13 @@ public class AddTask {
 		// newAssignment.setDescription(description);
 		// newAssignment.setAlarm(alarm);
 		newAssignment.setTag(tag);
-		System.out.println(newAssignment.toString());
+		
+		System.out.println(newAssignment.toString()); // testing
 
-		// adding task to buffer according to date
 		for (int bufferCount = 0; bufferCount < SparkMoVare.buffer.size(); bufferCount++) {
 			if (Comparator.dateComparator(newAssignment.getEndDate(),
 					SparkMoVare.buffer.get(bufferCount).getEndDate()) == 1) {
+				
 				SparkMoVare.buffer.add(bufferCount, newAssignment);
 
 				return newAssignment.toString();
