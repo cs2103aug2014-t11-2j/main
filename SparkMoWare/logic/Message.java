@@ -11,7 +11,6 @@ public class Message {
 	protected static final String ADDED = "added to %1$s: \"%2$s\"";
 	protected static final String EDITED = "content has already been edited";
 	
-	
 	protected static final String DELETED = "deleted from %1$s: \"%2$s\"";
 	protected static final String DELETE_ON = "all content(s) of date %1$s is(are) deleted";
 	protected static final String DELETE_BEFORE = "all content(s) before date %1$s is(are) deleted";
@@ -29,9 +28,8 @@ public class Message {
 	
 	protected static final String UNABLE_TO_REDO = "Error: Unable to redo";
 	protected static final String UNABLE_TO_UNDO = "Error: Unable to undo";
-	
 
-	
+	protected static final String INVALID_COMMAND = "Invalid Commad Issued";
 	protected static final String INVALID_FORMAT = "Invalid Format";	
 	protected static final String INVALID_SEARCH_PARAMETER = "Invalid search parameter entered";
 

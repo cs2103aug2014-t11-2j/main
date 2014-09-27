@@ -42,7 +42,6 @@ public class SparkMoVare {
 	 *					   sort and search by date, serial number, etc. 
 	 */
 	public static Object SparkMoVare;
-	public static Object SparkMoVare;
 
 	enum CommandType {
 		ADD, EDIT, DELETE, TENTATIVE, CONFIRM, SORT, SEARCH, 

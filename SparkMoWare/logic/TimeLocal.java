@@ -1,5 +1,9 @@
 package logic;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Scanner;
 
 public class TimeLocal {
@@ -43,5 +47,11 @@ public class TimeLocal {
 		return true;
 	}
 
-
+	protected static String timeString(){
+		DateFormat dateFormat = new SimpleDateFormat("HHmm");
+		Date todayDate = new GregorianCalendar().getTime();
+		
+		return dateFormat.format(todayDate);
+	}
+	
 }

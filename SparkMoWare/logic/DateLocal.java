@@ -1,6 +1,10 @@
 package logic;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Scanner;
+import java.util.GregorianCalendar;
 
 public class DateLocal {
 	
@@ -30,7 +34,6 @@ public class DateLocal {
 		}
 	}
 	
-	// date format is in ddmmyyyy
 	protected static boolean dateExists(int date) {
 		
 		boolean leapYear = false;
@@ -57,4 +60,12 @@ public class DateLocal {
 		}
 		return false;	
 	}
+
+	protected static String dateString(){
+		DateFormat dateFormat = new SimpleDateFormat("ddMMyyyy");
+		Date todayDate = new Date();
+		
+		return dateFormat.format(todayDate);
+	}
+	
 }
