@@ -12,8 +12,8 @@ public class Statistic {
 	
 	protected static String getStats() {
 		
-		int completed = getCompleted(); //stub
-		int isOnTime = getIsOnTime(); //stub
+		int completed = getCompleted(); 
+		int isOnTime = getIsOnTime();
 		
 		if(completed == 0) {
 			return Message.NOTHING_COMPLETED;

@@ -26,7 +26,6 @@ public class Comparator {
 		return false;	
 	}
 
-	// compares id with nextId, return 1 if dateA is bigger else return -1 the format is 25092014
 	protected static int dateComparator(String dateA, String dateB) {
 
 		int checkDate = smaller;

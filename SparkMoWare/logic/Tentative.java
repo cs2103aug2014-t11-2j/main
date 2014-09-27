@@ -13,9 +13,7 @@ public class Tentative {
 	public static final int TYPE_TENTATIVE = 2;
 
 	public static String addTentative(String numOfTentative) {
-		
-		String tentativeAdded = "";
-		
+				
 		int tentativeNum = Integer.parseInt(numOfTentative);
 		String tentativeIdGenerated = Id.serialNumGen();
 
@@ -43,10 +41,9 @@ public class Tentative {
 				title += " [tentative]";
 
 				//addTask(ID, title, type, startDate, startTime, endDate, endTime, isCompletion, isOnTime)
-				tentativeAdded = Add.addAssignment(tentativeIdGenerated, title, TYPE_TENTATIVE, startDate, startTime, endDate, endTime, false, null);
+				Add.addAssignment(tentativeIdGenerated, title, TYPE_TENTATIVE, startDate, startTime, endDate, endTime, false, null);
 			}
-			return tentativeAdded;
 		}
-		return tentativeAdded;
+		return Message.TENTATIVE_ADDED;
 	}
 }

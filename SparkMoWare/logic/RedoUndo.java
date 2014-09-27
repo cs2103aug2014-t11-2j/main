@@ -5,7 +5,6 @@ package logic;
  */
 public class RedoUndo {
 
-	// undo using stack, can be done before stack overflows
 	public static String undo() {
 
 		if (SparkMoVare.actionHistory.empty()) {
@@ -18,7 +17,6 @@ public class RedoUndo {
 		}
 	}
 
-	// re-do using stack, can be done before stack overflows
 	public static String redo() {
 
 		if (SparkMoVare.actionFuture.empty()) {

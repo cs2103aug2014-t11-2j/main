@@ -3,14 +3,13 @@ package logic;
 import java.util.*;
 
 /*
- * If the startDate and startTime = null, it will be task
+ * If the startDate and startTime is empty, it will be created as task
  * else
- * it will be a appointment
+ * it will be created as appointment
  * Assignment will be added to the buffer according to the date of creation
  */
 public class Add {
 
-	// Add tasks and appointment into the system.
 	public static String addAssignment(String id, String title, int type,
 			String startDate, String startTime, String endDate, String endTime,
 			boolean isDone, Vector<String> tag) {

@@ -1,47 +1,48 @@
 package logic;
 
-import java.util.Scanner;
-
+/*
+ * This is to check time format and its validity
+ * Prompt the user until the user input the correct format <hhmm>
+ */
 public class TimeLocal {
-	
-	protected static Scanner scanner = new Scanner(System.in);
 	
 	public static String determineTime(String inputTime) {
 		
-		while(!timeFormatValid(inputTime)){//will continuously prompt user for correct time format currently no way to exit
+		while(!timeFormatValid(inputTime)){
 			
 			Message.printToUser(Message.INVALID_FORMAT);
 			Message.printToUser(String.format(Message.FORMAT_PROMPT, "time"));
-			inputTime = scanner.nextLine();			
+			inputTime = SparkMoVare.scanner.nextLine();			
 		}
 		return inputTime;
 	}
 
 	public static boolean timeFormatValid(String time) {
-
+		
+		boolean timeValidity = true;
+		
 		if(time.length() != 4) {
-			return false;
-		} else if(time.matches(".*\\D+.*")) {
-			return false;
-		} else if(!timeExists(Integer.parseInt(time))) { //hex or decimal format should not matter
-			return false;
+			timeValidity = false;
+		} else if(!time.matches("[0-9]+")) {
+			timeValidity = false;
+		} else if(!timeExists(Integer.parseInt(time))) {
+			timeValidity = false;
 		}
-		return true;
+		return timeValidity;
 	}
 	
-	// Time format is hhmm
 	public static boolean timeExists(int time) {
+		
+		boolean timeExist = false;
 		
 		int min = time % 100;
 		int hr = time / 100;
-
-		if(min > 59) {
-			return false;
-		} else if(hr > 23) {
-			return false;
+		
+		if(min <= 59 && min >= 0) {
+			timeExist = true;
+		} else if(hr <= 23 && hr >= 0) {
+			timeExist = true;
 		}
-		return true;
+		return timeExist;
 	}
-
-
 }

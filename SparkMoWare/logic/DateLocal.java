@@ -1,10 +1,12 @@
 package logic;
 
-import java.util.Scanner;
-
+/*
+ * Prompt the user for a valid date
+ * Check for date validity with the format <ddmmyyyy>
+ * and
+ * Check if the given date exists
+ */
 public class DateLocal {
-	
-	protected static Scanner scanner = new Scanner(System.in);
 	
 	protected static String determineDate(String inputDate) {
 		
@@ -12,32 +14,33 @@ public class DateLocal {
 			
 			Message.printToUser(Message.INVALID_FORMAT);
 			Message.printToUser(String.format(Message.FORMAT_PROMPT, "date"));
-			inputDate = scanner.nextLine();
+			inputDate = SparkMoVare.scanner.nextLine();
 		}
 		return inputDate;
 	}
 
 	protected static boolean dateFormatValid(String date) {
 		
-		if(date.length() != 6) {
-			return false;
-		} else if(date.matches(".*\\D+.*")) { //not sure if this checks if there are any chars in the input
-			return false;
+		boolean validDateFormat = true;
+		
+		if(date.length() != 8) {
+			validDateFormat = false;
+		} else if(!date.matches("[0-9]+")) {
+			validDateFormat = false;
 		} else if(!dateExists(Integer.parseInt(date))) {
-			return false;
-		} else {
-			return true;
-		}
+			validDateFormat = false;
+		} 
+		return validDateFormat;
 	}
 	
-	// date format is in ddmmyyyy
 	protected static boolean dateExists(int date) {
 		
 		boolean leapYear = false;
+		boolean dateExist = false;
 		
-		int day = date / 10000;
-		int month = (date % 10000) / 100;
-		int year = date % 100;
+		int day = date / 1000000;
+		int month = (date / 10000) % 100;
+		int year = date % 10000;
 
 		if(year % 4 == 0) {
 			leapYear = true;
@@ -45,16 +48,15 @@ public class DateLocal {
 		if(month > 12 || month < 1) {
 			return false;
 		}
-
 		if(day < 29) {
-			return true;
+			dateExist = true;
 		} else if(day == 29 && month == 02 && leapYear) {
-			return true;
-		} else if(day == 30 && month != 2){
-			return true;
-		} else if(day == 31 && month != 2  && month != 4 && month != 6 && month != 9 && month != 11) {
-			return true;
+			dateExist = true;
+		} else if(day <= 30 && month != 2){
+			dateExist = true;
+		} else if(day <= 31 && month != 2  && month != 4 && month != 6 && month != 9 && month != 11) {
+			dateExist = true;
 		}
-		return false;	
+		return dateExist;	
 	}
 }
