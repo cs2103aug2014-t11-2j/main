@@ -9,8 +9,13 @@ import java.util.LinkedList;
  * This edit method will edit any part of the assignment requested by the user
  * It will return to the user whether if the assignment has been edited
  */
-public class EditAssignment {
-
+public class Edit {
+	
+	//Enum for determining which assignment attribute is being edited
+	enum EditType {
+		TITLE, START_DATE, START_TIME, END_DATE, END_TIME, INVALID, PRIORITY, DONE
+	}
+	
 	protected static String editAssignment(String[] refinedUserInput) {
 
 		LinkedList<Assignment> idFound = new LinkedList<Assignment>();
@@ -18,16 +23,16 @@ public class EditAssignment {
 
 		if(idFound.size() == 0) {
 			
-			String toUser = String.format(SparkMoVare.MESSAGE_DOES_NOT_EXISTS, "Serial Number " + refinedUserInput[1]);
+			String toUser = String.format(Message.DOES_NOT_EXISTS, "Serial Number " + refinedUserInput[1]);
 			
-			SparkMoVare.printToUser(toUser);
+			Message.printToUser(toUser);
 
 			return toUser;//don't do anything since not ID does not exists
 		}
 
 		int bufferPosition = SparkMoVare.getBufferPosition(refinedUserInput[1]);
 
-		switch(SparkMoVare.getEditType(refinedUserInput[8])) {
+		switch(getEditType(refinedUserInput[8])) {
 		
 		case TITLE:
 			SparkMoVare.buffer.get(bufferPosition).setTitle(refinedUserInput[2]);
@@ -76,11 +81,32 @@ public class EditAssignment {
 			break;
 			
 		case INVALID:
-			SparkMoVare.printToUser(SparkMoVare.MESSAGE_INVALID_SEARCH_PARAMETER);
+			Message.printToUser(Message.INVALID_SEARCH_PARAMETER);
 
 		default:
-			SparkMoVare.printToUser(SparkMoVare.MESSAGE_INVALID_SEARCH_PARAMETER);
+			Message.printToUser(Message.INVALID_SEARCH_PARAMETER);
 		}
-		return SparkMoVare.MESSAGE_EDITED; //This is a stub
+		return Message.EDITED; //This is a stub
 	}
+
+	protected static EditType getEditType(String attributeName) { //ASSUMPTION: user input attribute to change as a single word eg startdate
+		
+		if (attributeName.length() < 1) {
+			return EditType.INVALID;
+		}
+		if (attributeName.equalsIgnoreCase("title")) {
+			return EditType.TITLE;
+		} else if (attributeName.equalsIgnoreCase("startdate")) {
+			return EditType.START_DATE;
+		} else if (attributeName.equalsIgnoreCase("starttime")) {
+			return EditType.START_TIME;
+		} else if (attributeName.equalsIgnoreCase("enddate")) {
+			return EditType.END_DATE;
+		} else if (attributeName.equalsIgnoreCase("endtime")) {
+			return EditType.END_TIME;
+		} else {
+			return EditType.INVALID;
+		}
+	}
+
 }

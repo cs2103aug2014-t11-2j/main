@@ -38,7 +38,7 @@ public class SearchAll {
 		}
 
 		if(stringsFound.isEmpty()) {
-			SparkMoVare.printToUser(SparkMoVare.MESSAGE_INVALID_SEARCH_PARAMETER);
+			Message.printToUser(Message.INVALID_SEARCH_PARAMETER);
 
 			return stringsFound;
 		} else {

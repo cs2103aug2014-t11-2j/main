@@ -17,11 +17,6 @@ public class Delete {
 		DELETEALL_ON, DELETEALL_BEFORE, DELETEALL_BETWEEN;
 	}
 	
-	private static final String MESSAGE_DELETE_ON = "all content(s) of date %1$s is(are) deleted";
-	private static final String MESSAGE_DELETE_BEFORE = "all content(s) before date %1$s is(are) deleted";
-	private static final String MESSAGE_DELETE_BETWEEN = "all content(s) from date %1$s to date %2$s is(are) deleted";
-	private static final String MESSAGE_DELETE = "all content deleted from %1$s";
-	
 	protected static String delete(String id) {
 		
 		LinkedList<Assignment> idFound = new LinkedList<Assignment>();
@@ -32,7 +27,7 @@ public class Delete {
 		nullAssignment.setNumAppointment(nullAssignment.getNumAppointment() - 1 ); 
 		
 		if(idFound.size() == 0) {
-			return String.format(SparkMoVare.MESSAGE_DOES_NOT_EXISTS, "Serial Number " + id);
+			return String.format(Message.DOES_NOT_EXISTS, "Serial Number " + id);
 		} else {
 			String stringDeleted;
 			int bufferPosition = SparkMoVare.getBufferPosition(id);
@@ -42,7 +37,7 @@ public class Delete {
 			
 			nullAssignment.setNumAppointment(nullAssignment.getNumAppointment() - 1);
 			
-			return String.format(SparkMoVare.MESSAGE_DELETED, SparkMoVare.filePath, stringDeleted);
+			return String.format(Message.DELETED, SparkMoVare.filePath, stringDeleted);
 		}
 	}
 
@@ -52,20 +47,20 @@ public class Delete {
 
 		case DELETEALL_ON:
 			deleteOn(endDate);
-			return String.format(MESSAGE_DELETE_ON, endDate);
+			return String.format(Message.DELETE_ON, endDate);
 
 		case DELETEALL_BEFORE:
 			startDate = SparkMoVare.buffer.getFirst().getEndDate();
 			deleteBetween(endDate, startDate);
-			return String.format(MESSAGE_DELETE_BEFORE, endDate);
+			return String.format(Message.DELETE_BEFORE, endDate);
 
 		case DELETEALL_BETWEEN:
 			deleteBetween(endDate, startDate);
-			return String.format(MESSAGE_DELETE_BETWEEN, endDate, startDate);
+			return String.format(Message.DELETE_BETWEEN, endDate, startDate);
 
 		default:
 			SparkMoVare.buffer.clear();
-			return String.format(MESSAGE_DELETE, SparkMoVare.filePath);
+			return String.format(Message.DELETE, SparkMoVare.filePath);
 		}
 	}
 

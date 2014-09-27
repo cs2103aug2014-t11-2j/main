@@ -8,7 +8,7 @@ import java.util.*;
  * it will be a appointment
  * Assignment will be added to the buffer according to the date of creation
  */
-public class AddAssignment {
+public class Add {
 
 	// Add tasks and appointment into the system.
 	public static String addAssignment(String id, String title, int type,

@@ -16,9 +16,9 @@ public class Statistic {
 		int isOnTime = getIsOnTime(); //stub
 		
 		if(completed == 0) {
-			return SparkMoVare.MESSAGE_NOTHING_COMPLETED;
+			return Message.NOTHING_COMPLETED;
 		} else if(isOnTime == 0) {
-			return SparkMoVare.MESSAGE_NOTHING_COMPLETED + " on time";
+			return Message.NOTHING_COMPLETED + " on time";
 		} else {
 			String precentageOnTime = Integer.toString((isOnTime/completed) * 100);
 			
