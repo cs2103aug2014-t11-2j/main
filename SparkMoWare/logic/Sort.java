@@ -1,28 +1,36 @@
 package logic;
 
 import logic.Assignment;
-
 import java.util.LinkedList;
 
+/*
+ * This is to sort out differently, as per user request
+ * Can be either 
+ * Deadlines, task, appointment or ID
+ */
 public class Sort {
 
 	enum SortType {
 		DEADLINES, TASKS, APPOINTMENTS, ID;
 	}
-
+	
+	private static final int TYPE_TASKS = 0;
+	private static final int TYPE_APPOINTMENT = 1;
+	private static final int TYPE_DEADLINES = 3;
+	
 	protected static LinkedList<Assignment> sortClassify(String sortType,
 			String endDate, String startDate) {
 
-		switch (convertToSortEnum(sortType)) {
+		switch (checkSortWhat(sortType)) {
 
 		case TASKS:
-			return sort(0, endDate, startDate);
+			return sort(TYPE_TASKS, endDate, startDate);
 
 		case APPOINTMENTS:
-			return sort(1, endDate, startDate);
+			return sort(TYPE_APPOINTMENT, endDate, startDate);
 
 		case DEADLINES:
-			return sort(-1, endDate, startDate);
+			return sort(TYPE_DEADLINES, endDate, startDate);
 
 		case ID:
 			return sortId(endDate, startDate);
@@ -37,7 +45,7 @@ public class Sort {
 		}
 	}
 
-	private static SortType convertToSortEnum(String duration) {
+	private static SortType checkSortWhat(String duration) {
 
 		if (duration.length() == 9) {
 			return SortType.DEADLINES;
@@ -61,13 +69,12 @@ public class Sort {
 		LinkedList<Assignment> sortedList = new LinkedList<Assignment>();
 		sortedList = trancateList(endDate, startDate);
 
-		if (type != -1) {
+		if (type != TYPE_DEADLINES) {
 
 			for (int i = 0; i < sortedList.size(); i++) {
 				if (sortedList.get(i).getType() != type)
 					sortedList.remove(i);
 			}
-
 		}
 		return sortedList;
 	}
