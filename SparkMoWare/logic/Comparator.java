@@ -22,7 +22,10 @@ public class Comparator {
 			if (Integer.parseInt(idA.substring(8)) > Integer.parseInt(idB.substring(8))) {
 				return true;
 			}
-		}	
+		} else if(checkDate == larger){
+			return true;
+		}
+		
 		return false;
 	}
 
@@ -30,7 +33,7 @@ public class Comparator {
 
 		int checkDate = smaller;
 
-		if(dateA == dateB) {
+		if(dateA.equals(dateB)) {
 			checkDate = same;
 		} else if (Integer.parseInt(dateA.substring(4, 8)) > Integer.parseInt(dateB.substring(4, 8))) {
 			checkDate = larger;

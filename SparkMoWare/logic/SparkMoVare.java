@@ -97,6 +97,7 @@ public class SparkMoVare {
 					latestSerialNumber = lineArray[0];
 				} else {
 					if(Comparator.serialNumberComparator(lineArray[0], latestSerialNumber)) {
+
 						latestSerialNumber = lineArray[0];
 					}
 				}
