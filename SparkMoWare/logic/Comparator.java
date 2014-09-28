@@ -15,7 +15,7 @@ public class Comparator {
 	// compares id with nextId, return true if idA is bigger else return false the format is 250920140001
 	protected static boolean serialNumberComparator(String idA, String idB) {
 
-		int checkDate = dateComparator(idA.substring(0,7), idB.substring(0,7));
+		int checkDate = dateComparator(idA.substring(0,8), idB.substring(0,8));
 
 		if(checkDate == same) {
 			//check Sn

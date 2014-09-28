@@ -277,4 +277,8 @@ public class SparkMoVare {
 	public static void setLatestSerialNumber(String newSn) {
 		latestSerialNumber = newSn;
 	}
+	
+	public static String getLatestSerialNumber(){
+		return latestSerialNumber;
+	}
 }

@@ -24,12 +24,12 @@ public class Id {
 		serialNum += "0001";
 		
 		if(SparkMoVare.latestSerialNumber.isEmpty() || Comparator.serialNumberComparator(serialNum,SparkMoVare.latestSerialNumber)) {
+			SparkMoVare.setLatestSerialNumber(serialNum);
 			return serialNum;
 		} else {
-			Long Sn = Long.parseLong(SparkMoVare.latestSerialNumber);
-			System.out.println("test" + Sn.toString()); // testing
+			Long Sn = Long.parseLong(SparkMoVare.getLatestSerialNumber());
 			Sn++;
-			
+			SparkMoVare.setLatestSerialNumber(Long.toString(Sn));
 			return Long.toString(Sn);
 		}
 	}
