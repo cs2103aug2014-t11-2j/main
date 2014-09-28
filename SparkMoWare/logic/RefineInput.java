@@ -26,7 +26,7 @@ public class RefineInput {
 		Arrays.fill(SparkMoVare.refinedUserInput, null); // initialises the
 															// array for new
 															// user input
-		String[] userInputArray = userInput.split(" ");
+		String[] userInputArray = userInput.split(";");
 		SparkMoVare.refinedUserInput[0] = userInputArray[0];
 
 		switch (getRefinementType(userInput)) {
@@ -76,10 +76,10 @@ public class RefineInput {
 	protected static RefinementType getRefinementType(String userInput) {
 
 		String refinement;
-		String[] userInputArray = userInput.split(" ");
+		String[] userInputArray = userInput.split(";");
 
 		if (userInputArray.length > 1) {
-			refinement = userInput.substring(0, userInput.indexOf(' '));
+			refinement = userInput.substring(0, userInput.indexOf(';'));
 		} else {
 			refinement = userInput;
 		}
