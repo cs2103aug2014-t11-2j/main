@@ -23,11 +23,11 @@ public class Message {
 	protected static final String FORMAT_PROMPT = "Please type the %1$s again: ";
 	protected static final String EMPTY = "%1$s is empty";
 	
-	protected static final String REDO = "Forward action has been reverted";
+	protected static final String REDO = "Last action has been implemented";
 	protected static final String UNDO = "Last action has been reverted";
 	
-	protected static final String UNABLE_TO_REDO = "Error: Unable to redo";
-	protected static final String UNABLE_TO_UNDO = "Error: Unable to undo";
+	protected static final String UNABLE_TO_REDO = "Error: There are no actions to redo";
+	protected static final String UNABLE_TO_UNDO = "Error: There are no actions to undo";
 	protected static final String INVALID_COMMAND = "Invalid Commad Issued";
 
 	protected static final String INVALID_FORMAT = "Invalid Format";	

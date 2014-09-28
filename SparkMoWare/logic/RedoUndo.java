@@ -10,8 +10,9 @@ public class RedoUndo {
 		if (SparkMoVare.actionHistory.empty()) {
 			return Message.UNABLE_TO_UNDO;
 		} else {
-			SparkMoVare.actionFuture.push(SparkMoVare.actionHistory.pop());
-			SparkMoVare.buffer = SparkMoVare.actionHistory.peek();
+			SparkMoVare.actionFuture.push(SparkMoVare.actionHistory.peek());
+			SparkMoVare.buffer = SparkMoVare.actionHistory.pop();
+			SparkMoVare.saveFile(SparkMoVare.getfilePath());
 			
 			return Message.UNDO;
 		}
@@ -22,8 +23,9 @@ public class RedoUndo {
 		if (SparkMoVare.actionFuture.empty()) {
 			return Message.UNABLE_TO_REDO;
 		} else {
-			SparkMoVare.actionHistory.push(SparkMoVare.actionFuture.pop());
-			SparkMoVare.buffer = SparkMoVare.actionHistory.peek();
+			SparkMoVare.actionHistory.push(SparkMoVare.actionFuture.peek());
+			SparkMoVare.buffer = SparkMoVare.actionFuture.pop();
+			SparkMoVare.saveFile(SparkMoVare.getfilePath());
 			
 			return Message.REDO;
 		}

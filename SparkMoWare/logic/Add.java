@@ -27,8 +27,6 @@ public class Add {
 		// newAssignment.setDescription(description);
 		// newAssignment.setAlarm(alarm);
 		newAssignment.setTag(tag);
-		
-		System.out.println(newAssignment.toString()); // testing
 
 		for (int bufferCount = 0; bufferCount < SparkMoVare.buffer.size(); bufferCount++) {
 			if (Comparator.dateComparator(newAssignment.getEndDate(),

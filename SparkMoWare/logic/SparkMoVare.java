@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.Stack;
@@ -55,30 +54,30 @@ public class SparkMoVare {
 	}
 
 	public static void main(String[] args) {
-		
+
 		Message.printToUser(Message.WELCOME);
 		openFile(filePath);
 		toDoManager();
 	}
 
 	public static void openFile(String filePath) {
-		
+
 		try { // check if file exist if not create a new file with that name
 			File file = new File(filePath);
 			if (!file.exists()) {
 				file.createNewFile();
 			}
-			
+
 			FileReader fileReader = new FileReader(file);
 			BufferedReader bufferedReader = new BufferedReader(fileReader);
 			String line;
-		
-			
+
+
 			while ((line = bufferedReader.readLine())  != null ) {
-				
+
 				String lineArray[] = line.split("~");
 				Assignment temp = new Assignment();
-				
+
 				temp.setId(lineArray[0]);
 				temp.setTitle(lineArray[1]);
 				temp.setType(Integer.parseInt(lineArray[2]));
@@ -92,7 +91,7 @@ public class SparkMoVare {
 				//temp.setAlarm(Integer.parseInt(lineArray[7]));
 				// tags to be done
 				// updates the latest serial number
-				
+
 				if( latestSerialNumber.equals("")) {
 					latestSerialNumber = lineArray[0];
 				} else {
@@ -105,33 +104,37 @@ public class SparkMoVare {
 			}
 			fileReader.close();
 		} catch (IOException e) {
-			
+
 			Message.printToUser(Message.STORAGE_FILE_ERROR);
 			System.exit(SYSTEM_EXIT_ERROR);
 		}
 	}
 
 	public static void toDoManager() {
-		
+
 		while (true) {
 			Message.printToUser(Message.PROMPT);
 			RefineInput.determineUserInput(scanner.nextLine());
-			
-			executeCommand(refinedUserInput[0]);
-			actionHistory.add(buffer);
+			Message.printToUser(executeCommand(refinedUserInput[0]));
+			if (getCommandType(refinedUserInput[0])!=CommandType.UNDO &&
+					getCommandType(refinedUserInput[0]) != CommandType.REDO &&
+					getCommandType(refinedUserInput[0])!= CommandType.INVALID) {
+				actionHistory.add(buffer);
+				System.out.println("saved");
+			}
 			saveFile(filePath);
 		}
 	} 
 
 	protected static void saveFile(String filePath) {
-		
+
 		File file = new File(filePath);
 		file.delete();
-		
+
 		try {
 			FileWriter fw = new FileWriter(file.getAbsoluteFile());
 			BufferedWriter bw = new BufferedWriter(fw);
-			
+
 			for(int i = 0; i< buffer.size(); i++){
 				bw.write(buffer.get(i).toString());
 				if (i<buffer.size() - 1){
@@ -146,21 +149,21 @@ public class SparkMoVare {
 	}
 
 	public static String executeCommand(String inputCommand) {
-		
+
 		CommandType command = getCommandType(inputCommand);
-		
+
 		if (command != CommandType.UNDO && command != CommandType.REDO ) {
 			while (!actionFuture.empty()){
 				actionFuture.pop();
 			}
 		}
-		
+
 		switch (command) {
 		case ADD:
 			return Add.addAssignment(refinedUserInput[1], refinedUserInput[2], Integer.parseInt(refinedUserInput[7]),
 					refinedUserInput[3], refinedUserInput[4], refinedUserInput[5], refinedUserInput[6], 
 					false, null);
-			
+
 		case EDIT:
 			Edit.editAssignment(refinedUserInput);
 			break;
@@ -175,37 +178,35 @@ public class SparkMoVare {
 		case CONFIRM:
 			ConfirmTentative.confirmTentative(refinedUserInput[1], refinedUserInput[3], refinedUserInput[4]);
 			break;
-			
+
 		case CLEAR:
 			return Delete.deleteAll(refinedUserInput[8], refinedUserInput[5], refinedUserInput[3]);
-			
+
 		case SORT:
-	//		return Sort.sort();
-			break;
-			
-		case SEARCH:
-	//		return search();
-			break;
-			
-		case STATISTIC:
-	//		Statisics.statistic();
-			break;
-			
-		case UNDO:
-			RedoUndo.undo();
+			//		return Sort.sort();
 			break;
 
-		case REDO:
-			RedoUndo.redo();
+		case SEARCH:
+			//		return search();
 			break;
+
+		case STATISTIC:
+			//		Statisics.statistic();
+			break;
+
+		case UNDO:
+			return RedoUndo.undo();
+
+		case REDO:
+			return RedoUndo.redo();
 
 		case EXIT:
 			System.exit(SYSTEM_EXIT_NO_ERROR);
 			break;
-			
+
 		case INVALID:
 			return "Invalid Command issued!";
-			
+
 		default:
 			return "Invalid Command issued!";
 		}
@@ -261,16 +262,16 @@ public class SparkMoVare {
 	// for testing purpose
 
 	protected static int getBufferPosition(String id) {
-		
+
 		counter = 0;
 		size = buffer.size();
-		
+
 		while(counter < size && !buffer.get(counter).getId().contentEquals(id)){
 			counter++;
 		}	
 		return counter;
 	}
-	
+
 	static int getLineCount() {
 		return buffer.size();
 	}
@@ -278,8 +279,12 @@ public class SparkMoVare {
 	public static void setLatestSerialNumber(String newSn) {
 		latestSerialNumber = newSn;
 	}
-	
+
 	public static String getLatestSerialNumber(){
 		return latestSerialNumber;
+	}
+	
+	public static String getfilePath(){
+		return filePath;
 	}
 }
