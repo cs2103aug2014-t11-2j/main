@@ -66,10 +66,10 @@ public class DateLocal {
 	}
 
 	protected static String dateString(){
+		
 		DateFormat dateFormat = new SimpleDateFormat("ddMMyyyy");
 		Date todayDate = new Date();
 		
 		return dateFormat.format(todayDate);
 	}
-	
 }

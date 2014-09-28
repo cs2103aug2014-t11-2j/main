@@ -10,8 +10,6 @@ package logic;
 
 public class Tentative {
 
-	public static final int TYPE_TENTATIVE = 2;
-
 	public static String addTentative(String numOfTentative) {
 				
 		int tentativeNum = Integer.parseInt(numOfTentative);
@@ -41,7 +39,7 @@ public class Tentative {
 				title += " [tentative]";
 
 				//addTask(ID, title, type, startDate, startTime, endDate, endTime, isCompletion, isOnTime)
-				Add.addAssignment(tentativeIdGenerated, title, TYPE_TENTATIVE, startDate, startTime, endDate, endTime, false, null);
+				Add.addAssignment(tentativeIdGenerated, title, Assignment.TYPE_TENTATIVE, startDate, startTime, endDate, endTime, false, null);
 			}
 		}
 		return Message.TENTATIVE_ADDED;

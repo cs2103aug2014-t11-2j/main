@@ -23,7 +23,7 @@ public class Comparator {
 				return true;
 			}
 		}	
-		return false;	
+		return false;
 	}
 
 	protected static int dateComparator(String dateA, String dateB) {
