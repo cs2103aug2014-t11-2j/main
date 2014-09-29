@@ -35,11 +35,11 @@ public class Comparator {
 
 		if(dateA.equals(dateB)) {
 			checkDate = same;
-		} else if (Integer.parseInt(dateA.substring(4, 8)) > Integer.parseInt(dateB.substring(4, 8))) {
+		} else if (Integer.parseInt(dateA.trim().substring(4, 8)) > Integer.parseInt(dateB.trim().substring(4, 8))) {
 			checkDate = larger;
-		} else if (Integer.parseInt(dateA.substring(2, 4)) > Integer.parseInt(dateB.substring(2, 4))) {
+		} else if (Integer.parseInt(dateA.trim().substring(2, 4)) > Integer.parseInt(dateB.trim().substring(2, 4))) {
 			checkDate = larger;
-		} else if (Integer.parseInt(dateA.substring(0, 2)) > Integer.parseInt(dateB.substring(0, 2))) {
+		} else if (Integer.parseInt(dateA.trim().substring(0, 2)) > Integer.parseInt(dateB.trim().substring(0, 2))) {
 			checkDate = larger;
 		}
 		return checkDate;
@@ -49,11 +49,11 @@ public class Comparator {
 		
 		int checkTime = smaller;
 		
-		if(timeA == timeB) {
+		if(timeA.equals(timeB)) {
 			checkTime = same;
-		} else if (Integer.parseInt(timeA.substring(0, 2)) > Integer.parseInt(timeB.substring(0, 2))) {
+		} else if (Integer.parseInt(timeA.trim().substring(0, 2)) > Integer.parseInt(timeB.trim().substring(0, 2))) {
 			checkTime = larger;
-		} else if (Integer.parseInt(timeA.substring(2, 4)) > Integer.parseInt(timeB.substring(2, 4))) {
+		} else if (Integer.parseInt(timeA.trim().substring(2, 4)) > Integer.parseInt(timeB.trim().substring(2, 4))) {
 			checkTime = larger;
 		}
 		return checkTime;

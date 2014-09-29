@@ -12,7 +12,9 @@ public class RedoUndo {
 		if (SparkMoVare.actionHistory.empty()) {
 			return Message.UNABLE_TO_UNDO;
 		} else {
-			SparkMoVare.actionFuture.push(SparkMoVare.actionHistory.peek());
+			LinkedList<Assignment> newEntry = new LinkedList<Assignment>();
+			deepCopyLL(newEntry,SparkMoVare.actionHistory.peek());
+			SparkMoVare.actionFuture.push(newEntry);
 			deepCopyLL(SparkMoVare.buffer,SparkMoVare.actionHistory.pop());
 			SparkMoVare.saveFile(SparkMoVare.getfilePath());
 			
@@ -35,7 +37,7 @@ public class RedoUndo {
 	
 	private static void deepCopyLL(LinkedList<Assignment> toOverRide, LinkedList<Assignment> copyFrom) {
 		toOverRide.clear();
-		for (int i=0;i<copyFrom.size()-1;i++) {
+		for (int i=0;i<copyFrom.size();i++) {
 			toOverRide.add(i,copyFrom.get(i));
 		}
 	}
