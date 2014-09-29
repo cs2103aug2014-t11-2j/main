@@ -44,7 +44,7 @@ public class SparkMoVare {
 
 	enum CommandType {
 		ADD, EDIT, DELETE, TENTATIVE, CONFIRM, SORT, SEARCH, 
-		CLEAR, UNDO, REDO, STATISTIC, EXIT, INVALID 
+		CLEAR, UNDO, REDO, STATISTIC, EXIT, INVALID, DISPLAY 
 	}
 
 	//Fundamentally the same as CommandType, but without single word commands 
@@ -118,7 +118,8 @@ public class SparkMoVare {
 			Message.printToUser(executeCommand(refinedUserInput[0]));
 			if (getCommandType(refinedUserInput[0])!=CommandType.UNDO &&
 					getCommandType(refinedUserInput[0]) != CommandType.REDO &&
-					getCommandType(refinedUserInput[0])!= CommandType.INVALID) {
+					getCommandType(refinedUserInput[0]) != CommandType.INVALID &&
+					getCommandType(refinedUserInput[0]) != CommandType.DISPLAY) {
 				actionHistory.add(buffer);
 				System.out.println("File saved");
 			}
@@ -204,6 +205,10 @@ public class SparkMoVare {
 		case REDO:
 			return RedoUndo.redo();
 
+		case DISPLAY:
+			display();
+			break;
+
 		case EXIT:
 			System.exit(SYSTEM_EXIT_NO_ERROR);
 			break;
@@ -242,28 +247,29 @@ public class SparkMoVare {
 			return CommandType.REDO;
 		} else if (command.equalsIgnoreCase("exit")) {
 			return CommandType.EXIT;
+		} else if (command.equalsIgnoreCase("display")){
+			return CommandType.DISPLAY;
 		} else {
 			return CommandType.INVALID;
 		}		
 	}
 
-	//TODO	public static String display() {
-	//		for(int i=0; i< buffer.size(); i++){
-	//			String lineToAdd="";
-	//			lineToAdd+=String.valueOf(i+1);
-	//			lineToAdd+=". ";
-	//			lineToAdd+=buffer.get(i);
-	//			System.out.println(lineToAdd);
-	//		}
-	//
-	//		if (getLineCount()==0){
-	//			return (filePath + " is empty");
-	//		}
-	//		else{
-	//			return "";
-	//		}	
-	//	}
-	// for testing purpose
+	public static String display() {
+		for(int i=0; i< buffer.size(); i++){
+			String lineToAdd="";
+			lineToAdd+=String.valueOf(i+1);
+			lineToAdd+=". ";
+			lineToAdd+=buffer.get(i);
+			System.out.println(lineToAdd);
+		}
+
+		if (getLineCount()==0){
+			return (filePath + " is empty");
+		}
+		else{
+			return "";
+		}	
+	}
 
 	protected static int getBufferPosition(String id) {
 
@@ -287,7 +293,7 @@ public class SparkMoVare {
 	public static String getLatestSerialNumber(){
 		return latestSerialNumber;
 	}
-	
+
 	public static String getfilePath(){
 		return filePath;
 	}

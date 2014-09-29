@@ -28,16 +28,18 @@ public class Add {
 		// newAssignment.setAlarm(alarm);
 		newAssignment.setTag(tag);
 
-		for (int bufferCount = 0; bufferCount < SparkMoVare.buffer.size(); bufferCount++) {
-			if (Comparator.dateComparator(newAssignment.getEndDate(),
-					SparkMoVare.buffer.get(bufferCount).getEndDate()) == 1) {
-				
-				SparkMoVare.buffer.add(bufferCount, newAssignment);
+		if (SparkMoVare.buffer.size() > 0) {
+			for (int bufferCount = SparkMoVare.buffer.size()-1; bufferCount > 0; bufferCount--) {
+				if (Comparator.dateComparator(newAssignment.getEndDate(),
+						SparkMoVare.buffer.get(bufferCount).getEndDate()) == -1) {
 
-				return newAssignment.toString();
+					SparkMoVare.buffer.add(bufferCount, newAssignment);
+
+					return newAssignment.toString();
+				}
 			}
 		}
-		SparkMoVare.buffer.addLast(newAssignment);
+		SparkMoVare.buffer.add(newAssignment);
 
 		return newAssignment.toString();
 	}
