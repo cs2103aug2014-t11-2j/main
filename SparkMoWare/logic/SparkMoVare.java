@@ -120,7 +120,7 @@ public class SparkMoVare {
 					getCommandType(refinedUserInput[0]) != CommandType.REDO &&
 					getCommandType(refinedUserInput[0])!= CommandType.INVALID) {
 				actionHistory.add(buffer);
-				System.out.println("saved");
+				System.out.println("File saved");
 			}
 			saveFile(filePath);
 		}
@@ -129,7 +129,11 @@ public class SparkMoVare {
 	protected static void saveFile(String filePath) {
 
 		File file = new File(filePath);
-		file.delete();
+		if(file.delete()){
+			//System.out.println("yay");
+		}else{
+			System.out.println("failed");
+		}
 
 		try {
 			FileWriter fw = new FileWriter(file.getAbsoluteFile());

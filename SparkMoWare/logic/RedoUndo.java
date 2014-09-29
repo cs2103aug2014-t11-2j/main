@@ -1,5 +1,7 @@
 package logic;
 
+import java.util.LinkedList;
+
 /*
  * Use 2 different stacks to redo or undo the actions respectively
  */
@@ -11,7 +13,7 @@ public class RedoUndo {
 			return Message.UNABLE_TO_UNDO;
 		} else {
 			SparkMoVare.actionFuture.push(SparkMoVare.actionHistory.peek());
-			SparkMoVare.buffer = SparkMoVare.actionHistory.pop();
+			deepCopyLL(SparkMoVare.buffer,SparkMoVare.actionHistory.pop());
 			SparkMoVare.saveFile(SparkMoVare.getfilePath());
 			
 			return Message.UNDO;
@@ -24,10 +26,17 @@ public class RedoUndo {
 			return Message.UNABLE_TO_REDO;
 		} else {
 			SparkMoVare.actionHistory.push(SparkMoVare.actionFuture.peek());
-			SparkMoVare.buffer = SparkMoVare.actionFuture.pop();
+			deepCopyLL(SparkMoVare.buffer, SparkMoVare.actionFuture.pop());
 			SparkMoVare.saveFile(SparkMoVare.getfilePath());
 			
 			return Message.REDO;
+		}
+	}
+	
+	private static void deepCopyLL(LinkedList<Assignment> toOverRide, LinkedList<Assignment> copyFrom) {
+		toOverRide.clear();
+		for (int i=0;i<copyFrom.size()-1;i++) {
+			toOverRide.add(i,copyFrom.get(i));
 		}
 	}
 }
