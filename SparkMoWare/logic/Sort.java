@@ -18,7 +18,7 @@ public class Sort {
 	private static final int TYPE_APPOINTMENT = 1;
 	private static final int TYPE_DEADLINES = 3;
 	
-	protected static LinkedList<Assignment> sortClassify(String sortType,
+	public static LinkedList<Assignment> sortClassify(String sortType,
 			String endDate, String startDate) {
 
 		switch (checkSortWhat(sortType)) {
@@ -76,6 +76,11 @@ public class Sort {
 					sortedList.remove(i);
 			}
 		}
+		
+		for(int i=0; i<sortedList.size(); i++){
+			System.out.println(sortedList.get(i).getTitle());	
+		}
+		
 		return sortedList;
 	}
 
@@ -86,12 +91,12 @@ public class Sort {
 		trancatedList = SparkMoVare.buffer;
 
 		int lowerLimit = trancatedList.indexOf(startDate);
-		int upperLimit = trancatedList.lastIndexOf(endDate);
-
 		for (int i = 0; i < lowerLimit; i++) {
 			trancatedList.remove(i);
 		}
 
+		//cannot just search an attribute need to search the element
+		int upperLimit = trancatedList.lastIndexOf(endDate);
 		for (int j = trancatedList.size(); j > upperLimit; j--) {
 			trancatedList.remove(j);
 		}
@@ -112,6 +117,12 @@ public class Sort {
 		while (Comparator.dateComparator(endDate, startDate) != -1) {
 
 			tempList = SearchAll.searchAll(endDate);
+			//to ensure that all elements in tempList have the same endDate
+			for(int i=0; i<tempList.size(); i++){
+				if(!tempList.get(i).getEndDate().equals(endDate)){
+					tempList.remove(i);
+				}
+			}	
 			tempList = bubbleIdSort(tempList);
 
 			for (int i = 0; i < tempList.size(); i++) {
@@ -119,6 +130,7 @@ public class Sort {
 			}
 			endDate = Delete.updateDate(endDate);
 		}
+		
 		return sortedList;
 	}
 
@@ -151,43 +163,19 @@ public class Sort {
 
 	// following lines of code are for general date sort usage with an intrinsic
 	// time sort
-	protected static LinkedList<Assignment> sort(String end, String start) {
+	protected static LinkedList<Assignment> sort(String endDate, String startDate) {
 
-		String timeEnd;
-		String timeStart;
-		String dateEnd;
-		String dateStart;
-		Assignment temp;
-		Assignment temp2;
 		LinkedList<Assignment> tempList = new LinkedList<Assignment>();
 		LinkedList<Assignment> sortingList = new LinkedList<Assignment>();
 
-		// checking if input is date or time
-		if (end.length() == 4) {
-			timeEnd = end;
-
-			if (start == null) {
-				SparkMoVare.buffer.getFirst().getStartTime();
-			} else {
-				timeStart = start;
-			}
-		} else {
-			dateEnd = end;
-			if (start == null) {
-				SparkMoVare.buffer.getFirst().getStartDate();
-			} else {
-				dateStart = start;
-			}
-		}
-
 		// compare dates/timings and add into sortedList
-		while (Comparator.dateComparator(end, start) != -1) {
+		while (Comparator.dateComparator(endDate, startDate) != -1) {
 
-			tempList = SearchAll.searchAll(end);
+			tempList = SearchAll.searchAll(endDate);
 			for (int i = 0; i < tempList.size(); i++) {
 				sortingList.add(tempList.get(i));
 			}
-			end = Delete.updateDate(end);
+			endDate = Delete.updateDate(endDate);
 		}
 		return bubbleSort(sortingList);
 	}

@@ -1,19 +1,18 @@
 package junit;
 
-import static org.junit.Assert.*;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Vector;
 
+import logic.Add;
+import logic.Sort;
 import logic.SparkMoVare;
-import logic.Assignment;
 
 import org.junit.Test;
 
-public class SparkMoVareTest {
 
+public class SparkMoVareTest {
+	/*
 	@Test
 	public void test() {
 		// add status
@@ -38,7 +37,21 @@ public class SparkMoVareTest {
 		System.out.println("ddMMyyyyhhmm".substring(0,8));
 		System.out.println("ddMMyyyyhhmm".substring(8));
 	}
+	*/
+	@Test
+	public void test(){
 	
-	
-
+		Add.addAssignment("020819940001", "Task1", 0, " ", " ", "03081994", "2359", false, null);
+		Add.addAssignment("140120000001", "Task2", 0, " ", " ", "20012000", "2359", false, null);
+		Add.addAssignment("140120000002", "Task3", 0, " ", " ", "20012000", "2359", false, null);
+		Add.addAssignment("140919940001", "Appointment", 1, "14091994", "0800", "14091994", "0900", false, null);
+		Add.addAssignment("010620140001", "AppointmentConference", 1, "03062014", "0800", "05062014", "1200", false, null);
+		Add.addAssignment("010919940001", "tentativeTask", 2, " ", " ", "01091994", "1600", false, null);
+		
+		Sort.sortClassify("tasks", "31012000", "01012000");
+		
+		
+		
+	}
 }
+
