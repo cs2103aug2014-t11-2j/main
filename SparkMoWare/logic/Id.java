@@ -12,7 +12,7 @@ public class Id {
 	
 	private static final int SERIAL_LENGTH = 12;
 	
-	protected static String serialNumGen() {
+	public static String serialNumGen() {
 		
 		String serialNum = "";
 		DateFormat dateFormat = new SimpleDateFormat("ddMMyyyy");
@@ -27,10 +27,15 @@ public class Id {
 			SparkMoVare.setLatestSerialNumber(serialNum);
 			return serialNum;
 		} else {
-			Long Sn = Long.parseLong(SparkMoVare.getLatestSerialNumber());
+			DateFormat yearFormat = new SimpleDateFormat("yyyy");
+			DateFormat dayMonthFormat = new SimpleDateFormat("ddMM");
+			String newSerialNum = dayMonthFormat.format(todayDate);
+			String currentSN = yearFormat.format(todayDate) + SparkMoVare.getLatestSerialNumber().substring(8);
+			Long Sn = Long.parseLong ( currentSN );
 			Sn++;
-			SparkMoVare.setLatestSerialNumber(Long.toString(Sn));
-			return Long.toString(Sn);
+			newSerialNum += Long.toString(Sn);
+			SparkMoVare.setLatestSerialNumber(newSerialNum);
+			return newSerialNum;
 		}
 	}
 	

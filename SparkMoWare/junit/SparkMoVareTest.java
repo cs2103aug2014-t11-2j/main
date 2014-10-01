@@ -1,12 +1,8 @@
 package junit;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import logic.Add;
+import logic.Id;
 import logic.Sort;
-import logic.SparkMoVare;
 
 import org.junit.Test;
 
@@ -48,9 +44,9 @@ public class SparkMoVareTest {
 		Add.addAssignment("010620140001", "AppointmentConference", 1, "03062014", "0800", "05062014", "1200", false, null);
 		Add.addAssignment("010919940001", "tentativeTask", 2, " ", " ", "01091994", "1600", false, null);
 		
-		Sort.sortClassify("tasks", "31012000", "01012000");
+		//Sort.sortClassify("tasks", "31012000", "01012000");
 		
-		
+		System.out.println(Id.serialNumGen());
 		
 	}
 }

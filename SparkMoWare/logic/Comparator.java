@@ -37,9 +37,11 @@ public class Comparator {
 			checkDate = same;
 		} else if (Integer.parseInt(dateA.trim().substring(4, 8)) > Integer.parseInt(dateB.trim().substring(4, 8))) {
 			checkDate = larger;
-		} else if (Integer.parseInt(dateA.trim().substring(2, 4)) > Integer.parseInt(dateB.trim().substring(2, 4))) {
+			System.out.println("year of "+dateA+" > "+dateB);
+		} else if (Integer.parseInt(dateA.trim().substring(2, 4).replaceFirst("^0+(?!$)", "")) > Integer.parseInt(dateB.trim().substring(2, 4).replaceFirst("^0+(?!$)", ""))) {
 			checkDate = larger;
-		} else if (Integer.parseInt(dateA.trim().substring(0, 2)) > Integer.parseInt(dateB.trim().substring(0, 2))) {
+			System.out.println("month of "+dateA+" > "+dateB);
+		} else if (Integer.parseInt(dateA.trim().substring(0, 2).replaceFirst("^0+(?!$)", "")) > Integer.parseInt(dateB.trim().substring(0, 2).replaceFirst("^0+(?!$)", ""))) {
 			checkDate = larger;
 		}
 		return checkDate;
