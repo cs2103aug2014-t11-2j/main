@@ -13,18 +13,30 @@ public class SearchAll {
 	private static final int ID_FORMAT_LENGTH = 12;
 	private static final int TIME_FORMAT_LENGTH = 4;
 	private static final int DATE_FORMAT_LENGTH = 8;
-
+	private static final int TYPE_FORMAT_LENGTH = 1;
+	
 	private static int listCount;
 
 	private static final int IS_COMPLETED = 9;
 	private static final int IS_ON_TIME = 8;
 
+	private static final int TYPE_TASK = 0;
+	private static final int TYPE_APPOINTMENT = 1;
+	
 	protected static LinkedList<Assignment> searchAll(String userInput){
 
 		LinkedList<Assignment> stringsFound = new LinkedList<Assignment>();
 
 		if(userInput.length() >= ID_FORMAT_LENGTH) {
 			stringsFound = searchById(userInput);
+		} else if(userInput.length() == TYPE_FORMAT_LENGTH && userInput.contains("[0-9]+")) {
+			int assignmentType = Integer.parseInt(userInput);
+			
+			if(assignmentType == TYPE_TASK) {
+				stringsFound = searchByTask(assignmentType);
+			} else if (assignmentType == TYPE_APPOINTMENT) {
+				stringsFound = searchByAppointment(assignmentType);
+			}
 		} else if(userInput.length() == TIME_FORMAT_LENGTH && userInput.contains("[0-9]+")) {
 			stringsFound = searchByTime(userInput);
 		} else if(userInput.length() == DATE_FORMAT_LENGTH && userInput.contains("[0-9]+")) {
@@ -70,6 +82,32 @@ public class SearchAll {
 			}
 		}
 		return onTimeFound;
+	}
+	
+	private static LinkedList<Assignment> searchByTask(int searchTask) {
+		
+		LinkedList<Assignment> taskFound = new LinkedList<Assignment> ();
+		
+		for(listCount = 0; listCount < SparkMoVare.buffer.size(); listCount++) {
+			
+			if(SparkMoVare.buffer.get(listCount).getType() == searchTask) {
+				taskFound.add(SparkMoVare.buffer.get(listCount));
+			}
+		}
+		return taskFound;
+	}
+
+	private static LinkedList<Assignment> searchByAppointment(int searchAppointment) {
+		
+		LinkedList<Assignment> appointmentFound = new LinkedList<Assignment> ();
+		
+		for(listCount = 0; listCount < SparkMoVare.buffer.size(); listCount++) {
+			
+			if(SparkMoVare.buffer.get(listCount).getType() == searchAppointment) {
+				appointmentFound.add(SparkMoVare.buffer.get(listCount));
+			}
+		}
+		return appointmentFound;
 	}
 	
 	private static LinkedList<Assignment> searchById(String searchId) {

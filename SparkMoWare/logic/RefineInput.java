@@ -90,7 +90,7 @@ public class RefineInput {
 			return RefinementType.ADD;
 
 		} else if (refinement.equalsIgnoreCase("confirm")) {
-			if (userInputArray.length < 2) {
+			if (userInputArray.length < 6) {
 				return RefinementType.INVALID;
 			}
 			return RefinementType.CONFIRM;
@@ -290,6 +290,7 @@ public class RefineInput {
 	protected static void userInputTentative(String[] userInputArray) {
 
 		SparkMoVare.refinedUserInput[8] = validTentative(userInputArray[1]);
+		SparkMoVare.refinedUserInput[2] = userInputArray[2];
 		SparkMoVare.refinedUserInput[7] = "2";
 	}
 
@@ -311,18 +312,22 @@ public class RefineInput {
 	protected static void userInputConfirm(String[] userInputArray) {// ASSUMPTION:
 																		// array
 																		// size
-																		// is 4
+																		// is 6
 																		// in
 																		// format
-																		// <confirm><S/N><ddmmyy><hhmm>
+																		// <confirm><S/N><ddmmyy><hhmm><ddmmyy><hhmm>
 
-		if (userInputArray.length == 4) {
+		if (userInputArray.length == 6) {
 
 			SparkMoVare.refinedUserInput[1] = userInputArray[1];
 			SparkMoVare.refinedUserInput[3] = DateLocal
 					.determineDate(userInputArray[2]);
 			SparkMoVare.refinedUserInput[4] = TimeLocal
-					.determineTime(userInputArray[3]);
+					.determineTime(userInputArray[3]);			
+			SparkMoVare.refinedUserInput[5] = DateLocal
+					.determineDate(userInputArray[4]);
+			SparkMoVare.refinedUserInput[6] = TimeLocal
+					.determineTime(userInputArray[5]);
 
 		} else {
 			SparkMoVare.refinedUserInput[0] = "invalid";

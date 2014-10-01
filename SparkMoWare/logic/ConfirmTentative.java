@@ -8,16 +8,19 @@ import java.util.*;
  */
 public class ConfirmTentative {
 
-	public static Assignment confirmTentative(String serialId, String confirmDate, String confirmTime) {
+	public static Assignment confirmTentative(String serialId, String confirmStartDate, String confirmStartTime, 
+			String confirmEndDate, String confirmEndTime) {
 		
 		Assignment confirmAssignment = new Assignment();
 		
 		LinkedList<Assignment> tentativeNeeded = SearchAll.searchAll(serialId);
 		
 		for(int listCheck = 0; listCheck < tentativeNeeded.size(); listCheck++) {
-			if(tentativeNeeded.get(listCheck).getStartDate().equals(confirmDate)) {
+			if(tentativeNeeded.get(listCheck).getStartDate().equals(confirmStartDate) && 
+					tentativeNeeded.get(listCheck).getEndDate().equals(confirmEndDate)) {
 				
-				if(tentativeNeeded.get(listCheck).getStartTime().equals(confirmTime)) {
+				if(tentativeNeeded.get(listCheck).getStartTime().equals(confirmStartTime) && 
+						tentativeNeeded.get(listCheck).getEndTime().equals(confirmEndTime) ) {
 					confirmAssignment = tentativeNeeded.get(listCheck);
 					confirmAssignment.setId(Id.serialNumGen());
 				}

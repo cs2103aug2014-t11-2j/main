@@ -10,18 +10,19 @@ package logic;
 
 public class Tentative {
 
-	public static String addTentative(String numOfTentative) {
+	public static String addTentative(String numOfTentative, String tentativeTitle) {
 				
 		int tentativeNum = Integer.parseInt(numOfTentative);
 		String tentativeIdGenerated = Id.serialNumGen();
-
+		
+		tentativeTitle += " [tentative]";
+		
 		for(int tentativeCount = 1; tentativeCount <= tentativeNum; tentativeCount++) {
 
-			String[] inputArray = SparkMoVare.scanner.nextLine().split(" ");
+			String[] inputArray = SparkMoVare.scanner.nextLine().split(";");
 			
 			if(inputArray.length != 5) {
 				tentativeCount--;
-				continue;
 				
 			} else {
 				
@@ -30,16 +31,9 @@ public class Tentative {
 				String startTime = inputArray[inputArray.length - 3];
 				String startDate = inputArray[inputArray.length - 4];
 
-				String title = inputArray[0];
-
-				for(int titleLength = 0; titleLength < inputArray.length - 4; titleLength++) {
-					title += inputArray[titleLength];        			
-				}
-
-				title += " [tentative]";
-
 				//addTask(ID, title, type, startDate, startTime, endDate, endTime, isCompletion, isOnTime)
-				Add.addAssignment(tentativeIdGenerated, title, Assignment.TYPE_TENTATIVE, startDate, startTime, endDate, endTime, false, null);
+				Add.addAssignment(tentativeIdGenerated, tentativeTitle, Assignment.TYPE_TENTATIVE, 
+						startDate, startTime, endDate, endTime, false, null);
 			}
 		}
 		return Message.TENTATIVE_ADDED;

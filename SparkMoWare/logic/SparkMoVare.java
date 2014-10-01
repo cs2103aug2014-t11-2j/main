@@ -177,11 +177,12 @@ public class SparkMoVare {
 			return Delete.delete(refinedUserInput[1]);
 
 		case TENTATIVE:
-			Tentative.addTentative(refinedUserInput[8]);
+			Tentative.addTentative(refinedUserInput[8], refinedUserInput[2]);
 			break;
 
 		case CONFIRM:
-			ConfirmTentative.confirmTentative(refinedUserInput[1], refinedUserInput[3], refinedUserInput[4]);
+			ConfirmTentative.confirmTentative(refinedUserInput[1], refinedUserInput[3],
+					refinedUserInput[4], refinedUserInput[5], refinedUserInput[6]);
 			break;
 
 		case CLEAR:
