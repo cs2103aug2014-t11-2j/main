@@ -1,7 +1,6 @@
 package logic;
 
 import java.util.Arrays;
-import java.util.Date;
 import java.util.Scanner;
 
 public class RefineInput {
@@ -77,12 +76,8 @@ public class RefineInput {
 
 		String refinement;
 		String[] userInputArray = userInput.split(";");
+		refinement = userInputArray[0];
 
-		if (userInputArray.length > 1) {
-			refinement = userInput.substring(0, userInput.indexOf(';'));
-		} else {
-			refinement = userInput;
-		}
 		if (refinement.equalsIgnoreCase("add")) {
 			if (userInputArray.length < 2) {
 				return RefinementType.INVALID;
