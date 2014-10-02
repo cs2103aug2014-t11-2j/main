@@ -27,25 +27,20 @@ public class Add {
 		// newAssignment.setDescription(description);
 		// newAssignment.setAlarm(alarm);
 		newAssignment.setTag(tag);
-
-		if (SparkMoVare.buffer.size() > 0) {
-			for (int bufferCount = SparkMoVare.buffer.size()-1; bufferCount > 0; bufferCount--) {
-
-				while(bufferCount > 0 && Comparator.dateComparator(newAssignment.getEndDate(),
-						SparkMoVare.buffer.get(bufferCount-1).getEndDate()) == -1) {
-					bufferCount--;
-				}
-				
-				if (Comparator.dateComparator(newAssignment.getEndDate(),
-						SparkMoVare.buffer.get(bufferCount).getEndDate()) == -1) {
-
-					SparkMoVare.buffer.add(bufferCount, newAssignment);
-					return newAssignment.toString();
-				}
-			}
-		}
-		SparkMoVare.buffer.add(newAssignment);
-
+		
+		if (SparkMoVare.buffer.size() == 0) {
+			SparkMoVare.buffer.add(newAssignment);
+		} else if (Comparator.dateComparator(newAssignment.getEndDate(),
+					SparkMoVare.buffer.get(SparkMoVare.buffer.size()-1).getEndDate()) == 1) {
+			SparkMoVare.buffer.add(newAssignment);
+		} else{
+			int bufferCount;
+			for (bufferCount = SparkMoVare.buffer.size()-1; bufferCount > 0 && 
+					(Comparator.dateComparator(newAssignment.getEndDate(), 
+					SparkMoVare.buffer.get(bufferCount-1).getEndDate()) == -1); bufferCount--);
+			SparkMoVare.buffer.add(bufferCount, newAssignment);
+		} 
+		
 		return newAssignment.toString();
 	}
 }
