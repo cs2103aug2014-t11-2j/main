@@ -49,13 +49,6 @@ public class SparkMoVare {
 		CLEAR, INVALID, OTHERS
 	}
 
-	public static void main(String[] args) {
-
-		Message.printToUser(Message.WELCOME);
-		Storage.openFile(filePath,latestSerialNumber, buffer);
-		toDoManager();
-	}
-
 	public static void toDoManager() {
 
 		while (true) {
@@ -217,5 +210,9 @@ public class SparkMoVare {
 
 	public static String getfilePath(){
 		return filePath;
+	}
+	
+	public static LinkedList<Assignment> getBuffer() {
+		return buffer;
 	}
 }
