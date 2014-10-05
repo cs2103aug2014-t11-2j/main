@@ -6,7 +6,7 @@ public class Trancation {
 
 	// overloading trancateList method for 2 sets of parameters
 	public static LinkedList<Assignment> trancateList(
-			LinkedList<Assignment> list, String endDate, String startDate) {
+			LinkedList<Assignment> list, String startDate, String endDate) {
 
 		LinkedList<Assignment> trancatedList = new LinkedList<Assignment>();
 		trancatedList = list;
@@ -25,8 +25,8 @@ public class Trancation {
 		return trancatedList;
 	}
 
-	public static LinkedList<Assignment> trancateList(String endDate,
-			String startDate) {
+	public static LinkedList<Assignment> trancateList(String startDate,
+			String endDate) {
 
 		LinkedList<Assignment> trancatedList = new LinkedList<Assignment>();
 		trancatedList = SparkMoVare.buffer;

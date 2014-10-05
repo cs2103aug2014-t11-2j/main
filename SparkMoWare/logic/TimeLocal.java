@@ -1,9 +1,6 @@
 package logic;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.GregorianCalendar;
+import java.util.Scanner;
 
 /*
  * This is to check time format and its validity
@@ -11,13 +8,15 @@ import java.util.GregorianCalendar;
  */
 public class TimeLocal {
 	
+	private static Scanner scanner = new Scanner(System.in);
+	
 	public static String determineTime(String inputTime) {
 		
 		while(!timeFormatValid(inputTime)){
 			
 			Message.printToUser(Message.INVALID_FORMAT);
 			Message.printToUser(String.format(Message.FORMAT_PROMPT, "time"));
-			inputTime = SparkMoVare.scanner.nextLine();			
+			inputTime = scanner.nextLine();			
 		}
 		return inputTime;
 	}
@@ -49,13 +48,5 @@ public class TimeLocal {
 			timeExist = true;
 		}
 		return timeExist;
-	}
-
-	protected static String timeString(){
-		
-		DateFormat dateFormat = new SimpleDateFormat("HHmm");
-		Date todayDate = new GregorianCalendar().getTime();
-		
-		return dateFormat.format(todayDate);
 	}
 }

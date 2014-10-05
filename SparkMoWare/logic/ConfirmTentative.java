@@ -8,12 +8,36 @@ import java.util.*;
  */
 public class ConfirmTentative {
 
-	public static Assignment confirmTentative(String serialId, String confirmStartDate, String confirmStartTime, 
+	private static LinkedList<Assignment> tentativeNeeded = new LinkedList<Assignment>();
+	
+	public static String confirmTentative(String serialId, String confirmStartDate, String confirmStartTime, 
 			String confirmEndDate, String confirmEndTime) {
 		
 		Assignment confirmAssignment = new Assignment();
 		
-		LinkedList<Assignment> tentativeNeeded = SearchAll.searchAll(serialId);
+		tentativeNeeded = SearchAll.searchAll(serialId);
+		
+		if(tentativeNeeded.size() == 0) {
+			return String.format(Message.DOES_NOT_EXISTS, "Serial Number " + serialId);
+		} else {
+
+			confirmAssignment = findConfirmTentative(confirmStartDate, confirmStartTime, confirmEndDate, confirmEndTime);
+			confirmAssignment.setId(Id.serialNumGen());
+
+			Delete.delete(tentativeNeeded.get(1).getId());
+
+			String newTitle = confirmAssignment.getTitle().substring(0, confirmAssignment.getTitle().lastIndexOf(' '));
+
+			confirmAssignment.setTitle(newTitle);
+
+			return confirmAssignment.toString();
+		}
+	}
+	
+	private static Assignment findConfirmTentative(String confirmStartDate, String confirmStartTime, 
+			String confirmEndDate, String confirmEndTime){
+		
+		Assignment noAssignment = new Assignment();
 		
 		for(int listCheck = 0; listCheck < tentativeNeeded.size(); listCheck++) {
 			if(tentativeNeeded.get(listCheck).getStartDate().equals(confirmStartDate) && 
@@ -21,17 +45,11 @@ public class ConfirmTentative {
 				
 				if(tentativeNeeded.get(listCheck).getStartTime().equals(confirmStartTime) && 
 						tentativeNeeded.get(listCheck).getEndTime().equals(confirmEndTime) ) {
-					confirmAssignment = tentativeNeeded.get(listCheck);
-					confirmAssignment.setId(Id.serialNumGen());
+					
+					return tentativeNeeded.get(listCheck);
 				}
 			}
 		}
-		Delete.delete(tentativeNeeded.get(1).getId());
-		
-		String newTitle = confirmAssignment.getTitle().substring(0, confirmAssignment.getTitle().lastIndexOf(' '));
-		
-		confirmAssignment.setTitle(newTitle);
-		
-		return confirmAssignment;
+		return noAssignment;
 	}
 }

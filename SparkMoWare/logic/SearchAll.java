@@ -29,7 +29,9 @@ public class SearchAll {
 
 		if(userInput.length() >= ID_FORMAT_LENGTH) {
 			stringsFound = searchById(userInput);
+			
 		} else if(userInput.length() == TYPE_FORMAT_LENGTH && userInput.contains("[0-9]+")) {
+			
 			int assignmentType = Integer.parseInt(userInput);
 			
 			if(assignmentType == TYPE_TASK) {
@@ -145,7 +147,7 @@ public class SearchAll {
 
 		LinkedList<Assignment> datesFound = new LinkedList<Assignment>();
 
-		for(listCount =0; listCount < SparkMoVare.buffer.size(); listCount++) {
+		for(listCount = 0; listCount < SparkMoVare.buffer.size(); listCount++) {
 
 			if(SparkMoVare.buffer.get(listCount).getStartDate().equals(searchDate)) {
 				datesFound.add(SparkMoVare.buffer.get(listCount));
@@ -172,23 +174,33 @@ public class SearchAll {
 				if(SparkMoVare.buffer.get(listCount).getTitle().equalsIgnoreCase(searchKeyWord)) {
 					keysFound.add(SparkMoVare.buffer.get(listCount));
 				} else {
-
-					String[] textArray = SparkMoVare.buffer.get(listCount).getTitle().split(" ");
-
-					for(int textCount = 0; textCount < textArray.length; textCount++) {
-						String checkText = textArray[textCount];
-
-						for(int textExtendCount = textCount + 1; textExtendCount < textArray.length; textExtendCount++) {
-							checkText += textArray[textExtendCount];
-
-							if(checkText.equalsIgnoreCase(searchKeyWord)){
-								keysFound.add(SparkMoVare.buffer.get(listCount));	
-							}
-						}
+					Assignment assignmentFound = new Assignment();
+					assignmentFound = searchByKeyWord(searchKeyWord, listCount);
+					
+					if(assignmentFound != null) {
+						keysFound.add(assignmentFound);
 					}
 				}
 			}
 		}
 		return keysFound;
+	}
+	
+	private static Assignment searchByKeyWord(String searchKeyWord, int listCount) {
+		
+		String[] textArray = SparkMoVare.buffer.get(listCount).getTitle().split(" ");
+
+		for(int textCount = 0; textCount < textArray.length; textCount++) {
+			String checkText = textArray[textCount];
+
+			for(int textExtendCount = textCount + 1; textExtendCount < textArray.length; textExtendCount++) {
+				checkText += textArray[textExtendCount];
+
+				if(checkText.equalsIgnoreCase(searchKeyWord)){
+					return SparkMoVare.buffer.get(listCount);
+				}
+			}
+		}
+		return null;
 	}
 }

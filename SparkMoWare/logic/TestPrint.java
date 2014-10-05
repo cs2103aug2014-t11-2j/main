@@ -10,4 +10,10 @@ public class TestPrint {
 			System.out.println(list.get(i).toString());
 		}
 	}
+	
+	public static void printHelpList(LinkedList<String> list) {
+		for (int i = 0; i < list.size(); i++) {
+			System.out.println(list.get(i));
+		}
+	}
 }

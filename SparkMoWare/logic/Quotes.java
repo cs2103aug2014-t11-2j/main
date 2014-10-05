@@ -1,6 +1,5 @@
 package logic;
 
-import java.util.LinkedList;
 import java.util.Random;
 
 public class Quotes {
@@ -31,7 +30,7 @@ public class Quotes {
 		Random rnd = new Random();
 		int rndInt = (int) rnd.nextInt(20);
 
-		switch (rndInt) {
+		switch(rndInt) {
 
 		case 1:
 			return QUOTE_1;

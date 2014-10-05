@@ -14,7 +14,7 @@ public class SparkMoVare {
 	protected static Stack< LinkedList<Assignment>> actionHistory = new Stack< LinkedList<Assignment>>();
 	protected static Stack< LinkedList<Assignment>> actionFuture = new Stack< LinkedList<Assignment>>();
 	protected static LinkedList<Assignment> buffer = new LinkedList<Assignment>();
-	protected static Scanner scanner = new Scanner(System.in);
+	private static Scanner scanner = new Scanner(System.in);
 	protected static String filePath = "Storage.txt";
 	protected static String latestSerialNumber = "";
 
@@ -22,6 +22,7 @@ public class SparkMoVare {
 	protected static int size = 0;
 
 	protected static String[] refinedUserInput = new String[9];
+	 
 	/*each index of refinedUserinput represent something
 	 *0:The command string
 	 *1:Serial Number (S/N) of the Assignment ASSUMPTION: serial number length is at most 12 digits DD/MM/YYYY/0000
@@ -39,15 +40,11 @@ public class SparkMoVare {
 	public static Object SparkMoVare;
 
 	enum CommandType {
-		ADD, EDIT, DELETE, TENTATIVE, CONFIRM, SORT, SEARCH, 
-		CLEAR, UNDO, REDO, STATISTIC, EXIT, INVALID, DISPLAY 
+		ADD, EDIT, DELETE, TENTATIVE, CONFIRM, SORT, SEARCH, FILTER,
+		CLEAR, UNDO, REDO, STATISTIC, EXIT, INVALID, DISPLAY, HELP 
 	}
 
 	//Fundamentally the same as CommandType, but without single word commands 
-	enum RefinementType {
-		ADD, EDIT, DELETE, TENTATIVE, CONFIRM, SORT, SEARCH, 
-		CLEAR, INVALID, OTHERS
-	}
 
 	public static void toDoManager() {
 
@@ -102,15 +99,15 @@ public class SparkMoVare {
 			return Delete.deleteAll(refinedUserInput[8], refinedUserInput[5], refinedUserInput[3]);
 
 		case SORT:
-			//		return Sort.sort();
+			// TestPrint.printList(Sort());
 			break;
 
 		case SEARCH:
-			//		return search();
+			TestPrint.printList(SearchAll.searchAll(refinedUserInput[8]));
 			break;
 
 		case STATISTIC:
-			//		Statisics.statistic();
+			Message.printToUser(Statistic.getStats());
 			break;
 
 		case UNDO:
@@ -122,13 +119,17 @@ public class SparkMoVare {
 		case DISPLAY:
 			display();
 			break;
-
+		
+		case FILTER:
+			
+			break;
+		
 		case EXIT:
 			System.exit(SYSTEM_EXIT_NO_ERROR);
 			break;
 
-		case INVALID:
-			return "Invalid Command issued!";
+		case HELP:
+			TestPrint.printHelpList(HelpList.helpLine());
 
 		default:
 			return "Invalid Command issued!";

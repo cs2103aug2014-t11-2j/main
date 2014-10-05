@@ -35,7 +35,7 @@ public class Sort {
 			for (int i = 0; i < tempList.size(); i++) {
 				sortedList.addLast(tempList.get(i));
 			}
-			endDate = Delete.updateDate(endDate);
+			endDate = DateLocal.updateDate(endDate);
 		}
 		
 		return sortedList;
@@ -82,7 +82,7 @@ public class Sort {
 			for (int i = 0; i < tempList.size(); i++) {
 				sortingList.add(tempList.get(i));
 			}
-			endDate = Delete.updateDate(endDate);
+			endDate = DateLocal.updateDate(endDate);
 		}
 		return bubbleSort(sortingList);
 	}
