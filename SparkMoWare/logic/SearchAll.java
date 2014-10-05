@@ -26,7 +26,7 @@ public class SearchAll {
 	protected static LinkedList<Assignment> searchAll(String userInput){
 
 		LinkedList<Assignment> stringsFound = new LinkedList<Assignment>();
-
+	
 		if(userInput.length() >= ID_FORMAT_LENGTH) {
 			stringsFound = searchById(userInput);
 			
@@ -89,7 +89,7 @@ public class SearchAll {
 	private static LinkedList<Assignment> searchByTask(int searchTask) {
 		
 		LinkedList<Assignment> taskFound = new LinkedList<Assignment> ();
-		
+		System.out.println("YAY");
 		for(listCount = 0; listCount < SparkMoVare.buffer.size(); listCount++) {
 			
 			if(SparkMoVare.buffer.get(listCount).getType() == searchTask) {
@@ -102,7 +102,7 @@ public class SearchAll {
 	private static LinkedList<Assignment> searchByAppointment(int searchAppointment) {
 		
 		LinkedList<Assignment> appointmentFound = new LinkedList<Assignment> ();
-		
+		System.out.println("YAY");
 		for(listCount = 0; listCount < SparkMoVare.buffer.size(); listCount++) {
 			
 			if(SparkMoVare.buffer.get(listCount).getType() == searchAppointment) {
@@ -129,7 +129,7 @@ public class SearchAll {
 	private static LinkedList<Assignment> searchByTime(String searchTime) {
 
 		LinkedList<Assignment> timeFound = new LinkedList<Assignment>();
-
+		System.out.println("YAY");
 		for(listCount = 0; listCount < SparkMoVare.buffer.size(); listCount++) {
 
 			if(SparkMoVare.buffer.get(listCount).getStartTime().equals(searchTime)) {
@@ -146,7 +146,7 @@ public class SearchAll {
 	private static LinkedList<Assignment> searchByDate(String searchDate) {
 
 		LinkedList<Assignment> datesFound = new LinkedList<Assignment>();
-
+		System.out.println("YAY");
 		for(listCount = 0; listCount < SparkMoVare.buffer.size(); listCount++) {
 
 			if(SparkMoVare.buffer.get(listCount).getStartDate().equals(searchDate)) {
@@ -167,7 +167,7 @@ public class SearchAll {
 	private static LinkedList<Assignment> searchByWords(String searchKeyWord) {
 
 		LinkedList<Assignment> keysFound = new LinkedList<Assignment> ();
-
+		System.out.println("YAY");
 		for(listCount = 0; listCount < SparkMoVare.buffer.size(); listCount++) {
 			if(SparkMoVare.buffer.get(listCount).getTitle().contains(searchKeyWord)) {
 
