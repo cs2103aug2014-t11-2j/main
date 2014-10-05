@@ -18,7 +18,7 @@ public class Delete {
 	}
 	
 	protected static String delete(String id) {
-		
+		 
 		LinkedList<Assignment> idFound = new LinkedList<Assignment>();
 		idFound = SearchAll.searchAll(id);
 		
