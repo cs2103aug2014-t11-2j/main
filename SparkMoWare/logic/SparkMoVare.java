@@ -45,6 +45,14 @@ public class SparkMoVare {
 	}
 
 	//Fundamentally the same as CommandType, but without single word commands 
+	
+    public static void main(String[] args) {
+
+        Message.printToUser(Message.WELCOME);
+        Storage.openFile(filePath,latestSerialNumber, buffer);
+        toDoManager();
+    }
+
 
 	public static void toDoManager() {
 
