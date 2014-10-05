@@ -33,10 +33,10 @@ public class Message {
 	protected static final String INVALID_FORMAT = "Invalid Format";	
 	protected static final String INVALID_SEARCH_PARAMETER = "Invalid search parameter entered";
 
-	protected static final String STORAGE_FILE_ERROR = "Exception encountered while initalising the Storage file";
+	public static final String STORAGE_FILE_ERROR = "Exception encountered while initalising the Storage file";
 	protected static final String SAVE_FILE_ERROR = "Exception encountered while saving the textfile";
 
-	protected static void printToUser(String output) {
+	public static void printToUser(String output) {
 		
 		if (!output.equals("")) {
 			System.out.println(output);

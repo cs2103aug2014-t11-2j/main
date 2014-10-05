@@ -13,7 +13,7 @@ public class Comparator {
 	private static final int SMALLER = -1;
 
 	// compares id with nextId, return true if idA is bigger else return false the format is 250920140001
-	protected static boolean serialNumberComparator(String idA, String idB) {
+	public static boolean serialNumberComparator(String idA, String idB) {
 
 		int checkDate = dateComparator(idA.substring(0,8), idB.substring(0,8));
 
