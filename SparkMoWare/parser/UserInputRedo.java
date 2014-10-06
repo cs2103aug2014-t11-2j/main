@@ -1,23 +1,26 @@
 package parser;
 
-public class UserInputSingleCDelete extends UserInputSingleCommand {
-	
+public class UserInputRedo extends UserInput {
+
 	/************** Data members **********************/
 	
-	String id;
+	
 	
 	/************** Constructors **********************/
-	
-	
-	
+
+	public UserInputRedo() {
+		setCommandType(CommandType.REDO);
+	}
+
 	/**************** Accessors ***********************/
-	
+
 	
 	
 	/**************** Mutators ************************/
 
-	
+
+
 	/**************** Overriding ************************/
-	
-	
+
+
 }

@@ -1,35 +1,37 @@
-/*Super class for the various user inputs
- */
-
 package parser;
 
-public class UserInput {
-
+public class UserInputDelete extends UserInput {
+	
 	/************** Data members **********************/
 	
-	private CommandType command;
+	private String id;
 	
 	/************** Constructors **********************/
 	
-		public UserInput() {
+	public UserInputDelete() {
 		
+	}
+	
+	public UserInputDelete(String id) {
+		setCommandType(CommandType.DELETE);
+		setId(id);
 	}
 	
 	/**************** Accessors ***********************/
 	
-	protected CommandType getCommandType() {
-		return this.command;
+	protected String getId() {
+		return this.id;
 	}
 	
 	/**************** Mutators ************************/
 
-	protected void setCommandType(CommandType command) {
-		this.command = command;
+	private void setId(String id) {
+		this.id = id;
 	}
 	
 	/**************** Overriding ************************/
 	
 	public String toString() {
-		return "" + getCommandType();
+		return getCommandType() + "~" + getId();
 	}
 }
