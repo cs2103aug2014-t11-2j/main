@@ -1,6 +1,4 @@
-/.classpath
-/.project
-/gui/
-/junit/
-/logic/
 /storage/
+/Parser/
+/parser/
+/logic/
