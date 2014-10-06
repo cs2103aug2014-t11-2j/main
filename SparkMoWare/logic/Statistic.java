@@ -8,19 +8,20 @@ import java.util.*;
  */
 public class Statistic {
 	
-	private static LinkedList<Assignment> required = new LinkedList<Assignment>();
+	private static LinkedList<Assignment> requiredCompleted = new LinkedList<Assignment>();
+	private static LinkedList<Assignment> requiredOnTime = new LinkedList<Assignment>();
 	
 	protected static String getStats() {
 		
-		int completed = getCompleted(); 
-		int isOnTime = getIsOnTime();
+		double completed = getCompleted(); 
+		double isOnTime = getIsOnTime();
 		
 		if(completed == 0) {
 			return Message.NOTHING_COMPLETED;
 		} else if(isOnTime == 0) {
 			return Message.NOTHING_COMPLETED + " on time";
 		} else {
-			String precentageOnTime = Integer.toString((isOnTime/completed) * 100);
+			String precentageOnTime = Double.toString((isOnTime/completed) * 100);
 			
 			return precentageOnTime;
 		}
@@ -28,15 +29,15 @@ public class Statistic {
 	
 	private static int getCompleted() {
 		
-		required = SearchAll.searchAll("completed");
+		requiredCompleted = SearchAll.searchAll("completed");
 		
-		return required.size();
+		return requiredCompleted.size();
 	}
 
 	private static int getIsOnTime() {
 
-		required = SearchAll.searchAll("isontime");
+		requiredOnTime = SearchAll.searchAll("isontime");
 		
-		return required.size();
+		return requiredOnTime.size();
 	}
 }

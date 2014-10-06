@@ -10,6 +10,16 @@ import java.util.LinkedList;
  */
 public class Sort {
 
+	protected static LinkedList<Assignment> sortRequired(String sortType){
+		
+		LinkedList<Assignment> sortedList = new LinkedList<Assignment>();
+		if(sortType.equalsIgnoreCase("deadline")) {
+			sortedList = bubbleSort(SparkMoVare.buffer);
+		} else if(sortType.equalsIgnoreCase("serial")) {
+			sortedList = bubbleSortId(SparkMoVare.buffer);
+		}
+		return sortedList;
+	}
 	/*
 	 * this method works in the following steps: 1. searches the assignments in
 	 * end date 2. sorts according to Id 3. adds the sorted Id list to the back
@@ -30,18 +40,17 @@ public class Sort {
 					tempList.remove(i);
 				}
 			}	
-			tempList = bubbleIdSort(tempList);
+			tempList = bubbleSortId(tempList);
 
 			for (int i = 0; i < tempList.size(); i++) {
 				sortedList.addLast(tempList.get(i));
 			}
 			endDate = DateLocal.updateDate(endDate);
 		}
-		
 		return sortedList;
 	}
 
-	private static LinkedList<Assignment> bubbleIdSort(
+	private static LinkedList<Assignment> bubbleSortId(
 			LinkedList<Assignment> sortingList) {
 
 		for (int i = 1; i < sortingList.size(); i++) {

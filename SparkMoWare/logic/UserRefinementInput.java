@@ -75,9 +75,8 @@ public class UserRefinementInput {
 		}
 	}
 
-	protected static void userInputEdit(String[] userInputArray) { // User must
-																	// use S/N
-
+	protected static void userInputEdit(String[] userInputArray) {
+	
 		SparkMoVare.refinedUserInput[1] = Id.determineID(userInputArray[1]);
 		/*
 		 * if(SparkMoVare.refinedUserInput[1].equalsIgnoreCase("exit")){//Method
@@ -106,7 +105,13 @@ public class UserRefinementInput {
 		case END_TIME:
 			SparkMoVare.refinedUserInput[6] = userInputArray[3];
 			break;
-
+			
+		case PRIORITY:
+			// break;
+			
+		case DONE:
+			break;
+			
 		default:
 			SparkMoVare.refinedUserInput[0] = "invalid";
 			break;
@@ -134,8 +139,8 @@ public class UserRefinementInput {
 
 		while (title.isEmpty()) {// will continuously prompt user for any input
 
-			Message.printToUser(Message.NO_TITLE);
-			Message.printToUser(String.format(Message.FORMAT_PROMPT, "title"));
+			Print.printToUser(Message.NO_TITLE);
+			Print.printToUser(String.format(Message.FORMAT_PROMPT, "title"));
 			title = scanner.nextLine();
 		}
 		return title;
@@ -157,8 +162,8 @@ public class UserRefinementInput {
 
 		while (numOfTentative.matches(".*\\D+.*")) {
 
-			Message.printToUser(Message.INVALID_FORMAT);
-			Message.printToUser(String.format(Message.FORMAT_PROMPT,
+			Print.printToUser(Message.INVALID_FORMAT);
+			Print.printToUser(String.format(Message.FORMAT_PROMPT,
 					"number of tentative days"));
 			numOfTentative = scanner.nextLine();
 		}
@@ -193,6 +198,8 @@ public class UserRefinementInput {
 			SparkMoVare.refinedUserInput[8] = userInputArray[1];
 			SparkMoVare.refinedUserInput[5] = DateLocal
 					.determineDate(userInputArray[2]);
+		} else if(userInputArray.length == 1) {
+			SparkMoVare.refinedUserInput[8] = userInputArray[0];
 		} else {
 			SparkMoVare.refinedUserInput[0] = "invalid";
 		}

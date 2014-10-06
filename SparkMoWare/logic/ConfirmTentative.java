@@ -29,7 +29,8 @@ public class ConfirmTentative {
 			String newTitle = confirmAssignment.getTitle().substring(0, confirmAssignment.getTitle().lastIndexOf(' '));
 
 			confirmAssignment.setTitle(newTitle);
-
+			confirmAssignment.setType(1);
+			
 			return confirmAssignment.toString();
 		}
 	}

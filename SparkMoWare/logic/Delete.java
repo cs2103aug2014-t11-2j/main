@@ -14,7 +14,30 @@ import java.util.LinkedList;
 public class Delete {
 
 	enum DeleteAllType {
-		DELETEALL_ON, DELETEALL_BEFORE, DELETEALL_BETWEEN;
+		DELETEALL_ON, DELETEALL_BEFORE, DELETEALL_BETWEEN, CLEAR;
+	}
+
+	protected static String deleteAll(String duration, String endDate, String startDate) {
+
+		switch (getDuration(duration)) {
+
+		case DELETEALL_ON:
+			deleteOn(endDate);
+			return String.format(Message.DELETE_ON, endDate);
+
+		case DELETEALL_BEFORE:
+			startDate = SparkMoVare.buffer.getFirst().getEndDate();
+			deleteBetween(endDate, startDate);
+			return String.format(Message.DELETE_BEFORE, endDate);
+
+		case DELETEALL_BETWEEN:
+			deleteBetween(endDate, startDate);
+			return String.format(Message.DELETE_BETWEEN, endDate, startDate);
+
+		default:
+			SparkMoVare.buffer.clear();
+			return String.format(Message.DELETE, SparkMoVare.filePath);
+		}
 	}
 	
 	protected static String delete(String id) {
@@ -41,29 +64,6 @@ public class Delete {
 		}
 	}
 
-	protected static String deleteAll(String duration, String endDate, String startDate) {
-
-		switch (getDuration(duration)) {
-
-		case DELETEALL_ON:
-			deleteOn(endDate);
-			return String.format(Message.DELETE_ON, endDate);
-
-		case DELETEALL_BEFORE:
-			startDate = SparkMoVare.buffer.getFirst().getEndDate();
-			deleteBetween(endDate, startDate);
-			return String.format(Message.DELETE_BEFORE, endDate);
-
-		case DELETEALL_BETWEEN:
-			deleteBetween(endDate, startDate);
-			return String.format(Message.DELETE_BETWEEN, endDate, startDate);
-
-		default:
-			SparkMoVare.buffer.clear();
-			return String.format(Message.DELETE, SparkMoVare.filePath);
-		}
-	}
-
 	private static DeleteAllType getDuration(String duration) {
 
 		if (duration.length() == 2) {
@@ -73,14 +73,14 @@ public class Delete {
 		} else if (duration.length() == 7) {
 			return DeleteAllType.DELETEALL_BETWEEN;
 		} else {
-			return null;
+			return DeleteAllType.CLEAR;
 		}
 	}
 
 	private static void deleteOn(String deleteOnDate) {
 
 		LinkedList<Assignment> toDelete = new LinkedList<Assignment>();
-		toDelete = SearchAll.searchAll(deleteOnDate);
+		toDelete = SearchAll.searchByDeadline(deleteOnDate);
 
 		for (int toDeleteCount = 0; toDeleteCount < toDelete.size(); toDeleteCount++) {
 			delete(toDelete.get(toDeleteCount).getId());
@@ -95,6 +95,4 @@ public class Delete {
 		}
 		deleteOn(startDate);
 	}
-
-
 }

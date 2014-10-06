@@ -10,7 +10,9 @@ import java.util.LinkedList;
 
 import logic.Assignment;
 import logic.Comparator;
+import logic.Id;
 import logic.Message;
+import logic.Print;
 
 public class Storage {
 	
@@ -77,22 +79,18 @@ public class Storage {
 				// updates the latest serial number
 
 				if( latestSerialNumber.equals("")) {
-					latestSerialNumber = lineArray[0];
-				} else {
-					if(Comparator.serialNumberComparator(lineArray[0], latestSerialNumber)) {
-
-						latestSerialNumber = lineArray[0];
-					}
+					Id.setLatestSerialNumber(lineArray[0]);
+				} else if(Comparator.serialNumberComparator(lineArray[0], latestSerialNumber)) {
+						Id.setLatestSerialNumber(lineArray[0]);
 				}
 				buffer.add(temp);
 			}
 			fileReader.close();
 		} catch (IOException e) {
 
-			Message.printToUser(Message.STORAGE_FILE_ERROR);
+			Print.printToUser(Message.STORAGE_FILE_ERROR);
 			System.exit(SYSTEM_EXIT_ERROR);
 		}
 		return buffer;
 	}
-	
 }

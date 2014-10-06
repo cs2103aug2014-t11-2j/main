@@ -14,8 +14,8 @@ public class TimeLocal {
 		
 		while(!timeFormatValid(inputTime)){
 			
-			Message.printToUser(Message.INVALID_FORMAT);
-			Message.printToUser(String.format(Message.FORMAT_PROMPT, "time"));
+			Print.printToUser(Message.INVALID_FORMAT);
+			Print.printToUser(String.format(Message.FORMAT_PROMPT, "time"));
 			inputTime = scanner.nextLine();			
 		}
 		return inputTime;
