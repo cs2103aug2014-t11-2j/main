@@ -28,11 +28,13 @@ public class Tentative {
 	
 	private static void addTentativeAppt(int tentativeNum, String tentativeIdGenerated, String tentativeTitle) {
 		
+		Print.printToUser(Message.TENTATIVE);
+		
 		for(int tentativeCount = 1; tentativeCount <= tentativeNum; tentativeCount++) {
-
+			
 			String[] inputArray = scanner.nextLine().split(";");
 			
-			if(inputArray.length != 5) {
+			if(inputArray.length != 4) {
 				tentativeCount--;
 				
 			} else {

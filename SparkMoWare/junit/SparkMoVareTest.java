@@ -1,15 +1,10 @@
 package junit;
 
 import logic.Add;
-import logic.Comparator;
 import logic.Filter;
-import logic.Id;
-import logic.Sort;
-import logic.SparkMoVare;
-import logic.TestPrint;
+import logic.Print;
 
 import org.junit.Test;
-
 
 public class SparkMoVareTest {
 	/*
@@ -50,7 +45,7 @@ public class SparkMoVareTest {
 		
 //		System.out.println(Comparator.dateComparator("17021996","17071999"));
 		
-		TestPrint.printList(Filter.filterMain("tasks"));
+		Print.printList(Filter.filterMain("tasks"));
 		
 	}
 }

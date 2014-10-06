@@ -25,7 +25,7 @@ public class Edit {
 			
 			String toUser = String.format(Message.DOES_NOT_EXISTS, "Serial Number " + refinedUserInput[1]);
 			
-			Message.printToUser(toUser);
+			Print.printToUser(toUser);
 
 			return toUser;
 		} else {
@@ -63,10 +63,10 @@ public class Edit {
 				break;
 
 			case INVALID:
-				Message.printToUser(Message.INVALID_SEARCH_PARAMETER);
+				Print.printToUser(Message.INVALID_SEARCH_PARAMETER);
 
 			default:
-				Message.printToUser(Message.INVALID_SEARCH_PARAMETER);
+				Print.printToUser(Message.INVALID_SEARCH_PARAMETER);
 			}
 			return Message.EDITED; 
 		}
@@ -88,6 +88,10 @@ public class Edit {
 			return EditType.END_DATE;
 		} else if (attributeName.equalsIgnoreCase("endtime")) {
 			return EditType.END_TIME;
+		} else if (attributeName.equalsIgnoreCase("priority")) {
+			return EditType.PRIORITY;
+		} else if(attributeName.equalsIgnoreCase("done")) {
+			return EditType.DONE;
 		} else {
 			return EditType.INVALID;
 		}
@@ -108,13 +112,19 @@ public class Edit {
 		if (time != null) {
 			currentTime = time;
 		}
-		if (Comparator.dateComparator(currentDate,SparkMoVare.buffer.get(bufferPosition).getEndDate()) == -1) {
+		
+		setIsOnTime(currentDate,currentTime, bufferPosition);
+	}
+	
+	private static void setIsOnTime(String currentDate, String currentTime, int bufferPosition) {
+		
+		if (Comparator.dateComparator(currentDate, SparkMoVare.buffer.get(bufferPosition).getEndDate()) == -1) {
 			SparkMoVare.buffer.get(bufferPosition).setIsOnTime(true);
 			
 		} else if (Comparator.dateComparator(currentDate,SparkMoVare.buffer.get(bufferPosition).getEndDate()) == 0) {
 			if (Comparator.timeComparator(currentTime,SparkMoVare.buffer.get(bufferPosition).getEndTime()) == -1) {
 				SparkMoVare.buffer.get(bufferPosition).setIsOnTime(true);
 			}
-		}	
+		}
 	}
 }

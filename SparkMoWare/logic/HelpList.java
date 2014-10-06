@@ -1,6 +1,6 @@
 package logic;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 /*
  * Enter after every node
@@ -43,9 +43,9 @@ public class HelpList {
 	private static final String filterName = "FILTER: ";
 	private static final String filterHelp = "filter <Type>";
 	
-	public static LinkedList<String> helpLine () {
+	public static ArrayList<String> helpLine () {
 		
-		LinkedList<String> helpList = new LinkedList<String>();
+		ArrayList<String> helpList = new ArrayList<String>();
 		
 		helpList.add(addName);
 		helpList.add(addTaskHelp);

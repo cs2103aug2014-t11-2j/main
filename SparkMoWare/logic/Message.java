@@ -9,6 +9,7 @@ public class Message {
 	protected static final String PROMPT = "command: ";
 	protected static final String ADDED = "added to %1$s: \"%2$s\"";
 	protected static final String EDITED = "content has already been edited";
+	protected static final String TENTATIVE = "Schedule(s): ";
 	protected static final String TENTATIVE_ADDED = "All of your tentative appointments have been added";
 	
 	protected static final String DELETED = "deleted from %1$s: \"%2$s\"";
@@ -36,10 +37,4 @@ public class Message {
 	public static final String STORAGE_FILE_ERROR = "Exception encountered while initalising the Storage file";
 	protected static final String SAVE_FILE_ERROR = "Exception encountered while saving the textfile";
 
-	public static void printToUser(String output) {
-		
-		if (!output.equals("")) {
-			System.out.println(output);
-		}
-	}
 }

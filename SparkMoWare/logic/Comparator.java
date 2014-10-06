@@ -16,20 +16,21 @@ public class Comparator {
 	public static boolean serialNumberComparator(String idA, String idB) {
 
 		int checkDate = dateComparator(idA.substring(0,8), idB.substring(0,8));
+		boolean serialCheck = false;
 
 		if(checkDate == SAME) {
 			//check Sn
 			idA = removeFrontZero(idA.substring(8));
 			idB = removeFrontZero(idB.substring(8));
-			
+
 			if (Integer.parseInt(idA) > Integer.parseInt(idB)) {
-				return true;
+				serialCheck = true;
 			}
 		} else if(checkDate == LARGER){
-			return true;
+			serialCheck = true;
 		}
 
-		return false;
+		return serialCheck;
 	}
 
 	protected static int dateComparator(String dateA, String dateB) {
@@ -40,8 +41,8 @@ public class Comparator {
 		String monthA = dateA.trim().substring(2, 4);
 		String monthB = dateB.trim().substring(2, 4);
 		
-		String dayA = dateB.trim().substring(0, 2);
-		String dayB = dateA.trim().substring(0, 2);
+		String dayA = dateA.trim().substring(0, 2);
+		String dayB = dateB.trim().substring(0, 2);
 
 		yearA = removeFrontZero(yearA);
 		yearB = removeFrontZero(yearB);
@@ -51,18 +52,23 @@ public class Comparator {
 		
 		dayA = removeFrontZero(dayA);
 		dayB = removeFrontZero(dayB);
-
+		
 		if(dateA.equals(dateB)) {
 			return SAME;
 		} else if ( Integer.parseInt(yearA) > Integer.parseInt(yearB) ) {
+			
 			return LARGER;
 		} else if (Integer.parseInt(yearA) < Integer.parseInt(yearB)) {
+			
 			return SMALLER;
 		} else if (Integer.parseInt(monthA) > Integer.parseInt(monthB) ) {
+			
 			return LARGER;
 		} else if (Integer.parseInt(monthA) < Integer.parseInt(monthB)) {
+			
 			return SMALLER;
 		} else if (Integer.parseInt(dayA) > Integer.parseInt(dayB) ) {
+			
 			return LARGER;
 		}
 		return SMALLER;
