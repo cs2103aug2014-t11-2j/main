@@ -8,6 +8,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import logic.Message;
+import logic.RefineInput;
 import logic.SparkMoVare;
 
 import org.eclipse.jface.text.TextViewer;
@@ -15,8 +16,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
@@ -29,7 +30,7 @@ import org.eclipse.wb.swt.SWTResourceManager;
 import storage.Storage;
 
 public class MainController {
-	
+
 	private final FormToolkit formToolkit = new FormToolkit(Display.getDefault());
 	private Text cli;
 	private static Text clockDisplay;
@@ -41,8 +42,10 @@ public class MainController {
 	private Text dateDisplay;
 	private static Scanner sc = new Scanner(System.in);
 	private Text quoteViewer;
+	private String userInput="";
+	private Text text;
 
-	
+
 
 	public MainController(Display display) {
 		shell = new Shell(display);
@@ -53,9 +56,25 @@ public class MainController {
 			}
 		});
 		shell.setSize(1024, 768);
-		shell.setText("SparkMoVare");
-			
+		shell.setText("SparkMoVare");	
 
+		/**
+		 * Command Line Interface
+		 */
+		Text cli = new Text(shell, SWT.NONE);
+		//		cli = formToolkit.createText(shell, "", SWT.NONE);
+		cli.setBounds(43, 644, 809, 26);
+		cli.addKeyListener(new KeyListener() {
+			public void keyReleased(KeyEvent e) {
+				if(e.keyCode == SWT.CR || e.keyCode == SWT.LF) 
+				{
+					CommandHandler.commandHandle(cli, userInput);
+				}
+			}
+			public void keyPressed(KeyEvent e) {
+			}
+		});
+		
 		/**
 		 * Enter button
 		 */
@@ -65,28 +84,10 @@ public class MainController {
 		btnEnter.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				System.out.println("x marks the spot");
+				CommandHandler.commandHandle(cli, userInput);
 			}
 		});
-
-		/**
-		 * Command Line Interface
-		 */
-		cli = formToolkit.createText(shell, "", SWT.NONE);
-		cli.setBounds(43, 644, 809, 26);
-		cli.addModifyListener(new ModifyListener() {
-			public void modifyText(ModifyEvent arg0) {
-			//	sc.nextLine();
-			}
-		});
-
-//		/**
-//		 * List view
-//		 */
-//		TextViewer textViewer = new TextViewer(shell, SWT.BORDER | SWT.V_SCROLL);
-//		List list = listViewer.getList();
-//		list.setBounds(43, 167, 921, 454);
-	
+		
 		/**
 		 * Date Display
 		 */
@@ -96,7 +97,7 @@ public class MainController {
 		dateDisplay.setEditable(false);
 		dateDisplay.setBounds(761, 10, 235, 30);
 		dateDisplay.setText(dateFormat.format(date).toString());
-		
+
 		/**
 		 * Clock Display
 		 */
@@ -105,11 +106,11 @@ public class MainController {
 		clockDisplay.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		clockDisplay.setEnabled(false);
 		clockDisplay.setEditable(false);
-		clockDisplay.setBounds(344, 82, 310, 52);
+		clockDisplay.setBounds(344, 41, 310, 52);
 		clockDisplay.setText(timeFormat.format(date).toString());
-		
+
 		/**
-		 * textViewr
+		 * Main Display
 		 */
 		TextViewer textViewer = new TextViewer(shell, SWT.BORDER);
 		StyledText styledText = textViewer.getTextWidget();
@@ -118,21 +119,31 @@ public class MainController {
 		
 		
 		/**
-		 * qouteViewer
+		 * feedbackDisplay
+		 */
+		text = new Text(shell, SWT.BORDER);
+		text.setEnabled(false);
+		text.setEditable(false);
+		text.setBounds(344, 99, 310, 26);
+		formToolkit.adapt(text, true, true);
+
+
+
+		/**
+		 * quoteViewer
 		 */
 		quoteViewer = formToolkit.createText(shell, "New Text", SWT.CENTER);
 		quoteViewer.setEnabled(false);
 		quoteViewer.setEditable(false);
 		quoteViewer.setBounds(43, 676, 921, 26);
 		quoteViewer.setText(quoteLib.getQuote());
-
-		
-		shell.open();
 		
 		/**
 		 * Update Clock
 		 */
 		clockUpdater.schedule(new UpdateTimerTask(), 1000, 1000);
+
+		shell.open();
 		
 		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch()) {
@@ -143,6 +154,7 @@ public class MainController {
 
 
 	public static void main(String[] args) {
+		
 		Message.printToUser(Message.WELCOME);
 		Storage.openFile(SparkMoVare.getfilePath(),SparkMoVare.getLatestSerialNumber(), SparkMoVare.getBuffer());
 
@@ -150,27 +162,26 @@ public class MainController {
 		new MainController(display);
 		
 		display.dispose();
-		SparkMoVare.toDoManager();
 
 	}
-	
+
 	private class UpdateTimerTask extends TimerTask
 	{
-	  @Override
-	  public void run()
-	  {
-	    // Timer task runs in a background thread, 
-	    // so use Display.asyncExec to run SWT code in UI thread
-	    Display.getDefault().asyncExec(new Runnable() 
-	     {
-	       @Override
-	       public void run()
-	       {
-	    	   date=new Date();
-	    	   clockDisplay.setText(timeFormat.format(date).toString());
-	    	   dateDisplay.setText(dateFormat.format(date).toString());
-	       }
-	     });  
-	  }
+		@Override
+		public void run()
+		{
+			// Timer task runs in a background thread, 
+			// so use Display.asyncExec to run SWT code in UI thread
+			Display.getDefault().asyncExec(new Runnable() 
+			{
+				@Override
+				public void run()
+				{
+					date=new Date();
+					clockDisplay.setText(timeFormat.format(date).toString());
+					dateDisplay.setText(dateFormat.format(date).toString());
+				}
+			});  
+		}
 	}
 }
