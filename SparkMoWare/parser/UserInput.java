@@ -1,4 +1,7 @@
-//Super class for the various user inputs
+/*Super class for the various user inputs
+ * Also handles single command user inputs:
+ * undo, redo, stats, help, done
+ */
 
 package parser;
 
