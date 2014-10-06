@@ -171,7 +171,9 @@ public class Assignment {
 	
 	@Override
 	public String toString() {
-		return getId() + "~" + getTitle() + "~" + getType() + "~" + getStartDate()+ "~" +getStartTime()+"~"+getEndDate()+"~"+getEndTime()+"~"+getIsDone()+"~"+getIsOnTime()+"~"+getPriority();
+		return getId() + "~" + getTitle() + "~" + getType() + "~" + getStartDate() + "~" + 
+				getStartTime() + "~" + getEndDate() + "~" + getEndTime() + "~" + getIsDone() + 
+				"~" + getIsOnTime() + "~" + getPriority();
 	}
 	
 }

@@ -10,105 +10,22 @@ import java.util.LinkedList;
  */
 public class Sort {
 
-	enum SortType {
-		DEADLINES, TASKS, APPOINTMENTS, ID;
-	}
-	
-	private static final int TYPE_TASKS = 0;
-	private static final int TYPE_APPOINTMENT = 1;
-	private static final int TYPE_DEADLINES = 3;
-	
-	public static LinkedList<Assignment> sortClassify(String sortType,
-			String endDate, String startDate) {
-
-		switch (checkSortWhat(sortType)) {
-
-		case TASKS:
-			return sort(TYPE_TASKS, endDate, startDate);
-
-		case APPOINTMENTS:
-			return sort(TYPE_APPOINTMENT, endDate, startDate);
-
-		case DEADLINES:
-			return sort(TYPE_DEADLINES, endDate, startDate);
-
-		case ID:
-			return sortId(endDate, startDate);
-
-		default:
-			// check for just "sort" input by user, then print out current
-			// linked list as it is chronological already
-			// sort according to a particular title or ID. parse for int? or
-			// directly search for those first, then use
-			// null is a stub
-			return null;
-		}
-	}
-
-	private static SortType checkSortWhat(String duration) {
-
-		if (duration.length() == 9) {
-			return SortType.DEADLINES;
-		} else if (duration.length() == 5) {
-			return SortType.TASKS;
-		} else if (duration.length() == 12) {
-			return SortType.APPOINTMENTS;
-		} else {
-			return null;
-		}
-	}
-
-	/*
-	 * sorting by tasks/appt/deadlines, all use this method. As assigned in
-	 * assignment class, task is type int 0, appointment is type int 1. Deadline
-	 * is set to type int -1.
-	 */
-	private static LinkedList<Assignment> sort(int type, String endDate,
-			String startDate) {
-
+	protected static LinkedList<Assignment> sortRequired(String sortType){
+		
 		LinkedList<Assignment> sortedList = new LinkedList<Assignment>();
-		sortedList = trancateList(endDate, startDate);
-
-		if (type != TYPE_DEADLINES) {
-
-			for (int i = 0; i < sortedList.size(); i++) {
-				if (sortedList.get(i).getType() != type)
-					sortedList.remove(i);
-			}
+		if(sortType.equalsIgnoreCase("deadline")) {
+			sortedList = bubbleSort(SparkMoVare.buffer);
+		} else if(sortType.equalsIgnoreCase("serial")) {
+			sortedList = bubbleSortId(SparkMoVare.buffer);
 		}
-		
-		for(int i=0; i<sortedList.size(); i++){
-			System.out.println(sortedList.get(i).getTitle());	
-		}
-		
 		return sortedList;
 	}
-
-	private static LinkedList<Assignment> trancateList(String endDate,
-			String startDate) {
-
-		LinkedList<Assignment> trancatedList = new LinkedList<Assignment>();
-		trancatedList = SparkMoVare.buffer;
-
-		int lowerLimit = trancatedList.indexOf(startDate);
-		for (int i = 0; i < lowerLimit; i++) {
-			trancatedList.remove(i);
-		}
-
-		//cannot just search an attribute need to search the element
-		int upperLimit = trancatedList.lastIndexOf(endDate);
-		for (int j = trancatedList.size(); j > upperLimit; j--) {
-			trancatedList.remove(j);
-		}
-		return trancatedList;
-	}
-
 	/*
 	 * this method works in the following steps: 1. searches the assignments in
 	 * end date 2. sorts according to Id 3. adds the sorted Id list to the back
 	 * of final sortedList 4. decrements date towards start date
 	 */
-	private static LinkedList<Assignment> sortId(String endDate,
+	public static LinkedList<Assignment> sortId(String endDate,
 			String startDate) {
 
 		LinkedList<Assignment> sortedList = new LinkedList<Assignment>();
@@ -123,18 +40,17 @@ public class Sort {
 					tempList.remove(i);
 				}
 			}	
-			tempList = bubbleIdSort(tempList);
+			tempList = bubbleSortId(tempList);
 
 			for (int i = 0; i < tempList.size(); i++) {
 				sortedList.addLast(tempList.get(i));
 			}
-			endDate = Delete.updateDate(endDate);
+			endDate = DateLocal.updateDate(endDate);
 		}
-		
 		return sortedList;
 	}
 
-	private static LinkedList<Assignment> bubbleIdSort(
+	private static LinkedList<Assignment> bubbleSortId(
 			LinkedList<Assignment> sortingList) {
 
 		for (int i = 1; i < sortingList.size(); i++) {
@@ -175,7 +91,7 @@ public class Sort {
 			for (int i = 0; i < tempList.size(); i++) {
 				sortingList.add(tempList.get(i));
 			}
-			endDate = Delete.updateDate(endDate);
+			endDate = DateLocal.updateDate(endDate);
 		}
 		return bubbleSort(sortingList);
 	}
@@ -217,6 +133,7 @@ public class Sort {
 		return sortingList;
 	}
 }
+
 
 /*
  * // merge sort algorithm to sort sortingList private static void

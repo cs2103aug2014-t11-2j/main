@@ -14,31 +14,7 @@ import java.util.LinkedList;
 public class Delete {
 
 	enum DeleteAllType {
-		DELETEALL_ON, DELETEALL_BEFORE, DELETEALL_BETWEEN;
-	}
-	
-	protected static String delete(String id) {
-		
-		LinkedList<Assignment> idFound = new LinkedList<Assignment>();
-		idFound = SearchAll.searchAll(id);
-		
-		// PS: Have to check if nullAssignment will increase the numAppointment by 1
-		Assignment nullAssignment = new Assignment();
-		nullAssignment.setNumAppointment(nullAssignment.getNumAppointment() - 1 ); 
-		
-		if(idFound.size() == 0) {
-			return String.format(Message.DOES_NOT_EXISTS, "Serial Number " + id);
-		} else {
-			String stringDeleted;
-			int bufferPosition = SparkMoVare.getBufferPosition(id);
-			
-			stringDeleted = SparkMoVare.buffer.get(bufferPosition).getTitle();
-			SparkMoVare.buffer.remove(bufferPosition);
-			
-			nullAssignment.setNumAppointment(nullAssignment.getNumAppointment() - 1);
-			
-			return String.format(Message.DELETED, SparkMoVare.filePath, stringDeleted);
-		}
+		DELETEALL_ON, DELETEALL_BEFORE, DELETEALL_BETWEEN, CLEAR;
 	}
 
 	protected static String deleteAll(String duration, String endDate, String startDate) {
@@ -63,6 +39,30 @@ public class Delete {
 			return String.format(Message.DELETE, SparkMoVare.filePath);
 		}
 	}
+	
+	protected static String delete(String id) {
+		 
+		LinkedList<Assignment> idFound = new LinkedList<Assignment>();
+		idFound = SearchAll.searchAll(id);
+		
+		// PS: Have to check if nullAssignment will increase the numAppointment by 1
+		Assignment nullAssignment = new Assignment();
+		nullAssignment.setNumAppointment(nullAssignment.getNumAppointment() - 1); 
+		
+		if(idFound.size() == 0) {
+			return String.format(Message.DOES_NOT_EXISTS, "Serial Number " + id);
+		} else {
+			String stringDeleted;
+			int bufferPosition = SparkMoVare.getBufferPosition(id);
+			
+			stringDeleted = SparkMoVare.buffer.get(bufferPosition).getTitle();
+			SparkMoVare.buffer.remove(bufferPosition);
+			
+			nullAssignment.setNumAppointment(nullAssignment.getNumAppointment() - 1);
+			
+			return String.format(Message.DELETED, SparkMoVare.filePath, stringDeleted);
+		}
+	}
 
 	private static DeleteAllType getDuration(String duration) {
 
@@ -73,14 +73,14 @@ public class Delete {
 		} else if (duration.length() == 7) {
 			return DeleteAllType.DELETEALL_BETWEEN;
 		} else {
-			return null;
+			return DeleteAllType.CLEAR;
 		}
 	}
 
 	private static void deleteOn(String deleteOnDate) {
 
 		LinkedList<Assignment> toDelete = new LinkedList<Assignment>();
-		toDelete = SearchAll.searchAll(deleteOnDate);
+		toDelete = SearchAll.searchByDeadline(deleteOnDate);
 
 		for (int toDeleteCount = 0; toDeleteCount < toDelete.size(); toDeleteCount++) {
 			delete(toDelete.get(toDeleteCount).getId());
@@ -91,57 +91,8 @@ public class Delete {
 
 		while (!deleteTill.equals(startDate)) {
 			deleteOn(deleteTill);
-			deleteTill = updateDate(deleteTill);
+			deleteTill = DateLocal.updateDate(deleteTill);
 		}
 		deleteOn(startDate);
-	}
-
-	// decrementing date
-	protected static String updateDate(String date) {
-
-		String[] endDate = new String[3];
-
-		endDate[0] = date.substring(0, 2);
-		endDate[1] = date.substring(2, 4);
-		endDate[2] = date.substring(4, 8);
-		
-		int[] intEndDate = new int[3];
-		String updatedDate = "";
-		
-		for(int dateCharCount = 0; dateCharCount < endDate.length; dateCharCount++) {
-			intEndDate[dateCharCount] = Integer.parseInt(endDate[dateCharCount]); 
-		}
-
-		if ((intEndDate[0] - 1) == 0) {
-			if ((intEndDate[1] - 1) == 0) {
-				intEndDate[2]--;
-				intEndDate[1] = 12;
-				intEndDate[0] = 31;
-			} else {
-				intEndDate[1] = updateMonth(intEndDate[1], intEndDate[2]);
-			}
-		} else {
-			intEndDate[0]--;
-		}
-		
-		for(int dateIntCount = 0; dateIntCount < intEndDate.length; dateIntCount++) {
-			updatedDate += String.valueOf(intEndDate[dateIntCount]);
-		}
-		
-		return updatedDate;
-	}
-
-	private static int updateMonth(int intEndMonth, int intEndYear) {
-
-		if(intEndMonth == 2){			
-			if (intEndYear % 4 == 0){
-				return 29;
-			} else {
-				return 28;
-			}				
-		} else if(intEndMonth == 4 || intEndMonth == 6 || intEndMonth == 9 || intEndMonth == 11) {
-			return 30;
-		} 
-		return 31;	
 	}
 }

@@ -1,5 +1,7 @@
 package logic;
 
+import java.util.Scanner;
+
 /*
  * Allows the user to create a number of tentative dates 
  * before confirming to have only one date for user's appointment
@@ -10,6 +12,8 @@ package logic;
 
 public class Tentative {
 
+	private static Scanner scanner = new Scanner(System.in);
+	
 	public static String addTentative(String numOfTentative, String tentativeTitle) {
 				
 		int tentativeNum = Integer.parseInt(numOfTentative);
@@ -17,11 +21,20 @@ public class Tentative {
 		
 		tentativeTitle += " [tentative]";
 		
+		addTentativeAppt(tentativeNum, tentativeIdGenerated, tentativeTitle);
+		
+		return Message.TENTATIVE_ADDED;
+	}
+	
+	private static void addTentativeAppt(int tentativeNum, String tentativeIdGenerated, String tentativeTitle) {
+		
+		Print.printToUser(Message.TENTATIVE);
+		
 		for(int tentativeCount = 1; tentativeCount <= tentativeNum; tentativeCount++) {
-
-			String[] inputArray = SparkMoVare.scanner.nextLine().split(";");
 			
-			if(inputArray.length != 5) {
+			String[] inputArray = scanner.nextLine().split(";");
+			
+			if(inputArray.length != 4) {
 				tentativeCount--;
 				
 			} else {
@@ -36,6 +49,5 @@ public class Tentative {
 						startDate, startTime, endDate, endTime, false, null);
 			}
 		}
-		return Message.TENTATIVE_ADDED;
 	}
 }

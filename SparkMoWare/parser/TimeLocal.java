@@ -1,4 +1,4 @@
-package logic;
+package parser;
 
 import java.util.Scanner;
 
@@ -14,8 +14,8 @@ public class TimeLocal {
 		
 		while(!timeFormatValid(inputTime)){
 			
-			Print.printToUser(Message.INVALID_FORMAT);
-			Print.printToUser(String.format(Message.FORMAT_PROMPT, "time"));
+			Message.printToUser(Message.INVALID_FORMAT);
+			Message.printToUser(String.format(Message.FORMAT_PROMPT, "time"));
 			inputTime = scanner.nextLine();			
 		}
 		return inputTime;

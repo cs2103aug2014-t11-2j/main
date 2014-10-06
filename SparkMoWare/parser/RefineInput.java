@@ -1,4 +1,4 @@
-package logic;
+package parser;
 
 import java.util.Arrays;
 
@@ -79,7 +79,6 @@ public class RefineInput {
 			return RefinementType.ADD;
 
 		} else if(refinement.equalsIgnoreCase("tentative")) {
-
 			if(userInputArray.length < 3) {
 				return RefinementType.INVALID;
 			}
@@ -104,7 +103,7 @@ public class RefineInput {
 			return RefinementType.SEARCH;
 
 		} else if (refinement.equalsIgnoreCase("edit")) {
-			if (userInputArray.length < 3) {
+			if (userInputArray.length < 4) {
 				return RefinementType.INVALID;
 			}
 			return RefinementType.EDIT;

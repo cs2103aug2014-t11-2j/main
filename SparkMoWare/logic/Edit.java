@@ -25,71 +25,54 @@ public class Edit {
 			
 			String toUser = String.format(Message.DOES_NOT_EXISTS, "Serial Number " + refinedUserInput[1]);
 			
-			Message.printToUser(toUser);
+			Print.printToUser(toUser);
 
 			return toUser;
-		}
+		} else {
 
-		int bufferPosition = SparkMoVare.getBufferPosition(refinedUserInput[1]);
+			int bufferPosition = SparkMoVare.getBufferPosition(refinedUserInput[1]);
 
-		switch(getEditType(refinedUserInput[8])) {
-		
-		case TITLE:
-			SparkMoVare.buffer.get(bufferPosition).setTitle(refinedUserInput[2]);
-			break;
+			switch(getEditType(refinedUserInput[8])) {
 
-		case START_DATE:
-			SparkMoVare.buffer.get(bufferPosition).setStartDate(refinedUserInput[3]);
-			break;
+			case TITLE:
+				SparkMoVare.buffer.get(bufferPosition).setTitle(refinedUserInput[2]);
+				break;
 
-		case START_TIME:
-			SparkMoVare.buffer.get(bufferPosition).setStartTime(refinedUserInput[4]);
-			break;
+			case START_DATE:
+				SparkMoVare.buffer.get(bufferPosition).setStartDate(refinedUserInput[3]);
+				break;
 
-		case END_DATE:
-			SparkMoVare.buffer.get(bufferPosition).setEndDate(refinedUserInput[5]);
-			break;
+			case START_TIME:
+				SparkMoVare.buffer.get(bufferPosition).setStartTime(refinedUserInput[4]);
+				break;
 
-		case END_TIME:
-			SparkMoVare.buffer.get(bufferPosition).setEndTime(refinedUserInput[6]);
-			break;
+			case END_DATE:
+				SparkMoVare.buffer.get(bufferPosition).setEndDate(refinedUserInput[5]);
+				break;
 
-		case PRIORITY:
-			SparkMoVare.buffer.get(bufferPosition).setPriority(Integer.parseInt(refinedUserInput[8]));
-			break;
+			case END_TIME:
+				SparkMoVare.buffer.get(bufferPosition).setEndTime(refinedUserInput[6]);
+				break;
 
-		case DONE:
-			DateFormat dateFormat = new SimpleDateFormat("ddMMyyyyhhmm");
-			Date todayDate = new Date();
-			String currentDate = dateFormat.format(todayDate).substring(0, 8);
-			String currentTime = dateFormat.format(todayDate).substring(8);
-			SparkMoVare.buffer.get(bufferPosition).setIsDone(true);
-			
-			if (refinedUserInput[5] != null) {
-				currentDate = refinedUserInput[5];
+			case PRIORITY:
+				SparkMoVare.buffer.get(bufferPosition).setPriority(Integer.parseInt(refinedUserInput[8]));
+				break;
+
+			case DONE:
+				editDone(bufferPosition, refinedUserInput[5], refinedUserInput[6]);
+				break;
+
+			case INVALID:
+				Print.printToUser(Message.INVALID_SEARCH_PARAMETER);
+
+			default:
+				Print.printToUser(Message.INVALID_SEARCH_PARAMETER);
 			}
-			if (refinedUserInput[6] != null) {
-				currentTime = refinedUserInput[6];
-			}
-			if (Comparator.dateComparator(currentDate,SparkMoVare.buffer.get(bufferPosition).getEndDate()) == -1) {
-				SparkMoVare.buffer.get(bufferPosition).setIsOnTime(true);
-			} else if (Comparator.dateComparator(currentDate,SparkMoVare.buffer.get(bufferPosition).getEndDate()) == 0) {
-				if (Comparator.timeComparator(currentTime,SparkMoVare.buffer.get(bufferPosition).getEndTime()) == -1) {
-					SparkMoVare.buffer.get(bufferPosition).setIsOnTime(true);
-				}
-			}	
-			break;
-			
-		case INVALID:
-			Message.printToUser(Message.INVALID_SEARCH_PARAMETER);
-
-		default:
-			Message.printToUser(Message.INVALID_SEARCH_PARAMETER);
+			return Message.EDITED; 
 		}
-		return Message.EDITED; 
 	}
 	
-	//ASSUMPTION: user input attribute to change as a single word eg startdate
+	// ASSUMPTION: user input attribute to change as a single word eg startdate
 	protected static EditType getEditType(String attributeName) { 
 		
 		if (attributeName.length() < 1) {
@@ -105,8 +88,43 @@ public class Edit {
 			return EditType.END_DATE;
 		} else if (attributeName.equalsIgnoreCase("endtime")) {
 			return EditType.END_TIME;
+		} else if (attributeName.equalsIgnoreCase("priority")) {
+			return EditType.PRIORITY;
+		} else if(attributeName.equalsIgnoreCase("done")) {
+			return EditType.DONE;
 		} else {
 			return EditType.INVALID;
+		}
+	}
+	
+	private static void editDone(int bufferPosition,String date, String time) {
+		
+		DateFormat dateFormat = new SimpleDateFormat("ddMMyyyyhhmm");
+		Date todayDate = new Date();
+		
+		String currentDate = dateFormat.format(todayDate).substring(0, 8);
+		String currentTime = dateFormat.format(todayDate).substring(8);
+		SparkMoVare.buffer.get(bufferPosition).setIsDone(true);
+
+		if (date != null) {
+			currentDate = date;
+		}
+		if (time != null) {
+			currentTime = time;
+		}
+		
+		setIsOnTime(currentDate,currentTime, bufferPosition);
+	}
+	
+	private static void setIsOnTime(String currentDate, String currentTime, int bufferPosition) {
+		
+		if (Comparator.dateComparator(currentDate, SparkMoVare.buffer.get(bufferPosition).getEndDate()) == -1) {
+			SparkMoVare.buffer.get(bufferPosition).setIsOnTime(true);
+			
+		} else if (Comparator.dateComparator(currentDate,SparkMoVare.buffer.get(bufferPosition).getEndDate()) == 0) {
+			if (Comparator.timeComparator(currentTime,SparkMoVare.buffer.get(bufferPosition).getEndTime()) == -1) {
+				SparkMoVare.buffer.get(bufferPosition).setIsOnTime(true);
+			}
 		}
 	}
 }

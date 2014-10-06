@@ -1,13 +1,10 @@
 package junit;
 
 import logic.Add;
-import logic.Comparator;
-import logic.Id;
-import logic.Sort;
-import logic.SparkMoVare;
+import logic.Filter;
+import logic.Print;
 
 import org.junit.Test;
-
 
 public class SparkMoVareTest {
 	/*
@@ -39,15 +36,16 @@ public class SparkMoVareTest {
 	@Test
 	public void test(){
 	
-//		Add.addAssignment("020819940001", "Task1", 0, " ", " ", "03081994", "2359", false, null);
-//		Add.addAssignment("140120000001", "Task2", 0, " ", " ", "20012000", "2359", false, null);
-//		Add.addAssignment("140120000002", "Task3", 0, " ", " ", "20012000", "2359", false, null);
-//		Add.addAssignment("140919940001", "Appointment", 1, "14091994", "0800", "14091994", "0900", false, null);
-//		Add.addAssignment("010620140001", "AppointmentConference", 1, "03062014", "0800", "05062014", "1200", false, null);
-//		Add.addAssignment("010919940001", "tentativeTask", 2, " ", " ", "01091994", "1600", false, null);
+		Add.addAssignment("020819940001", "Task1", 0, " ", " ", "03081994", "2359", false, null);
+		Add.addAssignment("140120000001", "Task2", 0, " ", " ", "20012000", "2359", false, null);
+		Add.addAssignment("140120000002", "Task3", 0, " ", " ", "20012000", "2359", false, null);
+		Add.addAssignment("140919940001", "Appointment", 1, "14091994", "0800", "14091994", "0900", false, null);
+		Add.addAssignment("010620140001", "AppointmentConference", 1, "03062014", "0800", "05062014", "1200", false, null);
+		Add.addAssignment("010919940001", "tentativeTask", 2, " ", " ", "01091994", "1600", false, null);
 		
-		System.out.println(Comparator.dateComparator("17021996","17071999"));
-
+//		System.out.println(Comparator.dateComparator("17021996","17071999"));
+		
+		Print.printList(Filter.filterMain("tasks"));
 		
 	}
 }

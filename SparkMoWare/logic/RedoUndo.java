@@ -41,9 +41,11 @@ public class RedoUndo {
 	}
 	
 	private static void deepCopyLL(LinkedList<Assignment> toOverRide, LinkedList<Assignment> copyFrom) {
+		
 		toOverRide.clear();
-		for (int i=0;i<copyFrom.size();i++) {
-			toOverRide.add(i,copyFrom.get(i));
+		
+		for (int listCount = 0; listCount < copyFrom.size(); listCount++) {
+			toOverRide.add(listCount, copyFrom.get(listCount));
 		}
 	}
 }

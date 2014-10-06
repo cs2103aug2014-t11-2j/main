@@ -1,47 +1,51 @@
 package logic;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 
+/*
+ * Enter after every node
+ * 
+ */
 public class HelpList {
 	
-	public static LinkedList<String> helpLine () {
+	private static final String addName = "ADD: ";
+	private static final String addTaskHelp = "add <Task Title> <ddmmyyyy> <hhmm>";
+	private static final String addAppointmentHelp = "add <Appointment Title> <ddmmyyyy> <hhmm>";
+	
+	private static final String editName = "EDIT: ";
+	private static final String editHelp = "edit <SIN> <Type> <New Version>";
+	
+	private static final String deleteName = "DELETE: ";
+	private static final String deleteHelp = "delete <SIN>";
+	private static final String deleteOnHelp = "deleteAll on <ddmmyyyy>";
+	private static final String deleteBeforeHelp = "deleteAll before <ddmmyyyy>";
+	private static final String deletePeriodHelp = "deleteAll between <ddmmyyyy> <ddmmyyyy>";
+	private static final String clearHelp = "clear";
+	
+	private static final String tentativeName = "TENTATIVE: ";
+	private static final String tentativeHelp1 = "tentative <Num of Dates> <Title>";
+	private static final String tentativeHelp2 = "<ddmmyyyy> <hhmm> <ddmmyyyy> <hhmm>";
+	private static final String confirmHelp = "confirm <SIN> <ddmmyyyy> <hhmm> <ddmmyyyy> <hhmm>";
+	
+	private static final String searchName = "SEARCH: ";
+	private static final String searchHelp = "search <SIN/ DATE/ Time/ Title>";
+	
+	private static final String redoUndoName = "REDO/ UNDO: ";
+	private static final String undoHelp = "undo";
+	private static final String redoHelp = "redo";
+	
+	private static final String statisticName = "STATISTIC: ";
+	private static final String statisticHelp = "statistic";
+	
+	private static final String sortName = "SORT: ";
+	private static final String sortHelp = "sort <Type>";
+	
+	private static final String filterName = "FILTER: ";
+	private static final String filterHelp = "filter <Type>";
+	
+	public static ArrayList<String> helpLine () {
 		
-		LinkedList<String> helpList = new LinkedList<String>();
-		
-		String addName = "ADD: ";
-		String addTaskHelp = "add <Task Title> <ddmmyyyy> <hhmm>";
-		String addAppointmentHelp = "add <Appointment Title> <ddmmyyyy> <hhmm>";
-		
-		String editName = "EDIT: ";
-		String editHelp = "edit <SIN> <Type> <New Version>";
-		
-		String deleteName = "DELETE: ";
-		String deleteHelp = "delete <SIN>";
-		String deleteOnHelp = "deleteAll on <ddmmyyyy>";
-		String deleteBeforeHelp = "deleteAll before <ddmmyyyy>";
-		String deletePeriodHelp = "deleteAll between <ddmmyyyy> <ddmmyyyy>";
-		String clearHelp = "clear";
-		
-		String tentativeName = "TENTATIVE: ";
-		String tentativeHelp1 = "tentative <Num of Dates> <Title>";
-		String tentativeHelp2 = "<ddmmyyyy> <hhmm> <ddmmyyyy> <hhmm>";
-		String confirmHelp = "confirm <SIN> <ddmmyyyy> <hhmm> <ddmmyyyy> <hhmm>";
-		
-		String searchName = "SEARCH: ";
-		String searchHelp = "search <SIN/ DATE/ Time/ Title>";
-		
-		String redoUndoName = "REDO/ UNDO: ";
-		String undoHelp = "undo";
-		String redoHelp = "redo";
-		
-		String statisticName = "STATISTIC: ";
-		String statisticHelp = "statistic";
-		
-		String sortName = "SORT: ";
-		String sortHelp = "sort <Type>";
-		
-		String filterName = "FILTER: ";
-		String filterHelp = "filter <Type>";
+		ArrayList<String> helpList = new ArrayList<String>();
 		
 		helpList.add(addName);
 		helpList.add(addTaskHelp);

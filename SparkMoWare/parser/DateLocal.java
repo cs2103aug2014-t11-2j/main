@@ -1,4 +1,4 @@
-package logic;
+package parser;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -21,8 +21,8 @@ public class DateLocal {
 		// will continuously prompt user for correct date format currently no way to exit
 		while(!dateFormatValid(inputDate)) {
 			
-			Print.printToUser(Message.INVALID_FORMAT);
-			Print.printToUser(String.format(Message.FORMAT_PROMPT, "date"));
+			Message.printToUser(Message.INVALID_FORMAT);
+			Message.printToUser(String.format(Message.FORMAT_PROMPT, "date"));
 			inputDate = scanner.nextLine();
 		}
 		return inputDate;

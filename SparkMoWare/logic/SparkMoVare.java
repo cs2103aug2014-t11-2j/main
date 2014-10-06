@@ -14,14 +14,14 @@ public class SparkMoVare {
 	protected static Stack< LinkedList<Assignment>> actionHistory = new Stack< LinkedList<Assignment>>();
 	protected static Stack< LinkedList<Assignment>> actionFuture = new Stack< LinkedList<Assignment>>();
 	protected static LinkedList<Assignment> buffer = new LinkedList<Assignment>();
-	protected static Scanner scanner = new Scanner(System.in);
+	private static Scanner scanner = new Scanner(System.in);
 	protected static String filePath = "Storage.txt";
-	protected static String latestSerialNumber = "";
 
 	protected static int counter = 0;
 	protected static int size = 0;
 
 	protected static String[] refinedUserInput = new String[9];
+	 
 	/*each index of refinedUserinput represent something
 	 *0:The command string
 	 *1:Serial Number (S/N) of the Assignment ASSUMPTION: serial number length is at most 12 digits DD/MM/YYYY/0000
@@ -39,22 +39,26 @@ public class SparkMoVare {
 	public static Object SparkMoVare;
 
 	enum CommandType {
-		ADD, EDIT, DELETE, TENTATIVE, CONFIRM, SORT, SEARCH, 
-		CLEAR, UNDO, REDO, STATISTIC, EXIT, INVALID, DISPLAY 
+		ADD, EDIT, DELETE, TENTATIVE, CONFIRM, SORT, SEARCH, FILTER,
+		CLEAR, UNDO, REDO, STATISTIC, EXIT, INVALID, DISPLAY, HELP 
 	}
 
 	//Fundamentally the same as CommandType, but without single word commands 
-	enum RefinementType {
-		ADD, EDIT, DELETE, TENTATIVE, CONFIRM, SORT, SEARCH, 
-		CLEAR, INVALID, OTHERS
-	}
+	
+    public static void main(String[] args) {
+
+        Print.printToUser(Message.WELCOME);
+        Storage.openFile(filePath,Id.getLatestSerialNumber(), buffer);
+        toDoManager();
+    }
+
 
 	public static void toDoManager() {
 
 		while (true) {
-			Message.printToUser(Message.PROMPT);
+			Print.printToUser(Message.PROMPT);
 			RefineInput.determineUserInput(scanner.nextLine());
-			Message.printToUser(executeCommand(refinedUserInput[0]));
+			Print.printToUser(executeCommand(refinedUserInput[0]));
 			if (getCommandType(refinedUserInput[0])!=CommandType.UNDO &&
 					getCommandType(refinedUserInput[0]) != CommandType.REDO &&
 					getCommandType(refinedUserInput[0]) != CommandType.INVALID &&
@@ -102,15 +106,15 @@ public class SparkMoVare {
 			return Delete.deleteAll(refinedUserInput[8], refinedUserInput[5], refinedUserInput[3]);
 
 		case SORT:
-			//		return Sort.sort();
+			Print.printList(Sort.sortRequired(refinedUserInput[8]));
 			break;
 
 		case SEARCH:
-			//		return search();
+			Print.printList(SearchAll.searchAll(refinedUserInput[8]));
 			break;
 
 		case STATISTIC:
-			//		Statisics.statistic();
+			Print.printToUser(Statistic.getStats());
 			break;
 
 		case UNDO:
@@ -120,15 +124,19 @@ public class SparkMoVare {
 			return RedoUndo.redo(filePath, buffer, actionHistory, actionFuture);
 
 		case DISPLAY:
-			display();
+			Print.display();
 			break;
-
+		
+		case FILTER:
+			
+			break;
+		
 		case EXIT:
 			System.exit(SYSTEM_EXIT_NO_ERROR);
 			break;
 
-		case INVALID:
-			return "Invalid Command issued!";
+		case HELP:
+			Print.printHelpList(HelpList.helpLine());
 
 		default:
 			return "Invalid Command issued!";
@@ -141,6 +149,8 @@ public class SparkMoVare {
 
 		if (command.equalsIgnoreCase("add")) {
 			return CommandType.ADD;
+		} else if(command.equalsIgnoreCase("tentative")) {
+			return CommandType.TENTATIVE;
 		} else if (command.equalsIgnoreCase("confirm")) {
 			return CommandType.CONFIRM;
 		} else if (command.equalsIgnoreCase("delete")) {
@@ -159,6 +169,8 @@ public class SparkMoVare {
 			return CommandType.UNDO;
 		} else if (command.equalsIgnoreCase("redo")) {
 			return CommandType.REDO;
+		} else if (command.equalsIgnoreCase("help")) {
+			return CommandType.HELP;
 		} else if (command.equalsIgnoreCase("exit")) {
 			return CommandType.EXIT;
 		} else if (command.equalsIgnoreCase("display")){
@@ -166,23 +178,6 @@ public class SparkMoVare {
 		} else {
 			return CommandType.INVALID;
 		}		
-	}
-
-	public static String display() {
-		for(int i=0; i< buffer.size(); i++){
-			String lineToAdd="";
-			lineToAdd+=String.valueOf(i+1);
-			lineToAdd+=". ";
-			lineToAdd+=buffer.get(i);
-			System.out.println(lineToAdd);
-		}
-
-		if (getLineCount()==0){
-			return (filePath + " is empty");
-		}
-		else{
-			return "";
-		}	
 	}
 
 	protected static int getBufferPosition(String id) {
@@ -198,14 +193,6 @@ public class SparkMoVare {
 
 	static int getLineCount() {
 		return buffer.size();
-	}
-
-	public static void setLatestSerialNumber(String newSn) {
-		latestSerialNumber = newSn;
-	}
-
-	public static String getLatestSerialNumber(){
-		return latestSerialNumber;
 	}
 
 	public static String getfilePath(){
