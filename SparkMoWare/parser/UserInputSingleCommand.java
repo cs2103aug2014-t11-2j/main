@@ -1,25 +1,23 @@
 package parser;
 
-public class UserInputHelp extends UserInput {
-
+public class UserInputSingleCommand extends UserInput {
+	
 	/************** Data members **********************/
 	
 	
 	
 	/************** Constructors **********************/
-
-	public UserInputHelp() {
-		setCommandType(CommandType.HELP);
+	
+		public UserInputSingleCommand() {
+		// TODO Auto-generated constructor stub
 	}
-
+	
 	/**************** Accessors ***********************/
-
 	
 	
 	/**************** Mutators ************************/
 
 
 
-	/**************** Overriding ************************/
 
 }

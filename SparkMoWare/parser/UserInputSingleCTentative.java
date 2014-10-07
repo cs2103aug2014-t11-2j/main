@@ -1,23 +1,17 @@
 package parser;
 
-public class UserInputSort {
+public class UserInputSingleCTentative extends UserInputSingleCommand {
 	
 	/************** Data members **********************/
-	
 	
 	
 	/************** Constructors **********************/
 	
 	
-	
 	/**************** Accessors ***********************/
-	
 	
 	
 	/**************** Mutators ************************/
 
-	
-	/**************** Overriding ************************/
-	
 	
 }

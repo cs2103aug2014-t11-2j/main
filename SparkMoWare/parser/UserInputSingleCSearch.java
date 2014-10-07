@@ -1,26 +1,25 @@
 package parser;
 
-public class UserInputUndo extends UserInput {
-
+public class UserInputSingleCSearch {
+	
 	/************** Data members **********************/
 	
 	
 	
 	/************** Constructors **********************/
-
-	public UserInputUndo() {
-		setCommandType(CommandType.UNDO);
-	}
-
+	
+	
+	
 	/**************** Accessors ***********************/
-
+	
 	
 	
 	/**************** Mutators ************************/
 
-
-
+	
 	/**************** Overriding ************************/
-
-
+	
+	public String toString() {
+		return getCommandType() + "~" + getId() + "~" + getDate() + "~" + getTime();
+	}	
 }

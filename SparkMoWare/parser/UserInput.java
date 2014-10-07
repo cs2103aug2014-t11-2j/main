@@ -1,5 +1,4 @@
-/*Super class for the various user inputs
- */
+//Super class for the various user inputs
 
 package parser;
 
@@ -12,7 +11,7 @@ public class UserInput {
 	/************** Constructors **********************/
 	
 		public UserInput() {
-		
+		// TODO Auto-generated constructor stub
 	}
 	
 	/**************** Accessors ***********************/
@@ -29,7 +28,5 @@ public class UserInput {
 	
 	/**************** Overriding ************************/
 	
-	public String toString() {
-		return "" + getCommandType();
-	}
+	
 }
