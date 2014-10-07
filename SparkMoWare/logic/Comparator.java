@@ -29,7 +29,6 @@ public class Comparator {
 		} else if(checkDate == LARGER){
 			serialCheck = true;
 		}
-
 		return serialCheck;
 	}
 
@@ -56,19 +55,14 @@ public class Comparator {
 		if(dateA.equals(dateB)) {
 			return SAME;
 		} else if ( Integer.parseInt(yearA) > Integer.parseInt(yearB) ) {
-			
 			return LARGER;
 		} else if (Integer.parseInt(yearA) < Integer.parseInt(yearB)) {
-			
 			return SMALLER;
 		} else if (Integer.parseInt(monthA) > Integer.parseInt(monthB) ) {
-			
 			return LARGER;
 		} else if (Integer.parseInt(monthA) < Integer.parseInt(monthB)) {
-			
 			return SMALLER;
 		} else if (Integer.parseInt(dayA) > Integer.parseInt(dayB) ) {
-			
 			return LARGER;
 		}
 		return SMALLER;

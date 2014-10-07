@@ -199,7 +199,7 @@ public class SearchAll {
 
 		for(listCount = 0; listCount < SparkMoVare.buffer.size(); listCount++) {
 
-			if(SparkMoVare.buffer.get(listCount).getEndDate().equals(searchStartDate)) {
+			if(SparkMoVare.buffer.get(listCount).getStartDate().equals(searchStartDate)) {
 				startDateFound.add(SparkMoVare.buffer.get(listCount));
 			}
 		}
@@ -209,7 +209,7 @@ public class SearchAll {
 	protected static LinkedList<Assignment> searchByDeadline(String searchDeadline) {
 
 		LinkedList<Assignment> deadlineFound = new LinkedList<Assignment>();
-
+		
 		for(listCount = 0; listCount < SparkMoVare.buffer.size(); listCount++) {
 
 			if(SparkMoVare.buffer.get(listCount).getEndDate().equals(searchDeadline)) {

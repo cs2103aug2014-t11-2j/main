@@ -77,5 +77,4 @@ public class Trancation {
 		}
 		return limitIndex;
 	}
-
 }

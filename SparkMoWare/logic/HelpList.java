@@ -17,9 +17,9 @@ public class HelpList {
 	
 	private static final String deleteName = "DELETE: ";
 	private static final String deleteHelp = "delete <SIN>";
-	private static final String deleteOnHelp = "deleteAll on <ddmmyyyy>";
-	private static final String deleteBeforeHelp = "deleteAll before <ddmmyyyy>";
-	private static final String deletePeriodHelp = "deleteAll between <ddmmyyyy> <ddmmyyyy>";
+	private static final String deleteOnHelp = "clear on <ddmmyyyy>";
+	private static final String deleteBeforeHelp = "clear before <ddmmyyyy>";
+	private static final String deletePeriodHelp = "clear between <ddmmyyyy> <ddmmyyyy>";
 	private static final String clearHelp = "clear";
 	
 	private static final String tentativeName = "TENTATIVE: ";

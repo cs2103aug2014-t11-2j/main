@@ -10,21 +10,73 @@ import java.util.LinkedList;
  */
 public class Sort {
 
+	private static int listCount;
+	private static int sortedListCount;
+	
 	protected static LinkedList<Assignment> sortRequired(String sortType){
 		
 		LinkedList<Assignment> sortedList = new LinkedList<Assignment>();
-		if(sortType.equalsIgnoreCase("deadline")) {
-			sortedList = bubbleSort(SparkMoVare.buffer);
+	
+		if(sortType.equalsIgnoreCase("title")) {
+//			sortedList = insertionSortTitle(SparkMoVare.buffer);
+			
 		} else if(sortType.equalsIgnoreCase("serial")) {
-			sortedList = bubbleSortId(SparkMoVare.buffer);
+
+			sortedList = insertionSortId(SparkMoVare.buffer);
 		}
 		return sortedList;
 	}
+	/*
+	private static LinkedList<Assignment> insertionSortTitle(LinkedList<Assignment> list) {
+		
+		LinkedList<Assignment> titleListSorted = new LinkedList<Assignment>();
+		
+		for(listCount = 0; listCount < list.size(); listCount++) {
+			if(list.size() == 0) {
+				titleListSorted.add(list.get(listCount));
+			}
+			else {
+				for(sortedListCount = 0; sortedListCount < titleListSorted.size(); sortedListCount++) {
+					if(Comparator.dateComparator());
+				}
+			}
+		}
+		return titleListSorted;
+	}
+	*/
+	private static LinkedList<Assignment> insertionSortId(LinkedList<Assignment> list) {
+		
+		LinkedList<Assignment> idListSorted = new LinkedList<Assignment>();
+		
+		for(listCount = 0; listCount < list.size(); listCount++) {
+			if(idListSorted.size() == 0) {
+				idListSorted.add(list.get(listCount));
+			}
+			else {
+				for(sortedListCount = 0; sortedListCount < idListSorted.size(); sortedListCount++) {
+					
+					if(Comparator.serialNumberComparator(idListSorted.get(sortedListCount).getId(), 
+							list.get(listCount).getId())) {
+						
+						System.out.println("YAY");
+						idListSorted.add(sortedListCount, list.get(listCount));
+					} 
+					if(sortedListCount + 1 == idListSorted.size()) {
+						idListSorted.add(list.get(listCount));				
+					}
+				}
+			}
+		}
+		System.out.println(idListSorted.size());
+		return idListSorted;
+	}
+}
 	/*
 	 * this method works in the following steps: 1. searches the assignments in
 	 * end date 2. sorts according to Id 3. adds the sorted Id list to the back
 	 * of final sortedList 4. decrements date towards start date
 	 */
+	/*
 	public static LinkedList<Assignment> sortId(String endDate,
 			String startDate) {
 
@@ -132,10 +184,7 @@ public class Sort {
 		}
 		return sortingList;
 	}
-}
 
-
-/*
  * // merge sort algorithm to sort sortingList private static void
  * mergeSort(LinkedList<Assignment> sortingList, String start, String end) {
  * 
@@ -165,4 +214,3 @@ public class Sort {
  * 
  * } }
  */
-

@@ -128,7 +128,7 @@ public class SparkMoVare {
 			break;
 		
 		case FILTER:
-			
+			Print.printList(Filter.filterMain(refinedUserInput[8], refinedUserInput[3], refinedUserInput[5]));
 			break;
 		
 		case EXIT:
@@ -175,6 +175,8 @@ public class SparkMoVare {
 			return CommandType.EXIT;
 		} else if (command.equalsIgnoreCase("display")){
 			return CommandType.DISPLAY;
+		} else if (command.equalsIgnoreCase("filter")) {
+			return CommandType.FILTER;
 		} else {
 			return CommandType.INVALID;
 		}		
