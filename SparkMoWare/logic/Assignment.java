@@ -15,7 +15,7 @@ public class Assignment {
 	private boolean isDone;
 	private boolean isOnTime;
 	private int type;			// type of assignment
-	private int priority;		// 0 1 2 where 0 is low 1 is normal 2 is high
+	private int priority;		// 0 1 where 0 is low & 1 is high 
 	//private String description;
 	//private int alarm;		// in the format HHMM, if inactive null
 	private Vector<String> tag;	// to support tagging

@@ -12,7 +12,7 @@ public class Add {
 
 	public static String addAssignment(String id, String title, int type,
 			String startDate, String startTime, String endDate, String endTime,
-			boolean isDone, Vector<String> tag) {
+			boolean isDone, int priority, Vector<String> tag) {
 
 		Assignment newAssignment = new Assignment();
 
@@ -27,6 +27,7 @@ public class Add {
 		// newAssignment.setDescription(description);
 		// newAssignment.setAlarm(alarm);
 		newAssignment.setTag(tag);
+		newAssignment.setPriority(priority);
 		
 		addToBuffer(newAssignment);
 		
