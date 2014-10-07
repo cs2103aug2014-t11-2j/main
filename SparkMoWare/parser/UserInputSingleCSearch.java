@@ -1,6 +1,6 @@
 package parser;
 
-public class UserInputSort {
+public class UserInputSingleCSearch {
 	
 	/************** Data members **********************/
 	
@@ -19,5 +19,7 @@ public class UserInputSort {
 	
 	/**************** Overriding ************************/
 	
-	
+	public String toString() {
+		return getCommandType() + "~" + getId() + "~" + getDate() + "~" + getTime();
+	}	
 }

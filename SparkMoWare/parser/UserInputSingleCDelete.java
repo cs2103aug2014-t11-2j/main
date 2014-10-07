@@ -1,10 +1,10 @@
 package parser;
 
-public class UserInputSort {
+public class UserInputSingleCDelete extends UserInputSingleCommand {
 	
 	/************** Data members **********************/
 	
-	
+	String id;
 	
 	/************** Constructors **********************/
 	

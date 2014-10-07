@@ -1,6 +1,6 @@
 package parser;
 
-public class UserInputSort {
+public class UserInputSingleCommand extends UserInput {
 	
 	/************** Data members **********************/
 	
@@ -8,16 +8,16 @@ public class UserInputSort {
 	
 	/************** Constructors **********************/
 	
-	
+		public UserInputSingleCommand() {
+		// TODO Auto-generated constructor stub
+	}
 	
 	/**************** Accessors ***********************/
 	
 	
-	
 	/**************** Mutators ************************/
 
-	
-	/**************** Overriding ************************/
-	
-	
+
+
+
 }
