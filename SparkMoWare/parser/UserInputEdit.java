@@ -27,11 +27,11 @@ public class UserInputEdit extends UserInput {
 		return this.id;
 	}
 	
-	protected  EditType getTarget() {
+	protected EditType getTarget() {
 		return this.target;
 	}
 	
-	protected  String getContent() {
+	protected String getContent() {
 		return this.content;
 	}
 	
