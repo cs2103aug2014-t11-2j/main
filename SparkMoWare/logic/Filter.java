@@ -16,7 +16,6 @@ public class Filter {
 		} else {
 			filteredList = filter(filterType);
 		}
-		
 		return filteredList;
 	}
 

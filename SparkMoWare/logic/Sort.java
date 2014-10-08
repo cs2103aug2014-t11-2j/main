@@ -21,7 +21,6 @@ public class Sort {
 			sortedList = insertionSortTitle(SparkMoVare.buffer);
 
 		} else if(sortType.equalsIgnoreCase("serial")) {
-
 			sortedList = insertionSortId(SparkMoVare.buffer);
 		}
 		
@@ -40,17 +39,7 @@ public class Sort {
 				titleListSorted.add(list.get(listCount));
 			}
 			else if(titleListSorted.size() >= 1) {
-				for(sortedListCount = 0; sortedListCount < titleListSorted.size(); sortedListCount++) {
-					
-					if(titleListSorted.get(sortedListCount).getTitle().compareToIgnoreCase(list.get(listCount).getTitle()) >= 0) {
-						titleListSorted.add(sortedListCount, list.get(listCount));
-						break;
-						
-					} else if(sortedListCount == titleListSorted.size() - 1) {
-						titleListSorted.add(list.get(listCount));
-						break;
-					}
-				}
+				titleListSorted = insertionSortTitle2(list,titleListSorted);
 			}
 		}
 		return titleListSorted;
@@ -66,25 +55,48 @@ public class Sort {
 				idListSorted.add(list.get(listCount));
 
 			} else if(idListSorted.size() >= 1) {
-
-				for(sortedListCount = 0; sortedListCount < idListSorted.size(); sortedListCount++) {
-
-					if(Comparator.serialNumberComparator(idListSorted.get(sortedListCount).getId(), 
-							list.get(listCount).getId())) {
-
-						idListSorted.add(sortedListCount, list.get(listCount));
-						break;
-					} else if(sortedListCount == idListSorted.size() - 1) {
-						idListSorted.add(list.get(listCount));
-						break;
-					}
-				}
+				idListSorted = insertionSortId2(list, idListSorted);
 			}
 		}
-
 		return idListSorted;
 	}
+	
+	private static LinkedList<Assignment> insertionSortId2(LinkedList<Assignment> list, 
+			LinkedList<Assignment> idListSorted) {
+		
+		for(sortedListCount = 0; sortedListCount < idListSorted.size(); sortedListCount++) {
+
+			if(Comparator.serialNumberComparator(idListSorted.get(sortedListCount).getId(), 
+					list.get(listCount).getId())) {
+
+				idListSorted.add(sortedListCount, list.get(listCount));
+				break;
+			} else if(sortedListCount == idListSorted.size() - 1) {
+				idListSorted.add(list.get(listCount));
+				break;
+			}
+		}
+		return idListSorted;
+	}
+	
+	private static LinkedList<Assignment> insertionSortTitle2(LinkedList<Assignment> list, 
+			LinkedList<Assignment> titleListSorted) {
+		
+		for(sortedListCount = 0; sortedListCount < titleListSorted.size(); sortedListCount++) {
+			
+			if(titleListSorted.get(sortedListCount).getTitle().compareToIgnoreCase(list.get(listCount).getTitle()) >= 0) {
+				titleListSorted.add(sortedListCount, list.get(listCount));
+				break;
+				
+			} else if(sortedListCount == titleListSorted.size() - 1) {
+				titleListSorted.add(list.get(listCount));
+				break;
+			}
+		}
+		return titleListSorted;
+	}
 }
+
 /*
  * this method works in the following steps: 1. searches the assignments in
  * end date 2. sorts according to Id 3. adds the sorted Id list to the back
