@@ -5,6 +5,7 @@ import java.util.LinkedList;
 public class Filter {
 	
 	private static final int FORMAT_DEADLINE = 8;
+	private static final int FORMAT_PRIORITY = 9;
 	
 	public static LinkedList<Assignment> filterMain(String filterType,
 			String startDate, String endDate) {
@@ -27,6 +28,8 @@ public class Filter {
 			
 			if(type.length() == FORMAT_DEADLINE) {
 				filterList = SearchAll.searchByDeadline(type);
+			} else if(type.length() == FORMAT_PRIORITY){
+				filterList = SearchAll.searchByPriority();
 			} else {
 				filterList = SearchAll.searchAll(type);
 			}

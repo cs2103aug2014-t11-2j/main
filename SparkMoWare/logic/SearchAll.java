@@ -48,6 +48,9 @@ public class SearchAll {
 		} else if(userInput.length() == DATE_FORMAT_LENGTH && userInput.matches("\\d+")) {
 			stringsFound = searchByDate(userInput);
 
+		} else if(userInput.equalsIgnoreCase("priority")) {
+			stringsFound = searchByPriority();
+
 		} else if(userInput.length() == IS_COMPLETED && userInput.equalsIgnoreCase("completed")) {
 			stringsFound = searchByCompletion();
 
@@ -267,5 +270,19 @@ public class SearchAll {
 			}
 		}
 		return null;
+	}
+
+	public static LinkedList<Assignment> searchByPriority() {
+
+		LinkedList<Assignment> priorityFound = new LinkedList<Assignment>();
+		
+		for(listCount = 0; listCount < SparkMoVare.buffer.size(); listCount++) {
+
+			if(!SparkMoVare.buffer.get(listCount).getPriority().equals(null)) {
+				priorityFound.add(SparkMoVare.buffer.get(listCount));
+			}
+		}
+		return priorityFound;
+
 	}
 }

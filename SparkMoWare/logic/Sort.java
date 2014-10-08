@@ -20,14 +20,42 @@ public class Sort {
 		if(sortType.equalsIgnoreCase("title")) {
 			sortedList = insertionSortTitle(SparkMoVare.buffer);
 
-		} else if(sortType.equalsIgnoreCase("serial")) {
+		} else if(sortType.equalsIgnoreCase("SIN")) {
 			sortedList = insertionSortId(SparkMoVare.buffer);
+		} else if(sortType.equalsIgnoreCase("priority")){
+			sortedList = insertionSortPriority();
 		}
 		
 		if(startDate != null && endDate != null) {
 			sortedList = Trancation.trancateList(sortedList, startDate, endDate);
 		}
 		return sortedList;
+	}
+
+	private static LinkedList<Assignment> insertionSortPriority() {
+
+		LinkedList<Assignment> prioritySortList = new LinkedList<Assignment>();
+		LinkedList<Assignment> buffer = new LinkedList<Assignment>();
+		boolean contains = false;
+		buffer = SparkMoVare.buffer;
+		
+		prioritySortList = SearchAll.searchAll("priority");
+		
+		for(int bufferCounter = 0; bufferCounter<buffer.size(); bufferCounter++){
+			for(int sortListCounter = 0; sortListCounter < prioritySortList.size(); sortListCounter++){
+				
+				if(buffer.get(bufferCounter).getId() == prioritySortList.get(sortListCounter).getId()){
+					contains = true;
+				}
+				
+			if(contains == false){
+				prioritySortList.add(buffer.get(bufferCounter));
+			}
+			
+			}
+		}
+		
+		return prioritySortList;
 	}
 
 	private static LinkedList<Assignment> insertionSortTitle(LinkedList<Assignment> list) {

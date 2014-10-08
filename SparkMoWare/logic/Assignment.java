@@ -15,7 +15,7 @@ public class Assignment {
 	private boolean isDone;
 	private boolean isOnTime;
 	private int type;			// type of assignment
-	private int priority;		// 0 1 where 0 is low & 1 is high 
+	private String priority;	// important else null 
 	//private String description;
 	//private int alarm;		// in the format HHMM, if inactive null
 	private Vector<String> tag;	// to support tagging
@@ -32,11 +32,11 @@ public class Assignment {
 	/************** Constructors **********************/
 	// Default constructor
 	public Assignment() {
-		this(DEFAULT, DEFAULT_STRING, -1, DEFAULT, DEFAULT, DEFAULT, DEFAULT, false, false, 1, new Vector<String>());
+		this(DEFAULT, DEFAULT_STRING, -1, DEFAULT, DEFAULT, DEFAULT, DEFAULT, false, false, null, new Vector<String>());
 	}
 	
 	public Assignment(String id, String title, int type, String startDate, String startTime,
-			String endDate, String endTime, boolean isDone, boolean isOnTime, int priority, Vector<String> tag) {
+			String endDate, String endTime, boolean isDone, boolean isOnTime, String priority, Vector<String> tag) {
 		
 		setId(id);
 		setTitle(title);
@@ -101,7 +101,7 @@ public class Assignment {
 		return this.isOnTime;
 	}
 	
-	public int getPriority() {
+	public String getPriority() {
 		return this.priority;
 	}
 	
@@ -159,7 +159,7 @@ public class Assignment {
 		isOnTime = newIsOnTime;
 	}
 	
-	public void setPriority(int newPriority){
+	public void setPriority(String newPriority){
 		priority = newPriority;
 	}
 	

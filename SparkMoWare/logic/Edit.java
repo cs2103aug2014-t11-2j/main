@@ -55,7 +55,7 @@ public class Edit {
 				break;
 
 			case PRIORITY:
-				SparkMoVare.buffer.get(bufferPosition).setPriority(Integer.parseInt(refinedUserInput[8]));
+				SparkMoVare.buffer.get(bufferPosition).setPriority(refinedUserInput[8]);
 				break;
 
 			case DONE:

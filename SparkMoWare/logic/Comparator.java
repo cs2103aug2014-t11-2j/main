@@ -95,14 +95,13 @@ public class Comparator {
 		return SMALLER;
 	}
 
-	protected static int priorityComparator(int flagA, int flagB) {
+	protected static int priorityComparator(String priorityA, String priorityB) {
 		
-		if (flagA < flagB){
+		if (priorityB.equalsIgnoreCase("important") && priorityA.equals(null)){
 			return SMALLER;
-		} else if (flagA == flagB){
+		} else if (priorityA.equals(priorityB)){
 			return SAME;
 		}
-	
 		return LARGER;
 	}
 
