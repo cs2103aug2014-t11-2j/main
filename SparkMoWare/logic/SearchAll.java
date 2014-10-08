@@ -48,15 +48,15 @@ public class SearchAll {
 		} else if(userInput.length() == DATE_FORMAT_LENGTH && userInput.matches("\\d+")) {
 			stringsFound = searchByDate(userInput);
 
-		} else if(userInput.equalsIgnoreCase("priority")) {
-			stringsFound = searchByPriority();
-
 		} else if(userInput.length() == IS_COMPLETED && userInput.equalsIgnoreCase("completed")) {
 			stringsFound = searchByCompletion();
 
 		} else if(userInput.length() == IS_ON_TIME && userInput.equalsIgnoreCase("isontime")) {
 			stringsFound = searchByOnTime();
 
+		} else if(userInput.equalsIgnoreCase("important")) {
+			stringsFound = searchByPriority();
+			
 		} else {
 			stringsFound = searchByWords(userInput);
 		}
@@ -95,7 +95,23 @@ public class SearchAll {
 		}
 		return onTimeFound;
 	}
+	
+	private static LinkedList<Assignment> searchByPriority() {
 
+		LinkedList<Assignment> priorityFound = new LinkedList<Assignment>();
+		
+		for(listCount = 0; listCount < SparkMoVare.buffer.size(); listCount++) {
+			try{
+				if(SparkMoVare.buffer.get(listCount).getPriority().equals("important")) {
+					priorityFound.add(SparkMoVare.buffer.get(listCount));
+				}
+			}catch(NullPointerException e){
+
+			}
+		}
+		return priorityFound;
+	}
+	
 	private static LinkedList<Assignment> searchByTask(int searchTask) {
 
 		LinkedList<Assignment> taskFound = new LinkedList<Assignment> ();
@@ -270,19 +286,5 @@ public class SearchAll {
 			}
 		}
 		return null;
-	}
-
-	public static LinkedList<Assignment> searchByPriority() {
-
-		LinkedList<Assignment> priorityFound = new LinkedList<Assignment>();
-		
-		for(listCount = 0; listCount < SparkMoVare.buffer.size(); listCount++) {
-
-			if(!SparkMoVare.buffer.get(listCount).getPriority().equals(null)) {
-				priorityFound.add(SparkMoVare.buffer.get(listCount));
-			}
-		}
-		return priorityFound;
-
 	}
 }

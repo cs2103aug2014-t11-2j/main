@@ -32,27 +32,21 @@ public class Sort {
 		return sortedList;
 	}
 
-	private static LinkedList<Assignment> insertionSortPriority() {
+	public static LinkedList<Assignment> insertionSortPriority() {
 
 		LinkedList<Assignment> prioritySortList = new LinkedList<Assignment>();
-		LinkedList<Assignment> buffer = new LinkedList<Assignment>();
-		boolean contains = false;
-		buffer = SparkMoVare.buffer;
 		
-		prioritySortList = SearchAll.searchAll("priority");
+		prioritySortList = SearchAll.searchAll("important");
 		
-		for(int bufferCounter = 0; bufferCounter<buffer.size(); bufferCounter++){
-			for(int sortListCounter = 0; sortListCounter < prioritySortList.size(); sortListCounter++){
-				
-				if(buffer.get(bufferCounter).getId() == prioritySortList.get(sortListCounter).getId()){
-					contains = true;
+		for(int counter = 0; counter<SparkMoVare.buffer.size(); counter++){
+			try{
+				if(SparkMoVare.buffer.get(counter).getPriority().equals("important")){
+					break;
 				}
-				
-			if(contains == false){
-				prioritySortList.add(buffer.get(bufferCounter));
+			}catch(NullPointerException e){
+				prioritySortList.add(SparkMoVare.buffer.get(counter));
 			}
 			
-			}
 		}
 		
 		return prioritySortList;

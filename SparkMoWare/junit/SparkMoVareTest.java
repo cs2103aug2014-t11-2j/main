@@ -6,6 +6,7 @@ import logic.Filter;
 import logic.Print;
 import logic.RefineInput;
 import logic.Edit;
+import logic.Sort;
 
 import org.junit.Test;
 
@@ -47,7 +48,7 @@ public class SparkMoVareTest {
 		Add.addAssignment("010919940001", "tentativeTask", 2, " ", " ", "01091994", "1600", false, null, null);
 		
 //		System.out.println(Comparator.priorityComparator("important",null));
-		
+		/*
 		String[] refinedUserInput = new String[10];
 		refinedUserInput[8] = "edit";
 		refinedUserInput[1] = "140120000001";
@@ -55,8 +56,9 @@ public class SparkMoVareTest {
 		refinedUserInput[9] = "important";
 		String edited = Edit.editAssignment(refinedUserInput);
 		System.out.println(edited);
-		Print.display();
-		
+		*/
+//		Print.printList(Filter.filter("important"));
+		Print.printList(Sort.insertionSortPriority());
 	}
 }
 
