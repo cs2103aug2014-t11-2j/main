@@ -16,7 +16,7 @@ public class Edit {
 		TITLE, START_DATE, START_TIME, END_DATE, END_TIME, INVALID, PRIORITY, DONE
 	}
 	
-	protected static String editAssignment(String[] refinedUserInput) {
+	public static String editAssignment(String[] refinedUserInput) {
 
 		LinkedList<Assignment> idFound = new LinkedList<Assignment>();
 		idFound = SearchAll.searchAll(refinedUserInput[1]);
@@ -55,7 +55,7 @@ public class Edit {
 				break;
 
 			case PRIORITY:
-				SparkMoVare.buffer.get(bufferPosition).setPriority(refinedUserInput[8]);
+				SparkMoVare.buffer.get(bufferPosition).setPriority(refinedUserInput[9]);
 				break;
 
 			case DONE:

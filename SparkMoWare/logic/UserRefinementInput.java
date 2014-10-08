@@ -107,7 +107,7 @@ public class UserRefinementInput {
 			break;
 			
 		case PRIORITY:
-			// break;
+			SparkMoVare.refinedUserInput[9] = userInputArray[3];
 			
 		case DONE:
 			break;

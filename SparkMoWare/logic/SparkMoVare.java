@@ -21,7 +21,7 @@ public class SparkMoVare {
 	protected static int counter = 0;
 	protected static int size = 0;
 
-	protected static String[] refinedUserInput = new String[9];
+	protected static String[] refinedUserInput = new String[10];
 	 
 	/*each index of refinedUserinput represent something
 	 *0:The command string
@@ -35,7 +35,8 @@ public class SparkMoVare {
 	 *8:For command types: delete all (on, before, during)
 	 *					   edit which is to be edited, such as title or start date
 	 *					   tentative (number of days)
-	 *					   sort and search by date, serial number, etc. 
+	 *					   sort and search by date, serial number, etc.
+	 *9:priority 
 	 */
 	public static Object SparkMoVare;
 
@@ -86,7 +87,7 @@ public class SparkMoVare {
 		case ADD:
 			return Add.addAssignment(refinedUserInput[1], refinedUserInput[2], Integer.parseInt(refinedUserInput[7]),
 					refinedUserInput[3], refinedUserInput[4], refinedUserInput[5], refinedUserInput[6], 
-					false, 0, null);
+					false, null, null);
 
 		case EDIT:
 			Edit.editAssignment(refinedUserInput);
