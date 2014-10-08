@@ -8,8 +8,6 @@ import java.util.LinkedList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import javax.swing.JFrame;
-
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -130,9 +128,10 @@ public class MainController {
 		{
 			@Override
 			public void handleEvent(Event e) {
-				if (e.keyCode == SWT.ESC);
-				if(shell.getVisible() == true) {
-					shell.setVisible(false);
+				if (e.keyCode == SWT.ESC) {
+					if(shell.getVisible() == true) {
+						shell.setVisible(false);
+					}
 				}
 			}
 		});
@@ -190,7 +189,7 @@ public class MainController {
 				if (e.keyCode == SWT.CR || e.keyCode == SWT.LF) {
 					CommandHandler.commandHandle(cli, feedback, userInput, tableViewer);
 				}
-				else if (e.keyCode == SWT.ESC && cli.getText().equals("DUMBWAYSTODIE")) {
+				else if (e.keyCode == SWT.F12 && cli.getText().equals("DUMBWAYSTODIE")) {
 					//easter egg
 					feedback.setText("ACHIEVEMENT UNLOCK : Dumb Ways to Die!");
 					try {
