@@ -8,6 +8,8 @@ import java.util.LinkedList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.swing.JFrame;
+
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -27,14 +29,19 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.Tray;
+import org.eclipse.swt.widgets.TrayItem;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
 import storage.Storage;
-import org.eclipse.wb.swt.SWTResourceManager;
 
 public class MainController {
 
@@ -63,7 +70,72 @@ public class MainController {
 		shell.setSize(1024, 768);
 		Image bg_Image = new Image(display, "wallpaper1.jpg");
 		shell.setBackgroundImage(bg_Image);
-		shell.setText("SparkMoVare");	
+		shell.setText("SparkMoVare");
+
+		/**
+		 * Setting to tray and minimising to tray
+		 */
+		final Tray tray = display.getSystemTray();
+		if (tray == null) {
+			System.out.println("The system tray is not available");
+		} else {
+			final TrayItem item = new TrayItem(tray, SWT.NONE);
+			item.setToolTipText("SparkMoVare");
+			Image trayicon = new Image(display, "SparkMoVareTrayIcon.png");
+			item.setImage(trayicon);
+			item.addListener(SWT.Selection, new Listener() {
+				public void handleEvent(Event event) {
+					if(shell.getVisible() == false) {
+						shell.setVisible(true);
+					}
+					shell.setFocus();
+					shell.setActive();
+				}
+			});
+			final Menu menu = new Menu(shell, SWT.POP_UP);
+			MenuItem miHide = new MenuItem(menu, SWT.PUSH);
+			miHide.setText("Hide" );
+			miHide.addListener(SWT.Selection, new Listener() {
+				public void handleEvent(Event event) {
+					if(shell.getVisible() == true) {
+						shell.setVisible(false);
+					}
+				}
+			});
+			MenuItem miRestore = new MenuItem(menu, SWT.PUSH);
+			miRestore.setText("Restore" );
+			miRestore.addListener(SWT.Selection, new Listener() {
+				public void handleEvent(Event event) {
+					if(shell.getVisible() == false) {
+						shell.setVisible(true);
+					}
+					shell.setFocus();
+					shell.setActive();
+				}
+			});
+			MenuItem miExit = new MenuItem(menu, SWT.PUSH);
+			miExit.setText("Exit" );
+			miExit.addListener(SWT.Selection, new Listener() {
+				public void handleEvent(Event event) {
+					System.exit(0);
+				}
+			});
+			item.addListener(SWT.MenuDetect, new Listener() {
+				public void handleEvent(Event event) {
+					menu.setVisible(true);
+				}
+			});
+		}
+		shell.getDisplay().addFilter(SWT.KeyDown, new Listener()
+		{
+			@Override
+			public void handleEvent(Event e) {
+				if (e.keyCode == SWT.ESC);
+				if(shell.getVisible() == true) {
+					shell.setVisible(false);
+				}
+			}
+		});
 
 		/**
 		 * TableViewer
@@ -96,11 +168,11 @@ public class MainController {
 		tc7.setText("End Time");
 		tc1.setWidth(107);
 		tc2.setWidth(70);
-		tc3.setWidth(390);
-		tc4.setWidth(90);
-		tc5.setWidth(80);
-		tc6.setWidth(90);
-		tc7.setWidth(80);
+		tc3.setWidth(395);
+		tc4.setWidth(91);
+		tc5.setWidth(81);
+		tc6.setWidth(91);
+		tc7.setWidth(81);
 		table.setHeaderVisible(true);
 
 		/**
@@ -138,74 +210,74 @@ public class MainController {
 			}
 		});
 
-				/**
-				 * Enter button
-				 */
-				Button btnEnter = new Button(shell, SWT.NONE);
-				btnEnter.setBounds(874, 640, 90, 30);
-				btnEnter.setText("Enter");
-				btnEnter.addSelectionListener(new SelectionAdapter() {
-					@Override
-					public void widgetSelected(SelectionEvent e) {
-						CommandHandler.commandHandle(cli, feedback, userInput, tableViewer);
-					}
-				});
+		/**
+		 * Enter button
+		 */
+		Button btnEnter = new Button(shell, SWT.NONE);
+		btnEnter.setBounds(874, 640, 90, 30);
+		btnEnter.setText("Enter");
+		btnEnter.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				CommandHandler.commandHandle(cli, feedback, userInput, tableViewer);
+			}
+		});
 
-				/**
-				 * Date Display
-				 */
-				dateDisplay = new Text(shell, SWT.BORDER | SWT.CENTER);
-				dateDisplay.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
-				dateDisplay.setFont(SWTResourceManager.getFont("Segoe UI", 13, SWT.BOLD));
-				dateDisplay.setEnabled(false);
-				dateDisplay.setEditable(false);
-				dateDisplay.setBounds(761, 10, 235, 30);
-				dateDisplay.setText(dateFormat.format(date).toString());
+		/**
+		 * Date Display
+		 */
+		dateDisplay = new Text(shell, SWT.BORDER | SWT.CENTER);
+		dateDisplay.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
+		dateDisplay.setFont(SWTResourceManager.getFont("Segoe UI", 13, SWT.BOLD));
+		dateDisplay.setEnabled(false);
+		dateDisplay.setEditable(false);
+		dateDisplay.setBounds(761, 10, 235, 30);
+		dateDisplay.setText(dateFormat.format(date).toString());
 
-				/**
-				 * Clock Display
-				 */
-				clockDisplay = formToolkit.createText(shell, "New Text", SWT.CENTER);
-				clockDisplay.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
-				clockDisplay.setFont(SWTResourceManager.getFont("Segoe UI", 16, SWT.NORMAL));
-				clockDisplay.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
-				clockDisplay.setEnabled(false);
-				clockDisplay.setEditable(false);
-				clockDisplay.setBounds(344, 41, 310, 52);
-				clockDisplay.setText(timeFormat.format(date).toString());
+		/**
+		 * Clock Display
+		 */
+		clockDisplay = formToolkit.createText(shell, "New Text", SWT.CENTER);
+		clockDisplay.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
+		clockDisplay.setFont(SWTResourceManager.getFont("Segoe UI", 16, SWT.NORMAL));
+		clockDisplay.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		clockDisplay.setEnabled(false);
+		clockDisplay.setEditable(false);
+		clockDisplay.setBounds(344, 41, 310, 52);
+		clockDisplay.setText(timeFormat.format(date).toString());
 
 
-				/**
-				 * feedbackDisplay
-				 */
-				feedback = new Text(shell, SWT.BORDER | SWT.CENTER);
-				feedback.setEnabled(false);
-				feedback.setEditable(false);
-				feedback.setBounds(344, 99, 310, 26);
-				formToolkit.adapt(feedback, true, true);
+		/**
+		 * feedbackDisplay
+		 */
+		feedback = new Text(shell, SWT.BORDER | SWT.CENTER);
+		feedback.setEnabled(false);
+		feedback.setEditable(false);
+		feedback.setBounds(344, 99, 310, 26);
+		formToolkit.adapt(feedback, true, true);
 
-				/**
-				 * quoteViewer
-				 */
-				quoteViewer = formToolkit.createText(shell, "New Text", SWT.CENTER);
-				quoteViewer.setFont(SWTResourceManager.getFont("Segoe UI", 11, SWT.NORMAL));
-				quoteViewer.setEnabled(false);
-				quoteViewer.setEditable(false);
-				quoteViewer.setBounds(43, 676, 921, 26);
-				quoteViewer.setText(quoteLib.getQuote());
+		/**
+		 * quoteViewer
+		 */
+		quoteViewer = formToolkit.createText(shell, "New Text", SWT.CENTER);
+		quoteViewer.setFont(SWTResourceManager.getFont("Segoe UI", 11, SWT.NORMAL));
+		quoteViewer.setEnabled(false);
+		quoteViewer.setEditable(false);
+		quoteViewer.setBounds(43, 676, 921, 26);
+		quoteViewer.setText(quoteLib.getQuote());
 
-				/**
-				 * Update Clock
-				 */
-				clockUpdater.schedule(new UpdateTimerTask(), 1000, 1000);
+		/**
+		 * Update Clock
+		 */
+		clockUpdater.schedule(new UpdateTimerTask(), 1000, 1000);
 
-				shell.open();
+		shell.open();
 
-				while (!shell.isDisposed()) {
-					if (!display.readAndDispatch()) {
-						display.sleep();
-					}
-				}        
+		while (!shell.isDisposed()) {
+			if (!display.readAndDispatch()) {
+				display.sleep();
+			}
+		}        
 	}
 
 
