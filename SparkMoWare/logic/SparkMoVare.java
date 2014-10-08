@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.Stack;
 
+import storage.HelpList;
 import storage.Storage;
 
 public class SparkMoVare {
@@ -49,6 +50,7 @@ public class SparkMoVare {
 
         Print.printToUser(Message.WELCOME);
         Storage.openFile(filePath,Id.getLatestSerialNumber(), buffer);
+    	HelpList.openFile("HelpList.txt");
         toDoManager();
     }
 
@@ -136,8 +138,9 @@ public class SparkMoVare {
 			break;
 
 		case HELP:
-			Print.printHelpList(HelpList.helpLine());
-
+			Print.printHelpList(HelpList.getHelpList());
+			break;
+			
 		default:
 			return "Invalid Command issued!";
 		}
