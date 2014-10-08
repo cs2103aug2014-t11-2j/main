@@ -36,7 +36,7 @@ public class SparkMoVare {
 	 *					   edit which is to be edited, such as title or start date
 	 *					   tentative (number of days)
 	 *					   sort and search by date, serial number, etc.
-	 *9:priority 
+	 *9:Priority 
 	 */
 	public static Object SparkMoVare;
 
@@ -87,7 +87,7 @@ public class SparkMoVare {
 		case ADD:
 			return Add.addAssignment(refinedUserInput[1], refinedUserInput[2], Integer.parseInt(refinedUserInput[7]),
 					refinedUserInput[3], refinedUserInput[4], refinedUserInput[5], refinedUserInput[6], 
-					false, null, null);
+					false, refinedUserInput[9], null);
 
 		case EDIT:
 			Edit.editAssignment(refinedUserInput);

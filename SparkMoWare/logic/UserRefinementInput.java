@@ -7,13 +7,14 @@ import java.util.Scanner;
  * will be passed on to the methods without much worry
  */
 public class UserRefinementInput {
-	
+
 	private static int size = 0;
 
 	private static String defaultEndTime = "2359";
 	private static String defaultStartTime = "0000";
-	
+
 	private static Scanner scanner = new Scanner(System.in);
+
 	/*
 	 * FATAL ERROR: method cannot cope if date or time is left blank.
 	 */
@@ -22,10 +23,19 @@ public class UserRefinementInput {
 		SparkMoVare.refinedUserInput[1] = Id.serialNumGen();
 		SparkMoVare.refinedUserInput[2] = userInputArray[1];
 		SparkMoVare.refinedUserInput[7] = "0";
+		SparkMoVare.refinedUserInput[9] = null;
+		boolean containsPriority = false;
+
+		for (String priority : userInputArray) {
+			if (priority.equals("important")) {
+				SparkMoVare.refinedUserInput[9] = "important";
+				containsPriority = true;
+			}
+		}
 
 		if (userInputArray.length == 2) {
 			setEnd(DateLocal.dateString(), defaultEndTime);
-			
+
 		} else if (userInputArray.length == 3) {
 			if (TimeLocal.timeFormatValid(userInputArray[2])) {
 				setEnd(DateLocal.dateString(), userInputArray[2]);
@@ -33,50 +43,79 @@ public class UserRefinementInput {
 			} else if (DateLocal.dateFormatValid(userInputArray[2])) {
 				setEnd(userInputArray[2], defaultEndTime);
 
+			} else if (containsPriority) {
+				setEnd(DateLocal.dateString(), defaultEndTime);
+
 			} else {
 				SparkMoVare.refinedUserInput[0] = "invalid";
 			}
+
 		} else if (userInputArray.length == 4) {
-			if (TimeLocal.timeFormatValid(userInputArray[3])) {
-				setEnd(userInputArray[2], userInputArray[3]);
 
-			} else if (DateLocal.dateFormatValid(userInputArray[3])) {
-				setStart(userInputArray[2], defaultStartTime);
-				setEnd(userInputArray[4], defaultEndTime);
-				
-				SparkMoVare.refinedUserInput[7] = "1";
-
+			if (containsPriority) {
+				setEnd(userInputArray[2], defaultEndTime);
 			} else {
-				SparkMoVare.refinedUserInput[0] = "invalid";
+				if (TimeLocal.timeFormatValid(userInputArray[3])) {
+					setEnd(userInputArray[2], userInputArray[3]);
+
+				} else if (DateLocal.dateFormatValid(userInputArray[3])) {
+					setStart(userInputArray[2], defaultStartTime);
+					setEnd(userInputArray[4], defaultEndTime);
+
+					SparkMoVare.refinedUserInput[7] = "1";
+
+				} else {
+					SparkMoVare.refinedUserInput[0] = "invalid";
+				}
 			}
+
 		} else if (userInputArray.length == 5) {
 			SparkMoVare.refinedUserInput[7] = "1";
-			
-			if (TimeLocal.timeFormatValid(userInputArray[4])) {
+			if (containsPriority) {
 				setStart(userInputArray[2], defaultStartTime);
-				setEnd(userInputArray[4], userInputArray[5]);
+				setEnd(userInputArray[3], defaultEndTime);
 				
-			} else if (DateLocal.dateFormatValid(userInputArray[4])) {
-				setStart(userInputArray[2], userInputArray[3]);
-				setEnd(userInputArray[4], defaultEndTime);
-				
-			}else{
-				SparkMoVare.refinedUserInput[0] = "invalid";
+			} else {
+				if (TimeLocal.timeFormatValid(userInputArray[4])) {
+					setStart(userInputArray[2], defaultStartTime);
+					setEnd(userInputArray[4], userInputArray[5]);
+
+				} else if (DateLocal.dateFormatValid(userInputArray[4])) {
+					setStart(userInputArray[2], userInputArray[3]);
+					setEnd(userInputArray[4], defaultEndTime);
+
+				} else {
+					SparkMoVare.refinedUserInput[0] = "invalid";
+				}
 			}
-		} else if (userInputArray.length == 6){
-			
+		} else if (userInputArray.length == 6) {
+			SparkMoVare.refinedUserInput[7] = "1";
+			if(containsPriority){
+				if (TimeLocal.timeFormatValid(userInputArray[4])) {
+					setStart(userInputArray[2], defaultStartTime);
+					setEnd(userInputArray[3], userInputArray[4]);
+
+				} else if (DateLocal.dateFormatValid(userInputArray[4])) {
+					setStart(userInputArray[2], userInputArray[3]);
+					setEnd(userInputArray[4], defaultEndTime);
+				
+			} else {
+			setStart(userInputArray[2], userInputArray[3]);
+			setEnd(userInputArray[4], userInputArray[5]);
+			}	
+				
+		} else if (userInputArray.length == 7);
 			setStart(userInputArray[2], userInputArray[3]);
 			setEnd(userInputArray[4], userInputArray[5]);
 			
-			SparkMoVare.refinedUserInput[7] = "1";
-			
-		} else{
+		} else {
 			SparkMoVare.refinedUserInput[0] = "invalid";
 		}
+		
 	}
 
 	protected static void userInputEdit(String[] userInputArray) {
-	
+
 		SparkMoVare.refinedUserInput[1] = Id.determineID(userInputArray[1]);
 		/*
 		 * if(SparkMoVare.refinedUserInput[1].equalsIgnoreCase("exit")){//Method
@@ -105,19 +144,19 @@ public class UserRefinementInput {
 		case END_TIME:
 			SparkMoVare.refinedUserInput[6] = userInputArray[3];
 			break;
-			
+
 		case PRIORITY:
 			SparkMoVare.refinedUserInput[9] = userInputArray[3];
-			
+
 		case DONE:
 			break;
-			
+
 		default:
 			SparkMoVare.refinedUserInput[0] = "invalid";
 			break;
 		}
 	}
-	
+
 	protected static String determineTitle(String[] userInputArray) {
 
 		size = userInputArray.length;
@@ -169,8 +208,9 @@ public class UserRefinementInput {
 		}
 		return numOfTentative;
 	}
-	
-	// ASSUMPTION: array size is 6 in the format <confirm> <S/N> <ddmmyyyy> <hhmm> <ddmmyyyy> <hhmm>
+
+	// ASSUMPTION: array size is 6 in the format <confirm> <S/N> <ddmmyyyy>
+	// <hhmm> <ddmmyyyy> <hhmm>
 	protected static void userInputConfirm(String[] userInputArray) {
 
 		if (userInputArray.length == 6) {
@@ -198,7 +238,7 @@ public class UserRefinementInput {
 			SparkMoVare.refinedUserInput[8] = userInputArray[1];
 			SparkMoVare.refinedUserInput[5] = DateLocal
 					.determineDate(userInputArray[2]);
-		} else if(userInputArray.length == 1) {
+		} else if (userInputArray.length == 1) {
 			SparkMoVare.refinedUserInput[8] = userInputArray[0];
 		} else {
 			SparkMoVare.refinedUserInput[0] = "invalid";
@@ -206,9 +246,9 @@ public class UserRefinementInput {
 	}
 
 	protected static void userInputSort(String[] userInputArray) {
-		
+
 		SparkMoVare.refinedUserInput[8] = userInputArray[1];
-		
+
 		if (userInputArray.length > 2) {
 			SparkMoVare.refinedUserInput[3] = userInputArray[2];
 			SparkMoVare.refinedUserInput[5] = userInputArray[3];
@@ -218,30 +258,26 @@ public class UserRefinementInput {
 	protected static void userInputSearch(String[] userInputArray) {
 		SparkMoVare.refinedUserInput[8] = userInputArray[1];
 	}
-	
+
 	protected static void userInputFilter(String[] userInputArray) {
-		
+
 		SparkMoVare.refinedUserInput[8] = userInputArray[1];
-		
+
 		if (userInputArray.length > 2) {
 			SparkMoVare.refinedUserInput[3] = userInputArray[2];
 			SparkMoVare.refinedUserInput[5] = userInputArray[3];
 		}
 	}
-	
+
 	private static void setStart(String startDate, String startTime) {
-		
-		SparkMoVare.refinedUserInput[3] = DateLocal
-				.determineDate(startDate);
-		SparkMoVare.refinedUserInput[4] = TimeLocal
-				.determineTime(startTime);
+
+		SparkMoVare.refinedUserInput[3] = DateLocal.determineDate(startDate);
+		SparkMoVare.refinedUserInput[4] = TimeLocal.determineTime(startTime);
 	}
-	
+
 	private static void setEnd(String endDate, String endTime) {
-		
-		SparkMoVare.refinedUserInput[5] = DateLocal
-				.determineDate(endDate);
-		SparkMoVare.refinedUserInput[6] = TimeLocal
-				.determineTime(endTime);
+
+		SparkMoVare.refinedUserInput[5] = DateLocal.determineDate(endDate);
+		SparkMoVare.refinedUserInput[6] = TimeLocal.determineTime(endTime);
 	}
 }
