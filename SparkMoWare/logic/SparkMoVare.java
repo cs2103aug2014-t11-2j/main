@@ -84,7 +84,7 @@ public class SparkMoVare {
 		case ADD:
 			return Add.addAssignment(refinedUserInput[1], refinedUserInput[2], Integer.parseInt(refinedUserInput[7]),
 					refinedUserInput[3], refinedUserInput[4], refinedUserInput[5], refinedUserInput[6], 
-					false, null);
+					false, 0, null);
 
 		case EDIT:
 			Edit.editAssignment(refinedUserInput);
@@ -106,7 +106,7 @@ public class SparkMoVare {
 			return Delete.deleteAll(refinedUserInput[8], refinedUserInput[5], refinedUserInput[3]);
 
 		case SORT:
-			Print.printList(Sort.sortRequired(refinedUserInput[8]));
+			Print.printList(Sort.sortRequired(refinedUserInput[8], refinedUserInput[3], refinedUserInput[5]));
 			break;
 
 		case SEARCH:

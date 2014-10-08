@@ -206,7 +206,13 @@ public class UserRefinementInput {
 	}
 
 	protected static void userInputSort(String[] userInputArray) {
+		
 		SparkMoVare.refinedUserInput[8] = userInputArray[1];
+		
+		if (userInputArray.length > 2) {
+			SparkMoVare.refinedUserInput[3] = userInputArray[2];
+			SparkMoVare.refinedUserInput[5] = userInputArray[3];
+		}
 	}
 
 	protected static void userInputSearch(String[] userInputArray) {

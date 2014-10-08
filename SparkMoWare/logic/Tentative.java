@@ -46,7 +46,7 @@ public class Tentative {
 
 				//addTask(ID, title, type, startDate, startTime, endDate, endTime, isCompletion, isOnTime)
 				Add.addAssignment(tentativeIdGenerated, tentativeTitle, Assignment.TYPE_TENTATIVE, 
-						startDate, startTime, endDate, endTime, false, null);
+						startDate, startTime, endDate, endTime, false, 0, null);
 			}
 		}
 	}

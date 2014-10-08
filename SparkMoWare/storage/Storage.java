@@ -21,8 +21,8 @@ public class Storage {
 	public static LinkedList<Assignment> saveFile(String filePath, LinkedList<Assignment> buffer) {
 
 		File file = new File(filePath);
-		if(file.delete()){
-		}else{
+		if(file.delete()) {
+		} else {
 			System.out.println("failed");
 		}
 
@@ -30,9 +30,9 @@ public class Storage {
 			FileWriter fw = new FileWriter(file.getAbsoluteFile());
 			BufferedWriter bw = new BufferedWriter(fw);
 
-			for(int i = 0; i< buffer.size(); i++){
+			for(int i = 0; i < buffer.size(); i++) {
 				bw.write(buffer.get(i).toString());
-				if (i<buffer.size() - 1){
+				if (i<buffer.size() - 1) {
 					bw.newLine(); 
 				}
 			}
@@ -41,8 +41,7 @@ public class Storage {
 		} catch (IOException e) {
 			System.out.println("Exception encountered while saving the textfile");
 			System.exit(SYSTEM_EXIT_ERROR);
-		}
-		
+		}		
 		return buffer;
 	}
 	
@@ -57,7 +56,6 @@ public class Storage {
 			FileReader fileReader = new FileReader(file);
 			BufferedReader bufferedReader = new BufferedReader(fileReader);
 			String line;
-
 
 			while ((line = bufferedReader.readLine())  != null ) {
 
@@ -78,9 +76,9 @@ public class Storage {
 				// tags to be done
 				// updates the latest serial number
 
-				if( latestSerialNumber.equals("")) {
+				if(Id.getLatestSerialNumber().equals("")) {
 					Id.setLatestSerialNumber(lineArray[0]);
-				} else if(Comparator.serialNumberComparator(lineArray[0], latestSerialNumber)) {
+				} else if(Comparator.serialNumberComparator(lineArray[0], Id.getLatestSerialNumber())) {
 						Id.setLatestSerialNumber(lineArray[0]);
 				}
 				buffer.add(temp);
