@@ -22,7 +22,7 @@ public class Sort {
 
 		} else if(sortType.equalsIgnoreCase("SIN")) {
 			sortedList = insertionSortId(SparkMoVare.buffer);
-		} else if(sortType.equalsIgnoreCase("priority")){
+		} else if(sortType.equalsIgnoreCase("important")){
 			sortedList = insertionSortPriority();
 		}
 		
@@ -37,18 +37,13 @@ public class Sort {
 		LinkedList<Assignment> prioritySortList = new LinkedList<Assignment>();
 		
 		prioritySortList = SearchAll.searchAll("important");
-		
-		for(int counter = 0; counter<SparkMoVare.buffer.size(); counter++){
-			try{
-				if(SparkMoVare.buffer.get(counter).getPriority().equals("important")){
-					break;
-				}
-			}catch(NullPointerException e){
-				prioritySortList.add(SparkMoVare.buffer.get(counter));
-			}
+
+		for(int counter = 0; counter < SparkMoVare.buffer.size(); counter++){
 			
+				if(!SparkMoVare.buffer.get(counter).getPriority().equals("important")){
+					prioritySortList.add(SparkMoVare.buffer.get(counter));
+				}
 		}
-		
 		return prioritySortList;
 	}
 
