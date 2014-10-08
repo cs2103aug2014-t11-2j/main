@@ -28,11 +28,13 @@ public class Filter {
 			
 			if(type.length() == FORMAT_DEADLINE) {
 				filterList = SearchAll.searchByDeadline(type);
-			} else if(type.length() == FORMAT_PRIORITY){
-				filterList = SearchAll.searchByPriority();
 			} else {
 				filterList = SearchAll.searchAll(type);
 			}
+		}
+		
+		else if(type.equals("important")){
+			filterList = SearchAll.searchByPriority();
 		}
 		return filterList; 
 	}
