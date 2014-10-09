@@ -26,7 +26,7 @@ public class Delete {
 			return String.format(Message.DELETE_ON, endDate);
 
 		case DELETEALL_BEFORE:
-			startDate = SparkMoVare.buffer.getFirst().getEndDate();
+			startDate = InternalStorage.getBuffer().getFirst().getEndDate();
 			deleteBetween(endDate, startDate);
 			return String.format(Message.DELETE_BEFORE, endDate);
 
@@ -35,8 +35,8 @@ public class Delete {
 			return String.format(Message.DELETE_BETWEEN, endDate, startDate);
 
 		default:
-			SparkMoVare.buffer.clear();
-			return String.format(Message.DELETE, SparkMoVare.filePath);
+			InternalStorage.getBuffer().clear();
+			return String.format(Message.DELETE, InternalStorage.getFilePath());
 		}
 	}
 	
@@ -53,14 +53,14 @@ public class Delete {
 			return String.format(Message.DOES_NOT_EXISTS, "Serial Number " + id);
 		} else {
 			String stringDeleted;
-			int bufferPosition = SparkMoVare.getBufferPosition(id);
+			int bufferPosition = InternalStorage.getBufferPosition(id);
 			
-			stringDeleted = SparkMoVare.buffer.get(bufferPosition).getTitle();
-			SparkMoVare.buffer.remove(bufferPosition);
+			stringDeleted = InternalStorage.getBuffer().get(bufferPosition).getTitle();
+			InternalStorage.getBuffer().remove(bufferPosition);
 			
 			nullAssignment.setNumAppointment(nullAssignment.getNumAppointment() - 1);
 			
-			return String.format(Message.DELETED, SparkMoVare.filePath, stringDeleted);
+			return String.format(Message.DELETED, InternalStorage.getFilePath(), stringDeleted);
 		}
 	}
 

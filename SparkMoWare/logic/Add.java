@@ -15,7 +15,7 @@ public class Add {
 			boolean isDone, String priority, Vector<String> tag) {
 
 		Assignment newAssignment = new Assignment();
-
+		
 		newAssignment.setId(id);
 		newAssignment.setTitle(title);
 		newAssignment.setType(type);
@@ -36,20 +36,20 @@ public class Add {
 	
 	private static void addToBuffer(Assignment newAssignment) {
 		
-		if (SparkMoVare.buffer.size() == 0) {
-			SparkMoVare.buffer.add(newAssignment);
+		if (InternalStorage.getLineCount() == 0) {
+			InternalStorage.addBuffer(newAssignment);
 			
 		} else if (Comparator.dateComparator(newAssignment.getEndDate(),
-					SparkMoVare.buffer.get(SparkMoVare.buffer.size() - 1).getEndDate()) == 1) {
-			SparkMoVare.buffer.add(newAssignment);
+					InternalStorage.getBuffer().get(InternalStorage.getLineCount() - 1).getEndDate()) == 1) {
+			InternalStorage.addBuffer(newAssignment);
 			
 		} else{
 			int bufferCount;
 			
-			for (bufferCount = SparkMoVare.buffer.size() - 1; bufferCount > 0 && 
+			for (bufferCount = InternalStorage.getLineCount() - 1; bufferCount > 0 && 
 					(Comparator.dateComparator(newAssignment.getEndDate(), 
-					SparkMoVare.buffer.get(bufferCount - 1).getEndDate()) == -1); bufferCount--);
-			SparkMoVare.buffer.add(bufferCount, newAssignment);
+					InternalStorage.getBuffer().get(bufferCount - 1).getEndDate()) == -1); bufferCount--);
+			InternalStorage.addBuffer(bufferCount, newAssignment);
 		} 
 	}
 }

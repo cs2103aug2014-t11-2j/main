@@ -56,32 +56,10 @@ public class Storage {
 			FileReader fileReader = new FileReader(file);
 			BufferedReader bufferedReader = new BufferedReader(fileReader);
 			String line;
-
+			
 			while ((line = bufferedReader.readLine())  != null ) {
-
-				String lineArray[] = line.split("~");
-				Assignment temp = new Assignment();
-
-				temp.setId(lineArray[0]);
-				temp.setTitle(lineArray[1]);
-				temp.setType(Integer.parseInt(lineArray[2]));
-				temp.setStartDate(lineArray[3]);
-				temp.setStartTime(lineArray[4]);
-				temp.setEndDate(lineArray[5]);
-				temp.setEndTime(lineArray[6]);
-				temp.setIsDone(Boolean.parseBoolean(lineArray[7]));
-				temp.setIsOnTime(Boolean.parseBoolean(lineArray[8]));
-				temp.setPriority(lineArray[9]);
-				//temp.setAlarm(Integer.parseInt(lineArray[7]));
-				// tags to be done
-				// updates the latest serial number
-
-				if(Id.getLatestSerialNumber().equals("")) {
-					Id.setLatestSerialNumber(lineArray[0]);
-				} else if(Comparator.serialNumberComparator(lineArray[0], Id.getLatestSerialNumber())) {
-						Id.setLatestSerialNumber(lineArray[0]);
-				}
-				buffer.add(temp);
+				
+				buffer.add(toBufferAssignment(line));
 			}
 			fileReader.close();
 		} catch (IOException e) {
@@ -91,4 +69,31 @@ public class Storage {
 		}
 		return buffer;
 	}
-}
+	
+	private static Assignment toBufferAssignment(String line) {
+		
+		String lineArray[] = line.split("~");
+		Assignment temp = new Assignment();
+		
+		temp.setId(lineArray[0]);
+		temp.setTitle(lineArray[1]);
+		temp.setType(Integer.parseInt(lineArray[2]));
+		temp.setStartDate(lineArray[3]);
+		temp.setStartTime(lineArray[4]);
+		temp.setEndDate(lineArray[5]);
+		temp.setEndTime(lineArray[6]);
+		temp.setIsDone(Boolean.parseBoolean(lineArray[7]));
+		temp.setIsOnTime(Boolean.parseBoolean(lineArray[8]));
+		temp.setPriority(lineArray[9]);
+		//temp.setAlarm(Integer.parseInt(lineArray[7]));
+		// tags to be done
+		// updates the latest serial number
+
+		if(Id.getLatestSerialNumber().equals("")) {
+			Id.setLatestSerialNumber(lineArray[0]);
+		} else if(Comparator.serialNumberComparator(lineArray[0], Id.getLatestSerialNumber())) {
+				Id.setLatestSerialNumber(lineArray[0]);
+		}
+		return temp;
+	}
+} 

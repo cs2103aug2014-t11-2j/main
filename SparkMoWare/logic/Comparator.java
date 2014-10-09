@@ -111,5 +111,4 @@ public class Comparator {
 		}
 		return input;
 	}
-
 }

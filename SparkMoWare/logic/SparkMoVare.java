@@ -1,25 +1,11 @@
 package logic;
 
-import java.util.LinkedList;
-import java.util.Scanner;
-import java.util.Stack;
-
-import storage.HelpList;
 import storage.Storage;
 
 public class SparkMoVare {
 
 	protected static final int SYSTEM_EXIT_NO_ERROR = 0;
 	protected static final int SYSTEM_EXIT_ERROR = 1;
-
-	protected static Stack< LinkedList<Assignment>> actionHistory = new Stack< LinkedList<Assignment>>();
-	protected static Stack< LinkedList<Assignment>> actionFuture = new Stack< LinkedList<Assignment>>();
-	protected static LinkedList<Assignment> buffer = new LinkedList<Assignment>();
-	private static Scanner scanner = new Scanner(System.in);
-	protected static String filePath = "Storage.txt";
-
-	protected static int counter = 0;
-	protected static int size = 0;
 
 	protected static String[] refinedUserInput = new String[10];
 	 
@@ -38,7 +24,7 @@ public class SparkMoVare {
 	 *					   sort and search by date, serial number, etc.
 	 * 9:Priority 
 	 */
-	public static Object SparkMoVare;
+
 
 	enum CommandType {
 		ADD, EDIT, DELETE, TENTATIVE, CONFIRM, SORT, SEARCH, FILTER,
@@ -50,7 +36,7 @@ public class SparkMoVare {
     public static void main(String[] args) {
 
         Print.printToUser(Message.WELCOME);
-        Storage.openFile(filePath,Id.getLatestSerialNumber(), buffer);
+        Storage.openFile(InternalStorage.getFilePath(),Id.getLatestSerialNumber(), InternalStorage.getBuffer());
     	HelpList.openFile("HelpList.txt");
         toDoManager();
     }
@@ -60,16 +46,16 @@ public class SparkMoVare {
 
 		while (true) {
 			Print.printToUser(Message.PROMPT);
-			RefineInput.determineUserInput(scanner.nextLine());
+			RefineInput.determineUserInput(InternalStorage.scanner.nextLine());
 			Print.printToUser(executeCommand(refinedUserInput[0]));
 			if (getCommandType(refinedUserInput[0])!=CommandType.UNDO &&
 					getCommandType(refinedUserInput[0]) != CommandType.REDO &&
 					getCommandType(refinedUserInput[0]) != CommandType.INVALID &&
 					getCommandType(refinedUserInput[0]) != CommandType.DISPLAY) {
-				actionHistory.add(buffer);
+				InternalStorage.pushHistory(InternalStorage.getBuffer());
 				System.out.println("File saved");
 			}
-			Storage.saveFile(filePath, buffer);
+			Storage.saveFile(InternalStorage.getFilePath(), InternalStorage.getBuffer());
 		}
 	} 
 
@@ -78,8 +64,8 @@ public class SparkMoVare {
 		CommandType command = getCommandType(inputCommand);
 
 		if (command != CommandType.UNDO && command != CommandType.REDO ) {
-			while (!actionFuture.empty()){
-				actionFuture.pop();
+			while (!InternalStorage.actionFuture.empty()){
+				InternalStorage.popFuture();
 			}
 		}
 
@@ -121,10 +107,10 @@ public class SparkMoVare {
 			break;
 
 		case UNDO:
-			return RedoUndo.undo(filePath, buffer, actionHistory, actionFuture);
+			return RedoUndo.undo();
 
 		case REDO:
-			return RedoUndo.redo(filePath, buffer, actionHistory, actionFuture);
+			return RedoUndo.redo();
 
 		case DISPLAY:
 			Print.display();
@@ -184,28 +170,5 @@ public class SparkMoVare {
 		} else {
 			return CommandType.INVALID;
 		}		
-	}
-
-	protected static int getBufferPosition(String id) {
-
-		counter = 0;
-		size = buffer.size();
-
-		while(counter < size && !buffer.get(counter).getId().contentEquals(id)){
-			counter++;
-		}	
-		return counter;
-	}
-
-	static int getLineCount() {
-		return buffer.size();
-	}
-
-	public static String getfilePath(){
-		return filePath;
-	}
-	
-	public static LinkedList<Assignment> getBuffer() {
-		return buffer;
 	}
 }

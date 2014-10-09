@@ -74,10 +74,10 @@ public class SearchAll {
 
 		LinkedList<Assignment> completionFound = new LinkedList<Assignment>();
 
-		for(listCount = 0; listCount < SparkMoVare.buffer.size(); listCount++) {
+		for(listCount = 0; listCount < InternalStorage.getBuffer().size(); listCount++) {
 		
-			if(SparkMoVare.buffer.get(listCount).getIsDone() == true) {
-				completionFound.add(SparkMoVare.buffer.get(listCount));
+			if(InternalStorage.getBuffer().get(listCount).getIsDone() == true) {
+				completionFound.add(InternalStorage.getBuffer().get(listCount));
 			}
 		}
 		return completionFound;
@@ -87,10 +87,10 @@ public class SearchAll {
 
 		LinkedList<Assignment> onTimeFound = new LinkedList<Assignment>();
 
-		for(listCount = 0; listCount < SparkMoVare.buffer.size(); listCount++) {
+		for(listCount = 0; listCount < InternalStorage.getBuffer().size(); listCount++) {
 
-			if(SparkMoVare.buffer.get(listCount).getIsOnTime() == true) {
-				onTimeFound.add(SparkMoVare.buffer.get(listCount));
+			if(InternalStorage.getBuffer().get(listCount).getIsOnTime() == true) {
+				onTimeFound.add(InternalStorage.getBuffer().get(listCount));
 			}
 		}
 		return onTimeFound;
@@ -100,10 +100,10 @@ public class SearchAll {
 
 		LinkedList<Assignment> priorityFound = new LinkedList<Assignment>();
 		
-		for(listCount = 0; listCount < SparkMoVare.buffer.size(); listCount++) {
+		for(listCount = 0; listCount < InternalStorage.getBuffer().size(); listCount++) {
 			try{
-				if(SparkMoVare.buffer.get(listCount).getPriority().equals("important")) {
-					priorityFound.add(SparkMoVare.buffer.get(listCount));
+				if(InternalStorage.getBuffer().get(listCount).getPriority().equals("important")) {
+					priorityFound.add(InternalStorage.getBuffer().get(listCount));
 				}
 			}catch(NullPointerException e){
 
@@ -116,10 +116,10 @@ public class SearchAll {
 
 		LinkedList<Assignment> taskFound = new LinkedList<Assignment> ();
 
-		for(listCount = 0; listCount < SparkMoVare.buffer.size(); listCount++) {
+		for(listCount = 0; listCount < InternalStorage.getBuffer().size(); listCount++) {
 
-			if(SparkMoVare.buffer.get(listCount).getType() == searchTask) {
-				taskFound.add(SparkMoVare.buffer.get(listCount));
+			if(InternalStorage.getBuffer().get(listCount).getType() == searchTask) {
+				taskFound.add(InternalStorage.getBuffer().get(listCount));
 			}
 		}
 		return taskFound;
@@ -129,10 +129,10 @@ public class SearchAll {
 
 		LinkedList<Assignment> appointmentFound = new LinkedList<Assignment> ();
 
-		for(listCount = 0; listCount < SparkMoVare.buffer.size(); listCount++) {
+		for(listCount = 0; listCount < InternalStorage.getBuffer().size(); listCount++) {
 
-			if(SparkMoVare.buffer.get(listCount).getType() == searchAppointment) {
-				appointmentFound.add(SparkMoVare.buffer.get(listCount));
+			if(InternalStorage.getBuffer().get(listCount).getType() == searchAppointment) {
+				appointmentFound.add(InternalStorage.getBuffer().get(listCount));
 			}
 		}
 		return appointmentFound;
@@ -142,10 +142,10 @@ public class SearchAll {
 
 		LinkedList<Assignment> tentativeFound = new LinkedList<Assignment> ();
 
-		for(listCount = 0; listCount < SparkMoVare.buffer.size(); listCount++) {
+		for(listCount = 0; listCount < InternalStorage.getBuffer().size(); listCount++) {
 
-			if(SparkMoVare.buffer.get(listCount).getType() == searchTentative) {
-				tentativeFound.add(SparkMoVare.buffer.get(listCount));
+			if(InternalStorage.getBuffer().get(listCount).getType() == searchTentative) {
+				tentativeFound.add(InternalStorage.getBuffer().get(listCount));
 			}
 		}
 		return tentativeFound;
@@ -155,10 +155,10 @@ public class SearchAll {
 
 		LinkedList<Assignment> idFound = new LinkedList<Assignment>();
 
-		for(listCount = 0; listCount < SparkMoVare.buffer.size(); listCount++) {
+		for(listCount = 0; listCount < InternalStorage.getBuffer().size(); listCount++) {
 
-			if(SparkMoVare.buffer.get(listCount).getId().equals(searchId)) {
-				idFound.add(SparkMoVare.buffer.get(listCount));
+			if(InternalStorage.getBuffer().get(listCount).getId().equals(searchId)) {
+				idFound.add(InternalStorage.getBuffer().get(listCount));
 			}
 		}
 		return idFound;
@@ -179,10 +179,10 @@ public class SearchAll {
 		
 		LinkedList<Assignment> startTimeFound = new LinkedList<Assignment>();
 
-		for(listCount = 0; listCount < SparkMoVare.buffer.size(); listCount++) {
+		for(listCount = 0; listCount < InternalStorage.getBuffer().size(); listCount++) {
 
-			if(SparkMoVare.buffer.get(listCount).getStartTime().equals(searchStartTime)) {
-				startTimeFound.add(SparkMoVare.buffer.get(listCount));
+			if(InternalStorage.getBuffer().get(listCount).getStartTime().equals(searchStartTime)) {
+				startTimeFound.add(InternalStorage.getBuffer().get(listCount));
 			}
 		}
 		return startTimeFound;
@@ -192,10 +192,10 @@ public class SearchAll {
 		
 		LinkedList<Assignment> endTimeFound = new LinkedList<Assignment>();
 
-		for(listCount = 0; listCount < SparkMoVare.buffer.size(); listCount++) {
+		for(listCount = 0; listCount < InternalStorage.getBuffer().size(); listCount++) {
 
-			if(SparkMoVare.buffer.get(listCount).getStartTime().equals(searchEndTime)) {
-				endTimeFound.add(SparkMoVare.buffer.get(listCount));
+			if(InternalStorage.getBuffer().get(listCount).getStartTime().equals(searchEndTime)) {
+				endTimeFound.add(InternalStorage.getBuffer().get(listCount));
 			}
 		}
 		return endTimeFound;
@@ -216,10 +216,10 @@ public class SearchAll {
 		
 		LinkedList<Assignment> startDateFound = new LinkedList<Assignment>();
 
-		for(listCount = 0; listCount < SparkMoVare.buffer.size(); listCount++) {
+		for(listCount = 0; listCount < InternalStorage.getBuffer().size(); listCount++) {
 
-			if(SparkMoVare.buffer.get(listCount).getStartDate().equals(searchStartDate)) {
-				startDateFound.add(SparkMoVare.buffer.get(listCount));
+			if(InternalStorage.getBuffer().get(listCount).getStartDate().equals(searchStartDate)) {
+				startDateFound.add(InternalStorage.getBuffer().get(listCount));
 			}
 		}
 		return startDateFound;
@@ -229,10 +229,10 @@ public class SearchAll {
 
 		LinkedList<Assignment> deadlineFound = new LinkedList<Assignment>();
 		
-		for(listCount = 0; listCount < SparkMoVare.buffer.size(); listCount++) {
+		for(listCount = 0; listCount < InternalStorage.getBuffer().size(); listCount++) {
 
-			if(SparkMoVare.buffer.get(listCount).getEndDate().equals(searchDeadline)) {
-				deadlineFound.add(SparkMoVare.buffer.get(listCount));
+			if(InternalStorage.getBuffer().get(listCount).getEndDate().equals(searchDeadline)) {
+				deadlineFound.add(InternalStorage.getBuffer().get(listCount));
 			}
 		}
 		return deadlineFound;
@@ -246,11 +246,11 @@ public class SearchAll {
 
 		LinkedList<Assignment> keysFound = new LinkedList<Assignment> ();
 
-		for(listCount = 0; listCount < SparkMoVare.buffer.size(); listCount++) {
-			if(SparkMoVare.buffer.get(listCount).getTitle().contains(searchKeyWord)) {
+		for(listCount = 0; listCount < InternalStorage.getBuffer().size(); listCount++) {
+			if(InternalStorage.getBuffer().get(listCount).getTitle().contains(searchKeyWord)) {
 
-				if(SparkMoVare.buffer.get(listCount).getTitle().equalsIgnoreCase(searchKeyWord)) {
-					keysFound.add(SparkMoVare.buffer.get(listCount));
+				if(InternalStorage.getBuffer().get(listCount).getTitle().equalsIgnoreCase(searchKeyWord)) {
+					keysFound.add(InternalStorage.getBuffer().get(listCount));
 
 				} else {
 					Assignment assignmentFound = new Assignment();
@@ -267,20 +267,20 @@ public class SearchAll {
 
 	private static Assignment searchByKeyWord(String searchKeyWord, int listCount) {
 
-		String[] textArray = SparkMoVare.buffer.get(listCount).getTitle().split(" ");
+		String[] textArray = InternalStorage.getBuffer().get(listCount).getTitle().split(" ");
 
 		for(int textCount = 0; textCount < textArray.length; textCount++) {
 			String checkText = textArray[textCount];
 
 
 			if(checkText.equalsIgnoreCase(searchKeyWord)) {
-				return SparkMoVare.buffer.get(listCount);
+				return InternalStorage.getBuffer().get(listCount);
 			} else {
 				for(int textExtendCount = textCount + 1; textExtendCount < textArray.length; textExtendCount++) {
 					checkText += " " + textArray[textExtendCount];
 
 					if(checkText.equalsIgnoreCase(searchKeyWord)) {
-						return SparkMoVare.buffer.get(listCount);
+						return InternalStorage.getBuffer().get(listCount);
 					}
 				}
 			}

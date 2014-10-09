@@ -9,16 +9,16 @@ public class Print {
 
 	public static String display() {
 
-		for(int i = 0; i < SparkMoVare.buffer.size(); i++){
+		for(int i = 0; i < InternalStorage.getBuffer().size(); i++){
 			String lineToAdd = "";
 			lineToAdd += String.valueOf(i+1);
 			lineToAdd += ". ";
-			lineToAdd += SparkMoVare.buffer.get(i);
+			lineToAdd += InternalStorage.getBuffer().get(i);
 			System.out.println(lineToAdd);
 		}
 
-		if (SparkMoVare.getLineCount() == 0){
-			return (SparkMoVare.filePath + " is empty");
+		if (InternalStorage.getLineCount() == 0){
+			return (InternalStorage.getFilePath() + " is empty");
 		}
 		else{
 			return "";

@@ -30,32 +30,32 @@ public class Edit {
 			return toUser;
 		} else {
 
-			int bufferPosition = SparkMoVare.getBufferPosition(refinedUserInput[1]);
+			int bufferPosition = InternalStorage.getBufferPosition(refinedUserInput[1]);
 
 			switch(getEditType(refinedUserInput[8])) {
 
 			case TITLE:
-				SparkMoVare.buffer.get(bufferPosition).setTitle(refinedUserInput[2]);
+				InternalStorage.getBuffer().get(bufferPosition).setTitle(refinedUserInput[2]);
 				break;
 
 			case START_DATE:
-				SparkMoVare.buffer.get(bufferPosition).setStartDate(refinedUserInput[3]);
+				InternalStorage.getBuffer().get(bufferPosition).setStartDate(refinedUserInput[3]);
 				break;
 
 			case START_TIME:
-				SparkMoVare.buffer.get(bufferPosition).setStartTime(refinedUserInput[4]);
+				InternalStorage.getBuffer().get(bufferPosition).setStartTime(refinedUserInput[4]);
 				break;
 
 			case END_DATE:
-				SparkMoVare.buffer.get(bufferPosition).setEndDate(refinedUserInput[5]);
+				InternalStorage.getBuffer().get(bufferPosition).setEndDate(refinedUserInput[5]);
 				break;
 
 			case END_TIME:
-				SparkMoVare.buffer.get(bufferPosition).setEndTime(refinedUserInput[6]);
+				InternalStorage.getBuffer().get(bufferPosition).setEndTime(refinedUserInput[6]);
 				break;
 
 			case PRIORITY:
-				SparkMoVare.buffer.get(bufferPosition).setPriority(refinedUserInput[9]);
+				InternalStorage.getBuffer().get(bufferPosition).setPriority(refinedUserInput[9]);
 				break;
 
 			case DONE:
@@ -104,7 +104,7 @@ public class Edit {
 		
 		String currentDate = dateFormat.format(todayDate).substring(0, 8);
 		String currentTime = dateFormat.format(todayDate).substring(8);
-		SparkMoVare.buffer.get(bufferPosition).setIsDone(true);
+		InternalStorage.getBuffer().get(bufferPosition).setIsDone(true);
 
 		if (date != null) {
 			currentDate = date;
@@ -118,12 +118,12 @@ public class Edit {
 	
 	private static void setIsOnTime(String currentDate, String currentTime, int bufferPosition) {
 		
-		if (Comparator.dateComparator(currentDate, SparkMoVare.buffer.get(bufferPosition).getEndDate()) == -1) {
-			SparkMoVare.buffer.get(bufferPosition).setIsOnTime(true);
+		if (Comparator.dateComparator(currentDate, InternalStorage.getBuffer().get(bufferPosition).getEndDate()) == -1) {
+			InternalStorage.getBuffer().get(bufferPosition).setIsOnTime(true);
 			
-		} else if (Comparator.dateComparator(currentDate,SparkMoVare.buffer.get(bufferPosition).getEndDate()) == 0) {
-			if (Comparator.timeComparator(currentTime,SparkMoVare.buffer.get(bufferPosition).getEndTime()) == -1) {
-				SparkMoVare.buffer.get(bufferPosition).setIsOnTime(true);
+		} else if (Comparator.dateComparator(currentDate,InternalStorage.getBuffer().get(bufferPosition).getEndDate()) == 0) {
+			if (Comparator.timeComparator(currentTime,InternalStorage.getBuffer().get(bufferPosition).getEndTime()) == -1) {
+				InternalStorage.getBuffer().get(bufferPosition).setIsOnTime(true);
 			}
 		}
 	}

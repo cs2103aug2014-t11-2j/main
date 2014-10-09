@@ -1,10 +1,12 @@
-package storage;
+package logic;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import storage.Storage;
 
 /*
  * It will load and save into arraylist before printing
@@ -20,16 +22,18 @@ public class HelpList {
 			if (!file.exists()) {
 				file.createNewFile();
 			}
+			
 			FileReader fileReader = new FileReader(file);
 			BufferedReader bufferedReader = new BufferedReader(fileReader);
 			String line;
+			
 			while ((line = bufferedReader.readLine()) != null) {
 				helpList.add(line);
 			}
 			fileReader.close();
 		} catch (IOException e) {
-			System.out.println("MESSAGE_FILE_INITIALISATION_ERROR");
-			System.exit(0);
+			Print.printToUser(Message.STORAGE_FILE_ERROR);
+			System.exit(Storage.SYSTEM_EXIT_ERROR);
 		}
 	}
 

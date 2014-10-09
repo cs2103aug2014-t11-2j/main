@@ -26,16 +26,17 @@ public class UserRefinementInput {
 		SparkMoVare.refinedUserInput[9] = null;
 
 		if (userInputArray.length == 2) {
+
 			setEnd(DateLocal.dateString(), defaultEndTime);
 
 		} else if (userInputArray.length == 3) {
-			
+
 			if (TimeLocal.timeFormatValid(userInputArray[2])) {
 				setEnd(DateLocal.dateString(), userInputArray[2]);
 
 			} else if (DateLocal.dateFormatValid(userInputArray[2]) && 
 					DateLocal.dateFormatValid(userInputArray[1])) {
-				
+
 				setStart(userInputArray[1], defaultStartTime);
 				setEnd(userInputArray[2], defaultEndTime);
 
@@ -50,16 +51,16 @@ public class UserRefinementInput {
 			if (userInputArray[3].equals("important")) {
 				setEnd(userInputArray[2], defaultEndTime);
 				SparkMoVare.refinedUserInput[9] = "important";
-				
+
 			} else {
-				
+
 				if (TimeLocal.timeFormatValid(userInputArray[3]) && DateLocal.dateFormatValid(userInputArray[2])) {
 					setStart(userInputArray[1], defaultStartTime);
 					setEnd(userInputArray[2], userInputArray[3]);
-				
+
 				} else if(TimeLocal.timeFormatValid(userInputArray[3])) {
 					setEnd(userInputArray[2], userInputArray[3]);
-					
+
 				} else if (DateLocal.dateFormatValid(userInputArray[3])) {
 					setStart(userInputArray[2], defaultStartTime);
 					setEnd(userInputArray[3], defaultEndTime);
@@ -70,7 +71,7 @@ public class UserRefinementInput {
 				}
 			}
 		} else if (userInputArray.length == 5) {
-								
+
 			if (userInputArray[4].equals("important")) {
 				if (TimeLocal.timeFormatValid(userInputArray[3])) {
 					setEnd(userInputArray[2], userInputArray[3]);
@@ -81,26 +82,27 @@ public class UserRefinementInput {
 
 					SparkMoVare.refinedUserInput[7] = "1";
 
-			} else {
-				
-				SparkMoVare.refinedUserInput[7] = "1";
-				
-				if (TimeLocal.timeFormatValid(userInputArray[4])) {
-					setStart(userInputArray[2], defaultStartTime);
-					setEnd(userInputArray[4], userInputArray[5]);
-
-				} else if (DateLocal.dateFormatValid(userInputArray[4])) {
-					setStart(userInputArray[2], userInputArray[3]);
-					setEnd(userInputArray[4], defaultEndTime);
-
 				} else {
-					SparkMoVare.refinedUserInput[0] = "invalid";
+
+					SparkMoVare.refinedUserInput[7] = "1";
+
+					if (TimeLocal.timeFormatValid(userInputArray[4])) {
+						setStart(userInputArray[2], defaultStartTime);
+						setEnd(userInputArray[4], userInputArray[5]);
+
+					} else if (DateLocal.dateFormatValid(userInputArray[4])) {
+						setStart(userInputArray[2], userInputArray[3]);
+						setEnd(userInputArray[4], defaultEndTime);
+
+					} else {
+						SparkMoVare.refinedUserInput[0] = "invalid";
+					}
 				}
-			}
-		} else if (userInputArray.length == 6) {
-			
+			} 
+		}else if (userInputArray.length == 6) {
+
 			SparkMoVare.refinedUserInput[7] = "1";
-			
+
 			if(userInputArray[5].equals("important")) {
 				if (TimeLocal.timeFormatValid(userInputArray[4])) {
 					setStart(userInputArray[2], defaultStartTime);
@@ -112,20 +114,21 @@ public class UserRefinementInput {
 
 				} 
 			} else {
-					setStart(userInputArray[2], userInputArray[3]);
-					setEnd(userInputArray[4], userInputArray[5]);
+				setStart(userInputArray[2], userInputArray[3]);
+				setEnd(userInputArray[4], userInputArray[5]);
 			}
-			
+
 		} else if (userInputArray.length == 7) {
-			SparkMoVare.refinedUserInput[9] = "important";
+
+			SparkMoVare.refinedUserInput[9] = userInputArray[6];
 			setStart(userInputArray[2], userInputArray[3]);
 			setEnd(userInputArray[4], userInputArray[5]);
-
 		} else {
+
 			SparkMoVare.refinedUserInput[0] = "invalid";
 		}
 	}
-	}
+
 
 	protected static void userInputEdit(String[] userInputArray) {
 
