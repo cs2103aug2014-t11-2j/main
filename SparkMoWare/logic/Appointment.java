@@ -2,24 +2,26 @@ package logic;
 
 import java.util.Vector;
 
-public class Assignment extends Appointment{
+public class Appointment extends Task {
 
 	/************** Data members **********************/
-
+	
+	protected static int numAppointment = 0;
+	protected String startDate; // in the format DDMMYY, if inactive null
+	protected String startTime; // in the format HHMM, if inactive null
 	
 	/************** Constants **********************/
 	
-	private static final String DEFAULT_STRING = "DEFAULT";
-	private static final String DEFAULT = "-1";
-	protected static final int TYPE_TENTATIVE = 2;
+	protected static final int TYPE_APPOINTMENT = 1;
 	
 	/************** Constructors **********************/
 	// Default constructor
-	public Assignment() {
+	public Appointment() {
 		this(DEFAULT, DEFAULT_STRING, -1, DEFAULT, DEFAULT, DEFAULT, DEFAULT, false, false, null, new Vector<String>());
 	}
 	
-	public Assignment(String id, String title, int type, String startDate, String startTime,
+
+	public Appointment(String id, String title, int type, String startDate, String startTime,
 			String endDate, String endTime, boolean isDone, boolean isOnTime, String priority, Vector<String> tag) {
 		
 		setId(id);
@@ -95,6 +97,26 @@ public class Assignment extends Appointment{
 
 	/**************** Mutators ************************/
 	
+	public void setStartDate(String newstartDate) {
+		startDate = newstartDate;
+	}
+	
+	public void setStartTime(String newStartTime) {
+		startTime = newStartTime;
+	}
+	
+	public void setNumAppointment(int newNumAppointment){
+		numAppointment = newNumAppointment;
+	}
+	
 	/**************** Overriding ************************/
 	
+	@Override
+	public String toString() {
+		return getId() + "~" + getTitle() + "~" + getType() + "~" + getStartDate() + "~" + 
+				getStartTime() + "~" + getEndDate() + "~" + getEndTime() + "~" + getIsDone() + 
+				"~" + getIsOnTime() + "~" + getPriority();
+	}
+	
+
 }
