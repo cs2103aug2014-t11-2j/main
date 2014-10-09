@@ -5,7 +5,7 @@ public class UserInputEdit extends UserInput {
 	/************** Data members **********************/
 	
 	private String id;
-	private EditType target;
+	private EnumGroup.EditType target;
 	private String content;
 	
 	/************** Constructors **********************/
@@ -15,7 +15,7 @@ public class UserInputEdit extends UserInput {
 	}
 	
 	public UserInputEdit(String id,  String target, String content) {
-		setCommandType(CommandType.EDIT);
+		setCommandType(EnumGroup.CommandType.EDIT);
 		setId(id);
 		setTarget(target);
 		setContent(content);
@@ -27,11 +27,11 @@ public class UserInputEdit extends UserInput {
 		return this.id;
 	}
 	
-	protected  EditType getTarget() {
+	protected EnumGroup.EditType getTarget() {
 		return this.target;
 	}
 	
-	protected  String getContent() {
+	protected String getContent() {
 		return this.content;
 	}
 	

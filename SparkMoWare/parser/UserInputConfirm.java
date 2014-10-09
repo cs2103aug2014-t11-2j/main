@@ -15,7 +15,7 @@ public class UserInputConfirm extends UserInput {
 	}
 	
 	UserInputConfirm(String id, String date, String time) {
-		setCommandType(CommandType.CONFIRM);
+		setCommandType(EnumGroup.CommandType.CONFIRM);
 		setId(id);
 		setDate(date);
 		setTime(time);

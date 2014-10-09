@@ -7,7 +7,7 @@ public class UserInputAddTask extends UserInput{
 	private String title;
 	private String endDate;
 	private String endTime;
-	private AssignmentType assignment;
+	private EnumGroup.AssignmentType assignment;
 	
 	/************** Constructors **********************/
 	
@@ -16,11 +16,11 @@ public class UserInputAddTask extends UserInput{
 	}
 	
 	protected UserInputAddTask(String title, String endDate, String endTime) {
-		setCommandType(CommandType.ADD);
+		setCommandType(EnumGroup.CommandType.ADD);
 		setTitle(title);
 		setEndDate(endDate);
 		setEndTime(endTime);
-		setAssignmentType(AssignmentType.TASK);
+		setAssignmentType(EnumGroup.AssignmentType.TASK);
 	}
 	
 	/**************** Accessors ***********************/
@@ -37,7 +37,7 @@ public class UserInputAddTask extends UserInput{
 		return this.endTime;
 	}
 	
-	protected AssignmentType getAssignmentType() {
+	protected EnumGroup.AssignmentType getAssignmentType() {
 		return this.assignment;
 	}
 	
@@ -55,7 +55,7 @@ public class UserInputAddTask extends UserInput{
 		this.endTime = endTime;
 	}
 	
-	protected void setAssignmentType(AssignmentType assignment) {
+	protected void setAssignmentType(EnumGroup.AssignmentType assignment) {
 		this.assignment = assignment;
 	}
 	

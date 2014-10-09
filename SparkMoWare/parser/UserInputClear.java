@@ -14,7 +14,7 @@ public class UserInputClear extends UserInput{
 	}
 	
 	protected UserInputClear(String duration, String endDate) {
-		setCommandType(CommandType.CLEAR);
+		setCommandType(EnumGroup.CommandType.CLEAR);
 		setDuration(duration);
 		setEndDate(endDate);
 	}

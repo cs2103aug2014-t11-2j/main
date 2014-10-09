@@ -1,6 +1,6 @@
 package parser;
 
-public class UserInputSort extends UserInput {
+public class UserInputSearch extends UserInput {
 	
 	/************** Data members **********************/
 	
@@ -8,12 +8,12 @@ public class UserInputSort extends UserInput {
 	
 	/************** Constructors **********************/
 	
-	public UserInputSort() {
+	public UserInputSearch() {
 		
 	}
 	
-	public UserInputSort(String content) {
-		setCommandType(EnumGroup.CommandType.SORT);
+	public UserInputSearch(String content) {
+		setCommandType(EnumGroup.CommandType.SEARCH);
 		setContent(content);
 	}
 	
@@ -33,5 +33,5 @@ public class UserInputSort extends UserInput {
 	
 	public String toString() {
 		return getCommandType() + "~" + getContent();
-	}
+	}	
 }
