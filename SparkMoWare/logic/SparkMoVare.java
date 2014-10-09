@@ -23,20 +23,20 @@ public class SparkMoVare {
 
 	protected static String[] refinedUserInput = new String[10];
 	 
-	/*each index of refinedUserinput represent something
-	 *0:The command string
-	 *1:Serial Number (S/N) of the Assignment ASSUMPTION: serial number length is at most 12 digits DD/MM/YYYY/0000
-	 *2:Title of the Assignment
-	 *3:Start Date
-	 *4:Start Time
-	 *5:End Date
-	 *6:End Time
-	 *7:Type: Task(0), Appointment(1) and Tentative(2)
-	 *8:For command types: delete all (on, before, during)
+	/* each index of refinedUserinput represent something
+	 * 0:The command string
+	 * 1:Serial Number (S/N) of the Assignment ASSUMPTION: serial number length is at most 12 digits DD/MM/YYYY/0000
+	 * 2:Title of the Assignment
+	 * 3:Start Date
+	 * 4:Start Time
+	 * 5:End Date
+	 * 6:End Time
+	 * 7:Type: Task(0), Appointment(1) and Tentative(2)
+	 * 8:For command types: delete all (on, before, during)
 	 *					   edit which is to be edited, such as title or start date
 	 *					   tentative (number of days)
 	 *					   sort and search by date, serial number, etc.
-	 *9:Priority 
+	 * 9:Priority 
 	 */
 	public static Object SparkMoVare;
 

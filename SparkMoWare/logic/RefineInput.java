@@ -73,7 +73,7 @@ public class RefineInput {
 		refinement = userInputArray[0];
 
 		if (refinement.equalsIgnoreCase("add")) {
-			if (userInputArray.length < 4) {
+			if (userInputArray.length < 2) {
 				return RefinementType.INVALID;
 			}
 			return RefinementType.ADD;

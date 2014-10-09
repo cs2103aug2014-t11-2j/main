@@ -24,57 +24,56 @@ public class UserRefinementInput {
 		SparkMoVare.refinedUserInput[2] = userInputArray[1];
 		SparkMoVare.refinedUserInput[7] = "0";
 		SparkMoVare.refinedUserInput[9] = null;
-		boolean containsPriority = false;
-
-		for (String priority : userInputArray) {
-			if (priority.equals("important")) {
-				SparkMoVare.refinedUserInput[9] = "important";
-				containsPriority = true;
-			}
-		}
 
 		if (userInputArray.length == 2) {
 			setEnd(DateLocal.dateString(), defaultEndTime);
 
 		} else if (userInputArray.length == 3) {
+			
 			if (TimeLocal.timeFormatValid(userInputArray[2])) {
-				setEnd(DateLocal.dateString(), userInputArray[2]);
+				setEnd(DateLocal.dateString(), userInputArray[1]);
 
-			} else if (DateLocal.dateFormatValid(userInputArray[2])) {
+			} else if (DateLocal.dateFormatValid(userInputArray[2]) && 
+					DateLocal.dateFormatValid(userInputArray[1])) {
+				
+				setStart(userInputArray[1], defaultStartTime);
 				setEnd(userInputArray[2], defaultEndTime);
 
-			} else if (containsPriority) {
+			} else if (userInputArray[2].equals("important")) {
 				setEnd(DateLocal.dateString(), defaultEndTime);
-
+				SparkMoVare.refinedUserInput[9] = "important";
 			} else {
 				SparkMoVare.refinedUserInput[0] = "invalid";
 			}
-
 		} else if (userInputArray.length == 4) {
 
-			if (containsPriority) {
+			if (userInputArray[3].equals("important")) {
 				setEnd(userInputArray[2], defaultEndTime);
 			} else {
-				if (TimeLocal.timeFormatValid(userInputArray[3])) {
+				if (TimeLocal.timeFormatValid(userInputArray[3]) && DateLocal.dateFormatValid(userInputArray[1])) {
+					setStart(userInputArray[1], defaultStartTime);
 					setEnd(userInputArray[2], userInputArray[3]);
 
+				} else if(TimeLocal.timeFormatValid(userInputArray[3])) {
+					setEnd(userInputArray[2], userInputArray[3]);
+					
 				} else if (DateLocal.dateFormatValid(userInputArray[3])) {
 					setStart(userInputArray[2], defaultStartTime);
 					setEnd(userInputArray[4], defaultEndTime);
 
 					SparkMoVare.refinedUserInput[7] = "1";
-
 				} else {
 					SparkMoVare.refinedUserInput[0] = "invalid";
 				}
 			}
-
 		} else if (userInputArray.length == 5) {
+			
 			SparkMoVare.refinedUserInput[7] = "1";
-			if (containsPriority) {
+			
+			if (userInputArray[4].equals("important")) {
 				setStart(userInputArray[2], defaultStartTime);
 				setEnd(userInputArray[3], defaultEndTime);
-				
+
 			} else {
 				if (TimeLocal.timeFormatValid(userInputArray[4])) {
 					setStart(userInputArray[2], defaultStartTime);
@@ -89,8 +88,10 @@ public class UserRefinementInput {
 				}
 			}
 		} else if (userInputArray.length == 6) {
+			
 			SparkMoVare.refinedUserInput[7] = "1";
-			if(containsPriority){
+			
+			if(userInputArray[5].equals("important")) {
 				if (TimeLocal.timeFormatValid(userInputArray[4])) {
 					setStart(userInputArray[2], defaultStartTime);
 					setEnd(userInputArray[3], userInputArray[4]);
@@ -98,20 +99,20 @@ public class UserRefinementInput {
 				} else if (DateLocal.dateFormatValid(userInputArray[4])) {
 					setStart(userInputArray[2], userInputArray[3]);
 					setEnd(userInputArray[4], defaultEndTime);
-				
+
+				} 
 			} else {
-			setStart(userInputArray[2], userInputArray[3]);
-			setEnd(userInputArray[4], userInputArray[5]);
+					setStart(userInputArray[2], userInputArray[3]);
+					setEnd(userInputArray[4], userInputArray[5]);
 			}	
-				
-		} else if (userInputArray.length == 7);
+		} else if (userInputArray.length == 7) {
+			SparkMoVare.refinedUserInput[9] = "important";
 			setStart(userInputArray[2], userInputArray[3]);
 			setEnd(userInputArray[4], userInputArray[5]);
-			
+
 		} else {
 			SparkMoVare.refinedUserInput[0] = "invalid";
-		}
-		
+		}		
 	}
 
 	protected static void userInputEdit(String[] userInputArray) {
@@ -209,8 +210,7 @@ public class UserRefinementInput {
 		return numOfTentative;
 	}
 
-	// ASSUMPTION: array size is 6 in the format <confirm> <S/N> <ddmmyyyy>
-	// <hhmm> <ddmmyyyy> <hhmm>
+	// ASSUMPTION: array size is 6 in the format <confirm> <S/N> <ddmmyyyy> <hhmm> <ddmmyyyy> <hhmm>
 	protected static void userInputConfirm(String[] userInputArray) {
 
 		if (userInputArray.length == 6) {
