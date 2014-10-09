@@ -18,7 +18,7 @@ public class UserInputAddAppointment extends UserInputAddTask {
 		super(title, endDate, endTime);
 		setStartDate(startDate);
 		setStartTime(startTime);
-		setAssignmentType(AssignmentType.APPOINTMENT);
+		setAssignmentType(EnumGroup.AssignmentType.APPOINTMENT);
 	}
 	
 	/**************** Accessors ***********************/

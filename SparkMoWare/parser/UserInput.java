@@ -6,7 +6,7 @@ public class UserInput {
 
 	/************** Data members **********************/
 	
-	private CommandType command;
+	private EnumGroup.CommandType command;
 	
 	/************** Constructors **********************/
 	
@@ -16,13 +16,13 @@ public class UserInput {
 	
 	/**************** Accessors ***********************/
 	
-	protected CommandType getCommandType() {
+	protected EnumGroup.CommandType getCommandType() {
 		return this.command;
 	}
 	
 	/**************** Mutators ************************/
 
-	protected void setCommandType(CommandType command) {
+	protected void setCommandType(EnumGroup.CommandType command) {
 		this.command = command;
 	}
 	

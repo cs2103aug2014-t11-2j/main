@@ -12,7 +12,7 @@ import java.util.Scanner;
  * Check if the given date exists
  */
 
-public class DateLocal {
+public class ParserDateLocal {
 	
 	private static Scanner scanner = new Scanner(System.in);
 	

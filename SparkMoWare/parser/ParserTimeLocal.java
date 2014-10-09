@@ -6,8 +6,10 @@ import java.util.Scanner;
  * This is to check time format and its validity
  * Prompt the user until the user input the correct format <hhmm>
  */
-public class TimeLocal {
+public class ParserTimeLocal {
 	
+	protected static String defaultEndTime = "2359";
+	protected static String defaultStartTime = "0000";
 	private static Scanner scanner = new Scanner(System.in);
 	
 	public static String determineTime(String inputTime) {

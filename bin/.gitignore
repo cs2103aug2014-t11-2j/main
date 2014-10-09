@@ -1,5 +1,7 @@
 /gui/
-/junit/
 /logic/
-/parser/
 /storage/
+<<<<<<< HEAD
+=======
+/parser/
+>>>>>>> origin/master
