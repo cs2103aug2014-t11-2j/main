@@ -1,6 +1,6 @@
 package parser;
 
-public class InputisTentative {
+public class InputIsTentative {
 	
 	protected void executeCommand(String userInput) {
 		

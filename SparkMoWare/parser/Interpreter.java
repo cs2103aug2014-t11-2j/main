@@ -9,7 +9,6 @@ public class Interpreter {
 		case ADD:
 			return InputIsAdd.refineInput(userInput);
 			
-			
 		case EDIT:
 			InputIsEdit.executeCommand(userInput);
 			break;
