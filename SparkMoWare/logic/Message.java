@@ -5,7 +5,7 @@ package logic;
  */
 public class Message {
 	
-	protected static final String WELCOME = "Welcome to SparkMoWare!";
+	public static final String WELCOME = "Welcome to SparkMoWare!";
 	protected static final String PROMPT = "command: ";
 	protected static final String ADDED = "added to %1$s: \"%2$s\"";
 	protected static final String EDITED = "content has already been edited";
