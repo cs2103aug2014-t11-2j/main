@@ -26,7 +26,7 @@ public class Add {
 		newAssignment.setIsDone(isDone);
 		// newAssignment.setDescription(description);
 		// newAssignment.setAlarm(alarm);
-		newAssignment.setTag(tag);
+		//newAssignment.setTag(tag);
 		newAssignment.setPriority(priority);
 		
 		addToBuffer(newAssignment);
