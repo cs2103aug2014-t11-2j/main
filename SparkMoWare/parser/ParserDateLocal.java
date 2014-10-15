@@ -70,7 +70,6 @@ public class ParserDateLocal {
 	}
 
 	public static String dateString(){
-		
 		DateFormat dateFormat = new SimpleDateFormat("ddMMyyyy");
 		Date todayDate = new Date();
 		

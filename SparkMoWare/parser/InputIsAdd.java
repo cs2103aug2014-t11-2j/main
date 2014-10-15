@@ -1,5 +1,7 @@
 package parser;
 
+import java.util.regex.Matcher;
+
 public class InputIsAdd {
 
 	protected static String[] refineInput(String userInput) {
@@ -18,31 +20,53 @@ public class InputIsAdd {
 		return null; //stub
 	}
 
-	
-	private static boolean checkIfAppt(String userInput) {		
+	//Checks if there are 2 date inputs
+	protected static boolean checkIfAppt(String userInput) {		
+		String[] temp = ParserPatternLocal.datePattern.split(userInput);
 		
-		//if statement checks if user input has 2 date inputs.
-		if(ParserPatternLocal.datePattern.matcher(userInput).find()) {
+		if(temp.length == 2) {
 			return true;
+		} else {
+			return false;
+			}
 		}
-		
-		return false;
-	}
+
 	
-	private static String getTitle(String userInput) {
+	protected static String getTitle(String userInput) {
 		
 		return null; //stub
 	}
 	
-	private static String getStartDate(String userInput) {
-		ParserPatternLocal.datePattern.matcher(userInput);
-			
-		 
+	//code works fine for single date input
+	//ASSUMPTION: in appointment case, input format is start date followed by end date
+	protected static String getStartDate(String userInput) {
+		Matcher dateMatcher = ParserPatternLocal.datePattern.matcher(userInput);
+		String startDate = new String();
 		
-		return null;//stub
+		if(dateMatcher.find()) {
+			startDate = dateMatcher.group();
+		}
+		return startDate;
 	}
 	
-	private static String getEndDate(String userInput) {
+	protected static String getEndDate(String userInput) {
+		Matcher dateMatcher = ParserPatternLocal.datePattern.matcher(userInput);
+		String endDate = new String();
+		
+		if(checkIfAppt(userInput)) {
+			userInput = dateMatcher.replaceFirst("");
+		}
+		
+		endDate = getStartDate(userInput);
+		
+		if(!dateMatcher.find()) {
+			endDate = ParserDateLocal.dateString();
+		}
+		
+		return endDate;
+	}
+	
+	protected static String getStartTime(String userInput) {
 		//ParserPatternLocal.datePattern.matcher(userInput);
 			
 		 
@@ -50,15 +74,7 @@ public class InputIsAdd {
 		return null;//stub
 	}
 	
-	private static String getStartTime(String userInput) {
-		//ParserPatternLocal.datePattern.matcher(userInput);
-			
-		 
-		
-		return null;//stub
-	}
-	
-	private static String getEndTime(String userInput) {
+	protected static String getEndTime(String userInput) {
 		//ParserPatternLocal.datePattern.matcher(userInput);
 			
 		//stub

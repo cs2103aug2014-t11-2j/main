@@ -37,13 +37,11 @@ public class ParserPatternLocal {
 	
 	protected static Pattern helpPattern = Pattern.compile("help");
 	
-	protected static Pattern easterEggPattern = Pattern.compile("FML|die");
+	protected static Pattern finishPattern = Pattern.compile("finish");
 	
-	protected static Pattern finishPattern = Pattern.compile("Finish");
+	protected static Pattern timePattern = Pattern.compile("([0-9]{4})");
 	
-	protected static Pattern timePattern = Pattern.compile("[0-9]{4}");
-	
-	protected static Pattern datePattern = Pattern.compile("[0-9]?[0-9]/[0-9]?[0-9]/[0-9]{4}");
+	protected static Pattern datePattern = Pattern.compile("([0-9]?[0-9]/[0-9]?[0-9]/[0-9]{4})");
 	
 	//private Pattern TimePattern = Pattern.compile("[0-2][0-3][0-5][0-9]{4}"); //no 2400	
 	//private Pattern datePattern = Pattern.compile("[0-2]?[0-9]/[0-1]?[0-9]/[0-9]{4}");
