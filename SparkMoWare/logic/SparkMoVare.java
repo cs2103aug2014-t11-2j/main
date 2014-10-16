@@ -33,13 +33,13 @@ public class SparkMoVare {
 
 	//Fundamentally the same as CommandType, but without single word commands 
 	
-    public static void main(String[] args) {
-
-        Print.printToUser(Message.WELCOME);
-        Storage.openFile(InternalStorage.getFilePath(),Id.getLatestSerialNumber(), InternalStorage.getBuffer());
-    	HelpList.openFile("HelpList.txt");
-        toDoManager();
-    }
+//    public static void main(String[] args) {
+//
+//        Print.printToUser(Message.WELCOME);
+//        Storage.openFile(InternalStorage.getFilePath(),Id.getLatestSerialNumber(), InternalStorage.getBuffer());
+//    	HelpList.openFile("HelpList.txt");
+//        toDoManager();
+//    }
 
 
 	public static void toDoManager() {

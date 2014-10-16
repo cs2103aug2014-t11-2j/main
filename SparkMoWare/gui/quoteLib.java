@@ -39,7 +39,6 @@ public class QuoteLib {
 		openFile("quoteList.txt");
 		Random gen = new Random();
 		//System.out.println(buffer.get(gen.nextInt(buffer.size())));
-		System.out.println(buffer.size());
 		return buffer.get(gen.nextInt(buffer.size()));
 	}
 

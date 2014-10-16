@@ -35,6 +35,7 @@ import org.eclipse.swt.widgets.Tray;
 import org.eclipse.swt.widgets.TrayItem;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
+import Logger.logger;
 import storage.Storage;
 
 public class MainController {
@@ -55,6 +56,7 @@ public class MainController {
 
 	public MainController(Display display) {
 		shell = new Shell(display);
+		logger.log("GUI, setting up shell");
 		shell.addControlListener(new ControlAdapter() {
 			@Override
 			public void controlResized(ControlEvent e) {
@@ -62,13 +64,17 @@ public class MainController {
 			}
 		});
 		shell.setSize(1024, 768);
+		logger.log("GUI, importing background");
 		Image background = SWTResourceManager.getImage(MainController.class, "/resource/image/wallpaper1.jpg");
+		logger.log("GUI, setting Background");
 		shell.setBackgroundImage(background);
 		shell.setText("SparkMoVare");
 
 		/**
 		 * Setting to tray and minimising to tray
 		 */
+		logger.log("GUI, setting up trayicon");
+
 		final Tray tray = display.getSystemTray();
 		if (tray == null) {
 			System.out.println("The system tray is not available");
@@ -135,6 +141,8 @@ public class MainController {
 		/**
 		 * TableViewer
 		 */
+		logger.log("GUI, setting up table");
+
 		final TableViewer tableViewer = new TableViewer(shell, SWT.BORDER | SWT.FULL_SELECTION);
 		table = tableViewer.getTable();
 		table.setBounds(43, 151, 921, 472);
@@ -182,6 +190,8 @@ public class MainController {
 		/**
 		 * Command Line Interface
 		 */
+		logger.log("GUI, setting up CLI");
+
 		final Text cli = new Text(shell, SWT.NONE);
 		cli.setBounds(43, 644, 809, 26);
 		cli.addKeyListener(new KeyListener() {
@@ -190,7 +200,7 @@ public class MainController {
 					CommandHandler.commandHandle(cli, feedback, userInput, tableViewer);
 				}
 				else if (e.keyCode == SWT.F12 && cli.getText().equals("testing")) {
-					StatsPopup.statsAppear(12, 3, 9);
+					StatsPopup.statsAppear(12, 2, 10);
 					//easter egg
 					feedback.setText("ACHIEVEMENT UNLOCK : Dumb Ways to Die!");
 //					try {
@@ -213,6 +223,8 @@ public class MainController {
 		/**
 		 * Enter button
 		 */
+		logger.log("GUI, setting up enter button");
+
 		Button btnEnter = new Button(shell, SWT.NONE);
 		btnEnter.setBounds(874, 640, 90, 30);
 		btnEnter.setText("Enter");
@@ -226,6 +238,8 @@ public class MainController {
 		/**
 		 * Date Display
 		 */
+		logger.log("GUI, setting up date");
+
 		dateDisplay = new Text(shell, SWT.BORDER | SWT.CENTER);
 		dateDisplay.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
 		dateDisplay.setFont(SWTResourceManager.getFont("Segoe UI", 13, SWT.BOLD));
@@ -237,6 +251,8 @@ public class MainController {
 		/**
 		 * Clock Display
 		 */
+		logger.log("GUI, setting up clock");
+
 		clockDisplay = formToolkit.createText(shell, "New Text", SWT.CENTER);
 		clockDisplay.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
 		clockDisplay.setFont(SWTResourceManager.getFont("Segoe UI", 16, SWT.NORMAL));
@@ -250,6 +266,8 @@ public class MainController {
 		/**
 		 * feedbackDisplay
 		 */
+		logger.log("GUI, setting up feedback");
+
 		feedback = new Text(shell, SWT.BORDER | SWT.CENTER);
 		feedback.setEnabled(false);
 		feedback.setEditable(false);
@@ -259,6 +277,8 @@ public class MainController {
 		/**
 		 * quoteViewer
 		 */
+		logger.log("GUI, setting up qoute viewer");
+
 		quoteViewer = formToolkit.createText(shell, "New Text", SWT.CENTER);
 		quoteViewer.setFont(SWTResourceManager.getFont("Segoe UI", 11, SWT.NORMAL));
 		quoteViewer.setEnabled(false);
@@ -269,6 +289,8 @@ public class MainController {
 		/**
 		 * Update Clock
 		 */
+		logger.log("GUI, start thread to update clock");
+
 		clockUpdater.schedule(new UpdateTimerTask(), 1000, 1000);
 
 		shell.open();
@@ -282,6 +304,8 @@ public class MainController {
 
 
 	public static void main(String[] args) {
+
+		logger.log("~~NEW LAUNCH~~");
 
 		System.out.println(Message.WELCOME);
 		Storage.openFile(InternalStorage.getFilePath(),Id.getLatestSerialNumber(), InternalStorage.getBuffer());

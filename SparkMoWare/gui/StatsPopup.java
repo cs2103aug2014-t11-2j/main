@@ -21,6 +21,13 @@ public class StatsPopup {
 	 * @wbp.parser.entryPoint
 	 */
 	protected static void statsAppear(int totalTask, int lateTask, int onTimeTask){
+		
+		//ensure valid stats are displayed
+	    assert (totalTask >= lateTask) : "Value of " + totalTask + " < " + lateTask + " is too large to add.";
+	    assert (totalTask >= onTimeTask) : "Value of " + totalTask + " < " + onTimeTask + " is too large to add.";
+	    assert (totalTask == (lateTask+onTimeTask)) : "Value of " + totalTask + " < " + lateTask + " is too large to add.";
+
+		int percentageOntime = (int)(((float)onTimeTask/totalTask)*100);
 		Shell popup = new Shell();
 		popup.setText("User Statistics");
 		Image background = SWTResourceManager.getImage(MainController.class, "/resource/image/wallpaper.jpg");
@@ -46,7 +53,7 @@ public class StatsPopup {
 		
 		Percentage = new Text(popup, SWT.BORDER | SWT.READ_ONLY | SWT.CENTER);
 		Percentage.setBounds(294, 83, 46, 21);
-		Percentage.setText(Integer.toString(((int)(((float)onTimeTask/totalTask)*100)))+"%");
+		Percentage.setText(Integer.toString(percentageOntime)+"%");
 		
 		txtUserStatistics = new Text(popup, SWT.BORDER | SWT.READ_ONLY);
 		txtUserStatistics.setFont(SWTResourceManager.getFont("Showcard Gothic", 16, SWT.BOLD));
@@ -55,7 +62,13 @@ public class StatsPopup {
 		
 		QuoteFeedback = new Text(popup, SWT.BORDER | SWT.READ_ONLY | SWT.CENTER);
 		QuoteFeedback.setBounds(10, 179, 438, 27);
-		QuoteFeedback.setText(QuoteLib.getQuote());
+		if (percentageOntime<33) {
+			QuoteFeedback.setText("You have so much more room to improve, keep trying!");
+		} else if (percentageOntime<66) {
+			QuoteFeedback.setText("You are doing decently but there is still room for improvment, keep trying!");
+		} else {
+			QuoteFeedback.setText("Well done! You are doing a great job! keep it up!");
+		}
 		
 		String totalTaskString = "Total number of Assignments: ~ "+ Integer.toString(totalTask);
 		String lateTaskString = "Number of Late Assignments: ~"+ Integer.toString(lateTask);
