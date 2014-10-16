@@ -2,22 +2,32 @@ package parser;
 
 import java.util.regex.Matcher;
 
+import parser.EnumGroup.AssignmentType;
+import parser.EnumGroup.CommandType;
+
 public class InputIsAdd {
 
-	protected static String[] refineInput(String userInput) {
+	protected static RefinedUserInput refineInput(String userInput) {
 		
 		if(checkIfAppt(userInput)){
-			UserInputAddAppointment inputAddAppointment =  new UserInputAddAppointment(getTitle(userInput),
-					getStartDate(userInput), getStartTime(userInput), getEndDate(userInput), getEndTime(userInput));
+			RefinedUserInput inputAddAppointment =  new RefinedUserInput(
+					CommandType.ADD, null,
+					getTitle(userInput), getStartDate(userInput),
+					getStartTime(userInput), getEndDate(userInput),
+					getEndTime(userInput), AssignmentType.APPOINTMENT,
+					null);
 			
-			return inputAddAppointment.toString().split("~");
+			return inputAddAppointment;
 			
 		} else {
-			UserInputAddTask inputAddTask =  new UserInputAddTask(getTitle(userInput),
-					getEndDate(userInput), getEndTime(userInput));
+			RefinedUserInput inputAddTask =  new RefinedUserInput(
+					CommandType.ADD, null,
+					getTitle(userInput), null,
+					null, getEndDate(userInput),
+					getEndTime(userInput), AssignmentType.TASK,
+					null);
+			return inputAddTask;
 		}
-		
-		return null; //stub
 	}
 
 	//Checks if there are 2 date inputs
