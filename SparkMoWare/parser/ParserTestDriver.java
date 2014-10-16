@@ -7,15 +7,15 @@ public class ParserTestDriver {
 	}
 	
 	public static String testGetStartDate(String testInput) {
-		return InputIsAdd.getStartDate(testInput);
+		return InputIsAdd.extractStartDate(testInput);
 	}
 	
 	public static String testGetEndDate(String testInput) {
-		return InputIsAdd.getEndDate(testInput);
+		return InputIsAdd.extractEndDate(testInput);
 	}
 	
 	public static String testGetStartTime(String testInput) {
-		return InputIsAdd.getStartTime(testInput);
+		return InputIsAdd.extractStartTime(testInput);
 	}
 	
 	public static Boolean testHasTwoTimeInputs(String testInput) {
@@ -27,7 +27,7 @@ public class ParserTestDriver {
 	}
 
 	public static String testGetEndTime(String testInput) {
-		return InputIsAdd.getEndTime(testInput);
+		return InputIsAdd.extractEndTime(testInput);
 	}
 	
 	public static String testReplaceAllTime(String testInput) {
@@ -39,6 +39,6 @@ public class ParserTestDriver {
 	}
 	
 	public static String testGetTitle(String testInput) {
-		return InputIsAdd.getTitle(testInput);
+		return InputIsAdd.extractTitle(testInput);
 	}
 }

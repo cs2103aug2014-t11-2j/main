@@ -2,22 +2,32 @@ package parser;
 
 import java.util.regex.Matcher;
 
+import parser.EnumGroup.AssignmentType;
+import parser.EnumGroup.CommandType;
+
 public class InputIsAdd {
 
-	protected static String[] refineInput(String userInput) {
+	protected static RefinedUserInput refineInput(String userInput) {
 		
 		if(checkIfAppt(userInput)){
-			UserInputAddAppointment inputAddAppointment =  new UserInputAddAppointment(getTitle(userInput),
-					getStartDate(userInput), getStartTime(userInput), getEndDate(userInput), getEndTime(userInput));
+			RefinedUserInput inputAddAppointment =  new RefinedUserInput(
+					CommandType.ADD, null,
+					extractTitle(userInput), extractStartDate(userInput),
+					extractStartTime(userInput), extractEndDate(userInput),
+					extractEndTime(userInput), AssignmentType.APPOINTMENT,
+					null);
 			
-			return inputAddAppointment.toString().split("~");
+			return inputAddAppointment;
 			
 		} else {
-			UserInputAddTask inputAddTask =  new UserInputAddTask(getTitle(userInput),
-					getEndDate(userInput), getEndTime(userInput));
+			RefinedUserInput inputAddTask =  new RefinedUserInput(
+					CommandType.ADD, null,
+					extractTitle(userInput), null,
+					null, extractEndDate(userInput),
+					extractEndTime(userInput), AssignmentType.TASK,
+					null);
+			return inputAddTask;
 		}
-		
-		return null; //stub
 	}
 
 	//Checks if there are 2 date inputs
@@ -31,7 +41,7 @@ public class InputIsAdd {
 			}
 		}
 
-	protected static String getTitle(String userInput) {
+	protected static String extractTitle(String userInput) {
 		
 		userInput = replaceAllDate(userInput);
 		userInput = replaceAllTime(userInput);
@@ -87,7 +97,7 @@ public class InputIsAdd {
 	
 	//code works fine for single date input
 	//ASSUMPTION: in appointment case, input format is start date followed by end date
-	protected static String getStartDate(String userInput) {
+	protected static String extractStartDate(String userInput) {
 		Matcher dateMatcher = ParserPatternLocal.datePattern.matcher(userInput);
 		String startDate = new String();
 		
@@ -97,7 +107,7 @@ public class InputIsAdd {
 		return startDate;
 	}
 	
-	protected static String getEndDate(String userInput) {
+	protected static String extractEndDate(String userInput) {
 		Matcher dateMatcher = ParserPatternLocal.datePattern.matcher(userInput);
 		String endDate = new String();
 		
@@ -105,7 +115,7 @@ public class InputIsAdd {
 			userInput = dateMatcher.replaceFirst("");
 		}
 		
-		endDate = getStartDate(userInput);
+		endDate = extractStartDate(userInput);
 		
 		if(!dateMatcher.find()) {
 			endDate = ParserDateLocal.dateString();
@@ -114,7 +124,7 @@ public class InputIsAdd {
 		return endDate;
 	}
 	
-	protected static String getStartTime(String userInput) {
+	protected static String extractStartTime(String userInput) {
 		userInput = replaceAllDate(userInput);
 		Matcher timeMatcher = ParserPatternLocal.timePattern.matcher(userInput);
 		String startTime = new String();
@@ -128,14 +138,12 @@ public class InputIsAdd {
 		return startTime;
 	}
 	
-	
-	
 	/* Still haven't dealt with following inputs: 
 	 * [add] [start date] [start time] [end date]
 	 * [add] [start date] [end date] [end time]
 	 * Parser cannot distinguish between the two YET
 	 */
-	protected static String getEndTime(String userInput) {
+	protected static String extractEndTime(String userInput) {
 		userInput = replaceAllDate(userInput);
 		Matcher timeMatcher = ParserPatternLocal.timePattern.matcher(userInput);
 		String endTime = new String();
@@ -146,7 +154,7 @@ public class InputIsAdd {
 			userInput = timeMatcher.replaceFirst("");
 			}
 
-		endTime = getStartTime(userInput);
+		endTime = extractStartTime(userInput);
 
 		if(!timeMatcher.find()) {
 			endTime = ParserTimeLocal.defaultEndTime;
