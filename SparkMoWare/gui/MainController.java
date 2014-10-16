@@ -1,6 +1,5 @@
 package gui;
 
-import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -8,13 +7,10 @@ import java.util.LinkedList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import javafx.embed.swing.JFXPanel;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import logic.Assignment;
 import logic.Id;
+import logic.InternalStorage;
 import logic.Message;
-import logic.SparkMoVare;
 
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
@@ -55,7 +51,7 @@ public class MainController {
 	private String userInput="";
 	private Text feedback;
 	private Table table;
-	private LinkedList<Assignment> buffer = SparkMoVare.getBuffer();
+	private LinkedList<Assignment> buffer = InternalStorage.getBuffer();
 
 	public MainController(Display display) {
 		shell = new Shell(display);
@@ -66,8 +62,8 @@ public class MainController {
 			}
 		});
 		shell.setSize(1024, 768);
-		Image bg_Image = new Image(display, "wallpaper1.jpg");
-		shell.setBackgroundImage(bg_Image);
+		Image background = SWTResourceManager.getImage(MainController.class, "/resource/image/wallpaper1.jpg");
+		shell.setBackgroundImage(background);
 		shell.setText("SparkMoVare");
 
 		/**
@@ -79,7 +75,7 @@ public class MainController {
 		} else {
 			final TrayItem item = new TrayItem(tray, SWT.NONE);
 			item.setToolTipText("SparkMoVare");
-			Image trayicon = new Image(display, "SparkMoVareTrayIcon.png");
+			Image trayicon = SWTResourceManager.getImage(MainController.class, "/resource/image/SparkMoVareTrayIcon.png");
 			item.setImage(trayicon);
 			item.addListener(SWT.Selection, new Listener() {
 				public void handleEvent(Event event) {
@@ -144,6 +140,8 @@ public class MainController {
 		table.setBounds(43, 151, 921, 472);
 		table.setLinesVisible(true);
 		formToolkit.paintBordersFor(table);
+		TableColumn tc0 = new TableColumn(table, SWT.CENTER);
+		tc0.setResizable(false);
 		TableColumn tc1 = new TableColumn(table, SWT.CENTER);
 		tc1.setResizable(false);
 		TableColumn tc2 = new TableColumn(table, SWT.CENTER);
@@ -158,14 +156,16 @@ public class MainController {
 		tc6.setResizable(false);
 		TableColumn tc7 = new TableColumn(table, SWT.CENTER);
 		tc7.setResizable(false);
-		tc1.setText("Serial Number");
+		tc0.setText("Creation");
+		tc1.setText("Serial");
 		tc2.setText("Type");
 		tc3.setText("Title");
 		tc4.setText("Start Date");
 		tc5.setText("Start Time");
 		tc6.setText("End Date");
 		tc7.setText("End Time");
-		tc1.setWidth(107);
+		tc0.setWidth(57);
+		tc1.setWidth(50);
 		tc2.setWidth(70);
 		tc3.setWidth(395);
 		tc4.setWidth(91);
@@ -189,20 +189,21 @@ public class MainController {
 				if (e.keyCode == SWT.CR || e.keyCode == SWT.LF) {
 					CommandHandler.commandHandle(cli, feedback, userInput, tableViewer);
 				}
-				else if (e.keyCode == SWT.F12 && cli.getText().equals("DUMBWAYSTODIE")) {
+				else if (e.keyCode == SWT.F12 && cli.getText().equals("testing")) {
+					StatsPopup.statsAppear(12, 3, 9);
 					//easter egg
 					feedback.setText("ACHIEVEMENT UNLOCK : Dumb Ways to Die!");
-					try {
-						JFXPanel fxPanel = new JFXPanel();
-						File f = new File("Tangerine Kitty - Dumb Ways To Die.mp3");
-						Media hit = new Media(f.toURI().toString());
-						MediaPlayer mediaPlayer = new MediaPlayer(hit);
-						mediaPlayer.play();
-
-					} catch(Exception ex) {
-						ex.printStackTrace();
-						System.out.println("Exception");
-					}
+//					try {
+//						JFXPanel fxPanel = new JFXPanel();
+//						File f = new File("Tangerine Kitty - Dumb Ways To Die.mp3");
+//						Media hit = new Media(f.toURI().toString());
+//						MediaPlayer mediaPlayer = new MediaPlayer(hit);
+//						mediaPlayer.play();
+//
+//					} catch(Exception ex) {
+//						ex.printStackTrace();
+//						System.out.println("Exception");
+//					}
 				}
 			}
 			public void keyPressed(KeyEvent e) {
@@ -263,7 +264,7 @@ public class MainController {
 		quoteViewer.setEnabled(false);
 		quoteViewer.setEditable(false);
 		quoteViewer.setBounds(43, 676, 921, 26);
-		quoteViewer.setText(quoteLib.getQuote());
+		quoteViewer.setText(QuoteLib.getQuote());
 
 		/**
 		 * Update Clock
@@ -283,7 +284,7 @@ public class MainController {
 	public static void main(String[] args) {
 
 		System.out.println(Message.WELCOME);
-		Storage.openFile(SparkMoVare.getfilePath(),Id.getLatestSerialNumber(), SparkMoVare.getBuffer());
+		Storage.openFile(InternalStorage.getFilePath(),Id.getLatestSerialNumber(), InternalStorage.getBuffer());
 
 		Display display = new Display();
 		new MainController(display);
