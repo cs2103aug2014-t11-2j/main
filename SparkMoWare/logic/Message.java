@@ -7,16 +7,25 @@ public class Message {
 	
 	public static final String WELCOME = "Welcome to SparkMoWare!";
 	protected static final String PROMPT = "command: ";
-	protected static final String ADDED = "added to %1$s: \"%2$s\"";
-	protected static final String EDITED = "content has already been edited";
+	protected static final String ADDED = "Assignment has been added!";
+	protected static final String EDITED = "Content has already been edited!";
 	protected static final String TENTATIVE = "Schedule(s): ";
 	protected static final String TENTATIVE_ADDED = "All of your tentative appointments have been added";
 	
-	protected static final String DELETED = "deleted from %1$s: \"%2$s\"";
-	protected static final String DELETE_ON = "all content(s) of date %1$s is(are) deleted";
-	protected static final String DELETE_BEFORE = "all content(s) before date %1$s is(are) deleted";
-	protected static final String DELETE_BETWEEN = "all content(s) from date %1$s to date %2$s is(are) deleted";
-	protected static final String DELETE = "all content deleted from %1$s";
+	protected static final String DELETED = "Assignment has been deleted!";
+	protected static final String DELETE_ALL = "All necessary content have been deleted!";
+	
+	protected static final String SEARCH = "Search completed!";
+	
+	protected static final String SORT = "Sort completed!";
+	
+	protected static final String STATISTIC = "Statistic shown!";
+	
+	protected static final String DISPLAY = "Original list is up!";
+	
+	protected static final String FILTER = "Necessary Assignment(s) have been filtered away!";
+	
+	protected static final String INVALID_COMMAND = "Invalid Commad Issued";
 	
 	protected static final String DOES_NOT_EXISTS = "%1$s does not exists";
 	protected static final String NO_TITLE = "Title is blank";
@@ -29,7 +38,6 @@ public class Message {
 	
 	protected static final String UNABLE_TO_REDO = "Error: There are no actions to redo";
 	protected static final String UNABLE_TO_UNDO = "Error: There are no actions to undo";
-	protected static final String INVALID_COMMAND = "Invalid Commad Issued";
 
 	protected static final String INVALID_FORMAT = "Invalid Format";	
 	protected static final String INVALID_SEARCH_PARAMETER = "Invalid search parameter entered";

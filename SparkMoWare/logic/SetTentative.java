@@ -10,8 +10,6 @@ package logic;
 
 public class SetTentative {
 	
-	
-	
 	public static String addTentative(String numOfTentative, String tentativeTitle) {
 		
 		Tentative newTentative = new Tentative();
@@ -21,7 +19,6 @@ public class SetTentative {
 		
 		newTentative.setId(tentativeIdGenerated);
 		newTentative.setTitle(tentativeTitle);
-		newTentative.setType(Assignment.TYPE_TENTATIVE);
 		newTentative.setPriority(Assignment.PRIORITY_NONE);
 		
 		addTentativeAppt(newTentative, tentativeNum, tentativeIdGenerated, tentativeTitle);
@@ -67,7 +64,7 @@ public class SetTentative {
 					InternalStorage.getBuffer().get(InternalStorage.getLineCount() - 1).getEndDate()) == 1) {
 			InternalStorage.addBuffer(newTentative);
 			
-		} else{
+		} else {
 			int bufferCount;
 			
 			for (bufferCount = InternalStorage.getLineCount() - 1; bufferCount > 0 && 

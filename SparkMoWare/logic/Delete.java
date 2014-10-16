@@ -2,6 +2,8 @@ package logic;
 
 import java.util.LinkedList;
 
+import parser.EnumGroup.AssignmentType;
+
 /*
  * Able to delete individual assignment as per requested
  * or
@@ -17,7 +19,7 @@ public class Delete {
 		DELETEALL_ON, DELETEALL_BEFORE, DELETEALL_BETWEEN, CLEAR;
 	}
 
-	protected static String deleteAll(String duration, String endDate, String startDate) {
+	protected static int deleteAll(String duration, String endDate, String startDate) {
 
 		switch (getDuration(duration)) {
 
@@ -26,7 +28,7 @@ public class Delete {
 			return String.format(Message.DELETE_ON, endDate);
 
 		case DELETEALL_BEFORE:
-			startDate = InternalStorage.getBuffer().getFirst().getEndDate();
+			startDate = getStartDate();
 			deleteBetween(endDate, startDate);
 			return String.format(Message.DELETE_BEFORE, endDate);
 
@@ -39,6 +41,20 @@ public class Delete {
 			return String.format(Message.DELETE, InternalStorage.getFilePath());
 		}
 	}
+	private static String getStartDate() {
+		
+		String startDate = "01012014";
+		
+		if(InternalStorage.getBuffer().getFirst().equals(AssignmentType.TASK)) {
+			Task firstTask = ((Task) InternalStorage.getBuffer().getFirst());
+			startDate = firstTask.getEndDate();
+		} else if(InternalStorage.getBuffer().getFirst().equals(AssignmentType.APPOINTMENT)) {
+			
+			Task firstTask = ((Task) InternalStorage.getBuffer().getFirst());
+			startDate = firstTask.getEndDate();
+		}
+		return startDate;
+	}
 	
 	protected static String delete(String id) {
 		 
@@ -46,7 +62,7 @@ public class Delete {
 		idFound = SearchAll.searchAll(id);
 		
 		// PS: Have to check if nullAssignment will increase the numAppointment by 1
-		Assignment nullAssignment = new Assignment();
+		Appointment nullAssignment = new Appointment();
 		nullAssignment.setNumAppointment(nullAssignment.getNumAppointment() - 1); 
 		
 		if(idFound.size() == 0) {

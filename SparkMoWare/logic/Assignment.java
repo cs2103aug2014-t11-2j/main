@@ -10,7 +10,6 @@ public class Assignment{
 	private int index;
 	private boolean isDone;
 	private boolean isOnTime;
-	private String type; // type of assignment
 	private String priority; // IMPT else NIMPT
 	private assignmentType aType;
 	// private String description;
@@ -37,20 +36,19 @@ public class Assignment{
 	
 	// Default constructor
 	public Assignment() {
-		this(DEFAULT, DEFAULT_STRING, DEFAULT, false, false, PRIORITY_NONE, assignmentType.ASSIGNMENT);
+		this(DEFAULT, DEFAULT_STRING, false, false, PRIORITY_NONE, assignmentType.ASSIGNMENT);
 	}
 	
-	public Assignment(String id, String title, String type, boolean isDone, boolean isOnTime, String priority,
+	public Assignment(String id, String title, boolean isDone, boolean isOnTime, String priority,
 			assignmentType atype) {
 		
 		setId(id);
 		setTitle(title);
-		setType(type);
 		setIsDone(isDone);
 		setIsOnTime(isOnTime);
 		setPriority(priority);
 		//setTag(tag);
-		setAssignmentType(atype);
+		setAssignType(atype);
 	}
 
 	/**************** Accessors ***********************/
@@ -63,10 +61,6 @@ public class Assignment{
 		return this.id;
 	}
 
-	public String getType() {
-		return this.type;
-	}
-	
 	public boolean getIsDone() {
 		return this.isDone;
 	}
@@ -114,12 +108,8 @@ public class Assignment{
 	public void setId(String newId) {
 		id = newId;
 	}
-	
-	public void setType(String newType) {
-		type = newType;
-	}
 
-	public void setAssignmentType(assignmentType atype) {
+	public void setAssignType(assignmentType atype) {
 		this.aType = atype;
 	}
 	

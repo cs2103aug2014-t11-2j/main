@@ -43,7 +43,7 @@ public class Appointment extends Task {
 		super();
 		setStartDate(startDate);
 		setStartTime(startTime);
-		setAssignmentType(assignmentType.APPOINTMENT);
+		setAssignType(assignmentType.APPOINTMENT);
 		numAppointment++;
 	}
 
@@ -70,11 +70,15 @@ public class Appointment extends Task {
 	public void setStartTime(String newStartTime) {
 		this.startTime = newStartTime;
 	}
+	
+	public void setNumAppointment(int numAppointment) {
+		this.numAppointment = numAppointment;
+	}
 
 		/**************** Overriding ************************/
 	
 	public String toString() {
-		return getId() + "~" + getTitle() + "~" + getType() + "~" + getStartDate() + "~" + 
+		return getId() + "~" + getTitle() + "~" + getAssignType() + "~" + getStartDate() + "~" + 
 				getStartTime() + "~" + getEndDate() + "~" + getEndTime() + "~" + getIsDone() + 
 				"~" + getIsOnTime() + "~" + getPriority();
 	}

@@ -4,11 +4,16 @@ import logic.Assignment;
 
 import java.util.LinkedList;
 
+import parser.EnumGroup.AssignmentType;
+
 public class Trancation {
+
+	private static Appointment appointmentInList = new Appointment();
+	private static Task taskInList = new Task();
 
 	public static LinkedList<Assignment> trancateList(LinkedList<Assignment> trancatedList, String startDate,
 			String endDate) {
-		System.out.println("YAY");
+
 		LinkedList<Assignment> limitRemoved = new LinkedList<Assignment>();
 		if(startDate != null) {
 			limitRemoved = removeLowerLimit(trancatedList, startDate);
@@ -21,10 +26,20 @@ public class Trancation {
 
 	private static LinkedList<Assignment> removeLowerLimit(LinkedList<Assignment> trancatedList, String date) {
 
-		for(int trancatedCount = trancatedList.size() - 1; trancatedCount >= 0; trancatedCount--){
-			if(Comparator.dateComparator(trancatedList.get(trancatedCount).getEndDate(), date) == -1) {
+		for(int trancatedCount = trancatedList.size() - 1; trancatedCount >= 0; trancatedCount--) {
+			
+			if(trancatedList.get(trancatedCount).getAssignType().equals(AssignmentType.TASK)) {
+				taskInList = ((Task) trancatedList.get(trancatedCount));
 				
-				trancatedList.remove(trancatedCount);
+				if(Comparator.dateComparator(taskInList.getEndDate(), date) == -1) {
+					trancatedList.remove(trancatedCount);
+				}
+			} else if(trancatedList.get(trancatedCount).getAssignType().equals(AssignmentType.APPOINTMENT)) {
+				appointmentInList = ((Appointment) trancatedList.get(trancatedCount));
+				
+				if(Comparator.dateComparator(appointmentInList.getEndDate(), date) == -1) {
+					trancatedList.remove(trancatedCount);
+				}
 			}
 		}
 		return trancatedList;
@@ -33,11 +48,21 @@ public class Trancation {
 	private static LinkedList<Assignment> removeUpperLimit(LinkedList<Assignment> trancatedList, String date) {
 
 		for(int trancatedCount = trancatedList.size() - 1; trancatedCount >= 0; trancatedCount--) {
-			if(Comparator.dateComparator(trancatedList.get(trancatedCount).getEndDate(), date) == 1) {
+			
+			if(trancatedList.get(trancatedCount).getAssignType().equals(AssignmentType.TASK)) {
+				taskInList = ((Task) trancatedList.get(trancatedCount));
 				
-				trancatedList.remove(trancatedCount);
+				if(Comparator.dateComparator(taskInList.getEndDate(), date) == 1) {
+					trancatedList.remove(trancatedCount);
+				}
+			} else if(trancatedList.get(trancatedCount).getAssignType().equals(AssignmentType.APPOINTMENT)) {
+				appointmentInList = ((Appointment) trancatedList.get(trancatedCount));
+				
+				if(Comparator.dateComparator(appointmentInList.getEndDate(), date) == 1) {
+					trancatedList.remove(trancatedCount);
+				}
 			}
-		}	
+		}
 		return trancatedList;
 	}
 }

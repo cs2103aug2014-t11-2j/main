@@ -23,7 +23,7 @@ public class Task extends Assignment{
 		super();
 		setEndDate(endDate);
 		setEndTime(endTime);
-		setAssignmentType(assignmentType.TASK);
+		setAssignType(assignmentType.TASK);
 	}
 
 	/**************** Accessors ***********************/
@@ -50,7 +50,7 @@ public class Task extends Assignment{
 
 	@Override
 	public String toString() {
-		return getId() + "~" + getTitle() + "~" + getType() + "~"
+		return getId() + "~" + getTitle() + "~" + getAssignType() + "~"
 				+ getEndDate() + "~" + getEndTime() + "~" + getIsDone() + "~"
 				+ getIsOnTime() + "~" + getPriority();
 	}

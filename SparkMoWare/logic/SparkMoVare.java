@@ -1,5 +1,7 @@
 package logic;
 
+import java.util.LinkedList;
+
 import storage.Storage;
 
 public class SparkMoVare {
@@ -8,7 +10,7 @@ public class SparkMoVare {
 	protected static final int SYSTEM_EXIT_ERROR = -1;
 
 	protected static String[] refinedUserInput = new String[10];
-	 
+
 	/* each index of refinedUserinput represent something
 	 * 0:The command string
 	 * 1:Serial Number (S/N) of the Assignment ASSUMPTION: serial number length is at most 12 digits DD/MM/YYYY/0000
@@ -25,21 +27,21 @@ public class SparkMoVare {
 	 * 9:Priority 
 	 */
 
-	
+
 	enum CommandType {
 		ADD, EDIT, DELETE, TENTATIVE, CONFIRM, SORT, SEARCH, FILTER,
-		CLEAR, UNDO, REDO, STATISTIC, EXIT, INVALID, DISPLAY, HELP 
+		CLEAR, UNDO, REDO, STATISTIC, EXIT, INVALID, DISPLAY
 	}
 
 	//Fundamentally the same as CommandType, but without single word commands 
-	
-//    public static void main(String[] args) {
-//
-//        Print.printToUser(Message.WELCOME);
-//        Storage.openFile(InternalStorage.getFilePath(),Id.getLatestSerialNumber(), InternalStorage.getBuffer());
-//    	HelpList.openFile("HelpList.txt");
-//        toDoManager();
-//    }
+
+	//    public static void main(String[] args) {
+	//
+	//        Print.printToUser(Message.WELCOME);
+	//        Storage.openFile(InternalStorage.getFilePath(),Id.getLatestSerialNumber(), InternalStorage.getBuffer());
+	//    	HelpList.openFile("HelpList.txt");
+	//        toDoManager();
+	//    }
 
 
 	public static void toDoManager() {
@@ -47,7 +49,7 @@ public class SparkMoVare {
 		while (true) {
 			Print.printToUser(Message.PROMPT);
 			RefineInput.determineUserInput(InternalStorage.getScanner().nextLine());
-			Print.printToUser(executeCommand(refinedUserInput[0]));
+			executeCommand(refinedUserInput[0]);
 			if (getCommandType(refinedUserInput[0])!=CommandType.UNDO &&
 					getCommandType(refinedUserInput[0]) != CommandType.REDO &&
 					getCommandType(refinedUserInput[0]) != CommandType.INVALID &&
@@ -59,7 +61,9 @@ public class SparkMoVare {
 		}
 	} 
 
-	public static String executeCommand(String inputCommand) {
+	public static Output executeCommand(String inputCommand) {
+
+		Output returnOutput = new Output();
 
 		CommandType command = getCommandType(inputCommand);
 
@@ -71,24 +75,34 @@ public class SparkMoVare {
 
 		switch (command) {
 		case ADD:
-			if(refinedUserInput[7].equals("APPT")) {
-				
-			return Add.addAppointment(refinedUserInput[1], refinedUserInput[2], refinedUserInput[7],
-					refinedUserInput[3], refinedUserInput[4], refinedUserInput[5], refinedUserInput[6], 
-					false, refinedUserInput[9]);
-			} else if(refinedUserInput[7].equals("TASK")) {
-				
-				return Add.addTask(refinedUserInput[1], refinedUserInput[2], refinedUserInput[7],
-						refinedUserInput[5], refinedUserInput[6], false, refinedUserInput[9]);
-			}
+			Add.addSomething(refinedUserInput);
+
+			returnOutput.setReturnBuffer(InternalStorage.getBuffer());
+			returnOutput.setFeedback(Message.ADDED);
+			returnOutput.setTotalAssignment(returnOutput.getTotalAssignment() + 1);
+			returnOutput.setIsStats(false);
+
+			return returnOutput;
 
 		case EDIT:
 			Edit.editAssignment(refinedUserInput);
-			break;
+
+			returnOutput.setReturnBuffer(InternalStorage.getBuffer());
+			returnOutput.setFeedback(Message.EDITED);
+			returnOutput.setIsStats(false);
+
+			return returnOutput;
 
 		case DELETE:
-			return Delete.delete(refinedUserInput[1]);
+			Delete.delete(refinedUserInput[1]);
 
+			returnOutput.setReturnBuffer(InternalStorage.getBuffer());
+			returnOutput.setFeedback(Message.DELETED);
+			returnOutput.setTotalAssignment(returnOutput.getTotalAssignment() - 1);
+			returnOutput.setIsStats(false);
+
+			return returnOutput;
+			/*
 		case TENTATIVE:
 			SetTentative.addTentative(refinedUserInput[8], refinedUserInput[2]);
 			break;
@@ -97,48 +111,74 @@ public class SparkMoVare {
 			ConfirmTentative.confirmTentative(refinedUserInput[1], refinedUserInput[3],
 					refinedUserInput[4], refinedUserInput[5], refinedUserInput[6]);
 			break;
-
+			 */
 		case CLEAR:
-			return Delete.deleteAll(refinedUserInput[8], refinedUserInput[5], refinedUserInput[3]);
+			int assignmentLeft = 0;
+
+			assignmentLeft = Delete.deleteAll(refinedUserInput[8], refinedUserInput[5], refinedUserInput[3]);
+
+			returnOutput.setReturnBuffer(InternalStorage.getBuffer());
+			returnOutput.setFeedback(Message.DELETE_ALL);
+			returnOutput.setTotalAssignment(assignmentLeft);
+			returnOutput.setIsStats(false);
+
+			return returnOutput;
 
 		case SORT:
-			Print.printList(Sort.sortRequired(refinedUserInput[8], refinedUserInput[3], refinedUserInput[5]));
-			break;
+			returnOutput.setReturnBuffer(Sort.sortRequired(refinedUserInput[8], 
+					refinedUserInput[3], refinedUserInput[5]));
+			returnOutput.setFeedback(Message.SORT);
+			returnOutput.setIsStats(false);
+
+			return returnOutput;
 
 		case SEARCH:
-			Print.printList(SearchAll.searchAll(refinedUserInput[8]));
-			break;
+			returnOutput.setReturnBuffer(SearchAll.searchAll(refinedUserInput[8]));
+			returnOutput.setFeedback(Message.SEARCH);
+			returnOutput.setIsStats(false);
+
+			return returnOutput;
 
 		case STATISTIC:
-			Print.printToUser(Statistic.getStats());
-			break;
+			returnOutput.setReturnBuffer(InternalStorage.getBuffer());
+			returnOutput.setIsStats(true);
+			returnOutput.setFeedback(Message.STATISTIC);
 
+			return returnOutput;
+			/*
 		case UNDO:
 			return RedoUndo.undo();
 
 		case REDO:
 			return RedoUndo.redo();
-
+			 */
 		case DISPLAY:
-			Print.display();
-			break;
-		
+			returnOutput.setReturnBuffer(InternalStorage.getBuffer());
+			returnOutput.setFeedback(Message.DISPLAY);
+			returnOutput.setIsStats(false);
+
+			return returnOutput;
+
 		case FILTER:
-			Print.printList(Filter.filterMain(refinedUserInput[8], refinedUserInput[3], refinedUserInput[5]));
-			break;
-		
+			returnOutput.setReturnBuffer(Filter.filterMain(refinedUserInput[8], refinedUserInput[3], refinedUserInput[5]));
+			returnOutput.setFeedback(Message.FILTER);
+			returnOutput.setIsStats(false);
+			
+			return returnOutput;
+
 		case EXIT:
 			System.exit(SYSTEM_EXIT_NO_ERROR);
 			break;
-
-		case HELP:
-			Print.printHelpList(HelpList.getHelpList());
-			break;
 			
 		default:
-			return "Invalid Command issued!";
+			LinkedList<Assignment> noAssignment = new LinkedList<Assignment>();
+			returnOutput.setReturnBuffer(noAssignment);
+			returnOutput.setFeedback(Message.INVALID_COMMAND);
+			returnOutput.setIsStats(false);
+			
+			return returnOutput;
 		}
-		return "";
+		return returnOutput;
 	}
 
 	// Returns commandType back to the system before executing the logics
@@ -166,8 +206,6 @@ public class SparkMoVare {
 			return CommandType.UNDO;
 		} else if (command.equalsIgnoreCase("redo")) {
 			return CommandType.REDO;
-		} else if (command.equalsIgnoreCase("help")) {
-			return CommandType.HELP;
 		} else if (command.equalsIgnoreCase("exit")) {
 			return CommandType.EXIT;
 		} else if (command.equalsIgnoreCase("display")){

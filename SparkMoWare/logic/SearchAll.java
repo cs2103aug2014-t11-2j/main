@@ -2,6 +2,8 @@ package logic;
 
 import java.util.*;
 
+import parser.EnumGroup.AssignmentType;
+
 /*
  * Able to search for:
  * ID, Date, Time, Completion, OnTime or Title
@@ -13,16 +15,16 @@ public class SearchAll {
 	private static final int ID_FORMAT_LENGTH = 12;
 	private static final int TIME_FORMAT_LENGTH = 4;
 	private static final int DATE_FORMAT_LENGTH = 8;
-	private static final int TYPE_FORMAT_LENGTH = 1;
+	private static final int TYPE_FORMAT_LENGTH = 4;
 
 	private static int listCount;
 
 	private static final int IS_COMPLETED = 9;
 	private static final int IS_ON_TIME = 8;
 
-	private static final int TYPE_TASK = 0;
-	private static final int TYPE_APPOINTMENT = 1;
-	private static final int TYPE_TENTATIVE = 2;
+	private static final String TYPE_TASK = "task";
+	private static final String TYPE_APPOINTMENT = "appt";
+	private static final String TYPE_TENTATIVE = "tntv";
 
 	protected static LinkedList<Assignment> searchAll(String userInput){
 
@@ -31,16 +33,14 @@ public class SearchAll {
 		if(userInput.length() == ID_FORMAT_LENGTH) {
 			stringsFound = searchById(userInput);
 
-		} else if(userInput.length() == TYPE_FORMAT_LENGTH && userInput.matches("\\d+")) {
+		} else if(userInput.length() == TYPE_FORMAT_LENGTH && !userInput.matches("\\d+")) {
 
-			int assignmentType = Integer.parseInt(userInput);
-
-			if(assignmentType == TYPE_TASK) {
-				stringsFound = searchByTask(assignmentType);
-			} else if (assignmentType == TYPE_APPOINTMENT) {
-				stringsFound = searchByAppointment(assignmentType);
-			} else if (assignmentType == TYPE_TENTATIVE) {
-				stringsFound = searchByTentative(assignmentType);
+			if(userInput.equalsIgnoreCase(TYPE_TASK)) {
+				stringsFound = searchByTask();
+			} else if (userInput.equalsIgnoreCase(TYPE_APPOINTMENT)) {
+				stringsFound = searchByAppointment();
+			} else if (userInput.equalsIgnoreCase(TYPE_TENTATIVE)) {
+				stringsFound = searchByTentative();
 			}
 		} else if(userInput.length() == TIME_FORMAT_LENGTH && userInput.matches("\\d+")) {
 			stringsFound = searchByTime(userInput);
@@ -56,7 +56,7 @@ public class SearchAll {
 
 		} else if(userInput.equalsIgnoreCase("important")) {
 			stringsFound = searchByPriority();
-			
+
 		} else {
 			stringsFound = searchByWords(userInput);
 		}
@@ -75,7 +75,7 @@ public class SearchAll {
 		LinkedList<Assignment> completionFound = new LinkedList<Assignment>();
 
 		for(listCount = 0; listCount < InternalStorage.getBuffer().size(); listCount++) {
-		
+
 			if(InternalStorage.getBuffer().get(listCount).getIsDone() == true) {
 				completionFound.add(InternalStorage.getBuffer().get(listCount));
 			}
@@ -95,11 +95,11 @@ public class SearchAll {
 		}
 		return onTimeFound;
 	}
-	
+
 	private static LinkedList<Assignment> searchByPriority() {
 
 		LinkedList<Assignment> priorityFound = new LinkedList<Assignment>();
-		
+
 		for(listCount = 0; listCount < InternalStorage.getBuffer().size(); listCount++) {
 			try{
 				if(InternalStorage.getBuffer().get(listCount).getPriority().equals("important")) {
@@ -111,34 +111,34 @@ public class SearchAll {
 		}
 		return priorityFound;
 	}
-	
-	private static LinkedList<Assignment> searchByTask(int searchTask) {
+
+	private static LinkedList<Assignment> searchByTask() {
 
 		LinkedList<Assignment> taskFound = new LinkedList<Assignment> ();
 
 		for(listCount = 0; listCount < InternalStorage.getBuffer().size(); listCount++) {
 
-			if(InternalStorage.getBuffer().get(listCount).getType() == searchTask) {
+			if(InternalStorage.getBuffer().get(listCount).getAssignType().equals(AssignmentType.TASK)) {
 				taskFound.add(InternalStorage.getBuffer().get(listCount));
 			}
 		}
 		return taskFound;
 	}
 
-	private static LinkedList<Assignment> searchByAppointment(int searchAppointment) {
+	private static LinkedList<Assignment> searchByAppointment() {
 
 		LinkedList<Assignment> appointmentFound = new LinkedList<Assignment> ();
 
 		for(listCount = 0; listCount < InternalStorage.getBuffer().size(); listCount++) {
 
-			if(InternalStorage.getBuffer().get(listCount).getType() == searchAppointment) {
+			if(InternalStorage.getBuffer().get(listCount).getAssignType().equals(AssignmentType.APPOINTMENT)) {
 				appointmentFound.add(InternalStorage.getBuffer().get(listCount));
 			}
 		}
 		return appointmentFound;
 	}
 
-	private static LinkedList<Assignment> searchByTentative(int searchTentative) {
+	private static LinkedList<Assignment> searchByTentative() {
 
 		LinkedList<Assignment> tentativeFound = new LinkedList<Assignment> ();
 
@@ -171,36 +171,52 @@ public class SearchAll {
 
 		timeFound.addAll(searchByStartTime(searchTime));
 		timeFound.addAll(searchByEndTime(searchTime));
-		
+
 		return timeFound;
 	}
-	
+
 	private static LinkedList<Assignment> searchByStartTime(String searchStartTime) {
-		
+
 		LinkedList<Assignment> startTimeFound = new LinkedList<Assignment>();
+		Appointment appointmentInBuffer = new Appointment();
 
 		for(listCount = 0; listCount < InternalStorage.getBuffer().size(); listCount++) {
-
-			if(InternalStorage.getBuffer().get(listCount).getStartTime().equals(searchStartTime)) {
-				startTimeFound.add(InternalStorage.getBuffer().get(listCount));
+			if(InternalStorage.getBuffer().get(listCount).getAssignType().equals(AssignmentType.APPOINTMENT)) {
+				appointmentInBuffer = ((Appointment) InternalStorage.getBuffer().get(listCount)); 
+			}
+			if(appointmentInBuffer.getStartTime().equals(searchStartTime)) {
+				startTimeFound.add(appointmentInBuffer);
 			}
 		}
 		return startTimeFound;
 	}
 
 	private static LinkedList<Assignment> searchByEndTime(String searchEndTime) {
-		
-		LinkedList<Assignment> endTimeFound = new LinkedList<Assignment>();
 
+		LinkedList<Assignment> endTimeFound = new LinkedList<Assignment>();
+		Appointment appointmentInBuffer = new Appointment();
+		Task taskInBuffer = new Task();
+		
 		for(listCount = 0; listCount < InternalStorage.getBuffer().size(); listCount++) {
 
-			if(InternalStorage.getBuffer().get(listCount).getStartTime().equals(searchEndTime)) {
-				endTimeFound.add(InternalStorage.getBuffer().get(listCount));
+			if(InternalStorage.getBuffer().get(listCount).getAssignType().equals(AssignmentType.APPOINTMENT)) {
+				appointmentInBuffer = ((Appointment) InternalStorage.getBuffer().get(listCount)); 
+
+				if(appointmentInBuffer.getEndTime().equals(searchEndTime)) {
+					endTimeFound.add(appointmentInBuffer);
+				}
+			}
+			if(InternalStorage.getBuffer().get(listCount).getAssignType().equals(AssignmentType.TASK)) {
+				taskInBuffer = ((Task) InternalStorage.getBuffer().get(listCount)); 
+
+				if(taskInBuffer.getEndTime().equals(searchEndTime)) {
+					endTimeFound.add(taskInBuffer);
+				}
 			}
 		}
 		return endTimeFound;
 	}
-	
+
 	// accepts into the searchedList as long as startDate or endDate is the same as input
 	private static LinkedList<Assignment> searchByDate(String searchDate) {
 
@@ -208,31 +224,47 @@ public class SearchAll {
 
 		datesFound.addAll(searchByStartDate(searchDate));
 		datesFound.addAll(searchByDeadline(searchDate));
-		
+
 		return datesFound;
 	}
 
 	private static LinkedList<Assignment> searchByStartDate(String searchStartDate) {
-		
+
 		LinkedList<Assignment> startDateFound = new LinkedList<Assignment>();
+		Appointment appointmentInBuffer = new Appointment();
 
 		for(listCount = 0; listCount < InternalStorage.getBuffer().size(); listCount++) {
-
-			if(InternalStorage.getBuffer().get(listCount).getStartDate().equals(searchStartDate)) {
-				startDateFound.add(InternalStorage.getBuffer().get(listCount));
+			if(InternalStorage.getBuffer().get(listCount).getAssignType().equals(AssignmentType.APPOINTMENT)) {
+				appointmentInBuffer = ((Appointment) InternalStorage.getBuffer().get(listCount)); 
+			}
+			if(appointmentInBuffer.getStartTime().equals(searchStartDate)) {
+				startDateFound.add(appointmentInBuffer);
 			}
 		}
 		return startDateFound;
 	}
-	
+
 	protected static LinkedList<Assignment> searchByDeadline(String searchDeadline) {
 
 		LinkedList<Assignment> deadlineFound = new LinkedList<Assignment>();
+		Appointment appointmentInBuffer = new Appointment();
+		Task taskInBuffer = new Task();
 		
 		for(listCount = 0; listCount < InternalStorage.getBuffer().size(); listCount++) {
 
-			if(InternalStorage.getBuffer().get(listCount).getEndDate().equals(searchDeadline)) {
-				deadlineFound.add(InternalStorage.getBuffer().get(listCount));
+			if(InternalStorage.getBuffer().get(listCount).getAssignType().equals(AssignmentType.APPOINTMENT)) {
+				appointmentInBuffer = ((Appointment) InternalStorage.getBuffer().get(listCount)); 
+
+				if(appointmentInBuffer.getEndDate().equals(searchDeadline)) {
+					deadlineFound.add(appointmentInBuffer);
+				}
+			}
+			if(InternalStorage.getBuffer().get(listCount).getAssignType().equals(AssignmentType.TASK)) {
+				taskInBuffer = ((Task) InternalStorage.getBuffer().get(listCount)); 
+
+				if(taskInBuffer.getEndDate().equals(searchDeadline)) {
+					deadlineFound.add(taskInBuffer);
+				}
 			}
 		}
 		return deadlineFound;
