@@ -11,7 +11,7 @@ public class QuoteLib {
 	
 	private static LinkedList<String> buffer = new LinkedList<String>();
 	
-	private static void openFile(String filePath) {
+	protected static void openFile(String filePath) {
 		try { 
 			File file = new File(filePath);
 			if (!file.exists()) {

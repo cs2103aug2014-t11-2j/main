@@ -31,6 +31,8 @@ public class StatsPopup {
 		Shell popup = new Shell();
 		popup.setText("User Statistics");
 		Image background = SWTResourceManager.getImage(MainController.class, "/resource/image/wallpaper.jpg");
+		Image trayicon = SWTResourceManager.getImage(MainController.class, "/resource/image/SparkMoVareTrayIcon.png");
+		popup.setImage(trayicon);
 		popup.setBackgroundImage(background);
 		popup.setSize(474, 285);
 		
@@ -41,10 +43,10 @@ public class StatsPopup {
 		progressBar.setSelection((int)(((float)onTimeTask/totalTask)*100));
 		
 		table = new Table(popup, SWT.BORDER | SWT.FULL_SELECTION);
-		table.setBounds(64, 110, 305, 63);
+		table.setBounds(55, 110, 326, 63);
 		TableColumn tc0 = new TableColumn(table, SWT.CENTER);
 		tc0.setResizable(false);
-		tc0.setWidth(200);
+		tc0.setWidth(220);
 		TableColumn tc1 = new TableColumn(table, SWT.CENTER);
 		tc1.setResizable(false);
 		tc1.setWidth(100);
@@ -71,7 +73,7 @@ public class StatsPopup {
 		}
 		
 		String totalTaskString = "Total number of Assignments: ~ "+ Integer.toString(totalTask);
-		String lateTaskString = "Number of Late Assignments: ~"+ Integer.toString(lateTask);
+		String lateTaskString = "Number of Completed Assignments: ~"+ Integer.toString(lateTask);
 		String onTimeTaskString = "Number of on time Assignments: ~ "+ Integer.toString(onTimeTask);
 		
 		LinkedList<String> stringToDisplay = new LinkedList<String>();

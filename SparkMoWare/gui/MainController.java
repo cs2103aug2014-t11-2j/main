@@ -34,8 +34,6 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tray;
 import org.eclipse.swt.widgets.TrayItem;
 import org.eclipse.ui.forms.widgets.FormToolkit;
-
-import Logger.logger;
 import storage.Storage;
 
 public class MainController {
@@ -56,7 +54,7 @@ public class MainController {
 
 	public MainController(Display display) {
 		shell = new Shell(display);
-		logger.log("GUI, setting up shell");
+		////logger.log("GUI, setting up shell");
 		shell.addControlListener(new ControlAdapter() {
 			@Override
 			public void controlResized(ControlEvent e) {
@@ -64,16 +62,17 @@ public class MainController {
 			}
 		});
 		shell.setSize(1024, 768);
-		logger.log("GUI, importing background");
+		////logger.log("GUI, importing background");
 		Image background = SWTResourceManager.getImage(MainController.class, "/resource/image/wallpaper1.jpg");
-		logger.log("GUI, setting Background");
+		//logger.log("GUI, setting Background");
 		shell.setBackgroundImage(background);
+		
 		shell.setText("SparkMoVare");
 
 		/**
 		 * Setting to tray and minimising to tray
 		 */
-		logger.log("GUI, setting up trayicon");
+		////logger.log("GUI, setting up trayicon");
 
 		final Tray tray = display.getSystemTray();
 		if (tray == null) {
@@ -83,6 +82,7 @@ public class MainController {
 			item.setToolTipText("SparkMoVare");
 			Image trayicon = SWTResourceManager.getImage(MainController.class, "/resource/image/SparkMoVareTrayIcon.png");
 			item.setImage(trayicon);
+			shell.setImage(trayicon);
 			item.addListener(SWT.Selection, new Listener() {
 				public void handleEvent(Event event) {
 					if(shell.getVisible() == false) {
@@ -134,6 +134,8 @@ public class MainController {
 					if(shell.getVisible() == true) {
 						shell.setVisible(false);
 					}
+				} else if (e.keyCode == SWT.F1) {
+					HelplistPopup.helplistPopup();
 				}
 			}
 		});
@@ -141,7 +143,7 @@ public class MainController {
 		/**
 		 * TableViewer
 		 */
-		logger.log("GUI, setting up table");
+		////logger.log("GUI, setting up table");
 
 		final TableViewer tableViewer = new TableViewer(shell, SWT.BORDER | SWT.FULL_SELECTION);
 		table = tableViewer.getTable();
@@ -190,7 +192,7 @@ public class MainController {
 		/**
 		 * Command Line Interface
 		 */
-		logger.log("GUI, setting up CLI");
+		////logger.log("GUI, setting up CLI");
 
 		final Text cli = new Text(shell, SWT.NONE);
 		cli.setBounds(43, 644, 809, 26);
@@ -223,7 +225,7 @@ public class MainController {
 		/**
 		 * Enter button
 		 */
-		logger.log("GUI, setting up enter button");
+		////logger.log("GUI, setting up enter button");
 
 		Button btnEnter = new Button(shell, SWT.NONE);
 		btnEnter.setBounds(874, 640, 90, 30);
@@ -238,7 +240,7 @@ public class MainController {
 		/**
 		 * Date Display
 		 */
-		logger.log("GUI, setting up date");
+		////logger.log("GUI, setting up date");
 
 		dateDisplay = new Text(shell, SWT.BORDER | SWT.CENTER);
 		dateDisplay.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
@@ -251,7 +253,7 @@ public class MainController {
 		/**
 		 * Clock Display
 		 */
-		logger.log("GUI, setting up clock");
+		////logger.log("GUI, setting up clock");
 
 		clockDisplay = formToolkit.createText(shell, "New Text", SWT.CENTER);
 		clockDisplay.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
@@ -266,7 +268,7 @@ public class MainController {
 		/**
 		 * feedbackDisplay
 		 */
-		logger.log("GUI, setting up feedback");
+		////logger.log("GUI, setting up feedback");
 
 		feedback = new Text(shell, SWT.BORDER | SWT.CENTER);
 		feedback.setEnabled(false);
@@ -277,7 +279,7 @@ public class MainController {
 		/**
 		 * quoteViewer
 		 */
-		logger.log("GUI, setting up qoute viewer");
+		//logger.log("GUI, setting up qoute viewer");
 
 		quoteViewer = formToolkit.createText(shell, "New Text", SWT.CENTER);
 		quoteViewer.setFont(SWTResourceManager.getFont("Segoe UI", 11, SWT.NORMAL));
@@ -289,7 +291,7 @@ public class MainController {
 		/**
 		 * Update Clock
 		 */
-		logger.log("GUI, start thread to update clock");
+		//logger.log("GUI, start thread to update clock");
 
 		clockUpdater.schedule(new UpdateTimerTask(), 1000, 1000);
 
@@ -305,7 +307,7 @@ public class MainController {
 
 	public static void main(String[] args) {
 
-		logger.log("~~NEW LAUNCH~~");
+		//logger.log("~~NEW LAUNCH~~");
 
 		System.out.println(Message.WELCOME);
 		Storage.openFile(InternalStorage.getFilePath(),Id.getLatestSerialNumber(), InternalStorage.getBuffer());
