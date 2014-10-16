@@ -1,53 +1,82 @@
 package logic;
 
-import java.util.Scanner;
+import java.util.Vector;
 
-/*
- * Allows the user to create a number of tentative dates 
- * before confirming to have only one date for user's appointment
- * Title will be attached with the word [tentative]
- * userInput must be in this format:
- * <title><ddmmyyyy><hhmm><ddmmyyyy><hhmm>
- */
-
-public class Tentative {
-
-	private static Scanner scanner = new Scanner(System.in);
+public class Tentative extends Assignment {
 	
-	public static String addTentative(String numOfTentative, String tentativeTitle) {
-				
-		int tentativeNum = Integer.parseInt(numOfTentative);
-		String tentativeIdGenerated = Id.serialNumGen();
+	/************** Data members **********************/
+	
+	private Vector<String> startDate; 
+	private Vector<String> startTime;
+	private Vector<String> endDate;
+	private Vector<String> endTime;
+	
+	/************** Constants **********************/
+
+	/************** Constructors **********************/
+	
+	// Default constructor
+	public Tentative() {
+		super();
 		
-		tentativeTitle += " [tentative]";
-		
-		addTentativeAppt(tentativeNum, tentativeIdGenerated, tentativeTitle);
-		
-		return Message.TENTATIVE_ADDED;
+	}
+
+	public Tentative(String id, String title, String type, // Refer to BUILDER PATTERN
+			boolean isDone, boolean isOnTime, String priority) {
+
+		super(id,title,type,isDone,isOnTime,priority,assignmentType.TENTATIVE);
+		this.startDate = new Vector<String>();
+		//setId(id);
+		//setTitle(title);
+		//setType(type);
+		//setIsDone(isDone);
+		//setIsOnTime(isOnTime);
+		//setPriority(priority);
+		//setTag(tag);
+	}
+
+	/**************** Accessors ***********************/
+	
+	public Vector<String> getStartDateList() {
+		return startDate;
 	}
 	
-	private static void addTentativeAppt(int tentativeNum, String tentativeIdGenerated, String tentativeTitle) {
-		
-		Print.printToUser(Message.TENTATIVE);
-		
-		for(int tentativeCount = 1; tentativeCount <= tentativeNum; tentativeCount++) {
-			
-			String[] inputArray = scanner.nextLine().split(";");
-			
-			if(inputArray.length != 4) {
-				tentativeCount--;
-				
-			} else {
-				
-				String endTime = inputArray[inputArray.length - 1];
-				String endDate = inputArray[inputArray.length - 2];
-				String startTime = inputArray[inputArray.length - 3];
-				String startDate = inputArray[inputArray.length - 4];
+	public Vector<String> getStartTimeList() {
+		return startTime;
+	}
+	
+	public Vector<String> getEndDateList() {
+		return endDate;
+	}
+	
+	public Vector<String> getEndTimeList() {
+		return endTime;
+	}
+	
+	/**************** Mutators ************************/
+	
+	public void setStartDate(String date) {
+		startDate.add(date);
+	}
+	
+	public void setStartTime(String time) {
+		startTime.add(time);
+	}
+	
+	public void setEndDate(String date) {
+		endDate.add(date);
+	}
+	
+	public void setEndTime(String time) {
+		endTime.add(time);
+	}
+	
+	/**************** Overriding ************************/
 
-				//addTask(ID, title, type, startDate, startTime, endDate, endTime, isCompletion, isOnTime)
-				Add.addAssignment(tentativeIdGenerated, tentativeTitle, Assignment.TYPE_TENTATIVE, 
-						startDate, startTime, endDate, endTime, false, null, null);
-			}
-		}
+	@Override
+	public String toString() {
+		return getId() + "~" + getTitle() + "~" + getType() + "~" + getStartDateList() + "~" + 
+				getStartTimeList() + "~" + getEndDateList() + "~" + getEndTimeList() + "~" + getIsDone() + 
+				"~" + getIsOnTime() + "~" + getPriority();
 	}
 }

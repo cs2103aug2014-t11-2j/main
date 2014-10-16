@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Random;
 
-public class quoteLib {
+public class QuoteLib {
 	
 	private static LinkedList<String> buffer = new LinkedList<String>();
 	
@@ -16,6 +16,7 @@ public class quoteLib {
 			File file = new File(filePath);
 			if (!file.exists()) {
 				file.createNewFile();
+				
 			}
 			FileReader fileReader = new FileReader(file);
 			BufferedReader bufferedReader = new BufferedReader(fileReader);
@@ -24,16 +25,21 @@ public class quoteLib {
 				buffer.add(line);
 			}
 			fileReader.close();
+			buffer.add("Consider everything an experiment. ~ Corita Kent");
+			buffer.add("It is kind of fun to do the impossible. ~ Walt Disney");
 		} catch (IOException e) {
 			System.out.println("MESSAGE_FILE_INITIALISATION_ERROR");
-			System.exit(0);
+			buffer.add("Consider everything an experiment. ~ Corita Kent");
+			buffer.add("It is kind of fun to do the impossible. ~ Walt Disney");
+
 		}
 	}
 	
 	public static String getQuote() {
 		openFile("quoteList.txt");
 		Random gen = new Random();
-		System.out.println(buffer.get(gen.nextInt(buffer.size())));
+		//System.out.println(buffer.get(gen.nextInt(buffer.size())));
+		System.out.println(buffer.size());
 		return buffer.get(gen.nextInt(buffer.size()));
 	}
 

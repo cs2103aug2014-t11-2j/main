@@ -6,16 +6,20 @@ import java.util.Stack;
 
 public class InternalStorage {
 	
-	public static LinkedList<Assignment> buffer = new LinkedList<Assignment>();
-	protected static String filePath = "Storage.txt";
+	private static LinkedList<Assignment> buffer = new LinkedList<Assignment>();
+	private static String filePath = "Storage.txt";
 
-	protected static int counter = 0;
-	protected static int size = 0;
+	private static int counter = 0;
+	private static int size = 0;
 
-	protected static Stack< LinkedList<Assignment>> actionHistory = new Stack< LinkedList<Assignment>>();
-	protected static Stack< LinkedList<Assignment>> actionFuture = new Stack< LinkedList<Assignment>>();
+	private static Stack< LinkedList<Assignment>> actionHistory = new Stack< LinkedList<Assignment>>();
+	private static Stack< LinkedList<Assignment>> actionFuture = new Stack< LinkedList<Assignment>>();
 
-	public static Scanner scanner = new Scanner(System.in);
+	private static Scanner scanner = new Scanner(System.in);
+	
+	public static Scanner getScanner() {
+		return scanner;
+	}
 	
 	public static int getBufferPosition(String id) {
 		counter = 0;

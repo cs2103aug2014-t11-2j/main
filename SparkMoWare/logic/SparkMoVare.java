@@ -5,7 +5,7 @@ import storage.Storage;
 public class SparkMoVare {
 
 	protected static final int SYSTEM_EXIT_NO_ERROR = 0;
-	protected static final int SYSTEM_EXIT_ERROR = 1;
+	protected static final int SYSTEM_EXIT_ERROR = -1;
 
 	protected static String[] refinedUserInput = new String[10];
 	 
@@ -25,7 +25,7 @@ public class SparkMoVare {
 	 * 9:Priority 
 	 */
 
-
+	
 	enum CommandType {
 		ADD, EDIT, DELETE, TENTATIVE, CONFIRM, SORT, SEARCH, FILTER,
 		CLEAR, UNDO, REDO, STATISTIC, EXIT, INVALID, DISPLAY, HELP 
@@ -46,7 +46,7 @@ public class SparkMoVare {
 
 		while (true) {
 			Print.printToUser(Message.PROMPT);
-			RefineInput.determineUserInput(InternalStorage.scanner.nextLine());
+			RefineInput.determineUserInput(InternalStorage.getScanner().nextLine());
 			Print.printToUser(executeCommand(refinedUserInput[0]));
 			if (getCommandType(refinedUserInput[0])!=CommandType.UNDO &&
 					getCommandType(refinedUserInput[0]) != CommandType.REDO &&
@@ -64,16 +64,23 @@ public class SparkMoVare {
 		CommandType command = getCommandType(inputCommand);
 
 		if (command != CommandType.UNDO && command != CommandType.REDO ) {
-			while (!InternalStorage.actionFuture.empty()){
+			while (!InternalStorage.getFuture().empty()){
 				InternalStorage.popFuture();
 			}
 		}
 
 		switch (command) {
 		case ADD:
-			return Add.addAssignment(refinedUserInput[1], refinedUserInput[2], Integer.parseInt(refinedUserInput[7]),
+			if(refinedUserInput[7].equals("APPT")) {
+				
+			return Add.addAppointment(refinedUserInput[1], refinedUserInput[2], refinedUserInput[7],
 					refinedUserInput[3], refinedUserInput[4], refinedUserInput[5], refinedUserInput[6], 
-					false, refinedUserInput[9], null);
+					false, refinedUserInput[9]);
+			} else if(refinedUserInput[7].equals("TASK")) {
+				
+				return Add.addTask(refinedUserInput[1], refinedUserInput[2], refinedUserInput[7],
+						refinedUserInput[5], refinedUserInput[6], false, refinedUserInput[9]);
+			}
 
 		case EDIT:
 			Edit.editAssignment(refinedUserInput);
@@ -83,7 +90,7 @@ public class SparkMoVare {
 			return Delete.delete(refinedUserInput[1]);
 
 		case TENTATIVE:
-			Tentative.addTentative(refinedUserInput[8], refinedUserInput[2]);
+			SetTentative.addTentative(refinedUserInput[8], refinedUserInput[2]);
 			break;
 
 		case CONFIRM:

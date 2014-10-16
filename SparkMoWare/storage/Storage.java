@@ -70,7 +70,7 @@ public class Storage {
 		return buffer;
 	}
 	
-	private static Assignment toBufferAssignment(String line) {
+	public static Assignment toBufferAssignment(String line) {
 		
 		String lineArray[] = line.split("~");
 		Assignment temp = new Assignment();

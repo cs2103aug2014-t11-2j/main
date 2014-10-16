@@ -1,22 +1,28 @@
 package logic;
 
-import java.util.Vector;
-
-public class Appointment extends Assignment {
+public class Appointment extends Task {
 
 	/************** Data members **********************/
 	
+	private String startDate;
+	private String startTime;
+	private int numAppointment = 0;
+	
 	/************** Constants **********************/
+	
+	private static final String DEFAULT_DATE = "01012014";
+	private static final String DEFAULT_TIME = "0000";
 	
 	/************** Constructors **********************/
 	// Default constructor
 	public Appointment() {
-		this(DEFAULT, DEFAULT_STRING, -1, DEFAULT, DEFAULT, DEFAULT, DEFAULT, false, false, null, new Vector<String>());
+		this(DEFAULT_DATE, DEFAULT_TIME);
+		
+		//this(DEFAULT, DEFAULT_STRING, DEFAULT, DEFAULT_DATE, DEFAULT_TIME, DEFAULT_DATE, DEFAULT_TIME, false, false, PRIORITY_NONE);
 	}
 	
-
-	public Appointment(String id, String title, int type, String startDate, String startTime,
-			String endDate, String endTime, boolean isDone, boolean isOnTime, String priority, Vector<String> tag) {
+	/*public Appointment(String id, String title, String type, String startDate, String startTime,
+			String endDate, String endTime, boolean isDone, boolean isOnTime, String priority) {
 		
 		setId(id);
 		setTitle(title);
@@ -30,15 +36,46 @@ public class Appointment extends Assignment {
 		setPriority(priority);
 		//setTag(tag);
 		numAppointment++;
+	}*/
+	
+	public Appointment(String startDate, String startTime) {
+		
+		super();
+		setStartDate(startDate);
+		setStartTime(startTime);
+		setAssignmentType(assignmentType.APPOINTMENT);
+		numAppointment++;
 	}
 
 	/**************** Accessors ***********************/
-
-
+	
+	public String getStartDate() {
+		return this.startDate;
+	}
+	
+	public String getStartTime() {
+		return this.startTime;
+	}
+	
+	public int getNumAppointment() {
+		return this.numAppointment;
+	}
+	
 	/**************** Mutators ************************/
 	
+	public void setStartDate(String newstartDate) {
+		this.startDate = newstartDate;
+	}
 	
+	public void setStartTime(String newStartTime) {
+		this.startTime = newStartTime;
+	}
+
+		/**************** Overriding ************************/
 	
-	/**************** Overriding ************************/
-	
+	public String toString() {
+		return getId() + "~" + getTitle() + "~" + getType() + "~" + getStartDate() + "~" + 
+				getStartTime() + "~" + getEndDate() + "~" + getEndTime() + "~" + getIsDone() + 
+				"~" + getIsOnTime() + "~" + getPriority();
+	}
 }
