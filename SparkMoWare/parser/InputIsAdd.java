@@ -24,17 +24,65 @@ public class InputIsAdd {
 	protected static boolean checkIfAppt(String userInput) {		
 		String[] temp = ParserPatternLocal.datePattern.split(userInput);
 		
-		if(temp.length == 2) {
+		if(temp.length >= 2) {
 			return true;
 		} else {
 			return false;
 			}
 		}
 
-	
 	protected static String getTitle(String userInput) {
 		
-		return null; //stub
+		userInput = replaceAllDate(userInput);
+		userInput = replaceAllTime(userInput);
+		userInput = userInput.replace("add", "");
+		userInput.trim();
+		String[] temp = userInput.split(" ");
+		
+		if(temp.length == 0) {
+			return null;
+		}
+		
+		return refineString(temp);
+	}
+	
+	protected static String replaceAllDate(String input) {
+		Matcher dateMatcher = ParserPatternLocal.datePattern.matcher(input);
+		
+		while(dateMatcher.find()) {
+			input = dateMatcher.replaceFirst("");
+			dateMatcher.reset(input);
+		}
+		
+		return input;
+	}
+	
+	//DESIGN FLAW: method will replace any and all 4 number input
+	//for eg. the year part of date or even in a long sequence of numbers
+	protected static String replaceAllTime(String input) {
+		Matcher timeMatcher = ParserPatternLocal.timePattern.matcher(input);
+		
+		while(timeMatcher.find()) {
+			input = timeMatcher.replaceFirst("");
+			timeMatcher.reset(input);
+		}
+		
+		return input;
+	}
+
+	protected static String refineString(String [] unrefinedString) {
+		int length = unrefinedString.length;
+		String refinedString = new String();
+		
+		for(int counter = 0; counter<length; counter ++) {
+			unrefinedString[counter] = unrefinedString[counter].trim();
+			refinedString = refinedString.concat(unrefinedString[counter]);
+			
+			if(!unrefinedString[counter].isEmpty()){
+				refinedString = refinedString.concat(" ");
+			}
+		}
+		return refinedString.trim();
 	}
 	
 	//code works fine for single date input
@@ -67,23 +115,53 @@ public class InputIsAdd {
 	}
 	
 	protected static String getStartTime(String userInput) {
-		//ParserPatternLocal.datePattern.matcher(userInput);
-			
-		 
+		userInput = replaceAllDate(userInput);
+		Matcher timeMatcher = ParserPatternLocal.timePattern.matcher(userInput);
+		String startTime = new String();
 		
-		return null;//stub
+		if(timeMatcher.find()) {
+			startTime = timeMatcher.group();
+		} else if(!timeMatcher.find()) { //no time input
+			startTime = ParserTimeLocal.defaultStartTime; 
+		}
+		
+		return startTime;
 	}
 	
+	
+	
+	/* Still haven't dealt with following inputs: 
+	 * [add] [start date] [start time] [end date]
+	 * [add] [start date] [end date] [end time]
+	 * Parser cannot distinguish between the two YET
+	 */
 	protected static String getEndTime(String userInput) {
-		//ParserPatternLocal.datePattern.matcher(userInput);
-			
-		//stub
-		//if statement checks if user input has end time
-		//if not, return 2359
-		 if(true) {
-			 return ParserTimeLocal.defaultEndTime;
-		 }
-		
-		return null;//stub
+		userInput = replaceAllDate(userInput);
+		Matcher timeMatcher = ParserPatternLocal.timePattern.matcher(userInput);
+		String endTime = new String();
+
+		//this is assuming for appointment creation, user either has two time inputs
+		//or no time inputs
+		if(hasTwoTimeInputs(userInput)) {
+			userInput = timeMatcher.replaceFirst("");
+			}
+
+		endTime = getStartTime(userInput);
+
+		if(!timeMatcher.find()) {
+			endTime = ParserTimeLocal.defaultEndTime;
+		}
+
+		return endTime;
+	}
+
+	protected static boolean hasTwoTimeInputs(String input) {
+		String[] temp = ParserPatternLocal.timePattern.split(input);
+
+		if(temp.length >= 2) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }
