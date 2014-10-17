@@ -46,6 +46,7 @@ public class SparkMoVare {
 
 	public static void toDoManager() {
 
+		Output returnOutput = new Output();
 		while (true) {
 			Print.printToUser(Message.PROMPT);
 			RefineInput.determineUserInput(InternalStorage.getScanner().nextLine());
@@ -55,10 +56,12 @@ public class SparkMoVare {
 					getCommandType(refinedUserInput[0]) != CommandType.INVALID &&
 					getCommandType(refinedUserInput[0]) != CommandType.DISPLAY) {
 				InternalStorage.pushHistory(InternalStorage.getBuffer());
+				returnOutput = executeCommand(refinedUserInput.toString());
 				System.out.println("File saved");
 			}
 			Storage.saveFile(InternalStorage.getFilePath(), InternalStorage.getBuffer());
-		}
+		}		
+		
 	} 
 
 	public static Output executeCommand(String inputCommand) {
@@ -94,6 +97,17 @@ public class SparkMoVare {
 			return returnOutput;
 
 		case DELETE:
+			for(int index=0; index<InternalStorage.getBuffer().size(); index++){
+				if(InternalStorage.getBuffer().get(index).getId().equals(refinedUserInput[1])){
+					if(InternalStorage.getBuffer().get(index).getIsDone()){
+						returnOutput.setTotalCompleted(returnOutput.getTotalCompleted()-1);
+					}
+					if(InternalStorage.getBuffer().get(index).getIsOnTime()){
+						returnOutput.setTotalOnTime(returnOutput.getTotalOnTime()-1);
+					}
+				}
+			}
+			
 			Delete.delete(refinedUserInput[1]);
 
 			returnOutput.setReturnBuffer(InternalStorage.getBuffer());

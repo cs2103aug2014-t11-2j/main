@@ -14,6 +14,11 @@ public class Add {
 	private static Task taskInBuffer = new Task();
 	private static int bufferCount;
 
+	/**
+	 * 
+	 * @param refinedUserInput
+	 * @return
+	 */
 	protected static String addSomething(String[] refinedUserInput) {
 
 		if(refinedUserInput[7].equals(AssignmentType.APPOINTMENT)) {
