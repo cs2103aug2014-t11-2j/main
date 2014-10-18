@@ -27,7 +27,6 @@ public class SparkMoVare {
 	 * 9:Priority 
 	 */
 
-
 	enum CommandType {
 		ADD, EDIT, DELETE, TENTATIVE, CONFIRM, SORT, SEARCH, FILTER,
 		CLEAR, UNDO, REDO, STATISTIC, EXIT, INVALID, DISPLAY
@@ -35,13 +34,13 @@ public class SparkMoVare {
 
 	//Fundamentally the same as CommandType, but without single word commands 
 
-	//    public static void main(String[] args) {
-	//
-	//        Print.printToUser(Message.WELCOME);
-	//        Storage.openFile(InternalStorage.getFilePath(),Id.getLatestSerialNumber(), InternalStorage.getBuffer());
-	//    	HelpList.openFile("HelpList.txt");
-	//        toDoManager();
-	//    }
+	public static void main(String[] args) {
+
+		Print.printToUser(Message.WELCOME);
+		Storage.openFile(InternalStorage.getFilePath(),Id.getLatestSerialNumber(), InternalStorage.getBuffer());
+		HelpList.openFile("HelpList.txt");
+		toDoManager();
+	}
 
 
 	public static void toDoManager() {
@@ -50,23 +49,29 @@ public class SparkMoVare {
 		while (true) {
 			Print.printToUser(Message.PROMPT);
 			RefineInput.determineUserInput(InternalStorage.getScanner().nextLine());
-			executeCommand(refinedUserInput[0]);
-			if (getCommandType(refinedUserInput[0])!=CommandType.UNDO &&
+			returnOutput = executeCommand(refinedUserInput[0]);
+			if (getCommandType(refinedUserInput[0]) != CommandType.UNDO &&
 					getCommandType(refinedUserInput[0]) != CommandType.REDO &&
 					getCommandType(refinedUserInput[0]) != CommandType.INVALID &&
 					getCommandType(refinedUserInput[0]) != CommandType.DISPLAY) {
 				InternalStorage.pushHistory(InternalStorage.getBuffer());
-				returnOutput = executeCommand(refinedUserInput.toString());
+
 				System.out.println("File saved");
 			}
+			Print.printList(returnOutput.getReturnBuffer());
+			Print.printToUser(returnOutput.getFeedback());
+			System.out.println(returnOutput.getTotalAssignment());
+			System.out.println(returnOutput.getTotalCompleted());
+			System.out.println(returnOutput.getTotalOnTime());
+
 			Storage.saveFile(InternalStorage.getFilePath(), InternalStorage.getBuffer());
 		}		
-		
 	} 
 
 	public static Output executeCommand(String inputCommand) {
 
 		Output returnOutput = new Output();
+		DeleteForStats deleteForStats = new DeleteForStats();
 
 		CommandType command = getCommandType(inputCommand);
 
@@ -97,22 +102,19 @@ public class SparkMoVare {
 			return returnOutput;
 
 		case DELETE:
-			for(int index=0; index<InternalStorage.getBuffer().size(); index++){
-				if(InternalStorage.getBuffer().get(index).getId().equals(refinedUserInput[1])){
-					if(InternalStorage.getBuffer().get(index).getIsDone()){
-						returnOutput.setTotalCompleted(returnOutput.getTotalCompleted()-1);
-					}
-					if(InternalStorage.getBuffer().get(index).getIsOnTime()){
-						returnOutput.setTotalOnTime(returnOutput.getTotalOnTime()-1);
-					}
-				}
-			}
-			
-			Delete.delete(refinedUserInput[1]);
+
+			deleteForStats = Delete.delete(refinedUserInput[1]);
 
 			returnOutput.setReturnBuffer(InternalStorage.getBuffer());
 			returnOutput.setFeedback(Message.DELETED);
-			returnOutput.setTotalAssignment(returnOutput.getTotalAssignment() - 1);
+
+			returnOutput.setTotalAssignment(returnOutput.getTotalAssignment()
+					- deleteForStats.getDeletedTotalAssignment());
+			returnOutput.setTotalCompleted(returnOutput.getTotalCompleted()
+					- deleteForStats.getDeletedTotalCompleted());
+			returnOutput.setTotalOnTime(returnOutput.getTotalOnTime()
+					- deleteForStats.getDeletedTotalOnTime());
+
 			returnOutput.setIsStats(false);
 
 			return returnOutput;
@@ -127,27 +129,36 @@ public class SparkMoVare {
 			break;
 			 */
 		case CLEAR:
-			int assignmentLeft = 0;
 
-			assignmentLeft = Delete.deleteAll(refinedUserInput[8], refinedUserInput[5], refinedUserInput[3]);
+			deleteForStats = Delete.deleteAll(refinedUserInput[8], refinedUserInput[5], refinedUserInput[3]);
 
 			returnOutput.setReturnBuffer(InternalStorage.getBuffer());
 			returnOutput.setFeedback(Message.DELETE_ALL);
-			returnOutput.setTotalAssignment(assignmentLeft);
 			returnOutput.setIsStats(false);
+			returnOutput.setTotalAssignment(returnOutput.getTotalAssignment()
+					- deleteForStats.getDeletedTotalAssignment());
+			returnOutput.setTotalCompleted(returnOutput.getTotalCompleted()
+					- deleteForStats.getDeletedTotalCompleted());
+			returnOutput.setTotalOnTime(returnOutput.getTotalOnTime()
+					- deleteForStats.getDeletedTotalOnTime());
 
 			return returnOutput;
 
 		case SORT:
-			returnOutput.setReturnBuffer(Sort.sortRequired(refinedUserInput[8], 
-					refinedUserInput[3], refinedUserInput[5]));
+			LinkedList<Assignment> sortedBuffer = new LinkedList<Assignment>();
+			
+			sortedBuffer = Sort.multipleSortRequired(InternalStorage.getBuffer(), refinedUserInput[8],
+					refinedUserInput[3], refinedUserInput[5]);
+			returnOutput.setReturnBuffer(sortedBuffer);
 			returnOutput.setFeedback(Message.SORT);
 			returnOutput.setIsStats(false);
 
 			return returnOutput;
 
 		case SEARCH:
-			returnOutput.setReturnBuffer(SearchAll.searchAll(refinedUserInput[8]));
+			LinkedList<Assignment> searchBuffer = new LinkedList<Assignment>();
+			searchBuffer = SearchAll.searchAll(InternalStorage.getBuffer(), refinedUserInput[8]);
+			returnOutput.setReturnBuffer(searchBuffer);
 			returnOutput.setFeedback(Message.SEARCH);
 			returnOutput.setIsStats(false);
 
@@ -170,26 +181,26 @@ public class SparkMoVare {
 			returnOutput.setReturnBuffer(InternalStorage.getBuffer());
 			returnOutput.setFeedback(Message.DISPLAY);
 			returnOutput.setIsStats(false);
-
+			Print.display();
 			return returnOutput;
 
 		case FILTER:
 			returnOutput.setReturnBuffer(Filter.filterMain(refinedUserInput[8], refinedUserInput[3], refinedUserInput[5]));
 			returnOutput.setFeedback(Message.FILTER);
 			returnOutput.setIsStats(false);
-			
+
 			return returnOutput;
 
 		case EXIT:
 			System.exit(SYSTEM_EXIT_NO_ERROR);
 			break;
-			
+
 		default:
 			LinkedList<Assignment> noAssignment = new LinkedList<Assignment>();
 			returnOutput.setReturnBuffer(noAssignment);
 			returnOutput.setFeedback(Message.INVALID_COMMAND);
 			returnOutput.setIsStats(false);
-			
+
 			return returnOutput;
 		}
 		return returnOutput;

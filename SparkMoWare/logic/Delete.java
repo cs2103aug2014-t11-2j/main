@@ -2,8 +2,6 @@ package logic;
 
 import java.util.LinkedList;
 
-import parser.EnumGroup.AssignmentType;
-
 /*
  * Able to delete individual assignment as per requested
  * or
@@ -14,69 +12,65 @@ import parser.EnumGroup.AssignmentType;
  * deleting them one by one
  */
 public class Delete {
-
+	
+	private static DeleteForStats deleteForStats = new DeleteForStats();
+	
 	enum DeleteAllType {
 		DELETEALL_ON, DELETEALL_BEFORE, DELETEALL_BETWEEN, CLEAR;
 	}
-
-	protected static int deleteAll(String duration, String endDate, String startDate) {
-
+	
+	protected static DeleteForStats deleteAll(String duration, String endDate, String startDate) {
+		
 		switch (getDuration(duration)) {
 
 		case DELETEALL_ON:
 			deleteOn(endDate);
-			return String.format(Message.DELETE_ON, endDate);
+			return deleteForStats;
 
 		case DELETEALL_BEFORE:
-			startDate = getStartDate();
+			startDate = DateLocal.getStartDate();
 			deleteBetween(endDate, startDate);
-			return String.format(Message.DELETE_BEFORE, endDate);
+			return deleteForStats;
 
 		case DELETEALL_BETWEEN:
 			deleteBetween(endDate, startDate);
-			return String.format(Message.DELETE_BETWEEN, endDate, startDate);
+			return deleteForStats;
 
 		default:
 			InternalStorage.getBuffer().clear();
-			return String.format(Message.DELETE, InternalStorage.getFilePath());
+			return deleteForStats;
 		}
-	}
-	private static String getStartDate() {
-		
-		String startDate = "01012014";
-		
-		if(InternalStorage.getBuffer().getFirst().equals(AssignmentType.TASK)) {
-			Task firstTask = ((Task) InternalStorage.getBuffer().getFirst());
-			startDate = firstTask.getEndDate();
-		} else if(InternalStorage.getBuffer().getFirst().equals(AssignmentType.APPOINTMENT)) {
-			
-			Task firstTask = ((Task) InternalStorage.getBuffer().getFirst());
-			startDate = firstTask.getEndDate();
-		}
-		return startDate;
 	}
 	
-	protected static String delete(String id) {
+	protected static DeleteForStats delete(String id) {
 		 
 		LinkedList<Assignment> idFound = new LinkedList<Assignment>();
-		idFound = SearchAll.searchAll(id);
+		idFound = SearchAll.searchAll(InternalStorage.getBuffer(), id);
 		
 		// PS: Have to check if nullAssignment will increase the numAppointment by 1
 		Appointment nullAssignment = new Appointment();
 		nullAssignment.setNumAppointment(nullAssignment.getNumAppointment() - 1); 
 		
 		if(idFound.size() == 0) {
-			return String.format(Message.DOES_NOT_EXISTS, "Serial Number " + id);
+			return deleteForStats;
 		} else {
-			String stringDeleted;
-			int bufferPosition = InternalStorage.getBufferPosition(id);
 			
-			stringDeleted = InternalStorage.getBuffer().get(bufferPosition).getTitle();
+			int bufferPosition = InternalStorage.getBufferPosition(id);
+			Assignment assignmentDelete = InternalStorage.getBuffer().get(bufferPosition);
+			
+			if(assignmentDelete.getIsDone() == true) {
+				deleteForStats.increaseDeleteTotalCompleted();
+			}
+			if(assignmentDelete.getIsOnTime() == true) {
+				deleteForStats.increaseDeleteTotalOnTime();
+			}
+			deleteForStats.increaseDeleteTotalAssignment();
+			
 			InternalStorage.getBuffer().remove(bufferPosition);
 			
 			nullAssignment.setNumAppointment(nullAssignment.getNumAppointment() - 1);
 			
-			return String.format(Message.DELETED, InternalStorage.getFilePath(), stringDeleted);
+			return deleteForStats;
 		}
 	}
 
@@ -96,7 +90,7 @@ public class Delete {
 	private static void deleteOn(String deleteOnDate) {
 
 		LinkedList<Assignment> toDelete = new LinkedList<Assignment>();
-		toDelete = SearchAll.searchByDeadline(deleteOnDate);
+		toDelete = SearchAll.searchByDeadline(InternalStorage.getBuffer(), deleteOnDate);
 
 		for (int toDeleteCount = 0; toDeleteCount < toDelete.size(); toDeleteCount++) {
 			delete(toDelete.get(toDeleteCount).getId());

@@ -26,14 +26,14 @@ public class Filter {
 		if(type.matches("[0-9]+")) {
 			
 			if(type.length() == FORMAT_DEADLINE) {
-				filterList = SearchAll.searchByDeadline(type);
+				filterList = SearchAll.searchByDeadline(InternalStorage.getBuffer(), type);
 			} else {
-				filterList = SearchAll.searchAll(type);
+				filterList = SearchAll.searchAll(InternalStorage.getBuffer(), type);
 			}
 		}
 		
 		else if(type.equals("important")){
-			filterList = SearchAll.searchAll("important");
+			filterList = SearchAll.searchAll(InternalStorage.getBuffer(), "important");
 		}
 		return filterList; 
 	}
