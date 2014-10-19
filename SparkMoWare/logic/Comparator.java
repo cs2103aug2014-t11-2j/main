@@ -21,8 +21,8 @@ public class Comparator {
 
 		if (checkDate == SAME) {
 			// check Sn
-			idA = removeFrontZero(idA.substring(8));
-			idB = removeFrontZero(idB.substring(8));
+			idA = Id.removeFrontZero(idA.substring(8));
+			idB = Id.removeFrontZero(idB.substring(8));
 
 			if (Integer.parseInt(idA) > Integer.parseInt(idB)) {
 				serialCheck = true;
@@ -44,14 +44,14 @@ public class Comparator {
 		String dayA = dateA.trim().substring(0, 2);
 		String dayB = dateB.trim().substring(0, 2);
 
-		yearA = removeFrontZero(yearA);
-		yearB = removeFrontZero(yearB);
+		yearA = Id.removeFrontZero(yearA);
+		yearB = Id.removeFrontZero(yearB);
 
-		monthA = removeFrontZero(monthA);
-		monthB = removeFrontZero(monthB);
+		monthA = Id.removeFrontZero(monthA);
+		monthB = Id.removeFrontZero(monthB);
 
-		dayA = removeFrontZero(dayA);
-		dayB = removeFrontZero(dayB);
+		dayA = Id.removeFrontZero(dayA);
+		dayB = Id.removeFrontZero(dayB);
 
 		if (dateA.equals(dateB)) {
 			return SAME;
@@ -77,11 +77,11 @@ public class Comparator {
 		String minA = timeB.trim().substring(2, 4);
 		String minB = timeB.trim().substring(2, 4);
 
-		hourA = removeFrontZero(hourA);
-		hourB = removeFrontZero(hourB);
+		hourA = Id.removeFrontZero(hourA);
+		hourB = Id.removeFrontZero(hourB);
 
-		minA = removeFrontZero(minA);
-		minB = removeFrontZero(minB);
+		minA = Id.removeFrontZero(minA);
+		minB = Id.removeFrontZero(minB);
 
 		if (timeA.equals(timeB)) {
 			return SAME;
@@ -103,12 +103,5 @@ public class Comparator {
 			return SAME;
 		}
 		return LARGER;
-	}
-
-	private static String removeFrontZero(String input) {
-		while (input.length() > 0 && input.charAt(0) == '0') {
-			input = input.substring(1);
-		}
-		return input;
 	}
 }

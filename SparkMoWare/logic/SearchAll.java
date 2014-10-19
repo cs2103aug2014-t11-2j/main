@@ -26,17 +26,6 @@ public class SearchAll {
 	private static final String TYPE_APPOINTMENT = "appt";
 	//private static final String TYPE_TENTATIVE = "tntv";
 
-	protected static LinkedList<Assignment> multipleSearch(LinkedList<Assignment> searchBuffer,
-			String userInput) {
-		
-		String[] multipleSearchInput = userInput.split(";");
-		
-		for(int searchCount = 0; searchCount < multipleSearchInput.length; searchCount++) {
-			searchBuffer = searchAll(searchBuffer, multipleSearchInput[searchCount]);
-		}
-		return searchBuffer;
-	}
-	
 	protected static LinkedList<Assignment> searchAll(LinkedList<Assignment> buffer, 
 			String userInput){
 

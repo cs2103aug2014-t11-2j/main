@@ -84,39 +84,32 @@ public class SparkMoVare {
 		switch (command) {
 		case ADD:
 			Add.addSomething(refinedUserInput);
-
-			returnOutput.setReturnBuffer(InternalStorage.getBuffer());
-			returnOutput.setFeedback(Message.ADDED);
-			returnOutput.setTotalAssignment(returnOutput.getTotalAssignment() + 1);
-			returnOutput.setIsStats(false);
+			
+			returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
+					Message.ADDED, returnOutput.getTotalAssignment() + 1, returnOutput.getTotalCompleted(), 
+					returnOutput.getTotalOnTime(), false);
 
 			return returnOutput;
 
 		case EDIT:
 			Edit.editAssignment(refinedUserInput);
-
-			returnOutput.setReturnBuffer(InternalStorage.getBuffer());
-			returnOutput.setFeedback(Message.EDITED);
-			returnOutput.setIsStats(false);
-
+			
+			returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
+					Message.EDITED, returnOutput.getTotalAssignment() + 1, returnOutput.getTotalCompleted(), 
+					returnOutput.getTotalOnTime(), false);
+			
 			return returnOutput;
 
 		case DELETE:
 
 			deleteForStats = Delete.delete(refinedUserInput[1]);
 
-			returnOutput.setReturnBuffer(InternalStorage.getBuffer());
-			returnOutput.setFeedback(Message.DELETED);
-
-			returnOutput.setTotalAssignment(returnOutput.getTotalAssignment()
-					- deleteForStats.getDeletedTotalAssignment());
-			returnOutput.setTotalCompleted(returnOutput.getTotalCompleted()
-					- deleteForStats.getDeletedTotalCompleted());
-			returnOutput.setTotalOnTime(returnOutput.getTotalOnTime()
-					- deleteForStats.getDeletedTotalOnTime());
-
-			returnOutput.setIsStats(false);
-
+			returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
+					Message.DELETED, returnOutput.getTotalAssignment()
+					- deleteForStats.getDeletedTotalAssignment(), returnOutput.getTotalCompleted()
+					- deleteForStats.getDeletedTotalCompleted(), returnOutput.getTotalOnTime()
+					- deleteForStats.getDeletedTotalOnTime(), false);
+			
 			return returnOutput;
 			/*
 		case TENTATIVE:
@@ -132,42 +125,36 @@ public class SparkMoVare {
 
 			deleteForStats = Delete.deleteAll(refinedUserInput[8], refinedUserInput[5], refinedUserInput[3]);
 
-			returnOutput.setReturnBuffer(InternalStorage.getBuffer());
-			returnOutput.setFeedback(Message.DELETE_ALL);
-			returnOutput.setIsStats(false);
-			returnOutput.setTotalAssignment(returnOutput.getTotalAssignment()
-					- deleteForStats.getDeletedTotalAssignment());
-			returnOutput.setTotalCompleted(returnOutput.getTotalCompleted()
-					- deleteForStats.getDeletedTotalCompleted());
-			returnOutput.setTotalOnTime(returnOutput.getTotalOnTime()
-					- deleteForStats.getDeletedTotalOnTime());
+			returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
+					Message.DELETE_ALL, returnOutput.getTotalAssignment()
+					- deleteForStats.getDeletedTotalAssignment(), returnOutput.getTotalCompleted()
+					- deleteForStats.getDeletedTotalCompleted(), returnOutput.getTotalOnTime()
+					- deleteForStats.getDeletedTotalOnTime(), false);
 
 			return returnOutput;
 
 		case SORT:
 			LinkedList<Assignment> sortedBuffer = new LinkedList<Assignment>();
 			
-			sortedBuffer = Sort.multipleSortRequired(InternalStorage.getBuffer(), refinedUserInput[8],
-					refinedUserInput[3], refinedUserInput[5]);
-			returnOutput.setReturnBuffer(sortedBuffer);
-			returnOutput.setFeedback(Message.SORT);
-			returnOutput.setIsStats(false);
+			returnOutput = ModifyOutput.returnModification(sortedBuffer,
+					Message.SORT, returnOutput.getTotalAssignment(), returnOutput.getTotalCompleted(), 
+					returnOutput.getTotalOnTime(), false);
 
 			return returnOutput;
 
 		case SEARCH:
 			LinkedList<Assignment> searchBuffer = new LinkedList<Assignment>();
-			searchBuffer = SearchAll.searchAll(InternalStorage.getBuffer(), refinedUserInput[8]);
-			returnOutput.setReturnBuffer(searchBuffer);
-			returnOutput.setFeedback(Message.SEARCH);
-			returnOutput.setIsStats(false);
+			
+			returnOutput = ModifyOutput.returnModification(searchBuffer,
+					Message.SORT, returnOutput.getTotalAssignment(), returnOutput.getTotalCompleted(), 
+					returnOutput.getTotalOnTime(), false);
 
 			return returnOutput;
 
 		case STATISTIC:
-			returnOutput.setReturnBuffer(InternalStorage.getBuffer());
-			returnOutput.setIsStats(true);
-			returnOutput.setFeedback(Message.STATISTIC);
+			returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
+					Message.STATISTIC, returnOutput.getTotalAssignment(), returnOutput.getTotalCompleted(), 
+					returnOutput.getTotalOnTime(), true);
 
 			return returnOutput;
 			/*
@@ -178,16 +165,21 @@ public class SparkMoVare {
 			return RedoUndo.redo();
 			 */
 		case DISPLAY:
-			returnOutput.setReturnBuffer(InternalStorage.getBuffer());
-			returnOutput.setFeedback(Message.DISPLAY);
-			returnOutput.setIsStats(false);
+			returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
+					Message.DISPLAY, returnOutput.getTotalAssignment(), returnOutput.getTotalCompleted(), 
+					returnOutput.getTotalOnTime(), false);
 			Print.display();
 			return returnOutput;
 
 		case FILTER:
-			returnOutput.setReturnBuffer(Filter.filterMain(refinedUserInput[8], refinedUserInput[3], refinedUserInput[5]));
-			returnOutput.setFeedback(Message.FILTER);
-			returnOutput.setIsStats(false);
+			LinkedList<Assignment> filteredBuffer = new LinkedList<Assignment>();
+			
+			filteredBuffer = Filter.filterMain(InternalStorage.getBuffer(), refinedUserInput[8], 
+					refinedUserInput[3], refinedUserInput[5]);
+			
+			returnOutput = ModifyOutput.returnModification(filteredBuffer,
+					Message.FILTER, returnOutput.getTotalAssignment(), returnOutput.getTotalCompleted(), 
+					returnOutput.getTotalOnTime(), false);
 
 			return returnOutput;
 
@@ -197,10 +189,11 @@ public class SparkMoVare {
 
 		default:
 			LinkedList<Assignment> noAssignment = new LinkedList<Assignment>();
-			returnOutput.setReturnBuffer(noAssignment);
-			returnOutput.setFeedback(Message.INVALID_COMMAND);
-			returnOutput.setIsStats(false);
-
+			
+			returnOutput = ModifyOutput.returnModification(noAssignment,
+					Message.INVALID_COMMAND, returnOutput.getTotalAssignment(), returnOutput.getTotalCompleted(), 
+					returnOutput.getTotalOnTime(), false);
+			
 			return returnOutput;
 		}
 		return returnOutput;

@@ -15,34 +15,36 @@ public class Assignment{
 	// private String description;
 	// private int alarm; // in the format HHMM, if inactive null
 	// private Vector<String> tag; // to support tagging
-		
+
 	/************** Constants **********************/
-	
+
 	enum assignmentType {
 		TASK, APPOINTMENT, TENTATIVE, ASSIGNMENT;
 	}
-	
+
 	protected static final String DEFAULT_STRING = "DEFAULT";
 	protected static final String DEFAULT = "NONE";
-	
+
 	protected static final String TYPE_TASK = "TASK";
 	protected static final String TYPE_APPOINTMENT = "APPT";
 	protected static final String TYPE_TENTATIVE = "TNTV";
-	
+
 	protected static final String PRIORITY_NONE = "NIMPT";
 	protected static final String PRIORITY_IMPT = "IMPT";
-	
+
 	/************** Constructors **********************/
-	
+
 	// Default constructor
 	public Assignment() {
 		this(DEFAULT, DEFAULT_STRING, false, false, PRIORITY_NONE, assignmentType.ASSIGNMENT);
 	}
-	
+
 	public Assignment(String id, String title, boolean isDone, boolean isOnTime, String priority,
 			assignmentType atype) {
-		
+
 		setId(id);
+		setDateCreation(DateLocal.dateString());
+		setIndex(Integer.parseInt(Id.removeFrontZero(id.substring(8))));
 		setTitle(title);
 		setIsDone(isDone);
 		setIsOnTime(isOnTime);
@@ -52,7 +54,7 @@ public class Assignment{
 	}
 
 	/**************** Accessors ***********************/
-	
+
 	public String getTitle() {
 		return this.title;
 	}
@@ -64,27 +66,27 @@ public class Assignment{
 	public boolean getIsDone() {
 		return this.isDone;
 	}
-	
+
 	public boolean getIsOnTime() {
 		return this.isOnTime;
 	}
-	
+
 	public String getPriority() {
 		return this.priority;
 	}
-	
+
 	public String getDateCreation() {
 		return this.dateCreation;
 	}
-	
+
 	public int getIndex() {
 		return this.index;
 	}
-	
+
 	public assignmentType getAssignType() {
 		return this.aType;
 	}
-	
+
 	/*
 	 * public String getDescription() {
 	 *	 return description;
@@ -98,41 +100,41 @@ public class Assignment{
 	 * 	 return this.tag;
 	 * }
 	 */
-	
+
 	/**************** Mutators ************************/
-	
+
 	public void setTitle(String newTitle) {
-		title = newTitle;
+		this.title = newTitle;
 	}
 
 	public void setId(String newId) {
-		id = newId;
+		this.id = newId;
 	}
 
 	public void setAssignType(assignmentType atype) {
 		this.aType = atype;
 	}
-	
+
 	public void setIsDone(boolean newIsDone) {
-		isDone = newIsDone;
+		this.isDone = newIsDone;
 	}
 
 	public void setIsOnTime(boolean newIsOnTime) {
-		isOnTime = newIsOnTime;
+		this.isOnTime = newIsOnTime;
 	}
 
 	public void setPriority(String newPriority) {
-		priority = newPriority;
+		this.priority = newPriority;
 	}
-	
+
 	public void setDateCreation(String date) {
-		dateCreation = date;
+		this.dateCreation = date;
 	}
-	
+
 	public void setIndex(int newIndex) {
-		index = newIndex;
+		this.index = newIndex;
 	}
-	
+
 	/* 
 	 * public void setDescription(String newDescription) {
 	 * description = newDescription;
@@ -146,4 +148,12 @@ public class Assignment{
 	 * tag = newTag;
 	 * }
 	 */
+
+	/**************** Overriding ************************/
+
+	public String toString() {
+		return getId() + "~" + getTitle() + "~" + getAssignType() + "~" + "-" + "~" + 
+				"-" + "~" + "-" + "~" + "-" + "~" + getIsDone() + 
+				"~" + getIsOnTime() + "~" + getPriority();
+	}
 }
