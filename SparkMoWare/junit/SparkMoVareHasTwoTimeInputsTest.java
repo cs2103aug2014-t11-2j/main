@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import parser.ParserTestDriver;
 
-public class SparkMoVareHasTwoTimeInputTest {
+public class SparkMoVareHasTwoTimeInputsTest {
 
 	@Test
 	public void test() {

@@ -6,18 +6,19 @@ import org.junit.Test;
 
 import parser.ParserTestDriver;
 
-public class SparkMoVareCheckIfApptTest {
+public class SparkMoVareHasTwoDateInputsTest {
 
 	@Test
 	public void test() {
 		//confirm method returns true if 2 date inputs
-		assertTrue(ParserTestDriver.testCheckIfAppt("09/09/1234 2/3/2345"));
+		assertTrue(ParserTestDriver.testHasTwoDateInputs("09/09/1234 2/3/2345"));
 		
 		//confirm method returns true if 2 date inputs with additional portions
-		assertTrue(ParserTestDriver.testCheckIfAppt("add 09/09/1234 nothing 2/3/2345 works"));
+		assertTrue(ParserTestDriver.testHasTwoDateInputs("add 09/09/1234 nothing 2/3/2345 works"));
+		assertTrue(ParserTestDriver.testHasTwoDateInputs("add 09/09/1234 nothing 2/3/2345"));
 		
 		//confirm method returns false if only 1 date input
-		assertTrue(ParserTestDriver.testCheckIfAppt("09/08/1245"));
+		assertFalse(ParserTestDriver.testHasTwoDateInputs("09/08/1245"));
 		
 		
 		/* Methods should change the date input from whatever format

@@ -1,7 +1,8 @@
 package parser;
 
-public class ParserCommandLocal {
+public class Determine {
 	
+	//requires change to use pattern
 	protected static EnumGroup.CommandType getCommandType(String command) {
 
 		if (command.equalsIgnoreCase("add")) {
@@ -35,5 +36,26 @@ public class ParserCommandLocal {
 		} else {
 			return EnumGroup.CommandType.INVALID;
 		}		
+	}
+	
+	//requires change to use pattern
+	protected EnumGroup.EditType getEditType(String input) {
+		if(input.equalsIgnoreCase("title")) {
+			return EnumGroup.EditType.TITLE;
+		} else if(input.equalsIgnoreCase("START_DATE")) {
+			return EnumGroup.EditType.START_DATE;
+		} else if(input.equalsIgnoreCase("START_TIME")) {
+			return EnumGroup.EditType.START_TIME;
+		} else if(input.equalsIgnoreCase("END_DATE")) {
+			return EnumGroup.EditType.END_DATE;
+		} else if(input.equalsIgnoreCase("END_TIME")) {
+			return EnumGroup.EditType.END_TIME;
+		} else if(input.equalsIgnoreCase("PRIORITY")) {
+			return EnumGroup.EditType.PRIORITY;
+		} else if(input.equalsIgnoreCase("DONE")) {
+			return EnumGroup.EditType.DONE;
+		} else {
+			return EnumGroup.EditType.INVALID;
+		}
 	}
 }

@@ -2,43 +2,47 @@ package parser;
 
 public class ParserTestDriver {
 
-	public static Boolean testCheckIfAppt(String testInput) {
-		return InputIsAdd.checkIfAppt(testInput);
+	public static Boolean testHasTwoDateInputs(String testInput) {
+		return ParserDateLocal.hasTwoDateInputs(testInput);
 	}
 	
-	public static String testGetStartDate(String testInput) {
-		return InputIsAdd.extractStartDate(testInput);
+	public static String testExtractStartDate(String testInput) {
+		return ParserDateLocal.extractStartDate(testInput);
 	}
 	
-	public static String testGetEndDate(String testInput) {
-		return InputIsAdd.extractEndDate(testInput);
+	public static String testExtractEndDate(String testInput) {
+		return ParserDateLocal.extractEndDate(testInput);
 	}
 	
-	public static String testGetStartTime(String testInput) {
-		return InputIsAdd.extractStartTime(testInput);
+	public static String testExtractStartTime(String testInput) {
+		return ParserTimeLocal.extractStartTime(testInput);
 	}
 	
 	public static Boolean testHasTwoTimeInputs(String testInput) {
-		return InputIsAdd.hasTwoTimeInputs(testInput);
+		return ParserTimeLocal.hasTwoTimeInputs(testInput);
 	}
 	
 	public static String testReplaceAllDate(String testInput) {
-		return InputIsAdd.replaceAllDate(testInput);
+		return ParserDateLocal.replaceAllDate(testInput);
 	}
 
-	public static String testGetEndTime(String testInput) {
-		return InputIsAdd.extractEndTime(testInput);
+	public static String testExtractEndTime(String testInput) {
+		return ParserTimeLocal.extractEndTime(testInput);
 	}
 	
 	public static String testReplaceAllTime(String testInput) {
-		return InputIsAdd.replaceAllTime(testInput);
+		return ParserTimeLocal.replaceAllTime(testInput);
 	}
 	
 	public static String testRefineString(String[] testInput) {
-		return InputIsAdd.refineString(testInput);
+		return Misc.refineString(testInput);
 	}
 	
-	public static String testGetTitle(String testInput) {
-		return InputIsAdd.extractTitle(testInput);
+	public static String testExtractTitle(String testInput) {
+		return Misc.extractTitle(testInput);
+	}
+	
+	public static boolean testContentForClear(String testInput) {
+		return InvalidSpecialContent.contentForClear(testInput);
 	}
 }

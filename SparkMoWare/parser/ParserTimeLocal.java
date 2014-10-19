@@ -1,6 +1,7 @@
 package parser;
 
 import java.util.Scanner;
+import java.util.regex.Matcher;
 
 /*
  * This is to check time format and its validity
@@ -12,16 +13,74 @@ public class ParserTimeLocal {
 	protected static String defaultStartTime = "0000";
 	private static Scanner scanner = new Scanner(System.in);
 	
-	public static String determineTime(String inputTime) {
-		
-		while(!timeFormatValid(inputTime)){
-			
-			Message.printToUser(Message.INVALID_FORMAT);
-			Message.printToUser(String.format(Message.FORMAT_PROMPT, "time"));
-			inputTime = scanner.nextLine();			
+	/* Still haven't dealt with following inputs: 
+	 * [add] [start date] [start time] [end date]
+	 * [add] [start date] [end date] [end time]
+	 * Parser cannot distinguish between the two YET
+	 */
+	protected static String extractEndTime(String userInput) {
+		userInput = ParserDateLocal.replaceAllDate(userInput);
+		Matcher timeMatcher = ParserPatternLocal.timePattern.matcher(userInput);
+		String endTime = new String();
+
+		//this is assuming for appointment creation, user either has two time inputs
+		//or no time inputs
+		if(hasTwoTimeInputs(userInput)) {
+			userInput = timeMatcher.replaceFirst("");
+			}
+
+		endTime = extractStartTime(userInput);
+
+		if(!timeMatcher.find()) {
+			endTime = ParserTimeLocal.defaultEndTime;
 		}
-		return inputTime;
+
+		return endTime;
 	}
+	
+	protected static boolean hasTwoTimeInputs(String input) {
+		String[] temp = ParserPatternLocal.timePattern.split(input);
+
+		if(temp.length == 2) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+		protected static String extractStartTime(String userInput) {
+		userInput = ParserDateLocal.replaceAllDate(userInput);
+		Matcher timeMatcher = ParserPatternLocal.timePattern.matcher(userInput);
+		String startTime = new String();
+		
+		if(timeMatcher.find()) {
+			startTime = timeMatcher.group();
+		} else if(!timeMatcher.find()) {
+			startTime = ParserTimeLocal.defaultStartTime; 
+		}
+		
+		return determineTime(startTime);
+	}
+	
+
+
+
+		public static String determineTime(String inputTime) {
+
+			while(!timeFormatValid(inputTime)){
+
+				Message.printToUser(Message.INVALID_FORMAT);
+				Message.printToUser(String.format(Message.FORMAT_PROMPT, "time"));
+				inputTime = scanner.nextLine();			
+
+				Matcher rejectMatcher = ParserPatternLocal.rejectPattern.matcher(inputTime);
+
+				if(rejectMatcher.find()) {
+					return null;
+				}
+			}
+			return inputTime;
+		}
 
 	public static boolean timeFormatValid(String time) {
 		
@@ -51,4 +110,19 @@ public class ParserTimeLocal {
 		}
 		return timeExist;
 	}
+
+	//DESIGN FLAW: method will replace any and all 4 number input
+	//for eg. the year part of date or even in a long sequence of numbers
+	protected static String replaceAllTime(String input) {
+		Matcher timeMatcher = ParserPatternLocal.timePattern.matcher(input);
+		
+		while(timeMatcher.find()) {
+			input = timeMatcher.replaceFirst("");
+			timeMatcher.reset(input);
+		}
+		
+		return input;
+	}
+
 }
+

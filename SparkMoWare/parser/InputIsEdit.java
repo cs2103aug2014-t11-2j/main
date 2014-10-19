@@ -1,9 +1,21 @@
 package parser;
 
-public class InputIsEdit {
+import parser.EnumGroup.CommandType;
 
-	protected static void executeCommand(String userInput) {
+//incomplete
+public class InputIsEdit {
+	
+	protected static RefinedUserInput refineInput(String userInput) {
+		String id = Misc.extractId(userInput);
 		
+		RefinedUserInput inputDisplay =  new RefinedUserInput(
+				CommandType.DISPLAY, null,
+				null, null,
+				null, null,
+				null, null,
+				null);
+		
+		return inputDisplay;
 	}
 	
 }

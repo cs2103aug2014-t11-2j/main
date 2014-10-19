@@ -1,9 +1,19 @@
 package parser;
 
+import parser.EnumGroup.CommandType;
+
 public class InputIsHelp {
 	
-	protected void executeCommand(String userInput) {
+	protected static RefinedUserInput refineInput(String userInput) {
 		
+		RefinedUserInput inputHelp =  new RefinedUserInput(
+				CommandType.HELP, null,
+				null, null,
+				null, null,
+				null, null,
+				null);
+		
+		return inputHelp;
 	}
-
+	
 }

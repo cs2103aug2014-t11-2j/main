@@ -29,6 +29,11 @@ public class RefinedUserInput {
 		
 	}
 	
+	//for special cases of invalid inputs, components, cases, etc.
+	public RefinedUserInput(int indicator) {
+		setCommandType(CommandType.INVALID);
+	}
+	
 	public RefinedUserInput(CommandType command, String id,
 							String title, String startDate,
 							String startTime, String endDate,

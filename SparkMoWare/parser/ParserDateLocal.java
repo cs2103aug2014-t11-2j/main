@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
+import java.util.regex.Matcher;
 
 /*
  * Prompt the user for a valid date
@@ -16,14 +17,73 @@ public class ParserDateLocal {
 	
 	private static Scanner scanner = new Scanner(System.in);
 	
-	protected static String determineDate(String inputDate) {
+	protected static String extractEndDate(String userInput) {
+		Matcher dateMatcher = ParserPatternLocal.datePattern.matcher(userInput);
 		
-		// will continuously prompt user for correct date format currently no way to exit
+		if(!dateMatcher.find()) {
+			return ParserDateLocal.dateString();
+		}
+		
+		if(hasTwoDateInputs(userInput)) {
+			userInput = dateMatcher.replaceFirst("");
+		}
+		
+		String endDate = extractStartDate(userInput);
+
+		return endDate;
+	}
+	
+	//Checks if there are 2 date inputs
+	protected static boolean hasTwoDateInputs(String userInput) {		
+		String[] temp = ParserPatternLocal.datePattern.split(userInput);
+		
+		if(temp.length == 2 || temp.length == 3) {
+			return true;
+		} else {
+			return false;
+			}
+		}
+	
+	//ASSUMPTION: in appointment case, input format is start date followed by end date
+	protected static String extractStartDate(String userInput) {
+		Matcher dateMatcher = ParserPatternLocal.datePattern.matcher(userInput);
+		String startDate = new String();
+		String temp = new String();
+		
+		if(dateMatcher.find()) {
+			
+			if(dateMatcher.group(2).length() !=2) {
+				startDate = "0".concat(dateMatcher.group(2));
+			} else {
+				startDate = dateMatcher.group(2);
+			}
+			
+			if(dateMatcher.group(3).length() !=2) {
+				temp = "0".concat(dateMatcher.group(3));
+				startDate = startDate.concat(temp);
+			} else {
+				startDate = startDate.concat(dateMatcher.group(3));
+			}
+			startDate = startDate.concat(dateMatcher.group(4));
+		}
+		return determineDate(startDate);
+	}
+	
+	
+	//does not support special case such as user typing today
+	protected static String determineDate(String inputDate) { 
+		
 		while(!dateFormatValid(inputDate)) {
 			
 			Message.printToUser(Message.INVALID_FORMAT);
 			Message.printToUser(String.format(Message.FORMAT_PROMPT, "date"));
 			inputDate = scanner.nextLine();
+			
+			Matcher rejectMatcher = ParserPatternLocal.rejectPattern.matcher(inputDate);
+			
+			if(rejectMatcher.find()) {
+				return null;
+			}
 		}
 		return inputDate;
 	}
@@ -76,6 +136,20 @@ public class ParserDateLocal {
 		return dateFormat.format(todayDate);
 	}
 	
+	protected static String replaceAllDate(String input) {
+		Matcher dateMatcher = ParserPatternLocal.datePattern.matcher(input);
+		
+		while(dateMatcher.find()) {
+			input = dateMatcher.replaceFirst("");
+			dateMatcher.reset(input);
+		}
+		
+		return input;
+	}
+
+
+	
+	// unused methods in parser?
 	// decrementing date
 	protected static String updateDate(String date) {
 
@@ -124,4 +198,5 @@ public class ParserDateLocal {
 		} 
 		return 31;	
 	}
+
 }

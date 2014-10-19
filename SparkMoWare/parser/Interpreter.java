@@ -3,69 +3,56 @@ package parser;
 public class Interpreter {
 
 	//Method that will be called by the Logic
-	public static String[] reader(String userInput) {
+	public static RefinedUserInput reader(String userInput) {
 		
-		switch (ParserCommandLocal.getCommandType(userInput)) {
+		switch (Determine.getCommandType(userInput)) {
 		case ADD:
 			return InputIsAdd.refineInput(userInput);
 			
 		case EDIT:
-			InputIsEdit.executeCommand(userInput);
-			break;
+			return InputIsEdit.refineInput(userInput);
 
 		case DELETE:
-
-			break;
+			return InputIsDelete.refineInput(userInput);
 
 		case TENTATIVE:
-			
-			break;
+			return InputIsTentative.refineInput(userInput);
 
 		case CONFIRM:
-			
-			break;
+			return InputIsConfirm.refineInput(userInput);
 
 		case CLEAR:
-			break;
+			return InputIsClear.refineInput(userInput);
 
 		case SORT:
-			
-			break;
+			return InputIsSort.refineInput(userInput);
 
 		case SEARCH:
-			
-			break;
+			return InputIsSearch.refineInput(userInput);
 
 		case STATISTIC:
-			
-			break;
+			return InputIsStatistic.refineInput(userInput);
 
 		case UNDO:
-			
-			break;
+			return InputIsUndo.refineInput(userInput);
 
 		case REDO:
-
-			break;
+			return InputIsRedo.refineInput(userInput);
 
 		case DISPLAY:
-			
-			break;
+			return InputIsDisplay.refineInput(userInput);
 		
 		case FILTER:
-			
-			break;
+			return InputIsFilter.refineInput(userInput);
 		
 		case EXIT:
-			
-			break;
+			return InputIsExit.refineInput(userInput);
 
 		case HELP:
-			
+			return InputIsHelp.refineInput(userInput);
 
 		default:
-			
+			return null;
 		}
-		return null;
 	}
 }
