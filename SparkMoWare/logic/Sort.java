@@ -12,248 +12,115 @@ public class Sort {
 
 	private static int listCount;
 	private static int sortedListCount;
-
-	protected static LinkedList<Assignment> sortRequired(String sortType, String startDate, String endDate){
+	
+	protected static LinkedList<Assignment> multipleSortRequired(LinkedList<Assignment> sortBuffer,
+			String sortType, String startDate, String endDate) {
+		
+		String[] multipleSortInput = sortType.split(";");
+		
+		for(int sortCount = 0; sortCount < multipleSortInput.length; sortCount++) {
+			sortBuffer = sortRequired(sortBuffer, multipleSortInput[sortCount]);
+		}
+		if(startDate != null && endDate != null) {
+			sortBuffer = Trancation.trancateList(sortBuffer, startDate, endDate);
+		}
+		return sortBuffer;
+	}
+	
+	protected static LinkedList<Assignment> sortRequired(LinkedList<Assignment> buffer,
+			String sortType){
 
 		LinkedList<Assignment> sortedList = new LinkedList<Assignment>();
 
 		if(sortType.equalsIgnoreCase("title")) {
-			sortedList = insertionSortTitle(InternalStorage.getBuffer());
+			sortedList = insertionSortTitle(buffer);
 
 		} else if(sortType.equalsIgnoreCase("SIN")) {
-			sortedList = insertionSortId(InternalStorage.getBuffer());
+			sortedList = insertionSortId(buffer);
 		} else if(sortType.equalsIgnoreCase("important")){
-			sortedList = insertionSortPriority();
-		}
-		
-		if(startDate != null && endDate != null) {
-			sortedList = Trancation.trancateList(sortedList, startDate, endDate);
+			sortedList = insertionSortPriority(buffer);
 		}
 		return sortedList;
 	}
 
-	public static LinkedList<Assignment> insertionSortPriority() {
+	private static LinkedList<Assignment> insertionSortPriority(LinkedList<Assignment> buffer) {
 
 		LinkedList<Assignment> prioritySortList = new LinkedList<Assignment>();
 		
-		prioritySortList = SearchAll.searchAll("important");
+		prioritySortList = SearchAll.searchAll(buffer, "important");
 
 		for(int counter = 0; counter < InternalStorage.getLineCount(); counter++){
 			
-				if(!InternalStorage.getBuffer().get(counter).getPriority().equals("important")){
-					prioritySortList.add(InternalStorage.getBuffer().get(counter));
+				if(!buffer.get(counter).getPriority().equals("important")){
+					prioritySortList.add(buffer.get(counter));
 				}
 		}
 		return prioritySortList;
 	}
 
-	private static LinkedList<Assignment> insertionSortTitle(LinkedList<Assignment> list) {
+	private static LinkedList<Assignment> insertionSortTitle(LinkedList<Assignment> buffer) {
 
 		LinkedList<Assignment> titleListSorted = new LinkedList<Assignment>();
 
-		for(listCount = 0; listCount < list.size(); listCount++) {
+		for(listCount = 0; listCount < buffer.size(); listCount++) {
 			if(titleListSorted.size() == 0) {
-				titleListSorted.add(list.get(listCount));
+				titleListSorted.add(buffer.get(listCount));
 			}
 			else if(titleListSorted.size() >= 1) {
-				titleListSorted = insertionSortTitle2(list,titleListSorted);
+				titleListSorted = insertionSortTitle2(buffer,titleListSorted);
 			}
 		}
 		return titleListSorted;
 	}
 
-	private static LinkedList<Assignment> insertionSortId(LinkedList<Assignment> list) {
+	private static LinkedList<Assignment> insertionSortId(LinkedList<Assignment> buffer) {
 
 		LinkedList<Assignment> idListSorted = new LinkedList<Assignment>();
 
-		for(listCount = 0; listCount < list.size(); listCount++) {
+		for(listCount = 0; listCount < buffer.size(); listCount++) {
 
 			if(idListSorted.size() == 0) {
-				idListSorted.add(list.get(listCount));
+				idListSorted.add(buffer.get(listCount));
 
 			} else if(idListSorted.size() >= 1) {
-				idListSorted = insertionSortId2(list, idListSorted);
+				idListSorted = insertionSortId2(buffer, idListSorted);
 			}
 		}
 		return idListSorted;
 	}
 	
-	private static LinkedList<Assignment> insertionSortId2(LinkedList<Assignment> list, 
+	private static LinkedList<Assignment> insertionSortId2(LinkedList<Assignment> buffer, 
 			LinkedList<Assignment> idListSorted) {
 		
 		for(sortedListCount = 0; sortedListCount < idListSorted.size(); sortedListCount++) {
 
 			if(Comparator.serialNumberComparator(idListSorted.get(sortedListCount).getId(), 
-					list.get(listCount).getId())) {
+					buffer.get(listCount).getId())) {
 
-				idListSorted.add(sortedListCount, list.get(listCount));
+				idListSorted.add(sortedListCount, buffer.get(listCount));
 				break;
 			} else if(sortedListCount == idListSorted.size() - 1) {
-				idListSorted.add(list.get(listCount));
+				idListSorted.add(buffer.get(listCount));
 				break;
 			}
 		}
 		return idListSorted;
 	}
 	
-	private static LinkedList<Assignment> insertionSortTitle2(LinkedList<Assignment> list, 
+	private static LinkedList<Assignment> insertionSortTitle2(LinkedList<Assignment> buffer, 
 			LinkedList<Assignment> titleListSorted) {
 		
 		for(sortedListCount = 0; sortedListCount < titleListSorted.size(); sortedListCount++) {
 			
-			if(titleListSorted.get(sortedListCount).getTitle().compareToIgnoreCase(list.get(listCount).getTitle()) >= 0) {
-				titleListSorted.add(sortedListCount, list.get(listCount));
+			if(titleListSorted.get(sortedListCount).getTitle().compareToIgnoreCase(buffer.get(listCount).getTitle()) >= 0) {
+				titleListSorted.add(sortedListCount, buffer.get(listCount));
 				break;
 				
 			} else if(sortedListCount == titleListSorted.size() - 1) {
-				titleListSorted.add(list.get(listCount));
+				titleListSorted.add(buffer.get(listCount));
 				break;
 			}
 		}
 		return titleListSorted;
 	}
 }
-
-/*
- * this method works in the following steps: 1. searches the assignments in
- * end date 2. sorts according to Id 3. adds the sorted Id list to the back
- * of final sortedList 4. decrements date towards start date
- */
-/*
-	public static LinkedList<Assignment> sortId(String endDate,
-			String startDate) {
-
-		LinkedList<Assignment> sortedList = new LinkedList<Assignment>();
-		LinkedList<Assignment> tempList = new LinkedList<Assignment>();
-
-		while (Comparator.dateComparator(endDate, startDate) != -1) {
-
-			tempList = SearchAll.searchAll(endDate);
-			//to ensure that all elements in tempList have the same endDate
-			for(int i=0; i<tempList.size(); i++){
-				if(!tempList.get(i).getEndDate().equals(endDate)){
-					tempList.remove(i);
-				}
-			}	
-			tempList = bubbleSortId(tempList);
-
-			for (int i = 0; i < tempList.size(); i++) {
-				sortedList.addLast(tempList.get(i));
-			}
-			endDate = DateLocal.updateDate(endDate);
-		}
-		return sortedList;
-	}
-
-	private static LinkedList<Assignment> bubbleSortId(
-			LinkedList<Assignment> sortingList) {
-
-		for (int i = 1; i < sortingList.size(); i++) {
-
-			boolean isSorted = true;
-
-			for (int j = 0; j < sortingList.size() - i; j++) {
-
-				if (Comparator.serialNumberComparator(sortingList.get(j)
-						.getId(), sortingList.get(j + 1).getId())) {
-
-					Assignment temp = sortingList.get(j);
-					Assignment temp2 = sortingList.get(j + 1);
-					sortingList.add(j, temp2);
-					sortingList.add(j + 1, temp);
-					isSorted = false;
-				}
-
-				if (isSorted) {
-					return sortingList;
-				}
-			}
-		}
-		return sortingList;
-	}
-
-	// following lines of code are for general date sort usage with an intrinsic
-	// time sort
-	protected static LinkedList<Assignment> sort(String endDate, String startDate) {
-
-		LinkedList<Assignment> tempList = new LinkedList<Assignment>();
-		LinkedList<Assignment> sortingList = new LinkedList<Assignment>();
-
-		// compare dates/timings and add into sortedList
-		while (Comparator.dateComparator(endDate, startDate) != -1) {
-
-			tempList = SearchAll.searchAll(endDate);
-			for (int i = 0; i < tempList.size(); i++) {
-				sortingList.add(tempList.get(i));
-			}
-			endDate = DateLocal.updateDate(endDate);
-		}
-		return bubbleSort(sortingList);
-	}
-
-	private static LinkedList<Assignment> bubbleSort(
-			LinkedList<Assignment> sortingList) {
-
-		for (int i = 1; i < sortingList.size(); i++) {
-
-			boolean isSorted = true;
-
-			for (int j = 0; j < sortingList.size() - i; j++) {
-
-				if (Comparator.dateComparator(sortingList.get(j).getEndDate(),
-						sortingList.get(j + 1).getEndDate()) != 1) {
-
-					Assignment temp = sortingList.get(j);
-					Assignment temp2 = sortingList.get(j + 1);
-					sortingList.add(j, temp2);
-					sortingList.add(j + 1, temp);
-					isSorted = false;
-
-					if (Comparator.timeComparator(sortingList.get(j)
-							.getStartTime(), sortingList.get(j + 1)
-							.getStartTime()) != 1) {
-
-						temp = sortingList.get(j);
-						temp2 = sortingList.get(j + 1);
-						sortingList.add(j, temp2);
-						sortingList.add(j + 1, temp);
-						isSorted = false;
-					}
-				}
-				if (isSorted) {
-					return sortingList;
-				}
-			}
-		}
-		return sortingList;
-	}
-
- * // merge sort algorithm to sort sortingList private static void
- * mergeSort(LinkedList<Assignment> sortingList, String start, String end) {
- * 
- * if (SparkMoVare.dateComparator(end, start) != -1) {
- * 
- * int mid = sortingList.size() / 2; mergeSort(sortingList, start,
- * sortingList.get(mid).getEndDate()); mergeSort(sortingList,
- * sortingList.get(mid + 1).getEndDate(), end); merge(sortingList, start,
- * sortingList.get(mid), end);
- * 
- * }
- * 
- * }
- * 
- * private static void merge(LinkedList<Assignment> sortingList, String start,
- * Assignment mid, String end) {
- * 
- * LinkedList<Assignment> temporary = new LinkedList<Assignment>(); String left
- * = start; String right =
- * sortingList.get((sortingList.size()/2)+1).getEndDate(); String it = " ";
- * 
- * while
- * (SparkMoVare.dateComparator(sortingList.get(sortingList.size()/2).getEndDate
- * (),left) != -1 && SparkMoVare.dateComparator(end, right) != -1) {
- * 
- * if(dateComparator(right, left) != -1){
- * 
- * } }
- */

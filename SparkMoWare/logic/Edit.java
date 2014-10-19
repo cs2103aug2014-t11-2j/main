@@ -21,7 +21,7 @@ public class Edit {
 	public static String editAssignment(String[] refinedUserInput) {
 
 		LinkedList<Assignment> idFound = new LinkedList<Assignment>();
-		idFound = SearchAll.searchAll(refinedUserInput[1]);
+		idFound = SearchAll.searchAll(InternalStorage.getBuffer(), refinedUserInput[1]);
 
 		if(idFound.size() == 0) {
 

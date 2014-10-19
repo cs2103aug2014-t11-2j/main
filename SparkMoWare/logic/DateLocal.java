@@ -5,6 +5,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
 
+import parser.EnumGroup.AssignmentType;
+
 /*
  * Prompt the user for a valid date
  * Check for date validity with the format <ddmmyyyy>
@@ -124,5 +126,20 @@ public class DateLocal {
 			return 30;
 		} 
 		return 31;	
+	}
+	
+	protected static String getStartDate() {
+		
+		String startDate = "01012014";
+		
+		if(InternalStorage.getBuffer().getFirst().equals(AssignmentType.TASK)) {
+			Task firstTask = ((Task) InternalStorage.getBuffer().getFirst());
+			startDate = firstTask.getEndDate();
+		} else if(InternalStorage.getBuffer().getFirst().equals(AssignmentType.APPOINTMENT)) {
+			
+			Appointment firstAppointment = ((Appointment) InternalStorage.getBuffer().getFirst());
+			startDate = firstAppointment.getStartDate();
+		}
+		return startDate;
 	}
 }

@@ -75,7 +75,7 @@ public class Appointment extends Task {
 		this.numAppointment = numAppointment;
 	}
 
-		/**************** Overriding ************************/
+	/**************** Overriding ************************/
 	
 	public String toString() {
 		return getId() + "~" + getTitle() + "~" + getAssignType() + "~" + getStartDate() + "~" + 

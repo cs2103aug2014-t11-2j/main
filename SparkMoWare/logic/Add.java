@@ -14,6 +14,11 @@ public class Add {
 	private static Task taskInBuffer = new Task();
 	private static int bufferCount;
 
+	/**
+	 * 
+	 * @param refinedUserInput
+	 * @return
+	 */
 	protected static String addSomething(String[] refinedUserInput) {
 
 		if(refinedUserInput[7].equals(AssignmentType.APPOINTMENT)) {
@@ -36,6 +41,8 @@ public class Add {
 		Assignment newAssignment = new Assignment();
 
 		newAssignment.setId(id);
+		newAssignment.setDateCreation(DateLocal.dateString());
+		newAssignment.setIndex(Integer.parseInt(Id.removeFrontZero(id.substring(8))));
 		newAssignment.setTitle(title);
 		newAssignment.setIsDone(isDone);
 		newAssignment.setPriority(priority);
@@ -52,6 +59,8 @@ public class Add {
 		Appointment newAppointment = new Appointment();
 
 		newAppointment.setId(id);
+		newAppointment.setDateCreation(DateLocal.dateString());
+		newAppointment.setIndex(Integer.parseInt(Id.removeFrontZero(id.substring(8))));
 		newAppointment.setTitle(title);
 		newAppointment.setStartDate(startDate);
 		newAppointment.setStartTime(startTime);
@@ -118,6 +127,8 @@ public class Add {
 		Task newTask = new Task();
 
 		newTask.setId(id);
+		newTask.setDateCreation(DateLocal.dateString());
+		newTask.setIndex(Integer.parseInt(Id.removeFrontZero(id.substring(8))));
 		newTask.setTitle(title);
 		newTask.setEndDate(endDate);
 		newTask.setEndTime(endTime);

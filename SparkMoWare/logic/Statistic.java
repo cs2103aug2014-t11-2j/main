@@ -29,14 +29,14 @@ public class Statistic {
 	
 	private static int getCompleted() {
 		
-		requiredCompleted = SearchAll.searchAll("completed");
+		requiredCompleted = SearchAll.searchAll(InternalStorage.getBuffer(), "completed");
 		
 		return requiredCompleted.size();
 	}
 
 	private static int getIsOnTime() {
 
-		requiredOnTime = SearchAll.searchAll("isontime");
+		requiredOnTime = SearchAll.searchAll(InternalStorage.getBuffer(), "isontime");
 		
 		return requiredOnTime.size();
 	}
