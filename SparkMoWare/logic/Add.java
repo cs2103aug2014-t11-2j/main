@@ -17,7 +17,7 @@ public class Add {
 	/**
 	 * 
 	 * @param refinedUserInput
-	 * @return
+	 * @return new assignment 
 	 */
 	protected static String addSomething(String[] refinedUserInput) {
 

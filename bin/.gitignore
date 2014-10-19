@@ -1,7 +1,8 @@
-<<<<<<< HEAD
-/parser/
+/.classpath
+/.project
+/Logger/
+/gui/
 /junit/
-=======
 /logic/
+/parser/
 /storage/
->>>>>>> bcf05aaa72b4e4689c48b198f505d34b318600d0
