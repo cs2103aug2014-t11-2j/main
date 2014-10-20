@@ -10,7 +10,7 @@ public class ExtractSpecialContent {
 		input = ParserDateLocal.replaceAllDate(input);
 
 		if(!InvalidSpecialContent.contentForClear(input)) {
-			return null;
+			return "";
 		}
 
 		return input;
@@ -25,7 +25,7 @@ public class ExtractSpecialContent {
 
 			return temp[1]; //might be 0
 		} else {
-			return null;
+			return "";
 		}
 	}
 
@@ -38,7 +38,7 @@ public class ExtractSpecialContent {
 
 			return temp[1]; //might be 0
 		} else {
-			return null;
+			return "";
 		}
 	}
 	
@@ -51,7 +51,12 @@ public class ExtractSpecialContent {
 
 			return temp[1]; //might be 0
 		} else {
-			return null;
+			return "";
 		}
+	}
+
+	protected static String forFilter(String userInput) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

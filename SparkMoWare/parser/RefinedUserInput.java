@@ -26,28 +26,16 @@ public class RefinedUserInput {
 	/************** Constructors **********************/
 	
 	public RefinedUserInput() {
-		
-	}
-	
-	//for special cases of invalid inputs, components, cases, etc.
-	public RefinedUserInput(int indicator) {
-		setCommandType(CommandType.INVALID);
-	}
-	
-	public RefinedUserInput(CommandType command, String id,
-							String title, String startDate,
-							String startTime, String endDate,
-							String endTime, AssignmentType assignment,
-							String specialContent) {
-		setCommandType(command);
-		setId(id);
-		setTitle(title);
-		setStartDate(startDate);
-		setStartTime(startTime);
-		setEndDate(endDate);
-		setEndTime(endTime);
-		setAssignmentType(assignment);
-		setSpecialContent(specialContent);
+		final String defaultContent  = "default";
+		setCommandType(EnumGroup.CommandType.DEFAULT);
+		setId(defaultContent);
+		setTitle(defaultContent);
+		setStartDate(defaultContent);
+		setStartTime(defaultContent);
+		setEndDate(defaultContent);
+		setEndTime(defaultContent);
+		setAssignmentType(EnumGroup.AssignmentType.DEFAULT);
+		setSpecialContent(defaultContent);
 	}
 	
 /**************** Accessors ***********************/
@@ -90,39 +78,39 @@ public class RefinedUserInput {
 	
 	/**************** Mutators **************************/
 	
-	private void setCommandType(CommandType command) {
+	protected void setCommandType(CommandType command) {
 		this.command = command;
 	}
 	
-	private void setId(String id) {
+	protected void setId(String id) {
 		this.id = id;
 	}
 	
-	private void setTitle(String title) {
+	protected void setTitle(String title) {
 		this.title = title;
 	}
 	
-	private void setStartDate(String startDate) {
+	protected void setStartDate(String startDate) {
 		this.startDate = startDate;
 	}
 	
-	private void setStartTime(String startTime) {
+	protected void setStartTime(String startTime) {
 		this.startTime = startTime;
 	}
 	
-	private void setEndDate(String endDate) {
+	protected void setEndDate(String endDate) {
 		this.endDate = endDate;
 	}
 	
-	private void setEndTime(String endTime) {
+	protected void setEndTime(String endTime) {
 		this.endTime = endTime;
 	}
 	
-	private void setAssignmentType(AssignmentType assignment) {
+	protected void setAssignmentType(AssignmentType assignment) {
 		this.assignment = assignment;
 	}
 	
-	private void setSpecialContent(String specialContent) {
+	protected void setSpecialContent(String specialContent) {
 		this.specialContent = specialContent;
 	}
 	
