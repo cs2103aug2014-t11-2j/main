@@ -21,9 +21,9 @@ public class Statistic {
 		} else if(isOnTime == 0) {
 			return Message.NOTHING_COMPLETED + " on time";
 		} else {
-			String precentageOnTime = Double.toString((isOnTime/completed) * 100);
+			String percentageOnTime = Double.toString((isOnTime/completed) * 100);
 			
-			return precentageOnTime;
+			return percentageOnTime;
 		}
 	}
 	

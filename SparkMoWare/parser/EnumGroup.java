@@ -5,13 +5,13 @@ package parser;
 public class EnumGroup {
 
 	protected enum AssignmentType {
-		TASK, APPOINTMENT, TENTATIVE
+		TASK, APPOINTMENT, TENTATIVE, DEFAULT
 	}
 	
 	protected enum CommandType {
 		ADD, EDIT, DELETE, TENTATIVE, CONFIRM, SORT, SEARCH, FILTER,
 		CLEAR, UNDO, REDO, STATISTIC, EXIT, INVALID, DISPLAY, HELP,
-		DONE
+		DONE, DEFAULT
 		//unlikely to use invalid or exit
 	}
 	

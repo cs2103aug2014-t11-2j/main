@@ -1,37 +1,54 @@
 package parser;
 
+import java.util.regex.Matcher;
+
 public class Determine {
 	
 	//requires change to use pattern
 	protected static EnumGroup.CommandType getCommandType(String command) {
-
-		if (command.equalsIgnoreCase("add")) {
+		Matcher addMatcher = ParserPatternLocal.addPattern.matcher(command);
+		Matcher tentativeMatcher = ParserPatternLocal.tentativePattern.matcher(command);
+		Matcher confirmMatcher = ParserPatternLocal.confirmPattern.matcher(command);
+		Matcher deleteMatcher = ParserPatternLocal.deletePattern.matcher(command);
+		Matcher searchMatcher = ParserPatternLocal.searchPattern.matcher(command);
+		Matcher editMatcher = ParserPatternLocal.editPattern.matcher(command);
+		Matcher clearMatcher = ParserPatternLocal.clearPattern.matcher(command);
+		Matcher sortMatcher = ParserPatternLocal.sortPattern.matcher(command);
+		Matcher statisticMatcher = ParserPatternLocal.statisticPattern.matcher(command);
+		Matcher undoMatcher = ParserPatternLocal.undoPattern.matcher(command);
+		Matcher redoMatcher = ParserPatternLocal.redoPattern.matcher(command);
+		Matcher helpMatcher = ParserPatternLocal.helpPattern.matcher(command);
+		Matcher exitMatcher = ParserPatternLocal.exitPattern.matcher(command);
+		Matcher displayMatcher = ParserPatternLocal.displayPattern.matcher(command);
+		
+		
+		if (addMatcher.find()) {
 			return EnumGroup.CommandType.ADD;
-		} else if(command.equalsIgnoreCase("tentative")) {
+		} else if(tentativeMatcher.find()) {
 			return EnumGroup.CommandType.TENTATIVE;
-		} else if (command.equalsIgnoreCase("confirm")) {
+		} else if (confirmMatcher.find()) {
 			return EnumGroup.CommandType.CONFIRM;
-		} else if (command.equalsIgnoreCase("delete")) {
+		} else if (deleteMatcher.find()) {
 			return EnumGroup.CommandType.DELETE;
-		} else if (command.equalsIgnoreCase("search")) {
+		} else if (searchMatcher.find()) {
 			return EnumGroup.CommandType.SEARCH;
-		} else if (command.equalsIgnoreCase("edit")) {
+		} else if (editMatcher.find()) {
 			return EnumGroup.CommandType.EDIT;
-		} else if (command.equalsIgnoreCase("clear")) {
+		} else if (clearMatcher.find()) {
 			return EnumGroup.CommandType.CLEAR;
-		} else if (command.equalsIgnoreCase("sort")) {
+		} else if (sortMatcher.find()) {
 			return EnumGroup.CommandType.SORT;
-		} else if (command.equalsIgnoreCase("statistic")) {
+		} else if (statisticMatcher.find()) {
 			return EnumGroup.CommandType.STATISTIC;
-		} else if (command.equalsIgnoreCase("undo")) {
+		} else if (undoMatcher.find()) {
 			return EnumGroup.CommandType.UNDO;
-		} else if (command.equalsIgnoreCase("redo")) {
+		} else if (redoMatcher.find()) {
 			return EnumGroup.CommandType.REDO;
-		} else if (command.equalsIgnoreCase("help")) {
+		} else if (helpMatcher.find()) {
 			return EnumGroup.CommandType.HELP;
-		} else if (command.equalsIgnoreCase("exit")) {
+		} else if (exitMatcher.find()) {
 			return EnumGroup.CommandType.EXIT;
-		} else if (command.equalsIgnoreCase("display")){
+		} else if (displayMatcher.find()){
 			return EnumGroup.CommandType.DISPLAY;
 		} else {
 			return EnumGroup.CommandType.INVALID;
