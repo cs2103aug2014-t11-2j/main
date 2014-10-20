@@ -1,6 +1,6 @@
 package logic;
 
-import parser.EnumGroup.AssignmentType;
+import logic.Assignment.AssignmentType;
 
 /*
  * If the startDate and startTime is empty, it will be created as task

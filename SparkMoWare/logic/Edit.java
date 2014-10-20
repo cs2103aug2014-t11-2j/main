@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
 
-import parser.EnumGroup.AssignmentType;
+import logic.Assignment.AssignmentType;
 
 /*
  * This edit method will edit any part of the assignment requested by the user
@@ -181,7 +181,6 @@ public class Edit {
 			taskInBuffer.setEndDate(date);
 		}
 	}
-
 
 	private static void editEndTime(int bufferPosition, String time) {
 

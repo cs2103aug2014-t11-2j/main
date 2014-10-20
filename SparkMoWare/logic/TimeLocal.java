@@ -1,14 +1,10 @@
 package logic;
 
-import java.util.Scanner;
-
 /*
  * This is to check time format and its validity
  * Prompt the user until the user input the correct format <hhmm>
  */
 public class TimeLocal {
-	
-	private static Scanner scanner = new Scanner(System.in);
 	
 	public static String determineTime(String inputTime) {
 		
@@ -16,7 +12,7 @@ public class TimeLocal {
 			
 			Print.printToUser(Message.INVALID_FORMAT);
 			Print.printToUser(String.format(Message.FORMAT_PROMPT, "time"));
-			inputTime = scanner.nextLine();			
+			inputTime = InternalStorage.getScanner().nextLine();			
 		}
 		return inputTime;
 	}

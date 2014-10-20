@@ -94,5 +94,4 @@ public class Comparator {
 		}
 		return SMALLER;
 	}
-
 }

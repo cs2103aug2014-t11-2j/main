@@ -6,26 +6,27 @@ public class Output {
 	
 	/************** Data members **********************/
 	
-	private LinkedList<Assignment> returnBuffer;
+	private LinkedList<Appointment> returnBuffer;
 	private String feedback;
 	private boolean isStats;
 	private int totalAssignment;
 	private int totalCompleted;
 	private int totalOnTime;
+	private boolean isInvalid;
 	
 	/************** Constants **********************/
 	
-	private static final LinkedList<Assignment> DEFAULT_LINKEDLIST = new LinkedList<Assignment>();
+	private static final LinkedList<Appointment> DEFAULT_LINKEDLIST = new LinkedList<Appointment>();
 	private static final String DEFAULT_FEEDBACK = "NONE";
 	private static final int DEFAULT_INTEGER = 0;
 	
 	/************** Constructors **********************/
 	public Output() {
-		this(DEFAULT_LINKEDLIST, DEFAULT_FEEDBACK, false, DEFAULT_INTEGER, DEFAULT_INTEGER, DEFAULT_INTEGER);
+		this(DEFAULT_LINKEDLIST, DEFAULT_FEEDBACK, false, DEFAULT_INTEGER, DEFAULT_INTEGER, DEFAULT_INTEGER, false);
 	}
 	
-	public Output(LinkedList<Assignment> returnBuffer, String feedback, 
-			boolean isStats, int totalAssignment, int totalCompleted, int totalOnTime) {
+	public Output(LinkedList<Appointment> returnBuffer, String feedback, 
+			boolean isStats, int totalAssignment, int totalCompleted, int totalOnTime, boolean isInvalid) {
 		
 		setReturnBuffer(returnBuffer);
 		setFeedback(feedback);
@@ -33,11 +34,12 @@ public class Output {
 		setTotalAssignment(totalAssignment);
 		setTotalCompleted(totalCompleted);
 		setTotalOnTime(totalOnTime);
+		setIsInvalid(isInvalid);
 	}
 	
 	/**************** Accessors ***********************/
 	
-	public LinkedList<Assignment> getReturnBuffer() {
+	public LinkedList<Appointment> getReturnBuffer() {
 		return this.returnBuffer;
 	}
 	
@@ -60,9 +62,14 @@ public class Output {
 	public int getTotalOnTime() {
 		return this.totalOnTime;
 	}
+	
+	public boolean getIsInvalid() {
+		return this.isInvalid;
+	}
+	
 	/**************** Mutators ************************/
 	
-	public void setReturnBuffer(LinkedList<Assignment> returnBuffer) {
+	public void setReturnBuffer(LinkedList<Appointment> returnBuffer) {
 		this.returnBuffer = returnBuffer;
 	}
 	
@@ -84,5 +91,9 @@ public class Output {
 	
 	public void setTotalOnTime(int totalOnTime) {
 		this.totalOnTime = totalOnTime;
+	}
+	
+	public void setIsInvalid(boolean isInvalid) {
+		this.isInvalid = isInvalid;
 	}
 }

@@ -5,6 +5,7 @@ import java.util.LinkedList;
 public class Filter {
 	
 	private static final int FORMAT_DEADLINE = 8;
+	private static final String IMPORTANT = "important";
 	
 	protected static LinkedList<Assignment> multipleFilter(LinkedList<Assignment> filterBuffer,
 			String userInput) {
@@ -25,7 +26,7 @@ public class Filter {
 		filteredList = multipleFilter(buffer, filterType);
 		
 		if(startDate != null && endDate != null) {
-			filteredList = Trancation.trancateList(filteredList, startDate, endDate);
+			filteredList = Truncation.trancateList(filteredList, startDate, endDate);
 		}
 		return filteredList;
 	}
@@ -43,8 +44,8 @@ public class Filter {
 			}
 		}
 		
-		else if(type.equals("important")){
-			filterList = SearchAll.searchAll(buffer, "important");
+		else if(type.equals(IMPORTANT)){
+			filterList = SearchAll.searchAll(buffer, IMPORTANT);
 		}
 		return filterList; 
 	}

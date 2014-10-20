@@ -8,7 +8,9 @@ public class SparkMoVare {
 
 	protected static final int SYSTEM_EXIT_NO_ERROR = 0;
 	protected static final int SYSTEM_EXIT_ERROR = -1;
-
+	
+	protected static final boolean IS_NOT_STATS_OR_INVALID = false;
+	
 	protected static String[] refinedUserInput = new String[10];
 
 	/* each index of refinedUserinput represent something
@@ -29,7 +31,7 @@ public class SparkMoVare {
 
 	enum CommandType {
 		ADD, EDIT, DELETE, TENTATIVE, CONFIRM, SORT, SEARCH, FILTER,
-		CLEAR, UNDO, REDO, STATISTIC, EXIT, INVALID, DISPLAY
+		CLEAR, UNDO, REDO, STATISTIC, EXIT, INVALID, DISPLAY, DONE
 	}
 
 	//Fundamentally the same as CommandType, but without single word commands 
@@ -38,7 +40,6 @@ public class SparkMoVare {
 
 		Print.printToUser(Message.WELCOME);
 		Storage.openFile(InternalStorage.getFilePath(),Id.getLatestSerialNumber(), InternalStorage.getBuffer());
-		HelpList.openFile("HelpList.txt");
 		toDoManager();
 	}
 
@@ -71,7 +72,6 @@ public class SparkMoVare {
 	public static Output executeCommand(String inputCommand) {
 
 		Output returnOutput = new Output();
-		DeleteForStats deleteForStats = new DeleteForStats();
 
 		CommandType command = getCommandType(inputCommand);
 
@@ -86,8 +86,8 @@ public class SparkMoVare {
 			Add.addSomething(refinedUserInput);
 			
 			returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
-					Message.ADDED, returnOutput.getTotalAssignment() + 1, returnOutput.getTotalCompleted(), 
-					returnOutput.getTotalOnTime(), false);
+					Message.ADDED, InternalStorage.getLineCount(), Statistic.getCompleted(), 
+					Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
 
 			return returnOutput;
 
@@ -95,20 +95,17 @@ public class SparkMoVare {
 			Edit.editAssignment(refinedUserInput);
 			
 			returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
-					Message.EDITED, returnOutput.getTotalAssignment() + 1, returnOutput.getTotalCompleted(), 
-					returnOutput.getTotalOnTime(), false);
+					Message.EDITED, InternalStorage.getLineCount(), Statistic.getCompleted(), 
+					Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
 			
 			return returnOutput;
 
 		case DELETE:
-
-			deleteForStats = Delete.delete(refinedUserInput[1]);
+			Delete.delete(refinedUserInput[1]);
 
 			returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
-					Message.DELETED, returnOutput.getTotalAssignment()
-					- deleteForStats.getDeletedTotalAssignment(), returnOutput.getTotalCompleted()
-					- deleteForStats.getDeletedTotalCompleted(), returnOutput.getTotalOnTime()
-					- deleteForStats.getDeletedTotalOnTime(), false);
+					Message.DELETED, InternalStorage.getLineCount(), Statistic.getCompleted(), 
+					Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
 			
 			return returnOutput;
 			/*
@@ -122,39 +119,52 @@ public class SparkMoVare {
 			break;
 			 */
 		case CLEAR:
-
-			deleteForStats = Delete.deleteAll(refinedUserInput[8], refinedUserInput[5], refinedUserInput[3]);
+			Delete.deleteAll(refinedUserInput[8], refinedUserInput[5], refinedUserInput[3]);
 
 			returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
-					Message.DELETE_ALL, returnOutput.getTotalAssignment()
-					- deleteForStats.getDeletedTotalAssignment(), returnOutput.getTotalCompleted()
-					- deleteForStats.getDeletedTotalCompleted(), returnOutput.getTotalOnTime()
-					- deleteForStats.getDeletedTotalOnTime(), false);
+					Message.DELETE_ALL, InternalStorage.getLineCount(), Statistic.getCompleted(), 
+					Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
 
 			return returnOutput;
 
 		case SORT:
 			LinkedList<Assignment> sortedBuffer = new LinkedList<Assignment>();
 			
+			sortedBuffer = Sort.multipleSortRequired(InternalStorage.getBuffer(), refinedUserInput[8],
+					refinedUserInput[3], refinedUserInput[5]);
+			
 			returnOutput = ModifyOutput.returnModification(sortedBuffer,
-					Message.SORT, returnOutput.getTotalAssignment(), returnOutput.getTotalCompleted(), 
-					returnOutput.getTotalOnTime(), false);
+					Message.SORT, InternalStorage.getLineCount(), Statistic.getCompleted(), 
+					Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
 
 			return returnOutput;
 
 		case SEARCH:
 			LinkedList<Assignment> searchBuffer = new LinkedList<Assignment>();
 			
+			searchBuffer = SearchAll.searchAll(InternalStorage.getBuffer(), refinedUserInput[8]);
+			
 			returnOutput = ModifyOutput.returnModification(searchBuffer,
-					Message.SORT, returnOutput.getTotalAssignment(), returnOutput.getTotalCompleted(), 
-					returnOutput.getTotalOnTime(), false);
+					Message.SORT, InternalStorage.getLineCount(), Statistic.getCompleted(), 
+					Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
 
 			return returnOutput;
-
+			
+		case DONE:
+			int bufferPosition = InternalStorage.getBufferPosition(refinedUserInput[1]);
+			
+			InternalStorage.getBuffer().get(bufferPosition).setIsDone(true);
+			
+			returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
+					Message.EDITED, InternalStorage.getLineCount(), Statistic.getCompleted(), 
+					Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
+			
+			return returnOutput;
+			
 		case STATISTIC:
 			returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
-					Message.STATISTIC, returnOutput.getTotalAssignment(), returnOutput.getTotalCompleted(), 
-					returnOutput.getTotalOnTime(), true);
+					Message.STATISTIC, InternalStorage.getLineCount(), Statistic.getCompleted(), 
+					Statistic.getIsOnTime(), true, IS_NOT_STATS_OR_INVALID);
 
 			return returnOutput;
 			/*
@@ -166,8 +176,9 @@ public class SparkMoVare {
 			 */
 		case DISPLAY:
 			returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
-					Message.DISPLAY, returnOutput.getTotalAssignment(), returnOutput.getTotalCompleted(), 
-					returnOutput.getTotalOnTime(), false);
+					Message.DISPLAY, InternalStorage.getLineCount(), Statistic.getCompleted(), 
+					Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
+			
 			Print.display();
 			return returnOutput;
 
@@ -178,10 +189,16 @@ public class SparkMoVare {
 					refinedUserInput[3], refinedUserInput[5]);
 			
 			returnOutput = ModifyOutput.returnModification(filteredBuffer,
-					Message.FILTER, returnOutput.getTotalAssignment(), returnOutput.getTotalCompleted(), 
-					returnOutput.getTotalOnTime(), false);
+					Message.FILTER, InternalStorage.getLineCount(), Statistic.getCompleted(), 
+					Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
 
 			return returnOutput;
+			
+		case INVALID:
+			
+			returnOutput = ModifyOutput.returnModification(filteredBuffer,
+					Message.FILTER, InternalStorage.getLineCount(), Statistic.getCompleted(), 
+					Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, true);
 
 		case EXIT:
 			System.exit(SYSTEM_EXIT_NO_ERROR);
@@ -191,12 +208,11 @@ public class SparkMoVare {
 			LinkedList<Assignment> noAssignment = new LinkedList<Assignment>();
 			
 			returnOutput = ModifyOutput.returnModification(noAssignment,
-					Message.INVALID_COMMAND, returnOutput.getTotalAssignment(), returnOutput.getTotalCompleted(), 
-					returnOutput.getTotalOnTime(), false);
+					Message.INVALID_COMMAND, InternalStorage.getLineCount(), Statistic.getCompleted(), 
+					Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, true);
 			
 			return returnOutput;
 		}
 		return returnOutput;
 	}
-
 }

@@ -1,12 +1,10 @@
 package logic;
 
 import logic.Assignment;
-
+import logic.Assignment.AssignmentType;
 import java.util.LinkedList;
 
-import parser.EnumGroup.AssignmentType;
-
-public class Trancation {
+public class Truncation {
 
 	private static Appointment appointmentInList = new Appointment();
 	private static Task taskInList = new Task();

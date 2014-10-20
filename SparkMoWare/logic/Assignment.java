@@ -11,14 +11,14 @@ public class Assignment{
 	private boolean isDone;
 	private boolean isOnTime;
 	private String priority; // IMPT else NIMPT
-	private assignmentType aType;
+	private AssignmentType aType;
 	// private String description;
 	// private int alarm; // in the format HHMM, if inactive null
 	// private Vector<String> tag; // to support tagging
 
 	/************** Constants **********************/
 
-	enum assignmentType {
+	enum AssignmentType {
 		TASK, APPOINTMENT, TENTATIVE, ASSIGNMENT;
 	}
 
@@ -36,14 +36,14 @@ public class Assignment{
 
 	// Default constructor
 	public Assignment() {
-		this(DEFAULT, DEFAULT_STRING, false, false, PRIORITY_NONE, assignmentType.ASSIGNMENT);
+		this(DEFAULT, DEFAULT_STRING, false, false, PRIORITY_NONE, AssignmentType.ASSIGNMENT);
 	}
 
 	public Assignment(String id, String title, boolean isDone, boolean isOnTime, String priority,
-			assignmentType atype) {
+			AssignmentType atype) {
 
 		setId(id);
-		setDateCreation(DateLocal.dateString());
+		setDateCreation(id.substring(0, 8));
 		setIndex(Integer.parseInt(Id.removeFrontZero(id.substring(8))));
 		setTitle(title);
 		setIsDone(isDone);
@@ -83,7 +83,7 @@ public class Assignment{
 		return this.index;
 	}
 
-	public assignmentType getAssignType() {
+	public AssignmentType getAssignType() {
 		return this.aType;
 	}
 
@@ -111,7 +111,7 @@ public class Assignment{
 		this.id = newId;
 	}
 
-	public void setAssignType(assignmentType atype) {
+	public void setAssignType(AssignmentType atype) {
 		this.aType = atype;
 	}
 
@@ -152,8 +152,7 @@ public class Assignment{
 	/**************** Overriding ************************/
 
 	public String toString() {
-		return getId() + "~" + getTitle() + "~" + getAssignType() + "~" + "-" + "~" + 
-				"-" + "~" + "-" + "~" + "-" + "~" + getIsDone() + 
+		return getId() + "~" + getTitle() + "~" + getAssignType() + "~" + getIsDone() + 
 				"~" + getIsOnTime() + "~" + getPriority();
 	}
 }

@@ -1,8 +1,7 @@
 package logic;
 
 import java.util.*;
-
-import parser.EnumGroup.AssignmentType;
+import logic.Assignment.AssignmentType;
 
 /*
  * Able to search for:

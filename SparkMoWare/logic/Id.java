@@ -3,7 +3,6 @@ package logic;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Scanner;
 
 /* 
  * only work till Sn 9999 otherwise the year will be corrupted
@@ -12,7 +11,6 @@ import java.util.Scanner;
 public class Id {
 
 	private static final int SERIAL_LENGTH = 12;
-	private static Scanner scanner = new Scanner(System.in);
 	protected static String latestSerialNumber = "";
 
 	public static void setLatestSerialNumber(String newSn) {
@@ -61,13 +59,13 @@ public class Id {
 	 * will continuously prompt user for correct ID format currently no way to exit
 	 * FATAL ERROR: if user enters edit command while file/program is empty, this prompt will run forever.
 	 */
-	private static String determineID(String id){
+	public static String determineID(String id){
 
 		while(!_IDFormatValid(id)) {
 
 			Print.printToUser(Message.INVALID_FORMAT);
 			Print.printToUser(String.format(Message.FORMAT_PROMPT, "ID"));		
-			id = scanner.nextLine();			
+			id = InternalStorage.getScanner().nextLine();			
 		}
 		return id;
 	}

@@ -23,7 +23,7 @@ public class Task extends Assignment{
 		super();
 		setEndDate(endDate);
 		setEndTime(endTime);
-		setAssignType(assignmentType.TASK);
+		setAssignType(AssignmentType.TASK);
 	}
 
 	/**************** Accessors ***********************/

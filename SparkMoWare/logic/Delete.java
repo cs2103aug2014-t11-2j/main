@@ -13,36 +13,34 @@ import java.util.LinkedList;
  */
 public class Delete {
 	
-	private static DeleteForStats deleteForStats = new DeleteForStats();
-	
 	enum DeleteAllType {
 		DELETEALL_ON, DELETEALL_BEFORE, DELETEALL_BETWEEN, CLEAR;
 	}
 	
-	protected static DeleteForStats deleteAll(String duration, String endDate, String startDate) {
+	protected static void deleteAll(String duration, String endDate, String startDate) {
 		
 		switch (getDuration(duration)) {
 
 		case DELETEALL_ON:
 			deleteOn(endDate);
-			return deleteForStats;
+			break;
 
 		case DELETEALL_BEFORE:
 			startDate = DateLocal.getStartDate();
 			deleteBetween(endDate, startDate);
-			return deleteForStats;
+			break;
 
 		case DELETEALL_BETWEEN:
 			deleteBetween(endDate, startDate);
-			return deleteForStats;
+			break;
 
 		default:
 			InternalStorage.getBuffer().clear();
-			return deleteForStats;
+			break;
 		}
 	}
 	
-	protected static DeleteForStats delete(String id) {
+	protected static void delete(String id) {
 		 
 		LinkedList<Assignment> idFound = new LinkedList<Assignment>();
 		idFound = SearchAll.searchAll(InternalStorage.getBuffer(), id);
@@ -51,26 +49,13 @@ public class Delete {
 		Appointment nullAssignment = new Appointment();
 		nullAssignment.setNumAppointment(nullAssignment.getNumAppointment() - 1); 
 		
-		if(idFound.size() == 0) {
-			return deleteForStats;
-		} else {
+		if(idFound.size() > 0) {
 			
 			int bufferPosition = InternalStorage.getBufferPosition(id);
-			Assignment assignmentDelete = InternalStorage.getBuffer().get(bufferPosition);
-			
-			if(assignmentDelete.getIsDone() == true) {
-				deleteForStats.increaseDeleteTotalCompleted();
-			}
-			if(assignmentDelete.getIsOnTime() == true) {
-				deleteForStats.increaseDeleteTotalOnTime();
-			}
-			deleteForStats.increaseDeleteTotalAssignment();
-			
+						
 			InternalStorage.getBuffer().remove(bufferPosition);
 			
 			nullAssignment.setNumAppointment(nullAssignment.getNumAppointment() - 1);
-			
-			return deleteForStats;
 		}
 	}
 

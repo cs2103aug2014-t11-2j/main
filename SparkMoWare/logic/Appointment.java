@@ -43,7 +43,7 @@ public class Appointment extends Task {
 		super();
 		setStartDate(startDate);
 		setStartTime(startTime);
-		setAssignType(assignmentType.APPOINTMENT);
+		setAssignType(AssignmentType.APPOINTMENT);
 		numAppointment++;
 	}
 

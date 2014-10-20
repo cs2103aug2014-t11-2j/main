@@ -3,9 +3,7 @@ package logic;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Scanner;
-
-import parser.EnumGroup.AssignmentType;
+import logic.Assignment.AssignmentType;
 
 /*
  * Prompt the user for a valid date
@@ -16,8 +14,6 @@ import parser.EnumGroup.AssignmentType;
 
 public class DateLocal {
 	
-	private static Scanner scanner = new Scanner(System.in);
-	
 	protected static String determineDate(String inputDate) {
 		
 		// will continuously prompt user for correct date format currently no way to exit
@@ -25,7 +21,7 @@ public class DateLocal {
 			
 			Print.printToUser(Message.INVALID_FORMAT);
 			Print.printToUser(String.format(Message.FORMAT_PROMPT, "date"));
-			inputDate = scanner.nextLine();
+			inputDate = InternalStorage.getScanner().nextLine();
 		}
 		return inputDate;
 	}

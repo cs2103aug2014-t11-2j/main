@@ -1,7 +1,5 @@
 package logic;
 
-import logic.Assignment;
-
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -25,13 +23,15 @@ public class Print {
 		}	
 	}
 
-	public static void printList(LinkedList<Assignment> list) {
+	public static void printList(LinkedList<Appointment> list) {
+		
 		for (int i = 0; i < list.size(); i++) {
 			System.out.println(list.get(i).toString());
 		}
 	}
 
 	public static void printHelpList(ArrayList<String> list) {
+		
 		for (int i = 0; i < list.size(); i++) {
 			System.out.println(list.get(i));
 		}
