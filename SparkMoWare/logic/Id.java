@@ -61,7 +61,7 @@ public class Id {
 	 * will continuously prompt user for correct ID format currently no way to exit
 	 * FATAL ERROR: if user enters edit command while file/program is empty, this prompt will run forever.
 	 */
-	protected static String determineID(String id){
+	private static String determineID(String id){
 
 		while(!_IDFormatValid(id)) {
 
