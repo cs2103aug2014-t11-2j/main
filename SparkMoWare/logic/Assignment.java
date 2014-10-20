@@ -18,7 +18,7 @@ public class Assignment{
 
 	/************** Constants **********************/
 
-	enum assignmentType {
+	public enum assignmentType {
 		TASK, APPOINTMENT, TENTATIVE, ASSIGNMENT;
 	}
 
