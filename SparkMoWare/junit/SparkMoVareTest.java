@@ -1,16 +1,22 @@
 package junit;
 
+import java.util.LinkedList;
+
 import logic.Add;
+import logic.Assignment;
+import logic.BufferValidity;
 import logic.Comparator;
 import logic.Filter;
+import logic.InternalStorage;
 import logic.Print;
 import logic.RefineInput;
 import logic.Edit;
 import logic.Sort;
+import logic.Assignment.assignmentType;
 
 import org.junit.Test;
 
-public class SparkMoVareTest {
+public class SparkMoVareTest<Assignment> {
 	/*
 	@Test
 	public void test() {
@@ -36,7 +42,7 @@ public class SparkMoVareTest {
 		System.out.println("ddMMyyyyhhmm".substring(0,8));
 		System.out.println("ddMMyyyyhhmm".substring(8));
 	}
-	*/
+
 	@Test
 	public void test(){
 	
@@ -48,7 +54,7 @@ public class SparkMoVareTest {
 		Add.addAssignment("010919940001", "tentativeTask", 2, " ", " ", "01091994", "1600", false, null, null);
 		
 //		System.out.println(Comparator.priorityComparator("important",null));
-		/*
+		
 		String[] refinedUserInput = new String[10];
 		refinedUserInput[8] = "edit";
 		refinedUserInput[1] = "140120000001";
@@ -56,9 +62,19 @@ public class SparkMoVareTest {
 		refinedUserInput[9] = "important";
 		String edited = Edit.editAssignment(refinedUserInput);
 		System.out.println(edited);
-		*/
-//		Print.printList(Filter.filter("important"));
+		Print.printList(Filter.filter("important"));
 		Print.printList(Sort.insertionSortPriority());
 	}
+*/
+	@Test
+	public void test(){
+		
+		LinkedList<Assignment> testBuffer = new LinkedList<Assignment>();
+		Assignment testAssignment = Assignment.Assignment(123456, "test", false, false, "important",
+				Assignment.assignmentType.APPOINTMENT);
+		testBuffer.add(testAssignment);
+		BufferValidity.validType(testBuffer,testAssignment);
+	}
+
 }
 
