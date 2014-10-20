@@ -1,29 +1,31 @@
 package parser;
 
-import parser.EnumGroup.CommandType;
-
 public class InputIsConfirm {
 	
 	protected static RefinedUserInput refineInput(String userInput) {
+		RefinedUserInput inputConfirm = new RefinedUserInput();
 		String id = Misc.extractId(userInput);
+		
+		if(id.isEmpty()) {
+			return inputConfirm;
+		}
+		
 		String date = ParserDateLocal.extractStartDate(userInput);
 		
-		if(date == null) {
-			return new RefinedUserInput(1);
+		if(date.isEmpty()) {
+			return inputConfirm;
 		}
 		
 		String time = ParserTimeLocal.extractStartTime(userInput);
 		
-		if(time == null) {
-			return new RefinedUserInput(1);
+		if(time.isEmpty()) {
+			return inputConfirm;
 		}
 		
-		RefinedUserInput inputConfirm =  new RefinedUserInput(
-				CommandType.CONFIRM, id,
-				null, date,
-				time, null,
-				null, null,
-				null);
+		inputConfirm.setCommandType(EnumGroup.CommandType.CONFIRM);
+		inputConfirm.setId(id);
+		inputConfirm.setStartDate(date);
+		inputConfirm.setStartTime(time);
 		
 		return inputConfirm;
 	}

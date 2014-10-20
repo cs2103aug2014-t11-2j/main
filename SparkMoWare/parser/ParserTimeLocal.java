@@ -11,7 +11,6 @@ public class ParserTimeLocal {
 	
 	protected static String defaultEndTime = "2359";
 	protected static String defaultStartTime = "0000";
-	private static Scanner scanner = new Scanner(System.in);
 	
 	/* Still haven't dealt with following inputs: 
 	 * [add] [start date] [start time] [end date]
@@ -59,31 +58,30 @@ public class ParserTimeLocal {
 			startTime = ParserTimeLocal.defaultStartTime; 
 		}
 		
-		return determineTime(startTime);
+		return determineTimeValidity(startTime);
 	}
-	
 
-
-
-		public static String determineTime(String inputTime) {
-
+		public static String determineTimeValidity(String inputTime) {
+			final Scanner sc = new Scanner(System.in);
+			
 			while(!timeFormatValid(inputTime)){
 
 				Message.printToUser(Message.INVALID_FORMAT);
 				Message.printToUser(String.format(Message.FORMAT_PROMPT, "time"));
-				inputTime = scanner.nextLine();			
+				inputTime = sc.nextLine();			
 
 				Matcher rejectMatcher = ParserPatternLocal.rejectPattern.matcher(inputTime);
 
 				if(rejectMatcher.find()) {
-					return null;
+					sc.close();
+					return "";
 				}
 			}
+			sc.close();
 			return inputTime;
 		}
 
 	public static boolean timeFormatValid(String time) {
-		
 		boolean timeValidity = true;
 		
 		if(time.length() != 4) {
@@ -97,7 +95,6 @@ public class ParserTimeLocal {
 	}
 	
 	public static boolean timeExists(int time) {
-		
 		boolean timeExist = false;
 		
 		int min = time % 100;
@@ -123,6 +120,5 @@ public class ParserTimeLocal {
 		
 		return input;
 	}
-
 }
 

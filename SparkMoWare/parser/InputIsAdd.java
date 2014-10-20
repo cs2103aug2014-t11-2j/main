@@ -1,60 +1,57 @@
 package parser;
 
-import parser.EnumGroup.AssignmentType;
-import parser.EnumGroup.CommandType;
-
 public class InputIsAdd {
 
 	protected static RefinedUserInput refineInput(String userInput) {
+		RefinedUserInput inputAdd = new RefinedUserInput();
 		String title = Misc.extractTitle(userInput);
 
-		if(title == null) {
-			return new RefinedUserInput(1);
+		if(title.isEmpty()) {
+			return inputAdd;
 		}
-		
+
 		String endDate = ParserDateLocal.extractEndDate(userInput);		
-		
-		if(endDate == null) {
-			return new RefinedUserInput(1);
+
+		if(endDate.isEmpty()) {
+			return inputAdd;
 		}
-		
+
 		String endTime = ParserTimeLocal.extractEndTime(userInput);
-		
-		if(endTime == null) {
-			return new RefinedUserInput(1);
+
+		if(endTime.isEmpty()) {
+			return inputAdd;
 		}
 
 		if(ParserDateLocal.hasTwoDateInputs(userInput)){			
 			String startDate = ParserDateLocal.extractStartDate(userInput);
 
-			if(startDate == null) {
-				return new RefinedUserInput(1);
+			if(startDate.isEmpty()) {
+				return inputAdd;
 			}
 			
 			String startTime = ParserTimeLocal.extractStartTime(userInput);
 			
-			if(startTime == null) {
-				return new RefinedUserInput(1);
+			if(startTime.isEmpty()) {
+				return inputAdd;
 			}
 
-			RefinedUserInput inputAddAppointment =  new RefinedUserInput(
-					CommandType.ADD, null,
-					title, startDate,
-					startTime, endDate,
-					endTime, AssignmentType.APPOINTMENT,
-					null);
-
-			return inputAddAppointment;
+			inputAdd.setCommandType(EnumGroup.CommandType.ADD);
+			inputAdd.setTitle(title);
+			inputAdd.setStartDate(startDate);
+			inputAdd.setStartTime(startTime);
+			inputAdd.setEndDate(endDate);
+			inputAdd.setEndTime(endTime);
+			inputAdd.setAssignmentType(EnumGroup.AssignmentType.APPOINTMENT);
 
 		} else {
-			RefinedUserInput inputAddTask =  new RefinedUserInput(
-					CommandType.ADD, null,
-					title, null,
-					null, endDate,
-					endTime, AssignmentType.TASK,
-					null);
 			
-			return inputAddTask;
+			inputAdd.setCommandType(EnumGroup.CommandType.ADD);
+			inputAdd.setTitle(title);
+			inputAdd.setEndDate(endDate);
+			inputAdd.setEndTime(endTime);
+			inputAdd.setAssignmentType(EnumGroup.AssignmentType.APPOINTMENT);
 		}
+		
+		return inputAdd;
 	}
 }

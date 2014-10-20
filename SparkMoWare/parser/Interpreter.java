@@ -10,13 +10,13 @@ public class Interpreter {
 			return InputIsAdd.refineInput(userInput);
 			
 		case EDIT:
-			return InputIsEdit.refineInput(userInput);
+			return RefineInputWithId.inputIsEdit(userInput);
 
 		case DELETE:
-			return InputIsDelete.refineInput(userInput);
+			return RefineInputWithId.inputIsDelete(userInput);
 
 		case TENTATIVE:
-			return InputIsTentative.refineInput(userInput);
+			return RefineInputWithSpecial.inputIsTentative(userInput);
 
 		case CONFIRM:
 			return InputIsConfirm.refineInput(userInput);
@@ -25,31 +25,46 @@ public class Interpreter {
 			return InputIsClear.refineInput(userInput);
 
 		case SORT:
-			return InputIsSort.refineInput(userInput);
+			return RefineInputWithSpecial.inputIsSort(userInput);
 
 		case SEARCH:
-			return InputIsSearch.refineInput(userInput);
+			return RefineInputWithSpecial.inputIsSearch(userInput);
 
 		case STATISTIC:
-			return InputIsStatistic.refineInput(userInput);
+			RefinedUserInput inputStatistic = new RefinedUserInput();
+			inputStatistic.setCommandType(EnumGroup.CommandType.STATISTIC);
+			return inputStatistic;
 
 		case UNDO:
-			return InputIsUndo.refineInput(userInput);
+			RefinedUserInput inputUndo = new RefinedUserInput();
+			inputUndo.setCommandType(EnumGroup.CommandType.UNDO);
+			return inputUndo;
 
 		case REDO:
-			return InputIsRedo.refineInput(userInput);
+			RefinedUserInput inputRedo = new RefinedUserInput();
+			inputRedo.setCommandType(EnumGroup.CommandType.REDO);
+			return inputRedo;
 
 		case DISPLAY:
-			return InputIsDisplay.refineInput(userInput);
+			RefinedUserInput inputDisplay = new RefinedUserInput();
+			inputDisplay.setCommandType(EnumGroup.CommandType.DISPLAY);
+			return inputDisplay;
 		
 		case FILTER:
-			return InputIsFilter.refineInput(userInput);
+			return RefineInputWithSpecial.inputIsFilter(userInput);
 		
 		case EXIT:
-			return InputIsExit.refineInput(userInput);
+			RefinedUserInput inputExit = new RefinedUserInput();
+			inputExit.setCommandType(EnumGroup.CommandType.EXIT);
+			return inputExit;
 
 		case HELP:
-			return InputIsHelp.refineInput(userInput);
+			RefinedUserInput inputHelp = new RefinedUserInput();
+			inputHelp.setCommandType(EnumGroup.CommandType.HELP);
+			return inputHelp;
+			
+		case DONE:
+			return InputIsFinish.refineInput(userInput);
 
 		default:
 			return null;

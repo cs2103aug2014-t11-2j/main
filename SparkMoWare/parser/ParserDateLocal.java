@@ -15,8 +15,6 @@ import java.util.regex.Matcher;
 
 public class ParserDateLocal {
 	
-	private static Scanner scanner = new Scanner(System.in);
-	
 	protected static String extractEndDate(String userInput) {
 		Matcher dateMatcher = ParserPatternLocal.datePattern.matcher(userInput);
 		
@@ -66,25 +64,27 @@ public class ParserDateLocal {
 			}
 			startDate = startDate.concat(dateMatcher.group(4));
 		}
-		return determineDate(startDate);
-	}
-	
+		return determineDateValidity(startDate);
+	}	
 	
 	//does not support special case such as user typing today
-	protected static String determineDate(String inputDate) { 
+	protected static String determineDateValidity(String inputDate) { 
+		final Scanner sc = new Scanner(System.in);
 		
 		while(!dateFormatValid(inputDate)) {
 			
 			Message.printToUser(Message.INVALID_FORMAT);
 			Message.printToUser(String.format(Message.FORMAT_PROMPT, "date"));
-			inputDate = scanner.nextLine();
+			inputDate = sc.nextLine();
 			
 			Matcher rejectMatcher = ParserPatternLocal.rejectPattern.matcher(inputDate);
 			
 			if(rejectMatcher.find()) {
-				return null;
+				sc.close();
+				return "";
 			}
 		}
+		sc.close();
 		return inputDate;
 	}
 
@@ -146,8 +146,6 @@ public class ParserDateLocal {
 		
 		return input;
 	}
-
-
 	
 	// unused methods in parser?
 	// decrementing date
