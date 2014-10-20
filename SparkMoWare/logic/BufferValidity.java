@@ -2,7 +2,7 @@ package logic;
 
 import java.util.LinkedList;
 
-import logic.Assignment.assignmentType;
+import logic.Assignment.AssignmentType;
 
 public class BufferValidity {
 
@@ -56,7 +56,7 @@ public class BufferValidity {
 	// Temporary assumption: start date and time appears before end date and
 	// time
 	private static void dateAndTimeChecker(Assignment assignment,
-			assignmentType assignType) {
+			AssignmentType assignType) {
 
 		// may need to change to determineDateValidity
 		endDateChecked = parser.ParserDateLocal
@@ -88,7 +88,7 @@ public class BufferValidity {
 		tentativeList = SearchAll.searchAll(bufferList, element.getTitle());
 
 		if (tentativeList.size() > 1) {
-			element.setAssignType(Assignment.assignmentType.TENTATIVE);
+			element.setAssignType(Assignment.AssignmentType.TENTATIVE);
 		} else {
 			String elementString = element.toString();
 			String[] elementAttributes = elementString.split("~");
