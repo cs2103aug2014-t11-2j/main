@@ -68,7 +68,7 @@ public class ParserDateLocal {
 	}	
 	
 	//does not support special case such as user typing today
-	protected static String determineDateValidity(String inputDate) { 
+	public static String determineDateValidity(String inputDate) { 
 		final Scanner sc = new Scanner(System.in);
 		
 		while(!dateFormatValid(inputDate)) {
@@ -88,7 +88,7 @@ public class ParserDateLocal {
 		return inputDate;
 	}
 
-	protected static boolean dateFormatValid(String date) {
+	public static boolean dateFormatValid(String date) {
 		
 		boolean validDateFormat = true;
 		
