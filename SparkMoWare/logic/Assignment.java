@@ -18,7 +18,11 @@ public class Assignment{
 
 	/************** Constants **********************/
 
+<<<<<<< HEAD
 	enum AssignmentType {
+=======
+	public enum assignmentType {
+>>>>>>> origin/master
 		TASK, APPOINTMENT, TENTATIVE, ASSIGNMENT;
 	}
 
