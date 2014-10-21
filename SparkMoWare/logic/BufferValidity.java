@@ -6,13 +6,13 @@ import logic.Assignment.AssignmentType;
 
 public class BufferValidity {
 
-	static boolean typeChecked = false;
-	static boolean idChecked = false;
-	static boolean priorityChecked = false;
-	static boolean startDateChecked = false;
-	static boolean startTimeChecked = false;
-	static boolean endDateChecked = false;
-	static boolean endTimeChecked = false;
+	private static boolean typeChecked = false;
+	private static boolean idChecked = false;
+	private static boolean priorityChecked = false;
+	private static boolean startDateChecked = false;
+	private static boolean startTimeChecked = false;
+	private static boolean endDateChecked = false;
+	private static boolean endTimeChecked = false;
 
 	/*
 	 * checks validity of each attribute of each assignment in the buffer list
@@ -20,86 +20,67 @@ public class BufferValidity {
 	 * else, it is stored in a separate list which is to be shown to user to
 	 * prompt him to correct mistakes
 	 */
-	protected static void checkValidity(LinkedList<Assignment> buffer) {
+	protected static LinkedList<Assignment> checkValidity(LinkedList<Assignment> buffer) {
 
-		LinkedList<Assignment> newBuffer = new LinkedList<Assignment>();
+		for (int counter = buffer.size(); counter < buffer.size(); counter--) {
+			
+			dateAndTimeChecker(buffer.get(counter));
+			idChecker(buffer.get(counter).getId());
+			priorityChecker(buffer.get(counter).getPriority());
 
-		for (int counter = 0; counter < buffer.size(); counter++) {
-			// check validity of SN, Title(maybe), start date, start time, end
-			// date,
-			// end time, type, priority
-			// ID
-			// firstly check valid type
-			typeChecked = validType(buffer, buffer.get(counter));
-			dateAndTimeChecker(buffer.get(counter), buffer.get(counter)
-					.getAssignType());
-			idChecked = Id._IDFormatValid(buffer.get(counter).getId());
-			priorityChecked = priorityChecker(buffer.get(counter).getPriority());
-
-			if (typeChecked || startDateChecked || endDateChecked
-					|| startTimeChecked || endTimeChecked || idChecked
-					|| priorityChecked) {
-				newBuffer.add(buffer.get(counter));
+			if (typeChecked && startDateChecked && endDateChecked
+					&& startTimeChecked && endTimeChecked && idChecked
+					&& priorityChecked) {
+				buffer.remove(buffer.get(counter));
 			}
-
 		}
-
-	}
-
-	private static boolean priorityChecker(String priority) {
-		if (priority.equals("NIMPT") || priority.equals("IMPT")) {
-			return true;
-		}
-		return false;
+		return buffer;
 	}
 
 	// Temporary assumption: start date and time appears before end date and
 	// time
-	private static void dateAndTimeChecker(Assignment assignment,
-			AssignmentType assignType) {
+	private static void dateAndTimeChecker(Assignment assignment) {
 
-		// may need to change to determineDateValidity
-		endDateChecked = parser.ParserDateLocal
-				.dateFormatValid(((Task) assignment).getEndDate());
-		endTimeChecked = parser.ParserTimeLocal
-				.timeFormatValid(((Task) assignment).getEndTime());
-
-		// since task & tentative task won't have start details
-		try {
-			startDateChecked = parser.ParserDateLocal
-					.dateFormatValid(((Appointment) assignment).getStartDate());
-			startTimeChecked = parser.ParserTimeLocal
-					.timeFormatValid(((Appointment) assignment).getStartTime());
-		} catch (NullPointerException e) {
-			startDateChecked = true;
-			startTimeChecked = true;
-		}
+		validType(assignment);
+		
+		if(assignment.getAssignType() == Assignment.AssignmentType.TASK){
+			// may need to change to determineDateValidity
+			Assignment tempTask = assignment;
+			endDateChecked = DateLocal.dateFormatValid(((Task) assignment).getEndDate());
+			endTimeChecked = TimeLocal.timeFormatValid(((Task) assignment).getEndTime());	
+		} else {
+			Assignment tempAppt = assignment;
+			endDateChecked = DateLocal.dateFormatValid(((Appointment) assignment).getEndDate());
+			endTimeChecked = TimeLocal.timeFormatValid(((Appointment) assignment).getEndTime());
+			startDateChecked = DateLocal.dateFormatValid(((Appointment) assignment).getStartDate());
+			startTimeChecked = TimeLocal.timeFormatValid(((Appointment) assignment).getStartTime());	
+		}		
 	}
 
 	// Temporary assumption: assignment type has changed to either
 	// TASK/APPT/APPT and nothing else
-	private static boolean validType(LinkedList<Assignment> bufferList,
-			Assignment element) {
+	private static void validType(Assignment element) {
 
-		// if (!element.equals("TASK") && !element.equals("APPT") &&
-		// !element.equals("TNTV")){
-
-		LinkedList<Assignment> tentativeList = new LinkedList<Assignment>();
-		tentativeList = SearchAll.searchAll(bufferList, element.getTitle());
-
-		if (tentativeList.size() > 1) {
-			element.setAssignType(Assignment.AssignmentType.TENTATIVE);
-		} else {
-			String elementString = element.toString();
-			String[] elementAttributes = elementString.split("~");
-			if (elementAttributes.length == 8) {
-				return true;
-			} else if (elementAttributes.length == 10) {
-				return true;
+		Assignment temp = element;
+		Appointment tempAppt = (Appointment)temp;
+		
+		if(tempAppt.getAssignType().equals(Assignment.AssignmentType.TASK)){
+			if(tempAppt.getStartDate() != null || tempAppt.getStartTime() != null){
+				typeChecked = false;
 			}
 		}
-		// consider whether to return false when exception is handled
-		return false;
+		typeChecked = true;
 	}
 
+	private static void idChecker(String id) {
+		 idChecked = Id._IDFormatValid(id);
+	}
+
+	private static void priorityChecker(String priority) {
+		if (priority.equals("NIMPT") || priority.equals("IMPT")) {
+			priorityChecked = true;
+		}
+		priorityChecked = false;
+	}
+	
 }
