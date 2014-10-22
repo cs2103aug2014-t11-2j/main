@@ -25,7 +25,7 @@ public class StorageTest {
 		testSaveBuffer.add(Test);
 		try {
 			Storage.saveFile("storageTest.txt",testSaveBuffer);
-		} catch (JSONException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

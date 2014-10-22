@@ -14,7 +14,7 @@ import org.json.JSONObject;
 
 import logic.Appointment;
 import logic.Assignment;
-import logic.Assignment.assignmentType;
+import logic.Assignment.AssignmentType;
 import logic.Comparator;
 import logic.Id;
 import logic.Message;
@@ -29,60 +29,90 @@ public class Storage {
 	private static final int  ASSIGNMENTLENGTH = 6;
 	private static final int TASKLENGTH = 8;
 	private static final int APPOINTMENTLENGTH = 10;
-
-	public static LinkedList<Assignment> saveFile(String filePath, LinkedList<Assignment> buffer) throws JSONException {
-		JSONArray writeBuffer = new JSONArray();
+	
+	public static LinkedList<Assignment> saveFile(String filePath, LinkedList<Assignment> buffer) {
 
 		File file = new File(filePath);
-
 		if(file.delete()) {
 		} else {
-			System.out.println(ERRORMESSAGELOADFAIL);
+			System.out.println("failed");
 		}
 
-		for(int i = 0; i < buffer.size(); i++) {
-			JSONObject obj = new JSONObject();
-			if (buffer.get(i).getAssignType()== assignmentType.ASSIGNMENT) {
-				obj.put("ID", buffer.get(i).getId());
-				obj.put("Title", buffer.get(i).getTitle());
-				obj.put("IsDone", buffer.get(i).getIsDone());
-				obj.put("IsOnTime", buffer.get(i).getIsOnTime());
-				obj.put("Priority", buffer.get(i).getPriority());
-				writeBuffer.put(obj);
-			} else if (buffer.get(i).getAssignType()== assignmentType.TASK) {
-				obj.put("ID", buffer.get(i).getId());
-				obj.put("Title", buffer.get(i).getTitle());
-				obj.put("IsDone", buffer.get(i).getIsDone());
-				obj.put("IsOnTime", buffer.get(i).getIsOnTime());
-				obj.put("Priority", buffer.get(i).getPriority());
-				obj.put("EndDate", ((Task)buffer.get(i)).getEndDate());
-				obj.put("EndTime", ((Task)buffer.get(i)).getEndTime());
-				writeBuffer.put(obj);
-			} else if (buffer.get(i).getAssignType()== assignmentType.APPOINTMENT) {
-				obj.put("ID", buffer.get(i).getId());
-				obj.put("Title", buffer.get(i).getTitle());
-				obj.put("IsDone", buffer.get(i).getIsDone());
-				obj.put("IsOnTime", buffer.get(i).getIsOnTime());
-				obj.put("Priority", buffer.get(i).getPriority());
-				obj.put("EndDate", ((Appointment)buffer.get(i)).getEndDate());
-				obj.put("EndTime", ((Appointment)buffer.get(i)).getEndTime());
-				obj.put("StartDate", ((Appointment)buffer.get(i)).getStartDate());
-				obj.put("StartTime", ((Appointment)buffer.get(i)).getStartTime());
-				writeBuffer.put(obj);
-			}
-		}
 		try {
 			FileWriter fw = new FileWriter(file.getAbsoluteFile());
 			BufferedWriter bw = new BufferedWriter(fw);
-			bw.write(writeBuffer.toString());
-			bw.close();
 
-		}
-		catch (IOException e) {
-			e.printStackTrace();
-		}
+			for(int i = 0; i < buffer.size(); i++) {
+				bw.write(buffer.get(i).toString());
+				if (i<buffer.size() - 1) {
+					bw.newLine(); 
+				}
+			}
+			bw.close();
+			
+		} catch (IOException e) {
+			System.out.println("Exception encountered while saving the textfile");
+			System.exit(SYSTEM_EXIT_ERROR);
+		}		
 		return buffer;
 	}
+
+//	public static LinkedList<Assignment> saveFile(String filePath, LinkedList<Assignment> buffer) throws JSONException {
+//		JSONArray writeBuffer = new JSONArray();
+//
+//		File file = new File(filePath);
+//
+//		if(file.delete()) {
+//		} else {
+//			System.out.println(ERRORMESSAGELOADFAIL);
+//		}
+//
+//		for(int i = 0; i < buffer.size(); i++) {
+//			JSONObject obj = new JSONObject();
+//			if (buffer.get(i).getAssignType()== AssignmentType.ASSIGNMENT) {
+//				obj.put("ID", buffer.get(i).getId());
+//				obj.put("Title", buffer.get(i).getTitle());
+//				obj.put("IsDone", buffer.get(i).getIsDone());
+//				obj.put("IsOnTime", buffer.get(i).getIsOnTime());
+//				obj.put("Priority", buffer.get(i).getPriority());
+//				writeBuffer.put(obj);
+//			} else if (buffer.get(i).getAssignType()== AssignmentType.TASK) {
+//				obj.put("ID", buffer.get(i).getId());
+//				obj.put("Title", buffer.get(i).getTitle());
+//				obj.put("IsDone", buffer.get(i).getIsDone());
+//				obj.put("IsOnTime", buffer.get(i).getIsOnTime());
+//				obj.put("Priority", buffer.get(i).getPriority());
+//				obj.put("EndDate", ((Task)buffer.get(i)).getEndDate());
+//				obj.put("EndTime", ((Task)buffer.get(i)).getEndTime());
+//				writeBuffer.put(obj);
+//			} else if (buffer.get(i).getAssignType()== AssignmentType.APPOINTMENT) {
+//				obj.put("ID", buffer.get(i).getId());
+//				obj.put("Title", buffer.get(i).getTitle());
+//				obj.put("IsDone", buffer.get(i).getIsDone());
+//				obj.put("IsOnTime", buffer.get(i).getIsOnTime());
+//				obj.put("Priority", buffer.get(i).getPriority());
+//				obj.put("EndDate", ((Appointment)buffer.get(i)).getEndDate());
+//				obj.put("EndTime", ((Appointment)buffer.get(i)).getEndTime());
+//				obj.put("StartDate", ((Appointment)buffer.get(i)).getStartDate());
+//				obj.put("StartTime", ((Appointment)buffer.get(i)).getStartTime());
+//				writeBuffer.put(obj);
+//				System.out.println(obj.toString());
+//
+//			}
+//		}
+//		try {
+//			FileWriter fw = new FileWriter(file.getAbsoluteFile());
+//			BufferedWriter bw = new BufferedWriter(fw);
+//			bw.write(writeBuffer.toString());
+//			System.out.println(writeBuffer.toString());
+//			bw.close();
+//
+//		}
+//		catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//		return buffer;
+//	}
 
 
 	public static LinkedList<Assignment> openFile(String filePath, String latestSerialNumber, LinkedList<Assignment> buffer) {

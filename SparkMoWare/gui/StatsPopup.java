@@ -64,8 +64,10 @@ public class StatsPopup {
 		
 		QuoteFeedback = new Text(popup, SWT.BORDER | SWT.READ_ONLY | SWT.CENTER);
 		QuoteFeedback.setBounds(10, 179, 438, 27);
-		if (percentageOntime<33) {
-			QuoteFeedback.setText("You have so much more room to improve, keep trying!");
+	    if (totalTask==0) {
+			QuoteFeedback.setText("You have yet to set any item, start one today!");
+	    } else if (percentageOntime<33) {
+			QuoteFeedback.setText("You have much room for improvement, keep trying!");
 		} else if (percentageOntime<66) {
 			QuoteFeedback.setText("You are doing decently but there is still room for improvment, keep trying!");
 		} else {

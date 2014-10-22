@@ -34,6 +34,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tray;
 import org.eclipse.swt.widgets.TrayItem;
 import org.eclipse.ui.forms.widgets.FormToolkit;
+
 import storage.Storage;
 
 public class MainController {
@@ -66,7 +67,6 @@ public class MainController {
 		Image background = SWTResourceManager.getImage(MainController.class, "/resource/image/wallpaper1.jpg");
 		//logger.log("GUI, setting Background");
 		shell.setBackgroundImage(background);
-		
 		shell.setText("SparkMoVare");
 
 		/**
@@ -199,7 +199,18 @@ public class MainController {
 		cli.addKeyListener(new KeyListener() {
 			public void keyReleased(KeyEvent e) {
 				if (e.keyCode == SWT.CR || e.keyCode == SWT.LF) {
+					commandHistory.addCmd(cli.getText());
 					CommandHandler.commandHandle(cli, feedback, userInput, tableViewer);
+				}else if (e.keyCode == SWT.ARROW_UP) {
+					String commandCheck = commandHistory.getPrevCmd();
+					if (!commandCheck.equals("")) {
+						cli.setText(commandCheck);
+					}
+				}else if (e.keyCode == SWT.ARROW_DOWN) {
+					String commandCheck = commandHistory.getNextCmd();
+					if (!commandCheck.equals("")) {
+						cli.setText(commandCheck);
+					}
 				}
 				else if (e.keyCode == SWT.F12 && cli.getText().equals("testing")) {
 					StatsPopup.statsAppear(12, 2, 10);
@@ -207,7 +218,11 @@ public class MainController {
 					feedback.setText("ACHIEVEMENT UNLOCK : Dumb Ways to Die!");
 //					try {
 //						JFXPanel fxPanel = new JFXPanel();
+//						URL url = this.getClass().getResource("Tangerine Kitty - Dumb Ways To Die.mp3");
+//						//File f = new File(url.toURI());
+//
 //						File f = new File("Tangerine Kitty - Dumb Ways To Die.mp3");
+//					
 //						Media hit = new Media(f.toURI().toString());
 //						MediaPlayer mediaPlayer = new MediaPlayer(hit);
 //						mediaPlayer.play();

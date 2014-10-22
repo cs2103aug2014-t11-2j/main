@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.LinkedList;
 
 import org.eclipse.jface.viewers.TableViewer;
@@ -35,7 +37,7 @@ public class HelplistPopup {
 		TableViewer tableViewer = new TableViewer(helpList, SWT.BORDER | SWT.FULL_SELECTION);
 		table = tableViewer.getTable();
 		table.setBounds(10, 10, 514, 342);
-		openFile("HelpList.txt");
+		openFile();
 		for (int i=0; i<helplistBuffer.size();i++) {
 			TableItem item = new TableItem(table,SWT.NONE);
 			item.setText(helplistBuffer.get(i));
@@ -46,20 +48,15 @@ public class HelplistPopup {
 		helpList.open();
 	}
 	
-	protected static void openFile(String filePath) {
+	protected static void openFile() {
 		try { 
-			File file = new File(filePath);
-			if (!file.exists()) {
-				file.createNewFile();
-				
-			}
-			FileReader fileReader = new FileReader(file);
-			BufferedReader bufferedReader = new BufferedReader(fileReader);
+			InputStream in = HelplistPopup.class.getResourceAsStream("/resource/text/HelpList.txt");
+			BufferedReader input = new BufferedReader(new InputStreamReader(in));
 			String line;
-			while ((line = bufferedReader.readLine()) != null) {
+			while ((line = input.readLine()) != null) {
 				helplistBuffer.add(line);
 			}
-			fileReader.close();
+			in.close();
 		} catch (IOException e) {
 			System.out.println("MESSAGE_FILE_INITIALISATION_ERROR");
 		}
