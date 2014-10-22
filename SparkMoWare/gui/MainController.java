@@ -1,5 +1,6 @@
 package gui;
 
+import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -7,6 +8,11 @@ import java.util.LinkedList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.print.DocFlavor.URL;
+
+import javafx.embed.swing.JFXPanel;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import logic.Assignment;
 import logic.Id;
 import logic.InternalStorage;
@@ -52,22 +58,42 @@ public class MainController {
 	private Text feedback;
 	private Table table;
 	private LinkedList<Assignment> buffer = InternalStorage.getBuffer();
+	private boolean isPlaying = false;
+	private boolean isReady = false;
+	private MediaPlayer mediaPlayer;
 
 	public MainController(Display display) {
 		shell = new Shell(display);
 		////logger.log("GUI, setting up shell");
+
 		shell.addControlListener(new ControlAdapter() {
 			@Override
 			public void controlResized(ControlEvent e) {
-				shell.setSize(1024, 768);	// force aspect so user cannot resize	
+				shell.setSize(1024, 674);	// force aspect so user cannot resize	
 			}
 		});
-		shell.setSize(1024, 768);
+		shell.setSize(1024, 674);
 		////logger.log("GUI, importing background");
 		Image background = SWTResourceManager.getImage(MainController.class, "/resource/image/wallpaper1.jpg");
 		//logger.log("GUI, setting Background");
 		shell.setBackgroundImage(background);
 		shell.setText("SparkMoVare");
+
+		/**
+		 * Setting to tray and minimising to tray
+		 */
+		try {
+			JFXPanel fxPanel = new JFXPanel();
+			File f = new File("Tangerine Kitty - Dumb Ways To Die.mp3");
+			Media hit = new Media(f.toURI().toString());
+			mediaPlayer = new MediaPlayer(hit);
+			isReady=true;
+
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			System.out.println("Exception");
+		}
+
 
 		/**
 		 * Setting to tray and minimising to tray
@@ -136,6 +162,20 @@ public class MainController {
 					}
 				} else if (e.keyCode == SWT.F1) {
 					HelplistPopup.helplistPopup();
+				} else if (e.keyCode == SWT.F5) {
+					shell.setBackgroundImage(imageGetter.imageGen());
+					quoteViewer.setText(QuoteLib.getQuote());
+				} else if (e.keyCode == SWT.F6) {
+
+					if (!isPlaying && isReady) {
+						mediaPlayer.play();
+						isPlaying = true;
+					}
+					if (isPlaying && isReady){
+						mediaPlayer.stop();
+						isPlaying = false;
+					}
+
 				}
 			}
 		});
@@ -147,7 +187,7 @@ public class MainController {
 
 		final TableViewer tableViewer = new TableViewer(shell, SWT.BORDER | SWT.FULL_SELECTION);
 		table = tableViewer.getTable();
-		table.setBounds(43, 151, 921, 472);
+		table.setBounds(43, 157, 921, 371);
 		table.setLinesVisible(true);
 		formToolkit.paintBordersFor(table);
 		TableColumn tc0 = new TableColumn(table, SWT.CENTER);
@@ -195,7 +235,7 @@ public class MainController {
 		////logger.log("GUI, setting up CLI");
 
 		final Text cli = new Text(shell, SWT.NONE);
-		cli.setBounds(43, 644, 809, 26);
+		cli.setBounds(53, 544, 809, 26);
 		cli.addKeyListener(new KeyListener() {
 			public void keyReleased(KeyEvent e) {
 				if (e.keyCode == SWT.CR || e.keyCode == SWT.LF) {
@@ -216,21 +256,21 @@ public class MainController {
 					StatsPopup.statsAppear(12, 2, 10);
 					//easter egg
 					feedback.setText("ACHIEVEMENT UNLOCK : Dumb Ways to Die!");
-//					try {
-//						JFXPanel fxPanel = new JFXPanel();
-//						URL url = this.getClass().getResource("Tangerine Kitty - Dumb Ways To Die.mp3");
-//						//File f = new File(url.toURI());
-//
-//						File f = new File("Tangerine Kitty - Dumb Ways To Die.mp3");
-//					
-//						Media hit = new Media(f.toURI().toString());
-//						MediaPlayer mediaPlayer = new MediaPlayer(hit);
-//						mediaPlayer.play();
-//
-//					} catch(Exception ex) {
-//						ex.printStackTrace();
-//						System.out.println("Exception");
-//					}
+					//					try {
+					//						JFXPanel fxPanel = new JFXPanel();
+					//						URL url = this.getClass().getResource("Tangerine Kitty - Dumb Ways To Die.mp3");
+					//						//File f = new File(url.toURI());
+					//
+					//						File f = new File("Tangerine Kitty - Dumb Ways To Die.mp3");
+					//					
+					//						Media hit = new Media(f.toURI().toString());
+					//						MediaPlayer mediaPlayer = new MediaPlayer(hit);
+					//						mediaPlayer.play();
+					//
+					//					} catch(Exception ex) {
+					//						ex.printStackTrace();
+					//						System.out.println("Exception");
+					//					}
 				}
 			}
 			public void keyPressed(KeyEvent e) {
@@ -243,7 +283,7 @@ public class MainController {
 		////logger.log("GUI, setting up enter button");
 
 		Button btnEnter = new Button(shell, SWT.NONE);
-		btnEnter.setBounds(874, 640, 90, 30);
+		btnEnter.setBounds(874, 544, 90, 30);
 		btnEnter.setText("Enter");
 		btnEnter.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -276,7 +316,7 @@ public class MainController {
 		clockDisplay.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		clockDisplay.setEnabled(false);
 		clockDisplay.setEditable(false);
-		clockDisplay.setBounds(344, 41, 310, 52);
+		clockDisplay.setBounds(344, 55, 310, 52);
 		clockDisplay.setText(timeFormat.format(date).toString());
 
 
@@ -288,7 +328,7 @@ public class MainController {
 		feedback = new Text(shell, SWT.BORDER | SWT.CENTER);
 		feedback.setEnabled(false);
 		feedback.setEditable(false);
-		feedback.setBounds(344, 99, 310, 26);
+		feedback.setBounds(344, 113, 310, 26);
 		formToolkit.adapt(feedback, true, true);
 
 		/**
@@ -300,7 +340,7 @@ public class MainController {
 		quoteViewer.setFont(SWTResourceManager.getFont("Segoe UI", 11, SWT.NORMAL));
 		quoteViewer.setEnabled(false);
 		quoteViewer.setEditable(false);
-		quoteViewer.setBounds(43, 676, 921, 26);
+		quoteViewer.setBounds(43, 597, 921, 26);
 		quoteViewer.setText(QuoteLib.getQuote());
 
 		/**
