@@ -8,15 +8,15 @@ import java.util.LinkedList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import javax.print.DocFlavor.URL;
-
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import logic.Appointment;
 import logic.Assignment;
 import logic.Id;
 import logic.InternalStorage;
 import logic.Message;
+import gui.QuoteLib;
 
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
@@ -57,7 +57,7 @@ public class MainController {
 	private String userInput="";
 	private Text feedback;
 	private Table table;
-	private LinkedList<Assignment> buffer = InternalStorage.getBuffer();
+	private LinkedList<Appointment> buffer = new LinkedList<Appointment>();
 	private boolean isPlaying = false;
 	private boolean isReady = false;
 	private MediaPlayer mediaPlayer;

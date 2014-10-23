@@ -2,6 +2,7 @@ package gui;
 
 import java.util.LinkedList;
 
+import logic.Appointment;
 import logic.Assignment;
 
 import org.eclipse.jface.viewers.TableViewer;
@@ -13,7 +14,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 
 public class TablerLoader {
-	protected static void populateTable(TableViewer tableViewer, LinkedList<Assignment> buffer) {
+	protected static void populateTable(TableViewer tableViewer, LinkedList<Appointment> buffer) {
 		Table table = tableViewer.getTable();
 		Device device = Display.getCurrent ();
 		Color Red = new Color (device, 255, 0, 0);

@@ -70,7 +70,10 @@ public class SparkMoVare {
 		}		
 	} 
 
-	public static Output executeCommand(RefinedUserInput userInput) {
+	public static Output executeCommand(String userInputString) {
+		
+		RefinedUserInput userInput = new RefinedUserInput();
+		userInput = Interpreter.reader(userInputString);
 
 		Output returnOutput = new Output();
 
