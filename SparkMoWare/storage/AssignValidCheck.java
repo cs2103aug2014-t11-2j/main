@@ -43,7 +43,7 @@ public class AssignValidCheck {
 		
 		checkId = ValidityCheck._IDFormatValid(line[0]);
 		checkType = ValidityCheck.validType(line[2]);
-		checkPriority = ValidityCheck.priorityChecker(line[7]);
+		checkPriority = ValidityCheck.priorityChecker(line[9]);
 		checkEndDate = ValidityCheck.dateFormatValid(line[5]);
 		checkEndTime = ValidityCheck.timeFormatValid(line[6]);
 		checkStartDate = ValidityCheck.dateFormatValid(line[3]);

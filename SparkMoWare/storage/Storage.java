@@ -137,7 +137,7 @@ public class Storage {
 		}
 		return buffer;
 	}
-	
+
 	public static LinkedList<Assignment> addToBuffer(String[] lineArray) {
 
 		boolean check = false;
@@ -149,6 +149,7 @@ public class Storage {
 			check = AssignValidCheck.checkAssignment(lineArray);
 
 			if(check) {
+				setLatestSerialNumber(lineArray[0]);
 				buffer.add(toBufferAssignment(lineArray));
 			}
 		} else if (lineArray.length == TASK_LENGTH) {
@@ -156,63 +157,78 @@ public class Storage {
 			check = AssignValidCheck.checkTask(lineArray);
 
 			if(check) {
+				setLatestSerialNumber(lineArray[0]);
 				buffer.add(toBufferTask(lineArray));
 			}
 		} else if(lineArray.length == APPOINTMENT_LENGTH) {
-			
+
 			check = AssignValidCheck.checkAppointment(lineArray);
 
 			if(check) {
+				setLatestSerialNumber(lineArray[0]);
 				buffer.add(toBufferAppointment(lineArray));
 			}
 		}
 		return buffer;
 	}
-	
+
 	public static Assignment toBufferAssignment(String[] lineArray) {
+
+		// adding as Assignment
+		Assignment temp = new Assignment();
+
+		setLatestSerialNumber(lineArray[0]);
+
+		temp.setId(lineArray[0]);
+		temp.setTitle(lineArray[1]);
+		temp.setIsDone(Boolean.parseBoolean(lineArray[3]));
+		temp.setIsOnTime(Boolean.parseBoolean(lineArray[4]));
+		temp.setPriority(lineArray[5]);
+		return temp;
+	}
+
+	public static Task toBufferTask(String[] lineArray) {
+
+		// adding as Task
+		Task temp = new Task();
+
+		setLatestSerialNumber(lineArray[0]);
+
+		temp.setId(lineArray[0]);
+		temp.setTitle(lineArray[1]);
+		temp.setIsDone(Boolean.parseBoolean(lineArray[5]));
+		temp.setIsOnTime(Boolean.parseBoolean(lineArray[6]));
+		temp.setPriority(lineArray[7]);
+		temp.setEndDate(lineArray[3]);
+		temp.setEndTime(lineArray[4]);
+
+		return temp;	
+	}
+
+	public static Appointment toBufferAppointment(String[] lineArray) {
+
+		// adding as Appointment
+		Appointment temp = new Appointment();
+
+		temp.setId(lineArray[0]);
+		temp.setTitle(lineArray[1]);
+		temp.setIsDone(Boolean.parseBoolean(lineArray[7]));
+		temp.setIsOnTime(Boolean.parseBoolean(lineArray[8]));
+		temp.setPriority(lineArray[9]);
+		temp.setEndDate(lineArray[5]);
+		temp.setEndTime(lineArray[6]);
+		temp.setStartDate(lineArray[3]);
+		temp.setStartTime(lineArray[4]);
+
+		return temp;	
+	}
+
+	private static void setLatestSerialNumber(String id) {
 		
 		if(Id.getLatestSerialNumber().equals("")) {
-			Id.setLatestSerialNumber(lineArray[0]);
-		} else if(Comparator.serialNumberComparator(lineArray[0], Id.getLatestSerialNumber())) {
-			Id.setLatestSerialNumber(lineArray[0]);
+			Id.setLatestSerialNumber(id);
+		} else if(Comparator.serialNumberComparator(id, Id.getLatestSerialNumber())) {
+			Id.setLatestSerialNumber(id);
 		}
-		// adding as Assignment
-			Assignment temp = new Assignment();
-			temp.setId(lineArray[0]);
-			temp.setTitle(lineArray[1]);
-			temp.setIsDone(Boolean.parseBoolean(lineArray[3]));
-			temp.setIsOnTime(Boolean.parseBoolean(lineArray[4]));
-			temp.setPriority(lineArray[5]);
-			return temp;
-	}
-	
-	private static Task toBufferTask(String[] lineArray) {
-		
-			// adding as Task
-			Task temp = new Task();
-			temp.setId(lineArray[0]);
-			temp.setTitle(lineArray[1]);
-			temp.setIsDone(Boolean.parseBoolean(lineArray[4]));
-			temp.setIsOnTime(Boolean.parseBoolean(lineArray[5]));
-			temp.setPriority(lineArray[6]);
-			temp.setEndDate(lineArray[2]);
-			temp.setEndTime(lineArray[3]);
-			return temp;	
-	}
-	
-	private static Appointment toBufferAppointment(String[] lineArray) {
-		
-			// adding as Appointment
-			Appointment temp = new Appointment();
-			temp.setId(lineArray[0]);
-			temp.setTitle(lineArray[1]);
-			temp.setIsDone(Boolean.parseBoolean(lineArray[6]));
-			temp.setIsOnTime(Boolean.parseBoolean(lineArray[7]));
-			temp.setPriority(lineArray[8]);
-			temp.setEndDate(lineArray[4]);
-			temp.setEndTime(lineArray[5]);
-			temp.setStartDate(lineArray[2]);
-			temp.setStartTime(lineArray[3]);
-			return temp;	
 	}
 } 

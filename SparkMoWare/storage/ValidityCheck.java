@@ -121,7 +121,7 @@ public class ValidityCheck {
 	protected static boolean priorityChecker(String priority) {
 		boolean priorityChecked = false;
 		
-		if (priority.equals("NIMPT") || priority.equals("IMPT")) {
+		if (priority.equalsIgnoreCase("NIMPT") || priority.equalsIgnoreCase("IMPT")) {
 			priorityChecked = true;
 		}
 		return priorityChecked;
