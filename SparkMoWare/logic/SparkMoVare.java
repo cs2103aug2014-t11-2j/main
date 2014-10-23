@@ -58,15 +58,12 @@ public class SparkMoVare {
 					getCommandType(refinedUserInput[0]) != CommandType.DISPLAY) {
 				InternalStorage.pushHistory(InternalStorage.getBuffer());
 */
-				System.out.println("File saved");
 	//		}
 			Print.printList(returnOutput.getReturnBuffer());
 			Print.printToUser(returnOutput.getFeedback());
 			System.out.println(returnOutput.getTotalAssignment());
 			System.out.println(returnOutput.getTotalCompleted());
 			System.out.println(returnOutput.getTotalOnTime());
-
-			Storage.saveFile(InternalStorage.getFilePath(), InternalStorage.getBuffer());
 		}		
 	} 
 
@@ -213,6 +210,10 @@ public class SparkMoVare {
 			
 			return returnOutput;
 		}
+		
+		System.out.println("File saved");
+		Storage.saveFile(InternalStorage.getFilePath(), InternalStorage.getBuffer());
+		
 		return returnOutput;
 	}
 }
