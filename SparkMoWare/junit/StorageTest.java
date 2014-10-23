@@ -84,9 +84,5 @@ public class StorageTest {
 //
 //		// test extraction of latest serial number
 //		assertTrue(Id.getLatestSerialNumber().equals("020819940005"));
-
-
-
 	}
-
 }
