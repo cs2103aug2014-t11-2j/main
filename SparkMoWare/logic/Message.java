@@ -25,6 +25,8 @@ public class Message {
 	
 	protected static final String FILTER = "Necessary Assignment(s) have been filtered away!";
 	
+	protected static final String DONE = "Good job completing a job!";
+	
 	protected static final String INVALID_COMMAND = "Invalid Commad Issued";
 	
 	protected static final String DOES_NOT_EXISTS = "%1$s does not exists";
@@ -41,7 +43,4 @@ public class Message {
 
 	protected static final String INVALID_FORMAT = "Invalid Format";	
 	protected static final String INVALID_SEARCH_PARAMETER = "Invalid search parameter entered";
-
-	public static final String STORAGE_FILE_ERROR = "Exception encountered while initalising the Storage file";
-	protected static final String SAVE_FILE_ERROR = "Exception encountered while saving the textfile";
 }

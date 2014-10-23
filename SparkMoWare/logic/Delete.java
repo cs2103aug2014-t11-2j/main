@@ -17,7 +17,7 @@ public class Delete {
 		DELETEALL_ON, DELETEALL_BEFORE, DELETEALL_BETWEEN, CLEAR;
 	}
 	
-	protected static void deleteAll(String duration, String endDate, String startDate) {
+	protected static void deleteAll(String duration, String startDate, String endDate) {
 		
 		switch (getDuration(duration)) {
 

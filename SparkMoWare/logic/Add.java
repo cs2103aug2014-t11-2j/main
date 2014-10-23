@@ -1,5 +1,6 @@
 package logic;
 
+import parser.RefinedUserInput;
 import logic.Assignment.AssignmentType;
 
 /*
@@ -19,19 +20,19 @@ public class Add {
 	 * @param refinedUserInput
 	 * @return new assignment 
 	 */
-	protected static String addSomething(String[] refinedUserInput) {
+	protected static String addSomething(RefinedUserInput userInput) {
 
-		if(refinedUserInput[7].equals(AssignmentType.APPOINTMENT)) {
+		if(userInput.getAssignmentType().equals(AssignmentType.APPOINTMENT)) {
 
-			return addAppointment(refinedUserInput[1], refinedUserInput[2],	refinedUserInput[3],
-					refinedUserInput[4], refinedUserInput[5], refinedUserInput[6], 
-					false, refinedUserInput[9]);
-		} else if(refinedUserInput[7].equals(AssignmentType.TASK)) {
+			return addAppointment(userInput.getId(), userInput.getTitle(), userInput.getStartDate(),
+					userInput.getStartTime(), userInput.getEndDate(), userInput.getEndTime(), 
+					false, userInput.getSpecialContent());
+		} else if(userInput.getAssignmentType().equals(AssignmentType.TASK)) {
 
-			return addTask(refinedUserInput[1], refinedUserInput[2], refinedUserInput[5], 
-					refinedUserInput[6], false, refinedUserInput[9]);
+			return addTask(userInput.getId(), userInput.getTitle(), userInput.getEndDate(), 
+					userInput.getEndTime(), false, userInput.getSpecialContent());
 		} else {
-			return addAssignment(refinedUserInput[1], refinedUserInput[2], false, refinedUserInput[9]);
+			return addAssignment(userInput.getId(), userInput.getTitle(), false, userInput.getSpecialContent());
 		}
 	}
 

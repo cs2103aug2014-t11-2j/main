@@ -4,18 +4,18 @@ package parser;
 
 public class EnumGroup {
 
-	protected enum AssignmentType {
+	public enum AssignmentType {
 		TASK, APPOINTMENT, TENTATIVE, DEFAULT
 	}
 	
-	protected enum CommandType {
+	public enum CommandType {
 		ADD, EDIT, DELETE, TENTATIVE, CONFIRM, SORT, SEARCH, FILTER,
 		CLEAR, UNDO, REDO, STATISTIC, EXIT, INVALID, DISPLAY, HELP,
 		DONE, DEFAULT
 		//unlikely to use invalid or exit
 	}
 	
-	protected enum EditType {
+	public enum EditType {
 		TITLE, START_DATE, START_TIME, END_DATE, END_TIME, INVALID, PRIORITY, DONE
 		//unlikely to use invalid or done
 	}

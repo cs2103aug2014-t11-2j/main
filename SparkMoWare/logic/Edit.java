@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
 
+import parser.RefinedUserInput;
 import logic.Assignment.AssignmentType;
 
 /*
@@ -18,7 +19,7 @@ public class Edit {
 		TITLE, START_DATE, START_TIME, END_DATE, END_TIME, INVALID, PRIORITY, DONE
 	}
 
-	public static String editAssignment(String[] refinedUserInput) {
+	public static String editAssignment(RefinedUserInput userInput) {
 
 		LinkedList<Assignment> idFound = new LinkedList<Assignment>();
 		idFound = SearchAll.searchAll(InternalStorage.getBuffer(), refinedUserInput[1]);
@@ -194,5 +195,14 @@ public class Edit {
 			taskInBuffer = ((Task) InternalStorage.getBuffer().get(bufferPosition));
 			taskInBuffer.setEndTime(time);
 		}
+	}
+	
+	protected static void completeAssignment(String id) {
+		
+		int bufferPosition;
+		
+		bufferPosition = InternalStorage.getBufferPosition(id);
+		
+		InternalStorage.getBuffer().get(bufferPosition).setIsDone(true);
 	}
 }

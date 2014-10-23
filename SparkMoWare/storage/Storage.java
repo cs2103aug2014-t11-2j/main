@@ -12,7 +12,6 @@ import logic.Appointment;
 import logic.Assignment;
 import logic.Comparator;
 import logic.Id;
-import logic.Message;
 import logic.Print;
 import logic.Task;
 
@@ -46,7 +45,7 @@ public class Storage {
 			bw.close();
 
 		} catch (IOException e) {
-			System.out.println("Exception encountered while saving the textfile");
+			Print.printToUser(StorageMessage.SAVE_FILE_ERROR);
 			System.exit(SYSTEM_EXIT_ERROR);
 		}		
 		return buffer;
@@ -133,13 +132,13 @@ public class Storage {
 			fileReader.close();
 		} catch (IOException e) {
 
-			Print.printToUser(Message.STORAGE_FILE_ERROR);
+			Print.printToUser(StorageMessage.STORAGE_FILE_ERROR);
 			System.exit(SYSTEM_EXIT_ERROR);
 		}
 		return buffer;
 	}
 	
-	private static LinkedList<Assignment> addToBuffer(String[] lineArray) {
+	public static LinkedList<Assignment> addToBuffer(String[] lineArray) {
 
 		boolean check = false;
 
