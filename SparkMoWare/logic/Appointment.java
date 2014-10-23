@@ -63,8 +63,8 @@ public class Appointment extends Task {
 	
 	/**************** Mutators ************************/
 	
-	public void setStartDate(String newstartDate) {
-		this.startDate = newstartDate;
+	public void setStartDate(String newStartDate) {
+		this.startDate = newStartDate;
 	}
 	
 	public void setStartTime(String newStartTime) {

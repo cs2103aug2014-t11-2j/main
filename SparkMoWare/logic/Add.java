@@ -24,15 +24,16 @@ public class Add {
 
 		if(userInput.getAssignmentType().equals(AssignmentType.APPOINTMENT)) {
 
-			return addAppointment(userInput.getId(), userInput.getTitle(), userInput.getStartDate(),
+			return addAppointment(Id.serialNumGen(), userInput.getTitle(), userInput.getStartDate(),
 					userInput.getStartTime(), userInput.getEndDate(), userInput.getEndTime(), 
 					false, userInput.getSpecialContent());
+			
 		} else if(userInput.getAssignmentType().equals(AssignmentType.TASK)) {
 
-			return addTask(userInput.getId(), userInput.getTitle(), userInput.getEndDate(), 
+			return addTask(Id.serialNumGen(), userInput.getTitle(), userInput.getEndDate(), 
 					userInput.getEndTime(), false, userInput.getSpecialContent());
 		} else {
-			return addAssignment(userInput.getId(), userInput.getTitle(), false, userInput.getSpecialContent());
+			return addAssignment(Id.serialNumGen(), userInput.getTitle(), false, userInput.getSpecialContent());
 		}
 	}
 
