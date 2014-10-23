@@ -169,7 +169,7 @@ public class Storage {
 		return buffer;
 	}
 	
-	private static Assignment toBufferAssignment(String[] lineArray) {
+	public static Assignment toBufferAssignment(String[] lineArray) {
 		
 		if(Id.getLatestSerialNumber().equals("")) {
 			Id.setLatestSerialNumber(lineArray[0]);
