@@ -7,33 +7,27 @@ public class RefineInputWithId {
 		RefinedUserInput inputDelete = new RefinedUserInput();
 		
 		if(id.isEmpty()) {
+			inputDelete.setCommandType(EnumGroup.CommandType.INVALID_FORMAT);
 			return inputDelete;
 		}
 		
 		inputDelete.setCommandType(EnumGroup.CommandType.DELETE);
+		inputDelete.setId(id);
 		
 		return inputDelete;
 	}
 	
 	protected static RefinedUserInput inputIsEdit(String userInput) {
-		/* if() {
-			
-		}
-		 When the user types [edit id], what will be shown to the user is everything in the buffer
-		 * the user has access to/can edit.
-		 * [edit title date time]
-		 * 
-		 */
-		
 		String id = Misc.extractId(userInput);
 		RefinedUserInput inputEdit = new RefinedUserInput();
 		
-		if(id.isEmpty()) {// <-- need change. Instead, if id isnt there, it means its new content
-			//checking id exists is handled by logic.
+		if(id.isEmpty()) {
+			inputEdit.setCommandType(EnumGroup.CommandType.INVALID_FORMAT);
 			return inputEdit;
 		}
 		
 		inputEdit.setCommandType(EnumGroup.CommandType.EDIT);
+		inputEdit.setId(id);
 		
 		return inputEdit;
 	}
@@ -43,6 +37,7 @@ public class RefineInputWithId {
 		String id = Misc.extractId(userInput);		
 		
 		if(id.isEmpty()) {
+			inputFinish.setCommandType(EnumGroup.CommandType.INVALID_FORMAT);
 			return inputFinish;
 		}
 		

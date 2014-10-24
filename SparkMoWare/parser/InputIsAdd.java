@@ -4,34 +4,22 @@ public class InputIsAdd {
 
 	protected static RefinedUserInput refineInput(String userInput) {
 		RefinedUserInput inputAdd = new RefinedUserInput();
-		String title = Misc.extractTitle(userInput);
-
-		if(title.isEmpty()) {
-			return inputAdd;
-		}
-
-		String endDate = ParserDateLocal.extractEndDate(userInput);		
-
-		if(endDate.isEmpty()) {
-			return inputAdd;
-		}
-
+		String title = Misc.extractTitle(userInput, "add");
+		String endDate = ParserDateLocal.extractEndDate(userInput);
 		String endTime = ParserTimeLocal.extractEndTime(userInput);
-
-		if(endTime.isEmpty()) {
+		String priority = Misc.extractPriority(userInput);
+		
+		if(title.isEmpty() || endDate.isEmpty() || endTime.isEmpty()) {
+			inputAdd.setCommandType(EnumGroup.CommandType.INVALID_FORMAT);
 			return inputAdd;
 		}
 
 		if(ParserDateLocal.hasTwoDateInputs(userInput)){			
 			String startDate = ParserDateLocal.extractStartDate(userInput);
-
-			if(startDate.isEmpty()) {
-				return inputAdd;
-			}
-			
 			String startTime = ParserTimeLocal.extractStartTime(userInput);
 			
-			if(startTime.isEmpty()) {
+			if(startDate.isEmpty() || startTime.isEmpty()) {
+				inputAdd.setCommandType(EnumGroup.CommandType.INVALID_FORMAT);
 				return inputAdd;
 			}
 
@@ -41,6 +29,7 @@ public class InputIsAdd {
 			inputAdd.setStartTime(startTime);
 			inputAdd.setEndDate(endDate);
 			inputAdd.setEndTime(endTime);
+			inputAdd.setPriority(priority);
 			inputAdd.setAssignmentType(EnumGroup.AssignmentType.APPOINTMENT);
 
 		} else {
@@ -49,9 +38,10 @@ public class InputIsAdd {
 			inputAdd.setTitle(title);
 			inputAdd.setEndDate(endDate);
 			inputAdd.setEndTime(endTime);
+			inputAdd.setPriority(priority);
 			inputAdd.setAssignmentType(EnumGroup.AssignmentType.APPOINTMENT);
 		}
-		
+
 		return inputAdd;
 	}
 }

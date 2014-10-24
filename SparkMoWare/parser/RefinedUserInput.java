@@ -15,10 +15,10 @@ public class RefinedUserInput {
 	private String endDate;
 	private String endTime;
 	private AssignmentType assignment;
+	private String priority;
 	private String specialContent;
 	/* Special content is for the following command cases:
 	 * delete all (on, before, during)
-	 * edit which is to be edited (title, start date, end date, etc.)
 	 * tentative (number of days)
 	 * sort and search (date, serial number, etc.)
 	 */
@@ -35,6 +35,7 @@ public class RefinedUserInput {
 		setEndDate(defaultContent);
 		setEndTime(defaultContent);
 		setAssignmentType(EnumGroup.AssignmentType.DEFAULT);
+		setPriority("NMPT");
 		setSpecialContent(defaultContent);
 	}
 	
@@ -70,6 +71,10 @@ public class RefinedUserInput {
 	
 	protected AssignmentType getAssignmentType() {
 		return this.assignment;
+	}
+	
+	protected String getPriority() {
+		return this.priority;
 	}
 	
 	protected String getSpecialContent() {
@@ -110,6 +115,10 @@ public class RefinedUserInput {
 		this.assignment = assignment;
 	}
 	
+	protected void setPriority(String priority) {
+		this.priority = priority;
+	}
+	
 	protected void setSpecialContent(String specialContent) {
 		this.specialContent = specialContent;
 	}
@@ -118,6 +127,6 @@ public class RefinedUserInput {
 	
 	public String toString() {
 		return getCommandType() + "~" + getId() + "~" + getTitle() + "~" + getStartDate() + "~" + getStartTime() + "~"
-				+ getEndDate() + "~" + getEndTime() + "~" + getAssignmentType() + "~" + getSpecialContent();
+				+ getEndDate() + "~" + getEndTime() + "~" + getAssignmentType() + "~" + getPriority() + "~" + getSpecialContent();
 	}
 }

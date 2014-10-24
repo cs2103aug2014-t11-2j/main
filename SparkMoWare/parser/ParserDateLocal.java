@@ -3,7 +3,6 @@ package parser;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Scanner;
 import java.util.regex.Matcher;
 
 /*
@@ -67,31 +66,16 @@ public class ParserDateLocal {
 		return determineDateValidity(startDate);
 	}	
 	
-	//does not support special case such as user typing today
 	public static String determineDateValidity(String inputDate) { 
-		final Scanner sc = new Scanner(System.in);
-		
-		while(!dateFormatValid(inputDate)) {
-			
-			Message.printToUser(Message.INVALID_FORMAT);
-			Message.printToUser(String.format(Message.FORMAT_PROMPT, "date"));
-			inputDate = sc.nextLine();
-			
-			Matcher rejectMatcher = ParserPatternLocal.rejectPattern.matcher(inputDate);
-			
-			if(rejectMatcher.find()) {
-				sc.close();
+		if(!dateFormatValid(inputDate)) {
 				return "";
 			}
-		}
-		sc.close();
 		return inputDate;
 	}
 
 	public static boolean dateFormatValid(String date) {
-		
 		boolean validDateFormat = true;
-		
+
 		if(date.length() != 8) {
 			validDateFormat = false;
 		} else if(!date.matches("[0-9]+")) {
@@ -103,7 +87,6 @@ public class ParserDateLocal {
 	}
 	
 	protected static boolean dateExists(int date) {
-		
 		boolean leapYear = false;
 		boolean dateExist = false;
 		
@@ -139,12 +122,7 @@ public class ParserDateLocal {
 	protected static String replaceAllDate(String input) {
 		Matcher dateMatcher = ParserPatternLocal.datePattern.matcher(input);
 		
-		while(dateMatcher.find()) {
-			input = dateMatcher.replaceFirst("");
-			dateMatcher.reset(input);
-		}
-		
-		return input;
+		return dateMatcher.replaceAll("");
 	}
 	
 	// unused methods in parser?

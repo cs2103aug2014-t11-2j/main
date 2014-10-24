@@ -11,7 +11,7 @@ public class EnumGroup {
 	protected enum CommandType {
 		ADD, EDIT, DELETE, TENTATIVE, CONFIRM, SORT, SEARCH, FILTER,
 		CLEAR, UNDO, REDO, STATISTIC, EXIT, INVALID, DISPLAY, HELP,
-		DONE, DEFAULT
+		DONE, DEFAULT, INVALID_FORMAT, EDITED
 		//unlikely to use invalid or exit
 	}
 	

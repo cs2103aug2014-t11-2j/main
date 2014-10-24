@@ -1,6 +1,5 @@
 package parser;
 
-import java.util.Scanner;
 import java.util.regex.Matcher;
 
 /*
@@ -26,7 +25,7 @@ public class ParserTimeLocal {
 		//or no time inputs
 		if(hasTwoTimeInputs(userInput)) {
 			userInput = timeMatcher.replaceFirst("");
-			}
+		}
 
 		endTime = extractStartTime(userInput);
 
@@ -36,7 +35,7 @@ public class ParserTimeLocal {
 
 		return endTime;
 	}
-	
+
 	protected static boolean hasTwoTimeInputs(String input) {
 		String[] temp = ParserPatternLocal.timePattern.split(input);
 
@@ -46,44 +45,31 @@ public class ParserTimeLocal {
 			return false;
 		}
 	}
-	
-		protected static String extractStartTime(String userInput) {
+
+	protected static String extractStartTime(String userInput) {
 		userInput = ParserDateLocal.replaceAllDate(userInput);
 		Matcher timeMatcher = ParserPatternLocal.timePattern.matcher(userInput);
 		String startTime = new String();
-		
+
 		if(timeMatcher.find()) {
 			startTime = timeMatcher.group();
 		} else if(!timeMatcher.find()) {
 			startTime = ParserTimeLocal.defaultStartTime; 
 		}
-		
+
 		return determineTimeValidity(startTime);
 	}
 
-		public static String determineTimeValidity(String inputTime) {
-			final Scanner sc = new Scanner(System.in);
-			
-			while(!timeFormatValid(inputTime)){
-
-				Message.printToUser(Message.INVALID_FORMAT);
-				Message.printToUser(String.format(Message.FORMAT_PROMPT, "time"));
-				inputTime = sc.nextLine();			
-
-				Matcher rejectMatcher = ParserPatternLocal.rejectPattern.matcher(inputTime);
-
-				if(rejectMatcher.find()) {
-					sc.close();
-					return "";
-				}
-			}
-			sc.close();
-			return inputTime;
+	public static String determineTimeValidity(String inputTime) {
+		if(!timeFormatValid(inputTime)) {
+			return "";
 		}
+		return inputTime;
+	}
 
 	public static boolean timeFormatValid(String time) {
 		boolean timeValidity = true;
-		
+
 		if(time.length() != 4) {
 			timeValidity = false;
 		} else if(!time.matches("[0-9]+")) {
@@ -93,13 +79,13 @@ public class ParserTimeLocal {
 		}
 		return timeValidity;
 	}
-	
+
 	public static boolean timeExists(int time) {
 		boolean timeExist = false;
-		
+
 		int min = time % 100;
 		int hr = time / 100;
-		
+
 		if(min <= 59 && min >= 0) {
 			timeExist = true;
 		} else if(hr <= 23 && hr >= 0) {
@@ -113,12 +99,7 @@ public class ParserTimeLocal {
 	protected static String replaceAllTime(String input) {
 		Matcher timeMatcher = ParserPatternLocal.timePattern.matcher(input);
 		
-		while(timeMatcher.find()) {
-			input = timeMatcher.replaceFirst("");
-			timeMatcher.reset(input);
-		}
-		
-		return input;
+		return timeMatcher.replaceAll("");
 	}
 }
 

@@ -9,6 +9,7 @@ public class RefineInputWithSpecial {
 		String specialContent  = ExtractSpecialContent.forFilter(userInput);
 
 		if(specialContent.isEmpty()) {
+			inputFilter.setCommandType(EnumGroup.CommandType.INVALID_FORMAT);
 			return inputFilter;
 		}
 		
@@ -23,6 +24,7 @@ public class RefineInputWithSpecial {
 		String specialContent  = ExtractSpecialContent.forSearch(userInput);
 
 		if(specialContent.isEmpty()) {
+			inputSearch.setCommandType(EnumGroup.CommandType.INVALID_FORMAT);
 			return inputSearch;
 		}
 		
@@ -38,6 +40,7 @@ public class RefineInputWithSpecial {
 		String specialContent  = ExtractSpecialContent.forSort(userInput);
 
 		if(specialContent.isEmpty()) {
+			inputSort.setCommandType(EnumGroup.CommandType.INVALID_FORMAT);
 			return inputSort;
 		}
 		
@@ -45,19 +48,5 @@ public class RefineInputWithSpecial {
 		inputSort.setSpecialContent(specialContent);
 		
 		return inputSort;
-	}
-	
-	protected static RefinedUserInput inputIsTentative(String userInput) {
-		RefinedUserInput inputTentative = new RefinedUserInput(); 
-		String specialContent  = ExtractSpecialContent.forTentative(userInput);
-
-		if(specialContent.isEmpty()) {
-			return inputTentative;
-		}
-		
-		inputTentative.setCommandType(EnumGroup.CommandType.TENTATIVE);
-		inputTentative.setSpecialContent(specialContent);
-		
-		return inputTentative;
 	}	
 }

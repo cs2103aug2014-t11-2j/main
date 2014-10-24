@@ -5,20 +5,11 @@ public class InputIsConfirm {
 	protected static RefinedUserInput refineInput(String userInput) {
 		RefinedUserInput inputConfirm = new RefinedUserInput();
 		String id = Misc.extractId(userInput);
-		
-		if(id.isEmpty()) {
-			return inputConfirm;
-		}
-		
 		String date = ParserDateLocal.extractStartDate(userInput);
-		
-		if(date.isEmpty()) {
-			return inputConfirm;
-		}
-		
 		String time = ParserTimeLocal.extractStartTime(userInput);
 		
-		if(time.isEmpty()) {
+		if(id.isEmpty() || date.isEmpty() || time.isEmpty()) {
+			inputConfirm.setCommandType(EnumGroup.CommandType.INVALID_FORMAT);
 			return inputConfirm;
 		}
 		

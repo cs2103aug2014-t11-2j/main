@@ -7,14 +7,10 @@ public class InputIsClear {
 	protected static RefinedUserInput refineInput(String userInput) {
 		RefinedUserInput inputClear = new RefinedUserInput();
 		String specialContent = ExtractSpecialContent.forClear(userInput);
-		
-		if(specialContent.isEmpty()){
-			return inputClear;
-		}
-			
 		String endDate = ParserDateLocal.extractEndDate(userInput);
 		
-		if(endDate.isEmpty()){
+		if(specialContent.isEmpty() || endDate.isEmpty()){
+			inputClear.setCommandType(EnumGroup.CommandType.INVALID_FORMAT);
 			return inputClear;
 		}
 		
@@ -32,6 +28,7 @@ public class InputIsClear {
 			String startDate = ParserDateLocal.extractStartDate(userInput);
 
 			if(startDate.isEmpty()){
+				inputClear.setCommandType(EnumGroup.CommandType.INVALID_FORMAT);
 				return inputClear;
 			}
 
