@@ -39,7 +39,7 @@ public class InputIsAdd {
 			inputAdd.setEndDate(endDate);
 			inputAdd.setEndTime(endTime);
 			inputAdd.setPriority(priority);
-			inputAdd.setAssignmentType(EnumGroup.AssignmentType.APPOINTMENT);
+			inputAdd.setAssignmentType(EnumGroup.AssignmentType.TASK);
 		}
 
 		return inputAdd;

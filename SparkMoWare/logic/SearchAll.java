@@ -231,7 +231,7 @@ public class SearchAll {
 		return datesFound;
 	}
 
-	private static LinkedList<Assignment> searchByStartDate(LinkedList<Assignment> buffer, 
+	protected static LinkedList<Assignment> searchByStartDate(LinkedList<Assignment> buffer, 
 			String searchStartDate) {
 
 		LinkedList<Assignment> startDateFound = new LinkedList<Assignment>();

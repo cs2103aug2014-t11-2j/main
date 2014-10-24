@@ -41,6 +41,8 @@ public class DateLocal {
 	}
 	
 	protected static boolean dateExists(int date) {
+
+		assert(String.valueOf(date).length() == 8);
 		
 		boolean leapYear = false;
 		boolean dateExist = false;
@@ -78,6 +80,8 @@ public class DateLocal {
 	// decrementing date
 	protected static String updateDate(String date) {
 
+		assert(date.length() ==8);
+		
 		String[] endDate = new String[3];
 
 		endDate[0] = date.substring(0, 2);
@@ -86,6 +90,8 @@ public class DateLocal {
 		
 		int[] intEndDate = new int[3];
 		String updatedDate = "";
+		
+		assert(endDate.length<4);
 		
 		for(int dateCharCount = 0; dateCharCount < endDate.length; dateCharCount++) {
 			intEndDate[dateCharCount] = Integer.parseInt(endDate[dateCharCount]); 
@@ -96,6 +102,7 @@ public class DateLocal {
 				intEndDate[2]--;
 				intEndDate[1] = 12;
 				intEndDate[0] = 31;
+				assert(intEndDate[2]>0);
 			} else {
 				intEndDate[1] = updateMonth(intEndDate[1], intEndDate[2]);
 			}
@@ -107,6 +114,7 @@ public class DateLocal {
 			updatedDate += String.valueOf(intEndDate[dateIntCount]);
 		}
 		
+		assert(dateExists(Integer.parseInt(updatedDate)));
 		return updatedDate;
 	}
 
@@ -136,6 +144,8 @@ public class DateLocal {
 			Appointment firstAppointment = ((Appointment) InternalStorage.getBuffer().getFirst());
 			startDate = firstAppointment.getStartDate();
 		}
+		
+		//null pointer exception in case assignment(floating task)
 		return startDate;
 	}
 }
