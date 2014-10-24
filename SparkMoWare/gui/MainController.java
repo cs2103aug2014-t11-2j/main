@@ -12,11 +12,9 @@ import javafx.embed.swing.JFXPanel;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import logic.Appointment;
-import logic.Assignment;
 import logic.Id;
 import logic.InternalStorage;
 import logic.Message;
-import gui.QuoteLib;
 
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
@@ -83,6 +81,7 @@ public class MainController {
 		 * Setting to tray and minimising to tray
 		 */
 		try {
+			@SuppressWarnings("unused")
 			JFXPanel fxPanel = new JFXPanel();
 			File f = new File("Tangerine Kitty - Dumb Ways To Die.mp3");
 			Media hit = new Media(f.toURI().toString());
@@ -162,18 +161,22 @@ public class MainController {
 					}
 				} else if (e.keyCode == SWT.F1) {
 					HelplistPopup.helplistPopup();
+					feedback.setText("Help List Selected");
 				} else if (e.keyCode == SWT.F5) {
 					shell.setBackgroundImage(imageGetter.imageGen());
 					quoteViewer.setText(QuoteLib.getQuote());
+					feedback.setText("User Interface Refreshed");
 				} else if (e.keyCode == SWT.F6) {
 
 					if (!isPlaying && isReady) {
 						mediaPlayer.play();
 						isPlaying = true;
+						feedback.setText("Playing Music");
 					}
 					if (isPlaying && isReady){
 						mediaPlayer.stop();
 						isPlaying = false;
+						feedback.setText("Music Stopped");
 					}
 
 				}

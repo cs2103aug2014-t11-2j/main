@@ -3,7 +3,6 @@ package gui;
 import java.util.LinkedList;
 
 import logic.Appointment;
-import logic.Assignment;
 
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
