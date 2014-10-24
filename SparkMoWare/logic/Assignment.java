@@ -23,7 +23,7 @@ public class Assignment{
 	}
 
 	protected static final String DEFAULT_STRING = "DEFAULT";
-	protected static final String DEFAULT = "NONE";
+	protected static final String DEFAULT = "010120140001";
 
 	protected static final String TYPE_TASK = "TASK";
 	protected static final String TYPE_APPOINTMENT = "APPT";

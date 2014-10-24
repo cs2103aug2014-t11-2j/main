@@ -23,7 +23,7 @@ public class Comparator {
 			// check Sn
 			idA = Id.removeFrontZero(idA.substring(8));
 			idB = Id.removeFrontZero(idB.substring(8));
-
+		
 			if (Integer.parseInt(idA) > Integer.parseInt(idB)) {
 				serialCheck = true;
 			}

@@ -41,43 +41,44 @@ public class RefinedUserInput {
 	
 /**************** Accessors ***********************/
 	
-	protected CommandType getCommandType() {
+	public CommandType getCommandType() {
 		return this.command;
 	}
 	
-	protected String getId() {
+	public String getId() {
 		return this.id;
 	}
 	
-	protected String getTitle() {
+	public String getTitle() {
 		return this.title;
 	}
 	
-	protected String getStartDate() {
+	public String getStartDate() {
 		return this.startDate;
 	}
 	
-	protected String getStartTime() {
+	public String getStartTime() {
 		return this.startTime;
 	}
 	
-	protected String getEndDate() {
+	public String getEndDate() {
 		return this.endDate;
 	}
 	
-	protected String getEndTime() {
+	public String getEndTime() {
 		return this.endTime;
 	}
 	
-	protected AssignmentType getAssignmentType() {
+	public AssignmentType getAssignmentType() {
 		return this.assignment;
 	}
-	
-	protected String getPriority() {
+
+	public String getPriority() {
 		return this.priority;
 	}
 	
-	protected String getSpecialContent() {
+	public String getSpecialContent() {
+
 		return this.specialContent;
 	}
 	
