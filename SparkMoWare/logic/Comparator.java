@@ -16,14 +16,17 @@ public class Comparator {
 	// the format is 250920140001
 	public static boolean serialNumberComparator(String idA, String idB) {
 
+		assert(idA.length() == 12 && idA.length() == 12);
+		
 		int checkDate = dateComparator(idA.substring(0, 8), idB.substring(0, 8));
 		boolean serialCheck = false;
 
 		if (checkDate == SAME) {
 			// check Sn
 			idA = Id.removeFrontZero(idA.substring(8));
+
 			idB = Id.removeFrontZero(idB.substring(8));
-		
+
 			if (Integer.parseInt(idA) > Integer.parseInt(idB)) {
 				serialCheck = true;
 			}
@@ -35,6 +38,8 @@ public class Comparator {
 
 	protected static int dateComparator(String dateA, String dateB) {
 
+		assert(dateA.length() == 8 && dateB.length() == 8);
+		
 		String yearA = dateA.trim().substring(4, 8);
 		String yearB = dateB.trim().substring(4, 8);
 
@@ -60,17 +65,25 @@ public class Comparator {
 		} else if (Integer.parseInt(yearA) < Integer.parseInt(yearB)) {
 			return SMALLER;
 		} else if (Integer.parseInt(monthA) > Integer.parseInt(monthB)) {
+			assert (Integer.parseInt(yearA) == Integer.parseInt(yearB));
 			return LARGER;
 		} else if (Integer.parseInt(monthA) < Integer.parseInt(monthB)) {
+			assert (Integer.parseInt(yearA) == Integer.parseInt(yearB));
 			return SMALLER;
 		} else if (Integer.parseInt(dayA) > Integer.parseInt(dayB)) {
+			assert (Integer.parseInt(yearA) == Integer.parseInt(yearB) && Integer
+					.parseInt(monthA) == Integer.parseInt(monthB));
 			return LARGER;
 		}
+		assert (Integer.parseInt(yearA) == Integer.parseInt(yearB) && Integer
+				.parseInt(monthA) == Integer.parseInt(monthB));
 		return SMALLER;
 	}
 
 	protected static int timeComparator(String timeA, String timeB) {
 
+		assert(timeA.length() == 4 && timeB.length() == 4);
+		
 		String hourA = timeA.trim().substring(0, 2);
 		String hourB = timeA.trim().substring(0, 2);
 
@@ -90,8 +103,10 @@ public class Comparator {
 		} else if (Integer.parseInt(hourA) < Integer.parseInt(hourB)) {
 			return SMALLER;
 		} else if (Integer.parseInt(minA) > Integer.parseInt(minB)) {
+			assert(Integer.parseInt(hourA) == Integer.parseInt(hourB));
 			return LARGER;
 		}
+		assert(Integer.parseInt(hourA) == Integer.parseInt(hourB));
 		return SMALLER;
 	}
 }

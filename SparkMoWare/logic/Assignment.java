@@ -1,6 +1,8 @@
 package logic;
 
-public class Assignment{
+import static org.junit.Assert.assertTrue;
+
+public class Assignment {
 
 	/************** Data members **********************/
 
@@ -12,6 +14,7 @@ public class Assignment{
 	private boolean isOnTime;
 	private String priority; // IMPT else NIMPT
 	private AssignmentType aType;
+
 	// private String description;
 	// private int alarm; // in the format HHMM, if inactive null
 	// private Vector<String> tag; // to support tagging
@@ -36,11 +39,12 @@ public class Assignment{
 
 	// Default constructor
 	public Assignment() {
-		this(DEFAULT, DEFAULT_STRING, false, false, PRIORITY_NONE, AssignmentType.ASSIGNMENT);
+		this(DEFAULT, DEFAULT_STRING, false, false, PRIORITY_NONE,
+				AssignmentType.ASSIGNMENT);
 	}
 
-	public Assignment(String id, String title, boolean isDone, boolean isOnTime, String priority,
-			AssignmentType atype) {
+	public Assignment(String id, String title, boolean isDone,
+			boolean isOnTime, String priority, AssignmentType atype) {
 
 		setId(id);
 		setDateCreation(id.substring(0, 8));
@@ -49,7 +53,7 @@ public class Assignment{
 		setIsDone(isDone);
 		setIsOnTime(isOnTime);
 		setPriority(priority);
-		//setTag(tag);
+		// setTag(tag);
 		setAssignType(atype);
 	}
 
@@ -88,17 +92,11 @@ public class Assignment{
 	}
 
 	/*
-	 * public String getDescription() {
-	 *	 return description;
-	 * }
-	 *
-	 * public int getAlarm() {
-	 *	 return alarm;
-	 * }
-	 *
-	 * public Vector<String> getTag() {
-	 * 	 return this.tag;
-	 * }
+	 * public String getDescription() { return description; }
+	 * 
+	 * public int getAlarm() { return alarm; }
+	 * 
+	 * public Vector<String> getTag() { return this.tag; }
 	 */
 
 	/**************** Mutators ************************/
@@ -135,24 +133,19 @@ public class Assignment{
 		this.index = newIndex;
 	}
 
-	/* 
-	 * public void setDescription(String newDescription) {
-	 * description = newDescription;
-	 * }
-	 *
-	 *  public void setAlarm(int newAlarm) {
-	 * alarm = newAlarm;
-	 * }
-	 *
-	 * public void setTag(Vector<String> newTag) {
-	 * tag = newTag;
-	 * }
+	/*
+	 * public void setDescription(String newDescription) { description =
+	 * newDescription; }
+	 * 
+	 * public void setAlarm(int newAlarm) { alarm = newAlarm; }
+	 * 
+	 * public void setTag(Vector<String> newTag) { tag = newTag; }
 	 */
 
 	/**************** Overriding ************************/
 
 	public String toString() {
-		return getId() + "~" + getTitle() + "~" + getAssignType() + "~" + getIsDone() + 
-				"~" + getIsOnTime() + "~" + getPriority();
+		return getId() + "~" + getTitle() + "~" + getAssignType() + "~"
+				+ getIsDone() + "~" + getIsOnTime() + "~" + getPriority();
 	}
 }

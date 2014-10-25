@@ -18,22 +18,29 @@ public class Add {
 	/**
 	 * 
 	 * @param refinedUserInput
-	 * @return new assignment 
+	 * @return new assignment
 	 */
 	protected static String addSomething(RefinedUserInput userInput) {
 
-		if(userInput.getAssignmentType().equals(AssignmentType.APPOINTMENT)) {
+		if (userInput.getAssignmentType().equals(AssignmentType.APPOINTMENT)) {
 
-			return addAppointment(Id.serialNumGen(), userInput.getTitle(), userInput.getStartDate(),
-					userInput.getStartTime(), userInput.getEndDate(), userInput.getEndTime(), 
-					false, userInput.getSpecialContent());
-			
-		} else if(userInput.getAssignmentType().equals(AssignmentType.TASK)) {
+			return addAppointment(Id.serialNumGen(), userInput.getTitle(),
+					userInput.getStartDate(), userInput.getStartTime(),
+					userInput.getEndDate(), userInput.getEndTime(), false,
+					userInput.getSpecialContent());
 
-			return addTask(Id.serialNumGen(), userInput.getTitle(), userInput.getEndDate(), 
-					userInput.getEndTime(), false, userInput.getSpecialContent());
+		} else if (userInput.getAssignmentType().equals(AssignmentType.TASK)) {
+
+			return addTask(Id.serialNumGen(), userInput.getTitle(),
+					userInput.getEndDate(), userInput.getEndTime(), false,
+					userInput.getSpecialContent());
 		} else {
-			return addAssignment(Id.serialNumGen(), userInput.getTitle(), false, userInput.getSpecialContent());
+
+			assert Integer.parseInt(userInput.getSpecialContent()) > 0
+					|| Integer.parseInt(userInput.getSpecialContent()) == 0;
+			
+			return addAssignment(Id.serialNumGen(), userInput.getTitle(),
+					false, userInput.getSpecialContent());
 		}
 	}
 
@@ -44,7 +51,8 @@ public class Add {
 
 		newAssignment.setId(id);
 		newAssignment.setDateCreation(DateLocal.dateString());
-		newAssignment.setIndex(Integer.parseInt(Id.removeFrontZero(id.substring(8))));
+		newAssignment.setIndex(Integer.parseInt(Id.removeFrontZero(id
+				.substring(8))));
 		newAssignment.setTitle(title);
 		newAssignment.setIsDone(isDone);
 		newAssignment.setPriority(priority);
@@ -54,15 +62,16 @@ public class Add {
 		return newAssignment.toString();
 	}
 
-	private static String addAppointment(String id, String title, String startDate,
-			String startTime, String endDate, String endTime,
+	private static String addAppointment(String id, String title,
+			String startDate, String startTime, String endDate, String endTime,
 			boolean isDone, String priority) {
 
 		Appointment newAppointment = new Appointment();
 
 		newAppointment.setId(id);
 		newAppointment.setDateCreation(DateLocal.dateString());
-		newAppointment.setIndex(Integer.parseInt(Id.removeFrontZero(id.substring(8))));
+		newAppointment.setIndex(Integer.parseInt(Id.removeFrontZero(id
+				.substring(8))));
 		newAppointment.setTitle(title);
 		newAppointment.setStartDate(startDate);
 		newAppointment.setStartTime(startTime);
@@ -71,7 +80,7 @@ public class Add {
 		newAppointment.setIsDone(isDone);
 		// newAppointment.setDescription(description);
 		// newAppointment.setAlarm(alarm);
-		//newAppointment.setTag(tag);
+		// newAppointment.setTag(tag);
 		newAppointment.setPriority(priority);
 
 		addAppointmentToBuffer(newAppointment);
@@ -84,47 +93,59 @@ public class Add {
 		if (InternalStorage.getLineCount() == 0) {
 			InternalStorage.addBuffer(newAppointment);
 		} else {
+			assert InternalStorage.getBuffer().element() == null;
 			addToBigBuffer(newAppointment);
 		}
 	}
-	
+
 	private static void addToBigBuffer(Appointment newAppointment) {
-		
-		for(bufferCount = 0; bufferCount < InternalStorage.getLineCount(); bufferCount++) {
 
-			if(InternalStorage.getBuffer().get(bufferCount).getAssignType().equals(AssignmentType.APPOINTMENT)) {
-				appointmentInBuffer = ((Appointment) InternalStorage.getBuffer().get(bufferCount));
+		for (bufferCount = 0; bufferCount < InternalStorage.getLineCount(); bufferCount++) {
 
-				if(Comparator.dateComparator(newAppointment.getEndDate(), appointmentInBuffer.getEndDate()) == -1) {
+			if (InternalStorage.getBuffer().get(bufferCount).getAssignType()
+					.equals(AssignmentType.APPOINTMENT)) {
+				appointmentInBuffer = ((Appointment) InternalStorage
+						.getBuffer().get(bufferCount));
+
+				if (Comparator.dateComparator(newAppointment.getEndDate(),
+						appointmentInBuffer.getEndDate()) == -1) {
 					InternalStorage.addBuffer(bufferCount, newAppointment);
 				}
-			} else if(InternalStorage.getBuffer().get(bufferCount).getAssignType().equals(AssignmentType.TASK)) {
-				taskInBuffer = ((Task) InternalStorage.getBuffer().get(bufferCount));
+			} else if (InternalStorage.getBuffer().get(bufferCount)
+					.getAssignType().equals(AssignmentType.TASK)) {
+				taskInBuffer = ((Task) InternalStorage.getBuffer().get(
+						bufferCount));
 
-				if (Comparator.dateComparator(newAppointment.getEndDate(), taskInBuffer.getEndDate()) == -1) {
+				if (Comparator.dateComparator(newAppointment.getEndDate(),
+						taskInBuffer.getEndDate()) == -1) {
 					InternalStorage.addBuffer(bufferCount, newAppointment);
 				}
 			}
+
+			assert InternalStorage.getBuffer().get(bufferCount).getAssignType()
+					.equals(AssignmentType.APPOINTMENT)
+					|| InternalStorage.getBuffer().get(bufferCount)
+							.getAssignType().equals(AssignmentType.TASK);
 		}
 	}
+
 	/*
-		else if(InternalStorage.getBuffer().get(0).getAssignType().equals(assignmentType.TASK)) {
+	 * else
+	 * if(InternalStorage.getBuffer().get(0).getAssignType().equals(assignmentType
+	 * .TASK)) {
+	 * 
+	 * if (Comparator.dateComparator(newAppointment.getEndDate(),
+	 * InternalStorage.getBuffer().get(0).getEndDate()) == 1) {
+	 * InternalStorage.addBuffer(newAppointment); } } else { int bufferCount;
+	 * 
+	 * for (bufferCount = InternalStorage.getLineCount() - 1; bufferCount > 0 &&
+	 * (Comparator.dateComparator(newAppointment.getEndDate(),
+	 * InternalStorage.getBuffer().get(bufferCount - 1).getEndDate()) == -1);
+	 * bufferCount--); InternalStorage.addBuffer(bufferCount, newAppointment); }
+	 */
 
-			if (Comparator.dateComparator(newAppointment.getEndDate(),
-					InternalStorage.getBuffer().get(0).getEndDate()) == 1) {
-				InternalStorage.addBuffer(newAppointment);
-			}
-		} else {
-			int bufferCount;
-
-			for (bufferCount = InternalStorage.getLineCount() - 1; bufferCount > 0 && 
-					(Comparator.dateComparator(newAppointment.getEndDate(), 
-							InternalStorage.getBuffer().get(bufferCount - 1).getEndDate()) == -1); bufferCount--);
-			InternalStorage.addBuffer(bufferCount, newAppointment);
-		} */
-
-	private static String addTask(String id, String title, 
-			String endDate, String endTime,	boolean isDone, String priority) {
+	private static String addTask(String id, String title, String endDate,
+			String endTime, boolean isDone, String priority) {
 
 		Task newTask = new Task();
 
@@ -147,27 +168,40 @@ public class Add {
 		if (InternalStorage.getLineCount() == 0) {
 			InternalStorage.addBuffer(newTask);
 		} else {
+			assert InternalStorage.getBuffer().element() == null;
 			addToBigBuffer(newTask);
 		}
 	}
-	
+
 	private static void addToBigBuffer(Task newTask) {
-		
-		for(bufferCount = 0; bufferCount < InternalStorage.getLineCount(); bufferCount++) {
 
-			if(InternalStorage.getBuffer().get(bufferCount).getAssignType().equals(AssignmentType.APPOINTMENT)) {
-				appointmentInBuffer = ((Appointment) InternalStorage.getBuffer().get(bufferCount));
+		for (bufferCount = 0; bufferCount < InternalStorage.getLineCount(); bufferCount++) {
 
-				if(Comparator.dateComparator(newTask.getEndDate(), appointmentInBuffer.getEndDate()) == -1) {
+			if (InternalStorage.getBuffer().get(bufferCount).getAssignType()
+					.equals(AssignmentType.APPOINTMENT)) {
+				appointmentInBuffer = ((Appointment) InternalStorage
+						.getBuffer().get(bufferCount));
+
+				if (Comparator.dateComparator(newTask.getEndDate(),
+						appointmentInBuffer.getEndDate()) == -1) {
 					InternalStorage.addBuffer(bufferCount, newTask);
 				}
-			} else if(InternalStorage.getBuffer().get(bufferCount).getAssignType().equals(AssignmentType.TASK)) {
-				taskInBuffer = ((Task) InternalStorage.getBuffer().get(bufferCount));
+			} else if (InternalStorage.getBuffer().get(bufferCount)
+					.getAssignType().equals(AssignmentType.TASK)) {
+				taskInBuffer = ((Task) InternalStorage.getBuffer().get(
+						bufferCount));
 
-				if (Comparator.dateComparator(newTask.getEndDate(), taskInBuffer.getEndDate()) == -1) {
+				if (Comparator.dateComparator(newTask.getEndDate(),
+						taskInBuffer.getEndDate()) == -1) {
 					InternalStorage.addBuffer(bufferCount, newTask);
 				}
 			}
+			
+			assert InternalStorage.getBuffer().get(bufferCount).getAssignType()
+			.equals(AssignmentType.APPOINTMENT)
+			|| InternalStorage.getBuffer().get(bufferCount)
+					.getAssignType().equals(AssignmentType.TASK);
+
 		}
 	}
 }

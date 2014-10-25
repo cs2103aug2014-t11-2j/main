@@ -1,5 +1,7 @@
 package logic;
 
+import static org.junit.Assert.assertTrue;
+
 public class Task extends Assignment{
 
 	/************** Data members **********************/
@@ -18,9 +20,11 @@ public class Task extends Assignment{
 		this(DEFAULT_DATE,DEFAULT_TIME);
 
 	}
-	public Task(String startDate, String startTime) {
+	public Task(String endDate, String endTime) {
 
 		super();
+		assertTrue(endDate.contains("[a-zA-Z]+"));
+		assertTrue(endTime.contains("[a-zA-Z]+"));
 		setEndDate(endDate);
 		setEndTime(endTime);
 		setAssignType(AssignmentType.TASK);
