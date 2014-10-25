@@ -22,7 +22,7 @@ public class Sort {
 			sortBuffer = sortRequired(sortBuffer, multipleSortInput[sortCount]);
 		}
 		if(startDate != null && endDate != null) {
-			sortBuffer = Truncation.trancateList(sortBuffer, startDate, endDate);
+			sortBuffer = Truncation.truncateList(sortBuffer, startDate, endDate);
 		}
 		return sortBuffer;
 	}

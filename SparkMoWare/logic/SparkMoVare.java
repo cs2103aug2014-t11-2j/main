@@ -1,7 +1,7 @@
 package logic;
 
 import java.util.LinkedList;
-
+import static org.junit.Assert.*;
 import parser.EnumGroup.CommandType;
 import parser.Interpreter;
 import parser.RefinedUserInput;
@@ -86,7 +86,8 @@ public class SparkMoVare {
 			returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
 					Message.ADDED, InternalStorage.getLineCount(), Statistic.getCompleted(), 
 					Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
-
+			
+			assertTrue(InternalStorage.getBufferPosition(userInput.getId()) > -1);
 			return returnOutput;
 
 		case EDIT:
@@ -100,11 +101,12 @@ public class SparkMoVare {
 
 		case DELETE:
 			Delete.delete(userInput.getId());
-
+		
 			returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
 					Message.DELETED, InternalStorage.getLineCount(), Statistic.getCompleted(), 
 					Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
 
+			assertTrue(InternalStorage.getBufferPosition(userInput.getId()) > -1);
 			return returnOutput;
 			/*
 		case TENTATIVE:
@@ -123,6 +125,7 @@ public class SparkMoVare {
 					Message.DELETE_ALL, InternalStorage.getLineCount(), Statistic.getCompleted(), 
 					Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
 
+			assertFalse(InternalStorage.getLineCount() > 0);
 			return returnOutput;
 
 		case SORT:

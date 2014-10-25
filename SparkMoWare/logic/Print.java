@@ -1,4 +1,7 @@
 package logic;
+import static org.junit.Assert.*;
+
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -25,6 +28,7 @@ public class Print {
 
 	public static void printList(LinkedList<Appointment> list) {
 		
+		assertTrue(list.size()>0);
 		for (int i = 0; i < list.size(); i++) {
 			System.out.println(list.get(i).toString());
 		}
@@ -32,6 +36,7 @@ public class Print {
 
 	public static void printHelpList(ArrayList<String> list) {
 		
+		assertTrue(list.size()>0);
 		for (int i = 0; i < list.size(); i++) {
 			System.out.println(list.get(i));
 		}
