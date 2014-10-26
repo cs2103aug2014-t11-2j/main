@@ -72,171 +72,198 @@ public class SparkMoVare {
 		userInput = Interpreter.reader(userStringInput);
 
 		CommandType command = userInput.getCommandType();
-
+		/*
 		if (command != CommandType.UNDO && command != CommandType.REDO ) {
 			while (!InternalStorage.getFuture().empty()){
 				InternalStorage.popFuture();
 			}
 		}
-
-		switch (command) {
-		case ADD:
-			Add.addSomething(userInput);
-
-			returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
-					Message.ADDED, InternalStorage.getLineCount(), Statistic.getCompleted(), 
-					Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
+		 */		
+		if(!command.equals(CommandType.TENTATIVE) && 
+			!InternalStorage.getTentative().getStartDate().isEmpty()) {
+			InternalStorage.addBuffer(InternalStorage.getTentative());
 			
-			assertTrue(InternalStorage.getBufferPosition(userInput.getId()) > -1);
-			return returnOutput;
-
-		case EDIT:
-			Edit.editAssignment(userInput);
-
-			returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
-					Message.EDITED, InternalStorage.getLineCount(), Statistic.getCompleted(), 
-					Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
-
-			return returnOutput;
-
-		case DELETE:
-			Delete.delete(userInput.getId());
+		 } else {
+			 Tentative newTentative = new Tentative();
+			InternalStorage.setTentative(newTentative); 
+		 }
 		
-			returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
-					Message.DELETED, InternalStorage.getLineCount(), Statistic.getCompleted(), 
-					Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
+		 switch (command) {
+		 case ADD:
+			 Add.addSomething(userInput);
 
-			assertTrue(InternalStorage.getBufferPosition(userInput.getId()) > -1);
-			return returnOutput;
-			/*
-		case TENTATIVE:
-			SetTentative.addTentative(userInput.getSpecialContent(), userInput.getTitle);
-			break;
+			 returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
+					 Message.ADDED, InternalStorage.getLineCount(), Statistic.getCompleted(), 
+					 Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
 
-		case CONFIRM:
-			ConfirmTentative.confirmTentative(refinedUserInput[1], refinedUserInput[3],
-					refinedUserInput[4], refinedUserInput[5], refinedUserInput[6]);
-			break;
-			 */
-		case CLEAR:
-			Delete.deleteAll(userInput.getSpecialContent(), userInput.getStartDate(), userInput.getEndDate());
+			 assertTrue(InternalStorage.getBufferPosition(userInput.getId()) > -1);
+			 return returnOutput;
 
-			returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
-					Message.DELETE_ALL, InternalStorage.getLineCount(), Statistic.getCompleted(), 
-					Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
+		 case EDIT:
+			 Edit.editAssignment(userInput);
 
-			assertFalse(InternalStorage.getLineCount() > 0);
-			return returnOutput;
+			 returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
+					 Message.EDITED, InternalStorage.getLineCount(), Statistic.getCompleted(), 
+					 Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
 
-		case SORT:
-			LinkedList<Assignment> sortedBuffer = new LinkedList<Assignment>();
+			 return returnOutput;
 
-			sortedBuffer = Sort.multipleSortRequired(InternalStorage.getBuffer(), userInput.getSpecialContent(),
-					userInput.getStartDate(), userInput.getEndDate());
+		 case DELETE:
+			 Delete.delete(userInput.getId());
 
-			returnOutput = ModifyOutput.returnModification(sortedBuffer,
-					Message.SORT, InternalStorage.getLineCount(), Statistic.getCompleted(), 
-					Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
+			 returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
+					 Message.DELETED, InternalStorage.getLineCount(), Statistic.getCompleted(), 
+					 Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
 
-			return returnOutput;
+			 assertTrue(InternalStorage.getBufferPosition(userInput.getId()) > -1);
+			 return returnOutput;
 
-		case SEARCH:
-			LinkedList<Assignment> searchBuffer = new LinkedList<Assignment>();
+		 case TENTATIVE:
 
-			searchBuffer = SearchAll.searchAll(InternalStorage.getBuffer(), userInput.getSpecialContent());
-			
-			if(searchBuffer.size() == 0) {
-				returnOutput = ModifyOutput.returnModification(searchBuffer,
-						Message.INVALID_SEARCH_PARAMETER, InternalStorage.getLineCount(), Statistic.getCompleted(), 
-						Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
-			} else {
-				returnOutput = ModifyOutput.returnModification(searchBuffer,
-						Message.SEARCH, InternalStorage.getLineCount(), Statistic.getCompleted(), 
-						Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
-			}
-			return returnOutput;
+			 if(userInput.getIsNewTentative()) {
+				 Tentative newTentative = SetTentative.addTentative(userInput.getTitle());
+				 InternalStorage.setTentative(newTentative);
 
-		case DONE:
-			Edit.completeAssignment(userInput.getId());
+			 } else {
+				 SetTentative.addTentativeAppt(InternalStorage.getTentative(), userInput.getStartDate(), 
+						 userInput.getStartTime(), userInput.getEndDate(), userInput.getEndTime());
+			 }
 
-			returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
-					Message.DONE, InternalStorage.getLineCount(), Statistic.getCompleted(), 
-					Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
+			 returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
+					 Message.TENTATIVE_ADDED, InternalStorage.getLineCount(), Statistic.getCompleted(), 
+					 Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
 
-			return returnOutput;
+			 return returnOutput;
 
-		case STATISTIC:
-			returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
-					Message.STATISTIC, InternalStorage.getLineCount(), Statistic.getCompleted(), 
-					Statistic.getIsOnTime(), true, IS_NOT_STATS_OR_INVALID);
+		 case CONFIRM:
+			 ConfirmTentative.confirmTentative(userInput.getId(), userInput.getStartDate(),
+					 userInput.getStartTime(), userInput.getEndDate(), userInput.getEndTime());
 
-			return returnOutput;
+			 returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
+					 Message.TENTATIVE_CONFIRM, InternalStorage.getLineCount(), Statistic.getCompleted(), 
+					 Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
 
-		case UNDO:
+			 return returnOutput;
 
-			if(InternalStorage.getHistory().isEmpty()) {
-				returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
-						Message.UNABLE_TO_UNDO, InternalStorage.getLineCount(), Statistic.getCompleted(), 
-						Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
-			} else {
-				RedoUndo.undo();
+		 case CLEAR:
+			 Delete.deleteAll(userInput.getSpecialContent(), userInput.getStartDate(), userInput.getEndDate());
 
-				returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
-						Message.UNDO, InternalStorage.getLineCount(), Statistic.getCompleted(), 
-						Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
-			}
-			return returnOutput;
+			 returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
+					 Message.DELETE_ALL, InternalStorage.getLineCount(), Statistic.getCompleted(), 
+					 Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
 
-		case REDO:
+			 assertFalse(InternalStorage.getLineCount() > 0);
+			 return returnOutput;
 
-			if(InternalStorage.getFuture().isEmpty()) {
-				returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
-						Message.UNABLE_TO_REDO, InternalStorage.getLineCount(), Statistic.getCompleted(), 
-						Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
-			} else {
-				RedoUndo.redo();
+		 case SORT:
+			 LinkedList<Assignment> sortedBuffer = new LinkedList<Assignment>();
 
-				returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
-						Message.REDO, InternalStorage.getLineCount(), Statistic.getCompleted(), 
-						Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
-			}
-			return returnOutput;
+			 sortedBuffer = Sort.multipleSortRequired(InternalStorage.getBuffer(), userInput.getSpecialContent(),
+					 userInput.getStartDate(), userInput.getEndDate());
 
-		case DISPLAY:
-			returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
-					Message.DISPLAY, InternalStorage.getLineCount(), Statistic.getCompleted(), 
-					Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
+			 returnOutput = ModifyOutput.returnModification(sortedBuffer,
+					 Message.SORT, InternalStorage.getLineCount(), Statistic.getCompleted(), 
+					 Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
 
-			Print.display();
-			return returnOutput;
+			 return returnOutput;
 
-		case FILTER:
-			LinkedList<Assignment> filteredBuffer = new LinkedList<Assignment>();
+		 case SEARCH:
+			 LinkedList<Assignment> searchBuffer = new LinkedList<Assignment>();
 
-			filteredBuffer = Filter.filterMain(InternalStorage.getBuffer(), userInput.getSpecialContent(), 
-					userInput.getStartDate(), userInput.getEndDate());
+			 searchBuffer = SearchAll.searchAll(InternalStorage.getBuffer(), userInput.getSpecialContent());
 
-			returnOutput = ModifyOutput.returnModification(filteredBuffer,
-					Message.FILTER, InternalStorage.getLineCount(), Statistic.getCompleted(), 
-					Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
+			 if(searchBuffer.size() == 0) {
+				 returnOutput = ModifyOutput.returnModification(searchBuffer,
+						 Message.INVALID_SEARCH_PARAMETER, InternalStorage.getLineCount(), Statistic.getCompleted(), 
+						 Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
+			 } else {
+				 returnOutput = ModifyOutput.returnModification(searchBuffer,
+						 Message.SEARCH, InternalStorage.getLineCount(), Statistic.getCompleted(), 
+						 Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
+			 }
+			 return returnOutput;
 
-			return returnOutput;
+		 case DONE:
+			 Edit.completeAssignment(userInput.getId());
 
-		case EXIT:
-			System.exit(SYSTEM_EXIT_NO_ERROR);
-			break;
+			 returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
+					 Message.DONE, InternalStorage.getLineCount(), Statistic.getCompleted(), 
+					 Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
 
-		default:
-			returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
-					Message.INVALID_COMMAND, InternalStorage.getLineCount(), Statistic.getCompleted(), 
-					Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, true);
+			 return returnOutput;
 
-			return returnOutput;
-		}
+		 case STATISTIC:
+			 returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
+					 Message.STATISTIC, InternalStorage.getLineCount(), Statistic.getCompleted(), 
+					 Statistic.getIsOnTime(), true, IS_NOT_STATS_OR_INVALID);
 
-		System.out.println("File saved");
-		Storage.saveFile(InternalStorage.getFilePath(), InternalStorage.getBuffer());
+			 return returnOutput;
 
-		return returnOutput;
+		 case UNDO:
+
+			 if(InternalStorage.getHistory().isEmpty()) {
+				 returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
+						 Message.UNABLE_TO_UNDO, InternalStorage.getLineCount(), Statistic.getCompleted(), 
+						 Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
+			 } else {
+				 RedoUndo.undo();
+
+				 returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
+						 Message.UNDO, InternalStorage.getLineCount(), Statistic.getCompleted(), 
+						 Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
+			 }
+			 return returnOutput;
+
+		 case REDO:
+
+			 if(InternalStorage.getFuture().isEmpty()) {
+				 returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
+						 Message.UNABLE_TO_REDO, InternalStorage.getLineCount(), Statistic.getCompleted(), 
+						 Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
+			 } else {
+				 RedoUndo.redo();
+
+				 returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
+						 Message.REDO, InternalStorage.getLineCount(), Statistic.getCompleted(), 
+						 Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
+			 }
+			 return returnOutput;
+
+		 case DISPLAY:
+			 returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
+					 Message.DISPLAY, InternalStorage.getLineCount(), Statistic.getCompleted(), 
+					 Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
+
+			 Print.display();
+			 return returnOutput;
+
+		 case FILTER:
+			 LinkedList<Assignment> filteredBuffer = new LinkedList<Assignment>();
+
+			 filteredBuffer = Filter.filterMain(InternalStorage.getBuffer(), userInput.getSpecialContent(), 
+					 userInput.getStartDate(), userInput.getEndDate());
+
+			 returnOutput = ModifyOutput.returnModification(filteredBuffer,
+					 Message.FILTER, InternalStorage.getLineCount(), Statistic.getCompleted(), 
+					 Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
+
+			 return returnOutput;
+
+		 case EXIT:
+			 System.exit(SYSTEM_EXIT_NO_ERROR);
+			 break;
+
+		 default:
+			 returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
+					 Message.INVALID_COMMAND, InternalStorage.getLineCount(), Statistic.getCompleted(), 
+					 Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, true);
+
+			 return returnOutput;
+		 }
+
+		 System.out.println("File saved");
+		 Storage.saveFile(InternalStorage.getFilePath(), InternalStorage.getBuffer());
+
+		 return returnOutput;
 	}
 }

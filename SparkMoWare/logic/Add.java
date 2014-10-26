@@ -11,10 +11,6 @@ import logic.Assignment.AssignmentType;
  */
 public class Add {
 
-	private static Appointment appointmentInBuffer = new Appointment();
-	private static Task taskInBuffer = new Task();
-	private static int bufferCount;
-
 	/**
 	 * 
 	 * @param refinedUserInput
@@ -82,50 +78,24 @@ public class Add {
 		// newAppointment.setAlarm(alarm);
 		// newAppointment.setTag(tag);
 		newAppointment.setPriority(priority);
-
-		addAppointmentToBuffer(newAppointment);
-
+		
+		if(Comparator.isClashing(newAppointment)) {
+			SetTentative.setToTentative(newAppointment);
+		} else {
+			addAppointmentToBuffer(newAppointment);
+		}
 		return newAppointment.toString();
 	}
 
-	private static void addAppointmentToBuffer(Appointment newAppointment) {
+	protected static void addAppointmentToBuffer(Appointment newAppointment) {
 
 		if (InternalStorage.getLineCount() == 0) {
 			InternalStorage.addBuffer(newAppointment);
 		} else {
 			assert InternalStorage.getBuffer().element() == null;
-			addToBigBuffer(newAppointment);
-		}
-	}
-
-	private static void addToBigBuffer(Appointment newAppointment) {
-
-		for (bufferCount = 0; bufferCount < InternalStorage.getLineCount(); bufferCount++) {
-
-			if (InternalStorage.getBuffer().get(bufferCount).getAssignType()
-					.equals(AssignmentType.APPOINTMENT)) {
-				appointmentInBuffer = ((Appointment) InternalStorage
-						.getBuffer().get(bufferCount));
-
-				if (Comparator.dateComparator(newAppointment.getEndDate(),
-						appointmentInBuffer.getEndDate()) == -1) {
-					InternalStorage.addBuffer(bufferCount, newAppointment);
-				}
-			} else if (InternalStorage.getBuffer().get(bufferCount)
-					.getAssignType().equals(AssignmentType.TASK)) {
-				taskInBuffer = ((Task) InternalStorage.getBuffer().get(
-						bufferCount));
-
-				if (Comparator.dateComparator(newAppointment.getEndDate(),
-						taskInBuffer.getEndDate()) == -1) {
-					InternalStorage.addBuffer(bufferCount, newAppointment);
-				}
-			}
-
-			assert InternalStorage.getBuffer().get(bufferCount).getAssignType()
-					.equals(AssignmentType.APPOINTMENT)
-					|| InternalStorage.getBuffer().get(bufferCount)
-							.getAssignType().equals(AssignmentType.TASK);
+			
+			int position = Comparator.addToBigBuffer(newAppointment);
+			InternalStorage.addBuffer(position, newAppointment);
 		}
 	}
 
@@ -168,40 +138,9 @@ public class Add {
 		if (InternalStorage.getLineCount() == 0) {
 			InternalStorage.addBuffer(newTask);
 		} else {
-			assert InternalStorage.getBuffer().element() == null;
-			addToBigBuffer(newTask);
-		}
-	}
-
-	private static void addToBigBuffer(Task newTask) {
-
-		for (bufferCount = 0; bufferCount < InternalStorage.getLineCount(); bufferCount++) {
-
-			if (InternalStorage.getBuffer().get(bufferCount).getAssignType()
-					.equals(AssignmentType.APPOINTMENT)) {
-				appointmentInBuffer = ((Appointment) InternalStorage
-						.getBuffer().get(bufferCount));
-
-				if (Comparator.dateComparator(newTask.getEndDate(),
-						appointmentInBuffer.getEndDate()) == -1) {
-					InternalStorage.addBuffer(bufferCount, newTask);
-				}
-			} else if (InternalStorage.getBuffer().get(bufferCount)
-					.getAssignType().equals(AssignmentType.TASK)) {
-				taskInBuffer = ((Task) InternalStorage.getBuffer().get(
-						bufferCount));
-
-				if (Comparator.dateComparator(newTask.getEndDate(),
-						taskInBuffer.getEndDate()) == -1) {
-					InternalStorage.addBuffer(bufferCount, newTask);
-				}
-			}
-			
-			assert InternalStorage.getBuffer().get(bufferCount).getAssignType()
-			.equals(AssignmentType.APPOINTMENT)
-			|| InternalStorage.getBuffer().get(bufferCount)
-					.getAssignType().equals(AssignmentType.TASK);
-
+			// assert InternalStorage.getBuffer().element() == null;
+			int position = Comparator.addToBigBuffer((Appointment) newTask);
+			InternalStorage.addBuffer(position, newTask);
 		}
 	}
 }

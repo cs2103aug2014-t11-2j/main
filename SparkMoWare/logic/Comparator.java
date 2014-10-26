@@ -1,5 +1,9 @@
 package logic;
 
+import java.util.ListIterator;
+
+import logic.Assignment.AssignmentType;
+
 /*
  * Comparison for Time, Date and ID.
  * returns boolean 
@@ -17,7 +21,7 @@ public class Comparator {
 	public static boolean serialNumberComparator(String idA, String idB) {
 
 		assert(idA.length() == 12 && idA.length() == 12);
-		
+
 		int checkDate = dateComparator(idA.substring(0, 8), idB.substring(0, 8));
 		boolean serialCheck = false;
 
@@ -39,7 +43,7 @@ public class Comparator {
 	protected static int dateComparator(String dateA, String dateB) {
 
 		assert(dateA.length() == 8 && dateB.length() == 8);
-		
+
 		String yearA = dateA.trim().substring(4, 8);
 		String yearB = dateB.trim().substring(4, 8);
 
@@ -83,7 +87,7 @@ public class Comparator {
 	protected static int timeComparator(String timeA, String timeB) {
 
 		assert(timeA.length() == 4 && timeB.length() == 4);
-		
+
 		String hourA = timeA.trim().substring(0, 2);
 		String hourB = timeA.trim().substring(0, 2);
 
@@ -108,5 +112,120 @@ public class Comparator {
 		}
 		assert(Integer.parseInt(hourA) == Integer.parseInt(hourB));
 		return SMALLER;
+	}
+
+	protected static int addToBigBuffer(Appointment newAppointment) {
+
+		Appointment appointmentInBuffer = new Appointment();
+		int bufferCount;
+		int count = 0;
+
+		for (bufferCount = 0; bufferCount < InternalStorage.getLineCount(); bufferCount++) {
+
+			if (InternalStorage.getBuffer().get(bufferCount).getAssignType()
+					.equals(AssignmentType.APPOINTMENT) || InternalStorage.getBuffer().get(bufferCount)
+					.getAssignType().equals(AssignmentType.TASK)) {
+
+				appointmentInBuffer = ((Appointment) InternalStorage
+						.getBuffer().get(bufferCount));
+
+				if (Comparator.dateComparator(newAppointment.getEndDate(),
+						appointmentInBuffer.getEndDate()) == -1) {
+					count = bufferCount;
+					break;
+				}
+			} 
+
+			assert InternalStorage.getBuffer().get(bufferCount).getAssignType()
+			.equals(AssignmentType.APPOINTMENT)
+			|| InternalStorage.getBuffer().get(bufferCount)
+			.getAssignType().equals(AssignmentType.TASK);
+		}
+		return count;
+	}
+
+	protected static boolean isClashing(Appointment newAppointment) {
+
+		boolean isClashing = false;
+		ListIterator<Assignment> buffer = InternalStorage.getBuffer().listIterator();
+		Appointment checkAppointment = new Appointment();
+
+		while(buffer.hasNext()) {
+			if(buffer.next().getAssignType().equals(AssignmentType.APPOINTMENT)) {
+				checkAppointment = ((Appointment) buffer.next()); 
+			}
+			
+			if(Comparator.dateComparator(newAppointment.getEndDate(), 
+					checkAppointment.getEndDate()) == SAME &&
+					Comparator.dateComparator(newAppointment.getStartDate(), 
+							checkAppointment.getStartDate()) == SAME) {
+				
+				isClashing = isClashingTime(newAppointment, checkAppointment);
+			}
+			isClashing = isClashingDate(newAppointment, checkAppointment);
+		}
+		return isClashing;
+	}
+	
+	private static boolean isClashingDate(Appointment newAppointment, Appointment checkAppointment) {
+		
+		boolean isClashing = false;
+		
+		if(Comparator.dateComparator(newAppointment.getEndDate(), 
+				checkAppointment.getEndDate()) == SMALLER &&
+				Comparator.dateComparator(newAppointment.getStartDate(), 
+						checkAppointment.getStartDate()) == LARGER) {
+			isClashing = true;
+
+		} else if(Comparator.dateComparator(newAppointment.getEndDate(), 
+				checkAppointment.getStartDate()) == LARGER &&
+				Comparator.dateComparator(newAppointment.getStartDate(), 
+						checkAppointment.getStartDate()) == SMALLER) {
+			isClashing = true;
+		
+		} else if(Comparator.dateComparator(newAppointment.getEndDate(), 
+				checkAppointment.getEndDate()) == LARGER &&
+				Comparator.dateComparator(newAppointment.getStartDate(), 
+						checkAppointment.getEndDate()) == SMALLER) {
+			isClashing = true;
+			
+		} else if(Comparator.dateComparator(newAppointment.getEndDate(), 
+				checkAppointment.getEndDate()) == LARGER &&
+				Comparator.dateComparator(newAppointment.getStartDate(), 
+						checkAppointment.getStartDate()) == LARGER) {
+			isClashing = true;
+		} 
+		return isClashing;
+	}
+	
+	private static boolean isClashingTime(Appointment newAppointment, Appointment checkAppointment) {
+		
+		boolean isClashing = false;
+		
+		if(Comparator.dateComparator(newAppointment.getEndTime(), 
+				checkAppointment.getEndTime()) == SMALLER &&
+				Comparator.dateComparator(newAppointment.getStartTime(), 
+						checkAppointment.getStartTime()) == LARGER) {
+			isClashing = true;
+
+		} else if(Comparator.dateComparator(newAppointment.getEndTime(), 
+				checkAppointment.getStartTime()) == LARGER &&
+				Comparator.dateComparator(newAppointment.getStartTime(), 
+						checkAppointment.getStartTime()) == SMALLER) {
+			isClashing = true;
+		
+		} else if(Comparator.dateComparator(newAppointment.getEndTime(), 
+				checkAppointment.getEndTime()) == LARGER &&
+				Comparator.dateComparator(newAppointment.getStartTime(), 
+						checkAppointment.getEndTime()) == SMALLER) {
+			isClashing = true;
+			
+		} else if(Comparator.dateComparator(newAppointment.getEndTime(), 
+				checkAppointment.getEndTime()) == LARGER &&
+				Comparator.dateComparator(newAppointment.getStartTime(), 
+						checkAppointment.getStartTime()) == LARGER) {
+			isClashing = true;
+		} 
+		return isClashing;
 	}
 }
