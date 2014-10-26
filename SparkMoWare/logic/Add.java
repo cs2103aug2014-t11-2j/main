@@ -40,7 +40,7 @@ public class Add {
 		}
 	}
 
-	private static String addAssignment(String id, String title,
+	public static String addAssignment(String id, String title,
 			boolean isDone, String priority) {
 
 		Assignment newAssignment = new Assignment();
@@ -58,7 +58,7 @@ public class Add {
 		return newAssignment.toString();
 	}
 
-	private static String addAppointment(String id, String title,
+	public static String addAppointment(String id, String title,
 			String startDate, String startTime, String endDate, String endTime,
 			boolean isDone, String priority) {
 
@@ -114,7 +114,7 @@ public class Add {
 	 * bufferCount--); InternalStorage.addBuffer(bufferCount, newAppointment); }
 	 */
 
-	private static String addTask(String id, String title, String endDate,
+	public static String addTask(String id, String title, String endDate,
 			String endTime, boolean isDone, String priority) {
 
 		Task newTask = new Task();
