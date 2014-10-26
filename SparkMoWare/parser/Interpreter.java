@@ -16,7 +16,7 @@ public class Interpreter {
 			return RefineInputWithId.inputIsDelete(userInput);
 
 		case TENTATIVE:
-			return InputTentative.refineInput(userInput);
+			return InputIsTentative.refineInput(userInput);
 
 		case CONFIRM:
 			return InputIsConfirm.refineInput(userInput);

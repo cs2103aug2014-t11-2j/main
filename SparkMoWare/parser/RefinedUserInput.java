@@ -16,6 +16,7 @@ public class RefinedUserInput {
 	private String endTime;
 	private AssignmentType assignment;
 	private String priority;
+	private boolean isNewTentative;
 	private String specialContent;
 	/* Special content is for the following command cases:
 	 * delete all (on, before, during)
@@ -36,6 +37,7 @@ public class RefinedUserInput {
 		setEndTime(defaultContent);
 		setAssignmentType(EnumGroup.AssignmentType.DEFAULT);
 		setPriority("NMPT");
+		setIsNewTentative(false);
 		setSpecialContent(defaultContent);
 	}
 	
@@ -75,6 +77,10 @@ public class RefinedUserInput {
 
 	public String getPriority() {
 		return this.priority;
+	}
+	
+	public Boolean getIsNewTentative() {
+		return this.isNewTentative;
 	}
 	
 	public String getSpecialContent() {
@@ -120,6 +126,10 @@ public class RefinedUserInput {
 		this.priority = priority;
 	}
 	
+	protected void setIsNewTentative(Boolean isNewTentative) {
+		this.isNewTentative = isNewTentative;
+	}
+	
 	protected void setSpecialContent(String specialContent) {
 		this.specialContent = specialContent;
 	}
@@ -128,6 +138,6 @@ public class RefinedUserInput {
 	
 	public String toString() {
 		return getCommandType() + "~" + getId() + "~" + getTitle() + "~" + getStartDate() + "~" + getStartTime() + "~"
-				+ getEndDate() + "~" + getEndTime() + "~" + getAssignmentType() + "~" + getPriority() + "~" + getSpecialContent();
+				+ getEndDate() + "~" + getEndTime() + "~" + getAssignmentType() + "~" + getPriority( )+ "~" + getIsNewTentative() + "~" + getSpecialContent();
 	}
 }

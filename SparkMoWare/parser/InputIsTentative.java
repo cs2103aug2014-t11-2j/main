@@ -1,6 +1,6 @@
 package parser;
 
-public class InputTentative {
+public class InputIsTentative {
 
 	protected static RefinedUserInput refineInput(String userInput) { 
 		RefinedUserInput inputTentative = new RefinedUserInput();

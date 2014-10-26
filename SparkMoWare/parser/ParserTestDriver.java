@@ -38,8 +38,8 @@ public class ParserTestDriver {
 		return Misc.refineString(testInput);
 	}
 	
-	public static String testExtractTitle(String testInput) {
-		return Misc.extractTitle(testInput);
+	public static String testExtractTitle(String testInput, String command) {
+		return Misc.extractTitle(testInput, command);
 	}
 	
 	public static boolean testContentForClear(String testInput) {

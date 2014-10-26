@@ -39,7 +39,7 @@ public class ParserTimeLocal {
 	protected static boolean hasTwoTimeInputs(String input) {
 		String[] temp = ParserPatternLocal.timePattern.split(input);
 
-		if(temp.length == 2) {
+		if(temp.length >= 2) {
 			return true;
 		} else {
 			return false;

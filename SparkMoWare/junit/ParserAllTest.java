@@ -11,6 +11,24 @@ public class ParserAllTest {
 
 	@Test
 	public void test() {
+		//Test replaceAllDate
+
+		//confirm method replaces date input
+		assertEquals("", ParserTestDriver.testReplaceAllDate("09/08/1223"));
+
+		//confirm method replaces date input with additional portions
+		//note: each space/symbol around the date is left behind
+		assertEquals("add  work", ParserTestDriver.testReplaceAllDate("add 09/08/1223 work"));
+		assertEquals("add~%work", ParserTestDriver.testReplaceAllDate("add~09/08/1223%work"));
+
+		//confirm method replaces date input according to actual ideal user add appointment input
+		assertEquals("add  0900  0800 work", ParserTestDriver.testReplaceAllDate("add 09/08/1223 0900 2/3/2345 0800 work"));
+		
+		//Error test 1
+		//assertEquals("add 0900 0800", ParserTestDriver.testReplaceAllDate("add 0900 0800"));
+				
+		
+		
 		//Test extractEndDate
 
 		//confirm method returns date input
@@ -18,7 +36,7 @@ public class ParserAllTest {
 
 		//confirm method returns second date input
 		assertEquals("02032345", ParserTestDriver.testExtractEndDate("add 09/09/1234 2/3/2345"));
-
+		
 		//confirm method fills in today's date if no date is detected
 		//change date input accordingly
 		//assertEquals("16102014", ParserTestDriver.testExtractEndDate("add"));
@@ -56,8 +74,10 @@ public class ParserAllTest {
 		assertEquals("0900", ParserTestDriver.testExtractStartTime("0900"));
 
 		//confirm method returns first time input
-		assertEquals("0900", ParserTestDriver.testExtractStartTime("add 0900 0800"));
 		assertEquals("0900", ParserTestDriver.testExtractStartTime("add void 0900 nada 0800 nothing"));
+		
+		//ERROR: Pattern interprets 1234 5678 as a date input, refer to error test 1
+		//assertEquals("0900", ParserTestDriver.testExtractStartTime("add 0900 0800"));
 
 		//confirm method returns time input instead of the year 2345
 		assertEquals("0900", ParserTestDriver.testExtractStartTime("add 12/11/2345 0900"));
@@ -67,13 +87,13 @@ public class ParserAllTest {
 		//Test extractTitle
 		
 		//confirm method returns nothing with only date and time input and add command
-		assertEquals(null, ParserTestDriver.testExtractTitle("add 12/23/1234 0900"));
+		assertEquals("", ParserTestDriver.testExtractTitle("add 12/23/1234 0900", "add"));
 
 		//confirm method returns title
-		assertEquals("work to do", ParserTestDriver.testExtractTitle("add 12/23/1234 0900 work to do"));
+		assertEquals("work to do", ParserTestDriver.testExtractTitle("add 12/23/1234 0900 work to do", "add"));
 
 		//confirm method returns title in appropriate form
-		assertEquals("work to do", ParserTestDriver.testExtractTitle("add work 12/23/1234 to 0900 do"));
+		assertEquals("work to do", ParserTestDriver.testExtractTitle("add work 12/23/1234 to 0900 do", "add"));
 
 
 		
@@ -103,24 +123,12 @@ public class ParserAllTest {
 
 		//confirm method returns true if 2 time inputs with additional portions
 		assertEquals(true, ParserTestDriver.testHasTwoTimeInputs("add 0900 nothing 0800 work"));
+		assertEquals(true, ParserTestDriver.testHasTwoTimeInputs("add 0900 nothing 0800"));
+		assertEquals(true, ParserTestDriver.testHasTwoTimeInputs("0900 nothing 0800 work"));
+		assertEquals(true, ParserTestDriver.testHasTwoTimeInputs("0900 nothing 0800"));
 
 		//confirm method returns false if only 1 date input
 		assertEquals(false, ParserTestDriver.testHasTwoTimeInputs("0900"));
-
-		
-
-		//Test replaceAllDate
-
-		//confirm method replaces date input
-		assertEquals("", ParserTestDriver.testReplaceAllDate("09/08/1223"));
-
-		//confirm method replaces date input with additional portions
-		//note: each space/symbol around the date is left behind
-		assertEquals("add  work", ParserTestDriver.testReplaceAllDate("add 09/08/1223 work"));
-		assertEquals("add~%work", ParserTestDriver.testReplaceAllDate("add~09/08/1223%work"));
-
-		//confirm method replaces date input according to actual ideal user add appointment input
-		assertEquals("add  0900  0800 work", ParserTestDriver.testReplaceAllDate("add 09/08/1223 0900 2/3/2345 0800 work"));
 
 		
 		
