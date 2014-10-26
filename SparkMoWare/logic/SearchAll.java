@@ -44,7 +44,7 @@ public class SearchAll {
 				stringsFound = searchByTentative(buffer);
 			}*/
 			assertTrue(userInput.equalsIgnoreCase(TYPE_TASK) || userInput.equalsIgnoreCase(TYPE_APPOINTMENT));
-			
+
 		} else if(userInput.length() == TIME_FORMAT_LENGTH && userInput.matches("\\d+")) {
 			stringsFound = searchByTime(buffer, userInput);
 
@@ -104,12 +104,9 @@ public class SearchAll {
 		LinkedList<Assignment> priorityFound = new LinkedList<Assignment>();
 
 		for(listCount = 0; listCount < buffer.size(); listCount++) {
-			try{
-				if(buffer.get(listCount).getPriority().equals("important")) {
-					priorityFound.add(buffer.get(listCount));
-				}
-			}catch(NullPointerException e){
 
+			if(buffer.get(listCount).getPriority().equals("important")) {
+				priorityFound.add(buffer.get(listCount));
 			}
 		}
 		return priorityFound;
@@ -140,7 +137,7 @@ public class SearchAll {
 		}
 		return appointmentFound;
 	}
-/*
+	/*
 	private static LinkedList<Assignment> searchByTentative(LinkedList<Assignment> buffer) {
 
 		LinkedList<Assignment> tentativeFound = new LinkedList<Assignment> ();
@@ -153,7 +150,7 @@ public class SearchAll {
 		}
 		return tentativeFound;
 	}
-*/
+	 */
 	private static LinkedList<Assignment> searchById(LinkedList<Assignment> buffer, String searchId) {
 
 		LinkedList<Assignment> idFound = new LinkedList<Assignment>();
@@ -201,7 +198,7 @@ public class SearchAll {
 		LinkedList<Assignment> endTimeFound = new LinkedList<Assignment>();
 		Appointment appointmentInBuffer = new Appointment();
 		Task taskInBuffer = new Task();
-		
+
 		for(listCount = 0; listCount < buffer.size(); listCount++) {
 
 			if(buffer.get(listCount).getAssignType().equals(AssignmentType.APPOINTMENT)) {
@@ -234,7 +231,7 @@ public class SearchAll {
 		return datesFound;
 	}
 
-	protected static LinkedList<Assignment> searchByStartDate(LinkedList<Assignment> buffer, 
+	private static LinkedList<Assignment> searchByStartDate(LinkedList<Assignment> buffer, 
 			String searchStartDate) {
 
 		LinkedList<Assignment> startDateFound = new LinkedList<Assignment>();
@@ -257,7 +254,7 @@ public class SearchAll {
 		LinkedList<Assignment> deadlineFound = new LinkedList<Assignment>();
 		Appointment appointmentInBuffer = new Appointment();
 		Task taskInBuffer = new Task();
-		
+
 		for(listCount = 0; listCount < buffer.size(); listCount++) {
 
 			if(buffer.get(listCount).getAssignType().equals(AssignmentType.APPOINTMENT)) {
@@ -294,11 +291,12 @@ public class SearchAll {
 					keysFound.add(buffer.get(listCount));
 
 				} else {
-					Assignment assignmentFound = new Assignment();
-					assignmentFound = searchByKeyWord(buffer, searchKeyWord, listCount);
+					boolean assignmentFound;
+					
+					assignmentFound = searchByKeyWord(buffer.get(listCount), searchKeyWord);
 
-					if(assignmentFound != null) {
-						keysFound.add(assignmentFound);
+					if(assignmentFound) {
+						keysFound.add(buffer.get(listCount));
 					}
 				}
 			}
@@ -306,27 +304,28 @@ public class SearchAll {
 		return keysFound;
 	}
 
-	private static Assignment searchByKeyWord(LinkedList<Assignment> buffer, String searchKeyWord,
-			int listCount) {
-
-		String[] textArray = buffer.get(listCount).getTitle().split(" ");
+	private static boolean searchByKeyWord(Assignment assignment, String searchKeyWord) {
+		
+		boolean found = false;
+		
+		String[] textArray = assignment.getTitle().split(" ");
 
 		for(int textCount = 0; textCount < textArray.length; textCount++) {
 			String checkText = textArray[textCount];
 
-
 			if(checkText.equalsIgnoreCase(searchKeyWord)) {
-				return buffer.get(listCount);
+				found = true;
 			} else {
 				for(int textExtendCount = textCount + 1; textExtendCount < textArray.length; textExtendCount++) {
+					
 					checkText += " " + textArray[textExtendCount];
 
 					if(checkText.equalsIgnoreCase(searchKeyWord)) {
-						return buffer.get(listCount);
+						found = true;
 					}
 				}
 			}
 		}
-		return null;
+		return found;
 	}
 }

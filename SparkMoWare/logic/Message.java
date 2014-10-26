@@ -9,8 +9,10 @@ public class Message {
 	protected static final String PROMPT = "command: ";
 	protected static final String ADDED = "Assignment has been added!";
 	protected static final String EDITED = "Content has already been edited!";
-	protected static final String TENTATIVE = "Schedule(s): ";
-	protected static final String TENTATIVE_ADDED = "All of your tentative appointments have been added";
+	
+	protected static final String TENTATIVE_ADDED = "Tentative appointment has been added";
+	
+	protected static final String TENTATIVE_CONFIRM = "Your appointment has been confirm!";
 	
 	protected static final String DELETED = "Assignment has been deleted!";
 	protected static final String DELETE_ALL = "All necessary content have been deleted!";

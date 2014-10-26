@@ -31,7 +31,7 @@ public class Filter {
 		filteredList = multipleFilter(buffer, filterType);
 		
 		if(startDate != null && endDate != null) {
-			filteredList = Truncation.trancateList(filteredList, startDate, endDate);
+			filteredList = Truncation.truncateList(filteredList, startDate, endDate);
 		}
 		
 		assertFalse(SearchAll.searchByDeadline(filteredList, DateLocal.updateDate(endDate)).size()>0);

@@ -11,7 +11,9 @@ public class InternalStorage {
 
 	private static int counter = 0;
 	private static int size = 0;
-
+	
+	private static Tentative newTentative = new Tentative();
+	
 	private static Stack< LinkedList<Assignment>> actionHistory = new Stack< LinkedList<Assignment>>();
 	private static Stack< LinkedList<Assignment>> actionFuture = new Stack< LinkedList<Assignment>>();
 
@@ -49,6 +51,14 @@ public class InternalStorage {
 	
 	public static LinkedList<Assignment> getBuffer() {
 		return buffer;
+	}
+	
+	public static Tentative getTentative() {
+		return newTentative;
+	}
+	
+	public static void setTentative(Tentative tentative) {
+		newTentative = tentative;
 	}
 	
 	public static Stack <LinkedList<Assignment>> getHistory() {

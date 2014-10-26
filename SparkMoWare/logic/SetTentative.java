@@ -1,5 +1,8 @@
 package logic;
 
+import java.util.ListIterator;
+import logic.Assignment.AssignmentType;
+
 /*
  * Allows the user to create a number of tentative dates 
  * before confirming to have only one date for user's appointment
@@ -9,68 +12,77 @@ package logic;
  */
 
 public class SetTentative {
-	
-	public static String addTentative(String numOfTentative, String tentativeTitle) {
-		
+
+	public static Tentative addTentative(String tentativeTitle) {
+
 		Tentative newTentative = new Tentative();
-		
-		int tentativeNum = Integer.parseInt(numOfTentative);
+
 		String tentativeIdGenerated = Id.serialNumGen();
-		
+
 		newTentative.setId(tentativeIdGenerated);
 		newTentative.setTitle(tentativeTitle);
 		newTentative.setPriority(Assignment.PRIORITY_NONE);
-		
-		addTentativeAppt(newTentative, tentativeNum, tentativeIdGenerated, tentativeTitle);
-		
-		addTentativeToBuffer(newTentative);
-		
-		return Message.TENTATIVE_ADDED;
-	}
-	
-	private static void addTentativeAppt(Tentative newTentative, int tentativeNum, 
-			String tentativeIdGenerated, String tentativeTitle) {
-		
-		Print.printToUser(Message.TENTATIVE);
-		
-		for(int tentativeCount = 1; tentativeCount <= tentativeNum; tentativeCount++) {
-			
-			String[] inputArray = InternalStorage.getScanner().nextLine().split(";");
-			
-			if(inputArray.length != 4) {
-				tentativeCount--;
-				
-			} else {
-				
-				String endTime = inputArray[inputArray.length - 1];
-				String endDate = inputArray[inputArray.length - 2];
-				String startTime = inputArray[inputArray.length - 3];
-				String startDate = inputArray[inputArray.length - 4];
 
-				newTentative.setStartDate(startDate);
-				newTentative.setStartTime(startTime);
-				newTentative.setEndDate(endDate);
-				newTentative.setEndTime(endTime);
-			}
-		}
+		return newTentative;
+	}
+
+	protected static void addTentativeAppt(Tentative newTentative, String startDate,
+			String startTime, String endDate, String endTime) {
+
+		newTentative.addStartDate(startDate);
+		newTentative.addStartTime(startTime);
+		newTentative.addEndDate(endDate);
+		newTentative.addEndTime(endTime);
+	}
+
+	protected static void addSingleTentative(String title, String startDate, String startTime,
+			String endDate, String endTime) {
+
+		Tentative newTentative = new Tentative();
+		
+		newTentative.setId(Id.serialNumGen());
+		newTentative.setTitle(title);
+		newTentative.addStartDate(startDate);
+		newTentative.addStartTime(startTime);
+		newTentative.addEndDate(endDate);
+		newTentative.addEndTime(endTime);
+
+		addTentativeToBuffer(newTentative);
 	}
 	
+	protected static void setToTentative(Appointment newAppointment) {
+
+		Tentative newTentative = new Tentative();
+
+		newTentative.setId(newAppointment.getId());
+		newTentative.setTitle(newAppointment.getTitle());
+		newTentative.addStartDate(newAppointment.getStartDate());
+		newTentative.addStartTime(newAppointment.getStartTime());
+		newTentative.addEndDate(newAppointment.getEndDate());
+		newTentative.addEndTime(newAppointment.getEndTime());
+
+		addTentativeToBuffer(newTentative);
+	}
+
 	private static void addTentativeToBuffer(Tentative newTentative) {
-		
+
+		int bufferPosition = 0;
+
 		if (InternalStorage.getLineCount() == 0) {
 			InternalStorage.addBuffer(newTentative);
-			
-		} else if (Comparator.dateComparator(newTentative.getEndDate(),
-					InternalStorage.getBuffer().get(InternalStorage.getLineCount() - 1).getEndDate()) == 1) {
-			InternalStorage.addBuffer(newTentative);
-			
 		} else {
-			int bufferCount;
-			
-			for (bufferCount = InternalStorage.getLineCount() - 1; bufferCount > 0 && 
-					(Comparator.dateComparator(newTentative.getEndDate(), 
-					InternalStorage.getBuffer().get(bufferCount - 1).getEndDate()) == -1); bufferCount--);
-			InternalStorage.addBuffer(bufferCount, newTentative);
-		} 
+
+			ListIterator<Assignment> buffer = InternalStorage.getBuffer().listIterator();
+
+			while(buffer.hasNext()) {
+
+				if(buffer.next().getAssignType().equals(AssignmentType.APPOINTMENT)
+						|| buffer.next().getAssignType().equals(AssignmentType.TASK)
+						|| buffer.next().getAssignType().equals(AssignmentType.TENTATIVE)) {
+					InternalStorage.addBuffer(bufferPosition, newTentative);
+				}
+				bufferPosition++;
+			}
+		}
 	}
 }
