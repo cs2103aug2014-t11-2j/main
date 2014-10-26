@@ -1,7 +1,5 @@
 package logic;
 
-import static org.junit.Assert.assertTrue;
-
 public class Assignment {
 
 	/************** Data members **********************/

@@ -96,6 +96,6 @@ public class Delete {
 		}
 		deleteOn(startDate);
 		
-		assertFalse(SearchAll.searchByStartDate(InternalStorage.getBuffer(), startDate).size()>0);
+		assertFalse(SearchAll.searchByDeadline(InternalStorage.getBuffer(), startDate).size()>0);
 	}
 }

@@ -42,19 +42,19 @@ public class Tentative extends Assignment {
 	
 	/**************** Mutators ************************/
 	
-	public void setStartDate(String newstartDate) {
+	public void addStartDate(String newstartDate) {
 		this.startDate.add(newstartDate);
 	}
 	
-	public void setStartTime(String newStartTime) {
+	public void addStartTime(String newStartTime) {
 		this.startTime.add(newStartTime);
 	}
 	
-	public void setEndDate(String newEndDate) {
+	public void addEndDate(String newEndDate) {
 		this.endDate.add(newEndDate);
 	}
 	
-	public void setEndTime(String newEndTime) {
+	public void addEndTime(String newEndTime) {
 		this.endTime.add(newEndTime);
 	}
 	

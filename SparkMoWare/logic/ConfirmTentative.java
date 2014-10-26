@@ -8,49 +8,53 @@ import java.util.*;
  */
 public class ConfirmTentative {
 
-	private static LinkedList<Assignment> tentativeNeeded = new LinkedList<Assignment>();
-	
-	public static String confirmTentative(String serialId, String confirmStartDate, String confirmStartTime, 
+	private static Tentative tentativeNeeded = new Tentative();
+
+	public static void confirmTentative(String serialId, String confirmStartDate, String confirmStartTime, 
 			String confirmEndDate, String confirmEndTime) {
-		
-		Assignment confirmAssignment = new Assignment();
-		
-		tentativeNeeded = SearchAll.searchAll(serialId);
-		
-		if(tentativeNeeded.size() == 0) {
-			return String.format(Message.DOES_NOT_EXISTS, "Serial Number " + serialId);
-		} else {
 
-			confirmAssignment = findConfirmTentative(confirmStartDate, confirmStartTime, confirmEndDate, confirmEndTime);
-			confirmAssignment.setId(Id.serialNumGen());
+		Appointment confirmAppointment = new Appointment();
+		LinkedList<Assignment> tentatives = new LinkedList<Assignment> ();
 
-			Delete.delete(tentativeNeeded.get(1).getId());
+		tentatives = SearchAll.searchAll(InternalStorage.getBuffer(), serialId);
 
-			String newTitle = confirmAssignment.getTitle().substring(0, confirmAssignment.getTitle().lastIndexOf(' '));
+		if(tentatives.size() > 0) {
+		 
+			tentativeNeeded = ((Tentative) tentatives.get(0));
 
-			confirmAssignment.setTitle(newTitle);
-			confirmAssignment.setType(1);
+			confirmAppointment = findConfirmTentative(confirmStartDate, confirmStartTime, confirmEndDate, confirmEndTime);
+			confirmAppointment.setId(Id.serialNumGen());
 			
-			return confirmAssignment.toString();
+			Delete.delete(tentativeNeeded.getId());
+			Add.addAppointmentToBuffer(confirmAppointment);
 		}
 	}
-	
-	private static Assignment findConfirmTentative(String confirmStartDate, String confirmStartTime, 
+
+	private static Appointment findConfirmTentative(String confirmStartDate, String confirmStartTime, 
 			String confirmEndDate, String confirmEndTime){
-		
-		Assignment noAssignment = new Assignment();
-		
-		for(int listCheck = 0; listCheck < tentativeNeeded.size(); listCheck++) {
-			if(tentativeNeeded.get(listCheck).getStartDate().equals(confirmStartDate) && 
-					tentativeNeeded.get(listCheck).getEndDate().equals(confirmEndDate)) {
-				
-				if(tentativeNeeded.get(listCheck).getStartTime().equals(confirmStartTime) && 
-						tentativeNeeded.get(listCheck).getEndTime().equals(confirmEndTime) ) {
-					
-					return tentativeNeeded.get(listCheck);
-				}
+
+		Appointment newAppointment = new Appointment();
+		Vector<String> startDate = tentativeNeeded.getStartDate();
+		Vector<String> startTime = tentativeNeeded.getStartTime();
+		Vector<String> endDate = tentativeNeeded.getEndDate();
+		Vector<String> endTime = tentativeNeeded.getEndTime();
+
+		int size = startDate.size();
+
+		for(int dateFormatCount = 0; dateFormatCount < size; dateFormatCount++) {
+
+			if(startDate.get(dateFormatCount).equals(confirmStartDate) &&
+					startTime.get(dateFormatCount).equals(confirmStartTime) &&
+					endDate.get(dateFormatCount).equals(confirmEndDate) &&
+					endTime.get(dateFormatCount).equals(confirmEndTime)) {
+
+				newAppointment.setTitle(tentativeNeeded.getTitle());
+				newAppointment.setStartDate(startDate.get(dateFormatCount));
+				newAppointment.setStartTime(startTime.get(dateFormatCount));
+				newAppointment.setEndDate(endDate.get(dateFormatCount));
+				newAppointment.setEndTime(endTime.get(dateFormatCount));
 			}
 		}
-		return noAssignment;
+		return newAppointment;
 	}
 }
