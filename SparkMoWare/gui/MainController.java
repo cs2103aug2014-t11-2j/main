@@ -55,12 +55,13 @@ public class MainController {
 	private String userInput="";
 	private Text feedback;
 	private Table table;
-	private LinkedList<Appointment> buffer = new LinkedList<Appointment>();
+	private LinkedList<Appointment> buffer = InternalStorage.getAppointmentBuffer();
 	private boolean isPlaying = false;
 	private boolean isReady = false;
-	private MediaPlayer mediaPlayer;
+	private static MediaPlayer mediaPlayer;
 
 	public MainController(Display display) {
+		ImageGetter.loadimage();
 		shell = new Shell(display);
 		////logger.log("GUI, setting up shell");
 
@@ -163,7 +164,7 @@ public class MainController {
 					HelplistPopup.helplistPopup();
 					feedback.setText("Help List Selected");
 				} else if (e.keyCode == SWT.F5) {
-					shell.setBackgroundImage(imageGetter.imageGen());
+					shell.setBackgroundImage(ImageGetter.imageGen());
 					quoteViewer.setText(QuoteLib.getQuote());
 					feedback.setText("User Interface Refreshed");
 				} else if (e.keyCode == SWT.F6) {
@@ -173,10 +174,10 @@ public class MainController {
 						isPlaying = true;
 						feedback.setText("Playing Music");
 					}
-					if (isPlaying && isReady){
+					else if (isPlaying && isReady) {
 						mediaPlayer.stop();
 						isPlaying = false;
-						feedback.setText("Music Stopped");
+						feedback.setText("Music Stopped!");
 					}
 
 				}
@@ -242,15 +243,15 @@ public class MainController {
 		cli.addKeyListener(new KeyListener() {
 			public void keyReleased(KeyEvent e) {
 				if (e.keyCode == SWT.CR || e.keyCode == SWT.LF) {
-					commandHistory.addCmd(cli.getText());
+					CommandHistory.addCmd(cli.getText());
 					CommandHandler.commandHandle(cli, feedback, userInput, tableViewer);
 				}else if (e.keyCode == SWT.ARROW_UP) {
-					String commandCheck = commandHistory.getPrevCmd();
+					String commandCheck = CommandHistory.getPrevCmd();
 					if (!commandCheck.equals("")) {
 						cli.setText(commandCheck);
 					}
 				}else if (e.keyCode == SWT.ARROW_DOWN) {
-					String commandCheck = commandHistory.getNextCmd();
+					String commandCheck = CommandHistory.getNextCmd();
 					if (!commandCheck.equals("")) {
 						cli.setText(commandCheck);
 					}
@@ -374,6 +375,7 @@ public class MainController {
 		new MainController(display);
 
 		display.dispose();
+		mediaPlayer.stop();
 	}
 
 	private class UpdateTimerTask extends TimerTask

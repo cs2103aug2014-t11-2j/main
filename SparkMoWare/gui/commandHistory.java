@@ -2,7 +2,7 @@ package gui;
 
 import java.util.Stack;
 
-public class commandHistory {
+public class CommandHistory {
 	protected static Stack<String> history = new Stack<String>();
 	protected static Stack<String> future = new Stack<String>();
 	
