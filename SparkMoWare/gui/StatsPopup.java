@@ -20,14 +20,14 @@ public class StatsPopup {
 	/**
 	 * @wbp.parser.entryPoint
 	 */
-	protected static void statsAppear(int totalTask, int lateTask, int onTimeTask){
+	protected static void statsAppear(int totalTask, int completedTask, int onTimeTask){
 		
 		//ensure valid stats are displayed
-	    assert (totalTask >= lateTask) : "Value of " + totalTask + " < " + lateTask + " is too large to add.";
+	    assert (totalTask >= completedTask) : "Value of " + totalTask + " < " + completedTask + " is too large to add.";
 	    assert (totalTask >= onTimeTask) : "Value of " + totalTask + " < " + onTimeTask + " is too large to add.";
-	    assert (totalTask == (lateTask+onTimeTask)) : "Value of " + totalTask + " < " + lateTask + " is too large to add.";
+	    assert (onTimeTask <= completedTask) : "Value of " + onTimeTask + " < " + completedTask + " is too large to add.";
 
-		int percentageOntime = (int)(((float)onTimeTask/totalTask)*100);
+		int percentageOntime = (int)(((float)onTimeTask/completedTask)*100);
 		Shell popup = new Shell();
 		popup.setText("User Statistics");
 		Image background = SWTResourceManager.getImage(MainController.class, "/resource/image/wallpaper.jpg");
@@ -75,7 +75,7 @@ public class StatsPopup {
 		}
 		
 		String totalTaskString = "Total number of Assignments: ~ "+ Integer.toString(totalTask);
-		String lateTaskString = "Number of Completed Assignments: ~"+ Integer.toString(lateTask);
+		String lateTaskString = "Number of Completed Assignments: ~"+ Integer.toString(completedTask);
 		String onTimeTaskString = "Number of on time Assignments: ~ "+ Integer.toString(onTimeTask);
 		
 		LinkedList<String> stringToDisplay = new LinkedList<String>();
