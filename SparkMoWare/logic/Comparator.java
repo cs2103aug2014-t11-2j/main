@@ -20,7 +20,7 @@ public class Comparator {
 	// the format is 250920140001
 	public static boolean serialNumberComparator(String idA, String idB) {
 
-		assert(idA.length() == 12 && idA.length() == 12);
+		// assert(idA.length() == 12 && idA.length() == 12);
 
 		int checkDate = dateComparator(idA.substring(0, 8), idB.substring(0, 8));
 		boolean serialCheck = false;
@@ -42,7 +42,7 @@ public class Comparator {
 
 	public static int dateComparator(String dateA, String dateB) {
 
-		assert(dateA.length() == 8 && dateB.length() == 8);
+		// assert(dateA.length() == 8 && dateB.length() == 8);
 
 		String yearA = dateA.trim().substring(4, 8);
 		String yearB = dateB.trim().substring(4, 8);
@@ -69,24 +69,22 @@ public class Comparator {
 		} else if (Integer.parseInt(yearA) < Integer.parseInt(yearB)) {
 			return SMALLER;
 		} else if (Integer.parseInt(monthA) > Integer.parseInt(monthB)) {
-			assert (Integer.parseInt(yearA) == Integer.parseInt(yearB));
+			// assert (Integer.parseInt(yearA) == Integer.parseInt(yearB));
 			return LARGER;
 		} else if (Integer.parseInt(monthA) < Integer.parseInt(monthB)) {
-			assert (Integer.parseInt(yearA) == Integer.parseInt(yearB));
+			// assert (Integer.parseInt(yearA) == Integer.parseInt(yearB));
 			return SMALLER;
 		} else if (Integer.parseInt(dayA) > Integer.parseInt(dayB)) {
-			assert (Integer.parseInt(yearA) == Integer.parseInt(yearB) && Integer
-					.parseInt(monthA) == Integer.parseInt(monthB));
+			// assert (Integer.parseInt(yearA) == Integer.parseInt(yearB) && Integer.parseInt(monthA) == Integer.parseInt(monthB));
 			return LARGER;
 		}
-		assert (Integer.parseInt(yearA) == Integer.parseInt(yearB) && Integer
-				.parseInt(monthA) == Integer.parseInt(monthB));
+		// assert (Integer.parseInt(yearA) == Integer.parseInt(yearB) && Integer.parseInt(monthA) == Integer.parseInt(monthB));
 		return SMALLER;
 	}
 
 	public static int timeComparator(String timeA, String timeB) {
 
-		assert(timeA.length() == 4 && timeB.length() == 4);
+		// assert(timeA.length() == 4 && timeB.length() == 4);
 
 		String hourA = timeA.trim().substring(0, 2);
 		String hourB = timeA.trim().substring(0, 2);
@@ -107,39 +105,41 @@ public class Comparator {
 		} else if (Integer.parseInt(hourA) < Integer.parseInt(hourB)) {
 			return SMALLER;
 		} else if (Integer.parseInt(minA) > Integer.parseInt(minB)) {
-			assert(Integer.parseInt(hourA) == Integer.parseInt(hourB));
+			// assert(Integer.parseInt(hourA) == Integer.parseInt(hourB));
 			return LARGER;
 		}
-		assert(Integer.parseInt(hourA) == Integer.parseInt(hourB));
+		// assert(Integer.parseInt(hourA) == Integer.parseInt(hourB));
 		return SMALLER;
 	}
 
 	protected static int addToBigBuffer(Appointment newAppointment) {
 
 		Appointment appointmentInBuffer = new Appointment();
-		int bufferCount;
+		Task taskInBuffer = new Task();
 		int count = 0;
+		ListIterator<Assignment> buffer = InternalStorage.getBuffer().listIterator();
+		
+		while(buffer.hasNext()) {
+			count++;
+			if (buffer.next().getAssignType().equals(AssignmentType.APPOINTMENT)) {
 
-		for (bufferCount = 0; bufferCount < InternalStorage.getLineCount(); bufferCount++) {
-
-			if (InternalStorage.getBuffer().get(bufferCount).getAssignType()
-					.equals(AssignmentType.APPOINTMENT) || InternalStorage.getBuffer().get(bufferCount)
-					.getAssignType().equals(AssignmentType.TASK)) {
-
-				appointmentInBuffer = ((Appointment) InternalStorage
-						.getBuffer().get(bufferCount));
+				appointmentInBuffer = ((Appointment) buffer.previous());
 
 				if (Comparator.dateComparator(newAppointment.getEndDate(),
 						appointmentInBuffer.getEndDate()) == -1) {
-					count = bufferCount;
 					break;
 				}
 			} 
 
-			assert InternalStorage.getBuffer().get(bufferCount).getAssignType()
-			.equals(AssignmentType.APPOINTMENT)
-			|| InternalStorage.getBuffer().get(bufferCount)
-			.getAssignType().equals(AssignmentType.TASK);
+			if(buffer.previous().getAssignType().equals(AssignmentType.TASK)) {
+				taskInBuffer = ((Task) buffer.next());
+				
+				if (Comparator.dateComparator(newAppointment.getEndDate(),
+						taskInBuffer.getEndDate()) == -1) {
+					break;
+				}
+			}
+			// assert InternalStorage.getBuffer().get(bufferCount).getAssignType().equals(AssignmentType.APPOINTMENT)|| InternalStorage.getBuffer().get(bufferCount).getAssignType().equals(AssignmentType.TASK);
 		}
 		return count;
 	}
