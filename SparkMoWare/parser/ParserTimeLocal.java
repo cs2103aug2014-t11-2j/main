@@ -61,7 +61,7 @@ public class ParserTimeLocal {
 	}
 
 	public static String determineTimeValidity(String inputTime) {
-		if(!timeFormatValid(inputTime) && !inputTime.equalsIgnoreCase("default")) {
+		if(!timeFormatValid(inputTime)) {
 			return "";
 		}
 		return inputTime;

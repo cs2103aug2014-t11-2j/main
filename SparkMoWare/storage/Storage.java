@@ -59,8 +59,8 @@ public class Storage {
 			while (line != null ) {
 
 				String[] lineArray = line.split("~");
-				LinkedList<Assignment> newBuffer = ToBuffer.addToBuffer(lineArray);
-				buffer.addAll(newBuffer);
+
+				buffer.addAll(ToBuffer.addToBuffer(lineArray));
 
 				line = bufferedReader.readLine();
 			}

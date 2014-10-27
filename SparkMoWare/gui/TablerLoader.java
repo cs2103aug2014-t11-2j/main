@@ -1,5 +1,6 @@
 package gui;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 
 import logic.Appointment;
@@ -13,15 +14,16 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 
 public class TablerLoader {
-	protected static void populateTable(TableViewer tableViewer, LinkedList<Appointment> buffer) {
+	protected static void populateTable(TableViewer tableViewer, LinkedList<Appointment> tableBuffer) {
 		Table table = tableViewer.getTable();
 		Device device = Display.getCurrent ();
 		Color Red = new Color (device, 255, 0, 0);
 
-		for (int i=0; i<buffer.size();i++) {
-			String[] holding = buffer.get(i).toString().split("~");
-			System.out.println(buffer.size());
-			TableItem item = new TableItem(table,SWT.NONE);
+		Iterator<Appointment> TableLoaderiterator = tableBuffer.iterator();
+		while (TableLoaderiterator.hasNext()) {
+		  Appointment appointmentToLoad = TableLoaderiterator.next();
+		  String[] holding = appointmentToLoad.toString().split("~");
+		  TableItem item = new TableItem(table,SWT.NONE);
 			String temp ="";
 			// swap title and type for better user aesthetic
 			temp = holding[1];
