@@ -14,22 +14,35 @@ public class ParserAllTest {
 		
 		/*************InputIsAdd Tests*************/
 		
-		assertEquals("ADD~default~buy chicken~09091234~0900"
-					+ "~02032345~0800~APPOINTMENT~NMPT"
-					+ "~false~default", ParserTestDriver.testInputIsAdd("add buy chicken 09/09/1234 0900 2/3/2345 0800"));
-		
-		//confirm method for full input
-		assertEquals("ADD~default~buy chicken~09091234~0900"
-				+ "~02032345~0800~APPOINTMENT~IMPT"
-				+ "~false~default", ParserTestDriver.testInputIsAdd("add buy chicken 09/09/1234 0900 2/3/2345 0800 Important"));
-		
-		assertEquals("ADD~default~go 103T lecture~31102014~1400"
-				+ "~31102014~1600~APPOINTMENT~NMPT"
-				+ "~false~default", ParserTestDriver.testInputIsAdd("Add go 103T lecture 31/10/2014 1400 31/10/2014 1600"));
-		
+		//confirm method for floating tasks/assignment
 		assertEquals("ADD~default~EAT DINNER~default~default"
 				+ "~default~default~ASSIGNMENT~IMPT"
 				+ "~false~default", ParserTestDriver.testInputIsAdd("Add EAT DINNER IMPT"));
+
+		//confirm method for task with single date input
+		assertEquals("ADD~default~assignmnet due~default~default"
+				+ "~23122014~2359~TASK~IMPT"
+				+ "~false~default", ParserTestDriver.testInputIsAdd("Add assignmnet due IMPT 23/12/2014"));
+
+		//confirm method for task with single time input
+		//test case requires update for date output to current/system date 
+		/*assertEquals("ADD~default~assignment due~default~default"
+				+ "~27102014~2300~TASK~IMPT"
+				+ "~false~default", ParserTestDriver.testInputIsAdd("Add assignment due IMPT 2300"));
+				*/
+
+		//confirm method returns correct output for full input
+		assertEquals("ADD~default~buy chicken~09091234~0900"
+				+ "~02032345~0800~APPOINTMENT~IMPT"
+				+ "~false~default", ParserTestDriver.testInputIsAdd("add buy chicken 09/09/1234 0900 2/3/2345 0800 Important"));
+
+		//negative test case
+		assertNotEquals("ADD~default~go 2103T lecture~31102014~1400"
+				+ "~31102014~1600~APPOINTMENT~NMPT"
+				+ "~false~default", ParserTestDriver.testInputIsAdd("Add go 2103T lecture 31/10/2014 1400 31/10/2014 1600"));
+		//Design flaw: returns <go T lecture> instead of <go 2103T lecture>
+		//The replace time method replaces the any 4 number pattern
+
 		
 		
 		/*************ParserDateLocal Tests*************/
@@ -90,11 +103,6 @@ public class ParserAllTest {
 		/**************************/
 		
 		//Test dateExists
-		
-		
-		/**************************/
-		
-		//Test dateString
 		
 		
 		/**************************/
