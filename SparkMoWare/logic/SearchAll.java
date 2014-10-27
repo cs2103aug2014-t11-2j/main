@@ -1,7 +1,6 @@
 package logic;
 
 import java.util.*;
-import static org.junit.Assert.*;
 import logic.Assignment.AssignmentType;
 
 /*
@@ -43,7 +42,7 @@ public class SearchAll {
 			}/* else if (userInput.equalsIgnoreCase(TYPE_TENTATIVE)) {
 				stringsFound = searchByTentative(buffer);
 			}*/
-			assertTrue(userInput.equalsIgnoreCase(TYPE_TASK) || userInput.equalsIgnoreCase(TYPE_APPOINTMENT));
+			// assertTrue(userInput.equalsIgnoreCase(TYPE_TASK) || userInput.equalsIgnoreCase(TYPE_APPOINTMENT));
 
 		} else if(userInput.length() == TIME_FORMAT_LENGTH && userInput.matches("\\d+")) {
 			stringsFound = searchByTime(buffer, userInput);

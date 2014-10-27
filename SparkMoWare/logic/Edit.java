@@ -206,6 +206,6 @@ public class Edit {
 		InternalStorage.getBuffer().get(bufferPosition).setIsDone(true);
 		
 		InternalStorage.addBuffer(InternalStorage.getBuffer().get(bufferPosition));
-		InternalStorage.getBuffer().remove(bufferPosition);
+		InternalStorage.getBuffer().remove(bufferPosition + 1);
 	}
 }

@@ -32,15 +32,14 @@ public class Add {
 					userInput.getPriority());
 		} else {
 
-			assert Integer.parseInt(userInput.getSpecialContent()) > 0
-					|| Integer.parseInt(userInput.getSpecialContent()) == 0;
+			//assert Integer.parseInt(userInput.getSpecialContent()) > 0 || Integer.parseInt(userInput.getSpecialContent()) == 0;
 			
 			return addAssignment(Id.serialNumGen(), userInput.getTitle(),
 					false, userInput.getPriority());
 		}
 	}
 
-	public static String addAssignment(String id, String title,
+	protected static String addAssignment(String id, String title,
 			boolean isDone, String priority) {
 
 		Assignment newAssignment = new Assignment();
@@ -58,7 +57,7 @@ public class Add {
 		return newAssignment.toString();
 	}
 
-	public static String addAppointment(String id, String title,
+	protected static String addAppointment(String id, String title,
 			String startDate, String startTime, String endDate, String endTime,
 			boolean isDone, String priority) {
 
@@ -92,29 +91,14 @@ public class Add {
 		if (InternalStorage.getLineCount() == 0) {
 			InternalStorage.addBuffer(newAppointment);
 		} else {
-			assert InternalStorage.getBuffer().element() == null;
+			// assert InternalStorage.getBuffer().element() == null;
 			
 			int position = Comparator.addToBigBuffer(newAppointment);
 			InternalStorage.addBuffer(position, newAppointment);
 		}
 	}
 
-	/*
-	 * else
-	 * if(InternalStorage.getBuffer().get(0).getAssignType().equals(assignmentType
-	 * .TASK)) {
-	 * 
-	 * if (Comparator.dateComparator(newAppointment.getEndDate(),
-	 * InternalStorage.getBuffer().get(0).getEndDate()) == 1) {
-	 * InternalStorage.addBuffer(newAppointment); } } else { int bufferCount;
-	 * 
-	 * for (bufferCount = InternalStorage.getLineCount() - 1; bufferCount > 0 &&
-	 * (Comparator.dateComparator(newAppointment.getEndDate(),
-	 * InternalStorage.getBuffer().get(bufferCount - 1).getEndDate()) == -1);
-	 * bufferCount--); InternalStorage.addBuffer(bufferCount, newAppointment); }
-	 */
-
-	public static String addTask(String id, String title, String endDate,
+	protected static String addTask(String id, String title, String endDate,
 			String endTime, boolean isDone, String priority) {
 
 		Task newTask = new Task();
