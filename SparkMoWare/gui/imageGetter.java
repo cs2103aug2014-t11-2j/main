@@ -13,7 +13,6 @@ public class ImageGetter {
 		imageRepo.add(SWTResourceManager.getImage(MainController.class, "/resource/image/wallpaper1.jpg"));
 		imageRepo.add(SWTResourceManager.getImage(MainController.class, "/resource/image/wallpaper.jpg"));
 		imageRepo.add(SWTResourceManager.getImage(MainController.class, "/resource/image/cloud.jpg"));
-		imageRepo.add(SWTResourceManager.getImage(MainController.class, "/resource/image/forest.jpg"));
 		imageRepo.add(SWTResourceManager.getImage(MainController.class, "/resource/image/highway.jpg"));
 		imageRepo.add(SWTResourceManager.getImage(MainController.class, "/resource/image/nebula.jpg"));
 		imageRepo.add(SWTResourceManager.getImage(MainController.class, "/resource/image/sunset.jpg"));

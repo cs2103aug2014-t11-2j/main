@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 import org.eclipse.jface.viewers.TableViewer;
@@ -36,13 +37,16 @@ public class HelplistPopup {
 		table = tableViewer.getTable();
 		table.setBounds(10, 10, 514, 342);
 		openFile();
-		for (int i=0; i<helplistBuffer.size();i++) {
+		Iterator<String> tableLoaderIterator = helplistBuffer.iterator();
+		while (tableLoaderIterator.hasNext()) {
+			String textToDisplay = tableLoaderIterator.next();
 			TableItem item = new TableItem(table,SWT.NONE);
-			item.setText(helplistBuffer.get(i));
-			if (helplistBuffer.get(i).contains(":")) {
+			item.setText(textToDisplay);
+			if (textToDisplay.contains(":")) {
 				item.setFont(font);
 			}
 		}
+		
 		helpList.open();
 	}
 	
