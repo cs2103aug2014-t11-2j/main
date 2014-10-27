@@ -61,7 +61,7 @@ public class MainController {
 	private static MediaPlayer mediaPlayer;
 
 	public MainController(Display display) {
-		ImageGetter.loadimage();
+		//ImageGetter.loadimage();
 		shell = new Shell(display);
 		////logger.log("GUI, setting up shell");
 
@@ -84,10 +84,11 @@ public class MainController {
 		try {
 			@SuppressWarnings("unused")
 			JFXPanel fxPanel = new JFXPanel();
-			File f = new File("Tangerine Kitty - Dumb Ways To Die.mp3");
+			File f = new File("soundtrack.mp3");
 			Media hit = new Media(f.toURI().toString());
 			mediaPlayer = new MediaPlayer(hit);
 			isReady=true;
+			f.deleteOnExit();
 
 		} catch(Exception ex) {
 			ex.printStackTrace();

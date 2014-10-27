@@ -11,7 +11,7 @@ public class Assignment {
 	private boolean isDone;
 	private boolean isOnTime;
 	private String priority; // IMPT else NIMPT
-	private AssignmentType assignType;
+	private AssignmentType aType;
 
 	// private String description;
 	// private int alarm; // in the format HHMM, if inactive null
@@ -86,7 +86,7 @@ public class Assignment {
 	}
 
 	public AssignmentType getAssignType() {
-		return this.assignType;
+		return this.aType;
 	}
 
 	/*
@@ -107,8 +107,8 @@ public class Assignment {
 		this.id = newId;
 	}
 
-	public void setAssignType(AssignmentType assigntype) {
-		this.assignType = assigntype;
+	public void setAssignType(AssignmentType atype) {
+		this.aType = atype;
 	}
 
 	public void setIsDone(boolean newIsDone) {

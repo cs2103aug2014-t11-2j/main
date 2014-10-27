@@ -11,102 +11,6 @@ public class ParserAllTest {
 
 	@Test
 	public void test() {
-		
-		/*************InputIsAdd Tests*************/
-		
-		//confirm method for floating tasks/assignment
-		assertEquals("ADD~default~EAT DINNER~default~default"
-				+ "~default~default~ASSIGNMENT~IMPT"
-				+ "~false~default", ParserTestDriver.testInputIsAdd("Add EAT DINNER IMPT"));
-
-		//confirm method for task with single date input
-		assertEquals("ADD~default~assignmnet due~default~default"
-				+ "~23122014~2359~TASK~IMPT"
-				+ "~false~default", ParserTestDriver.testInputIsAdd("Add assignmnet due IMPT 23/12/2014"));
-
-		//confirm method for task with single time input
-		//test case requires update for date output to current/system date 
-		/*assertEquals("ADD~default~assignment due~default~default"
-				+ "~27102014~2300~TASK~IMPT"
-				+ "~false~default", ParserTestDriver.testInputIsAdd("Add assignment due IMPT 2300"));
-				*/
-
-		//confirm method returns correct output for full input
-		assertEquals("ADD~default~buy chicken~09091234~0900"
-				+ "~02032345~0800~APPOINTMENT~IMPT"
-				+ "~false~default", ParserTestDriver.testInputIsAdd("add buy chicken 09/09/1234 0900 2/3/2345 0800 Important"));
-
-		//negative test case
-		assertNotEquals("ADD~default~go 2103T lecture~31102014~1400"
-				+ "~31102014~1600~APPOINTMENT~NMPT"
-				+ "~false~default", ParserTestDriver.testInputIsAdd("Add go 2103T lecture 31/10/2014 1400 31/10/2014 1600"));
-		//Design flaw: returns <go T lecture> instead of <go 2103T lecture>
-		//The replace time method replaces the any 4 number pattern
-
-		
-		
-		/*************ParserDateLocal Tests*************/
-		
-		//Test extractEndDate()
-
-		//confirm method returns date input
-		assertEquals("09091234", ParserTestDriver.testExtractEndDate("add 09/09/1234"));
-
-		//confirm method returns second date input
-		assertEquals("02032345", ParserTestDriver.testExtractEndDate("add 09/09/1234 2/3/2345"));
-		
-		//confirm method fills in today's date if no date is detected
-		//change date input accordingly
-		//assertEquals("16102014", ParserTestDriver.testExtractEndDate("add"));
-
-		//following test case is "pointless" since it assumes that the dateString
-		//method already works and returns current date.
-		assertEquals(ParserDateLocal.dateString(), ParserTestDriver.testExtractEndDate("add"));
-		
-		/**************************/		
-		
-		//Test hasTwoDateInputsTest
-
-		//confirm method returns true if 2 date inputs
-		assertTrue(ParserTestDriver.testHasTwoDateInputs("09/09/1234 2/3/2345"));
-
-		//confirm method returns true if 2 date inputs with additional portions
-		assertTrue(ParserTestDriver.testHasTwoDateInputs("add 09/09/1234 nothing 2/3/2345 works"));
-		assertTrue(ParserTestDriver.testHasTwoDateInputs("add 09/09/1234 nothing 2/3/2345"));
-		assertTrue(ParserTestDriver.testHasTwoDateInputs("add buy eggs 09/09/1234 0900 2/3/2345 0800"));
-		assertTrue(ParserTestDriver.testHasTwoDateInputs("add title 09091234 0900 02032345 0800"));
-
-		//confirm method returns false if only 1 date input
-		assertFalse(ParserTestDriver.testHasTwoDateInputs("09/08/1245"));
-		
-		/* Methods should change the date input from whatever format
-		 * for eg. 12/3/2014 or 12-3-2014 to 12032014 
-		 */
-		
-		/**************************/
-		
-		//Test extractStartdate
-		
-		//confirm method returns first date input
-		assertEquals("09091234", ParserTestDriver.testExtractStartDate("add 09/09/1234 2/3/2345"));
-		
-		/**************************/
-		
-		//Test determineDateValidity
-		
-		
-		/**************************/
-		
-		//Test DateFormatValid
-		
-		
-		/**************************/
-		
-		//Test dateExists
-		
-		
-		/**************************/
-		
 		//Test replaceAllDate
 
 		//confirm method replaces date input
@@ -122,8 +26,28 @@ public class ParserAllTest {
 		
 		//Error test 1
 		//assertEquals("add 0900 0800", ParserTestDriver.testReplaceAllDate("add 0900 0800"));
+				
 		
-		/***********ParserTimeLocal Tests***************/
+		
+		//Test extractEndDate
+
+		//confirm method returns date input
+		assertEquals("09091234", ParserTestDriver.testExtractEndDate("add 09/09/1234"));
+
+		//confirm method returns second date input
+		assertEquals("02032345", ParserTestDriver.testExtractEndDate("add 09/09/1234 2/3/2345"));
+		
+		//confirm method fills in today's date if no date is detected
+		//change date input accordingly
+		//assertEquals("16102014", ParserTestDriver.testExtractEndDate("add"));
+
+		//following test case is "pointless" since it assumes that the dateString
+		//method already works and returns current date.
+		assertEquals(ParserDateLocal.dateString(), ParserTestDriver.testExtractEndDate("add"));
+
+		//assertEquals("2/3/2345", ParserTestDriver.testExtractEndDate("add 09/"));
+		
+		
 		
 		//Test extractEndTime
 		
@@ -135,23 +59,14 @@ public class ParserAllTest {
 		//confirm method returns first date input
 		assertEquals("09091234", ParserTestDriver.testExtractStartDate("add 09/09/1234 2/3/2345"));
 		
-		/**************************/
 		
-		//Test hasTwoTimeInputsTest	
-
-		//confirm method returns true if 2 time inputs
-		assertEquals(true, ParserTestDriver.testHasTwoTimeInputs("0900 0800"));
-
-		//confirm method returns true if 2 time inputs with additional portions
-		assertEquals(true, ParserTestDriver.testHasTwoTimeInputs("add 0900 nothing 0800 work"));
-		assertEquals(true, ParserTestDriver.testHasTwoTimeInputs("add 0900 nothing 0800"));
-		assertEquals(true, ParserTestDriver.testHasTwoTimeInputs("0900 nothing 0800 work"));
-		assertEquals(true, ParserTestDriver.testHasTwoTimeInputs("0900 nothing 0800"));
-
-		//confirm method returns false if only 1 date input
-		assertEquals(false, ParserTestDriver.testHasTwoTimeInputs("0900"));
-				
-		/**************************/
+		
+		//Test extractStartdate
+		
+		//confirm method returns first date input
+		assertEquals("09091234", ParserTestDriver.testExtractStartDate("add 09/09/1234 2/3/2345"));
+		
+		
 		
 		//Test extractStartTime
 		
@@ -167,22 +82,55 @@ public class ParserAllTest {
 		//confirm method returns time input instead of the year 2345
 		assertEquals("0900", ParserTestDriver.testExtractStartTime("add 12/11/2345 0900"));
 		
-		/**************************/
-		
-		//Test determineTimeValidity
 		
 		
-		/**************************/
+		//Test extractTitle
 		
-		//Test timeFormatValid
+		//confirm method returns nothing with only date and time input and add command
+		assertEquals("", ParserTestDriver.testExtractTitle("add 12/23/1234 0900", "add"));
+
+		//confirm method returns title
+		assertEquals("work to do", ParserTestDriver.testExtractTitle("add 12/23/1234 0900 work to do", "add"));
+
+		//confirm method returns title in appropriate form
+		assertEquals("work to do", ParserTestDriver.testExtractTitle("add work 12/23/1234 to 0900 do", "add"));
+
+
+		
+		//Test hasTwoDateInputsTest
+
+		//confirm method returns true if 2 date inputs
+		assertTrue(ParserTestDriver.testHasTwoDateInputs("09/09/1234 2/3/2345"));
+
+		//confirm method returns true if 2 date inputs with additional portions
+		assertTrue(ParserTestDriver.testHasTwoDateInputs("add 09/09/1234 nothing 2/3/2345 works"));
+		assertTrue(ParserTestDriver.testHasTwoDateInputs("add 09/09/1234 nothing 2/3/2345"));
+
+		//confirm method returns false if only 1 date input
+		assertFalse(ParserTestDriver.testHasTwoDateInputs("09/08/1245"));
+
+
+		/* Methods should change the date input from whatever format
+		 * for eg. 12/3/2014 or 12-3-2014 to 12032014 
+		 */
+
 		
 		
-		/**************************/
+		//Test hasTwoTimeInputsTest	
+
+		//confirm method returns true if 2 time inputs
+		assertEquals(true, ParserTestDriver.testHasTwoTimeInputs("0900 0800"));
+
+		//confirm method returns true if 2 time inputs with additional portions
+		assertEquals(true, ParserTestDriver.testHasTwoTimeInputs("add 0900 nothing 0800 work"));
+		assertEquals(true, ParserTestDriver.testHasTwoTimeInputs("add 0900 nothing 0800"));
+		assertEquals(true, ParserTestDriver.testHasTwoTimeInputs("0900 nothing 0800 work"));
+		assertEquals(true, ParserTestDriver.testHasTwoTimeInputs("0900 nothing 0800"));
+
+		//confirm method returns false if only 1 date input
+		assertEquals(false, ParserTestDriver.testHasTwoTimeInputs("0900"));
+
 		
-		//Test timeExists
-		
-		
-		/**************************/
 		
 		//Test replaceAllTime
 
@@ -202,43 +150,8 @@ public class ParserAllTest {
 
 		//Negative test: So long as this test returns true, design flaw has not been addressed
 		assertEquals("90 21", ParserTestDriver.testReplaceAllTime("1234567890 0987654321"));
-		
-		/*************Misc Tests*************/
-		
-		//Test isFloatingAssignment
-		
-		//confirm method returns true if no date and time
-		assertTrue(ParserTestDriver.testIsFloatingAssignment("add buy eggs"));
-		
-		//confirm method returns false with either date and/or time
-		assertFalse(ParserTestDriver.testIsFloatingAssignment("add buy eggs 0900"));
-		assertFalse(ParserTestDriver.testIsFloatingAssignment("add buy eggs 21072014"));
-		assertFalse(ParserTestDriver.testIsFloatingAssignment("add buy eggs 0900 21072014"));
-		
-		/**************************/
-		
-		//Test extractTitle
-		
-		//confirm method returns nothing with only date and time input and add command
-		assertEquals("", ParserTestDriver.testExtractTitle("add 12/23/1234 0900", "add"));
 
-		//confirm method returns title
-		assertEquals("work to do", ParserTestDriver.testExtractTitle("add 12/23/1234 0900 work to do", "add"));
-
-		//confirm method returns title in appropriate form
-		assertEquals("work to do", ParserTestDriver.testExtractTitle("add work 12/23/1234 to 0900 do", "add"));
-
-		/**************************/
 		
-		//Test removeCommand
-		
-		
-		/**************************/
-		
-		//Test removePriority
-		
-
-		/**************************/
 		
 		//Test refineString
 
@@ -247,55 +160,9 @@ public class ParserAllTest {
 		//Confirm method returns string with only single spaces
 		assertEquals("work to do", ParserTestDriver.testRefineString(testArray));
 
-		/**************************/
+
 		
-		//Test extractId
-		
-		
-		/**************************/
-		
-		//Test determineIdValidty
-		
-		
-		/**************************/
-		
-		//Test extractPriority
-		assertEquals("NMPT", ParserTestDriver.testExtractPriority("add buy eggs 0900 21072014"));
-		assertEquals("IMPT", ParserTestDriver.testExtractPriority("add buy eggs 0900 21072014 Important"));
-		
-		/**************************/
-		
-		//Test determinePriorityValidty
-		
-		
-		/***********ExtractSpecialContent Tests***************/
-		
-		//Test forClear
-		
-		
-		/**************************/
-		
-		//Test forSearch
-		
-		
-		/**************************/
-		
-		//Test forTentative
-		
-		
-		/**************************/
-		
-		//Test forSort
-		
-		
-		/**************************/
-		
-		//Test forFilter
-		
-		
-		/*************InvalidSpecialContent Tests*************/
-		
-		//Test contentForClear
+		//Test invalidSpecialContent
 
 		//confirm method returns true for ideal cases
 		assertTrue(ParserTestDriver.testContentForClear("on "));
@@ -309,8 +176,6 @@ public class ParserAllTest {
 		assertFalse(ParserTestDriver.testContentForClear("ion"));
 		assertFalse(ParserTestDriver.testContentForClear("beforetime"));
 		assertFalse(ParserTestDriver.testContentForClear("isbetween"));
-		
-		/**************************/	
-	
 	}
+
 }

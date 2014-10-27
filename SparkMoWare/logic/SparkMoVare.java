@@ -1,6 +1,7 @@
 package logic;
 
 import java.util.LinkedList;
+import static org.junit.Assert.*;
 import parser.EnumGroup.CommandType;
 import parser.Interpreter;
 import parser.RefinedUserInput;
@@ -35,7 +36,7 @@ public class SparkMoVare {
 	public static void main(String[] args) {
 
 		Print.printToUser(Message.WELCOME);
-		Storage.openFile(InternalStorage.getFilePath(), Id.getLatestSerialNumber(), InternalStorage.getBuffer());
+		Storage.openFile(InternalStorage.getFilePath(),Id.getLatestSerialNumber(), InternalStorage.getBuffer());
 		toDoManager();
 	}
 
@@ -80,12 +81,12 @@ public class SparkMoVare {
 		}
 		 */		
 		if(!command.equals(CommandType.TENTATIVE) && 
-			!InternalStorage.getNewTentative().getStartDate().isEmpty()) {
-			InternalStorage.addBuffer(InternalStorage.getNewTentative());
+			!InternalStorage.getTentative().getStartDate().isEmpty()) {
+			InternalStorage.addBuffer(InternalStorage.getTentative());
 			
 		 } else {
 			 Tentative newTentative = new Tentative();
-			InternalStorage.setNewTentative(newTentative); 
+			InternalStorage.setTentative(newTentative); 
 		 }
 		
 		 switch (command) {
@@ -95,11 +96,17 @@ public class SparkMoVare {
 			 returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
 					 Message.ADDED, InternalStorage.getLineCount(), Statistic.getCompleted(), 
 					 Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
+<<<<<<< HEAD
 			 
 			 
 			 
 			 // assertTrue(InternalStorage.getBufferPosition(userInput.getId()) > -1);
 			 break;
+=======
+
+			 assertTrue(InternalStorage.getBufferPosition(userInput.getId()) > -1);
+			 return returnOutput;
+>>>>>>> ff6347f8122bd4f9f6b0a145ff81802479089943
 
 		 case EDIT:
 			 Edit.editAssignment(userInput);
@@ -117,20 +124,26 @@ public class SparkMoVare {
 					 Message.DELETED, InternalStorage.getLineCount(), Statistic.getCompleted(), 
 					 Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
 
+<<<<<<< HEAD
 			 System.out.println("File saved");
 			 Storage.saveFile(InternalStorage.getFilePath(), InternalStorage.getBuffer());
 			 
 			 // assertTrue(InternalStorage.getBufferPosition(userInput.getId()) > -1);
 			 break;
 /*
+=======
+			 assertTrue(InternalStorage.getBufferPosition(userInput.getId()) > -1);
+			 return returnOutput;
+
+>>>>>>> ff6347f8122bd4f9f6b0a145ff81802479089943
 		 case TENTATIVE:
 
 			 if(userInput.getIsNewTentative()) {
 				 Tentative newTentative = SetTentative.addTentative(userInput.getTitle());
-				 InternalStorage.setNewTentative(newTentative);
+				 InternalStorage.setTentative(newTentative);
 
 			 } else {
-				 SetTentative.addTentativeAppt(InternalStorage.getNewTentative(), userInput.getStartDate(), 
+				 SetTentative.addTentativeAppt(InternalStorage.getTentative(), userInput.getStartDate(), 
 						 userInput.getStartTime(), userInput.getEndDate(), userInput.getEndTime());
 			 }
 
@@ -139,7 +152,7 @@ public class SparkMoVare {
 					 Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
 
 			 return returnOutput;
-*/
+
 		 case CONFIRM:
 			 ConfirmTentative.confirmTentative(userInput.getId(), userInput.getStartDate(),
 					 userInput.getStartTime(), userInput.getEndDate(), userInput.getEndTime());
@@ -159,12 +172,18 @@ public class SparkMoVare {
 			 returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
 					 Message.DELETE_ALL, InternalStorage.getLineCount(), Statistic.getCompleted(), 
 					 Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
+<<<<<<< HEAD
 			 
 			 System.out.println("File saved");
 			 Storage.saveFile(InternalStorage.getFilePath(), InternalStorage.getBuffer());
 			 
 			 // assertFalse(InternalStorage.getLineCount() > 0);
 			 break;
+=======
+
+			 assertFalse(InternalStorage.getLineCount() > 0);
+			 return returnOutput;
+>>>>>>> ff6347f8122bd4f9f6b0a145ff81802479089943
 
 		 case SORT:
 			 LinkedList<Assignment> sortedBuffer = new LinkedList<Assignment>();
@@ -270,7 +289,13 @@ public class SparkMoVare {
 			 
 			 break;
 
+<<<<<<< HEAD
 		 case EXIT:			 
+=======
+			 return returnOutput;
+
+		 case EXIT:
+>>>>>>> ff6347f8122bd4f9f6b0a145ff81802479089943
 			 System.exit(SYSTEM_EXIT_NO_ERROR);
 			 break;
 

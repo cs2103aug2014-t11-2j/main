@@ -34,8 +34,7 @@ public class ParserDateLocal {
 	protected static boolean hasTwoDateInputs(String userInput) {		
 		String[] temp = ParserPatternLocal.datePattern.split(userInput);
 		
-		if(temp.length > 3) {
-		// if(temp.length == 2 || temp.length == 3) {
+		if(temp.length == 2 || temp.length == 3) {
 			return true;
 		} else {
 			return false;
@@ -68,7 +67,7 @@ public class ParserDateLocal {
 	}	
 	
 	public static String determineDateValidity(String inputDate) { 
-		if(!dateFormatValid(inputDate) && !inputDate.equalsIgnoreCase("default")) {
+		if(!dateFormatValid(inputDate)) {
 				return "";
 			}
 		return inputDate;
