@@ -23,19 +23,19 @@ public class Add {
 			return addAppointment(Id.serialNumGen(), userInput.getTitle(),
 					userInput.getStartDate(), userInput.getStartTime(),
 					userInput.getEndDate(), userInput.getEndTime(), false,
-					userInput.getSpecialContent());
+					userInput.getPriority());
 
 		} else if (userInput.getAssignmentType().equals(AssignmentType.TASK)) {
 
 			return addTask(Id.serialNumGen(), userInput.getTitle(),
 					userInput.getEndDate(), userInput.getEndTime(), false,
-					userInput.getSpecialContent());
+					userInput.getPriority());
 		} else {
 
 			// assert Integer.parseInt(userInput.getSpecialContent()) > 0 || Integer.parseInt(userInput.getSpecialContent()) == 0;
 			
 			return addAssignment(Id.serialNumGen(), userInput.getTitle(),
-					false, userInput.getSpecialContent());
+					false, userInput.getPriority());
 		}
 	}
 

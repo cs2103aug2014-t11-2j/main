@@ -90,7 +90,7 @@ public class Misc {
 
 	protected static String extractPriority(String userInput) {
 		Matcher importantMatcher = ParserPatternLocal.importantPattern.matcher(userInput);
-		String priority = "NMPT";
+		String priority = "NIMPT";
 		
 		if(importantMatcher.find()) {
 			priority = "IMPT";
