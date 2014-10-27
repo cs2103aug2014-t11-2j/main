@@ -2,6 +2,14 @@ package parser;
 
 public class ParserTestDriver {
 
+	/***********Major Component Test***************/
+	
+	public static String testInputIsAdd(String testInput) {
+		return InputIsAdd.refineInput(testInput).toString();
+	}
+	
+	/************Minor Component Test**************/
+	
 	public static Boolean testHasTwoDateInputs(String testInput) {
 		return ParserDateLocal.hasTwoDateInputs(testInput);
 	}
@@ -44,5 +52,13 @@ public class ParserTestDriver {
 	
 	public static boolean testContentForClear(String testInput) {
 		return InvalidSpecialContent.contentForClear(testInput);
+	}
+
+	public static boolean testIsFloatingAssignment(String testInput) {
+		return Misc.isFloatingAssignment(testInput);
+	}
+	
+	public static String testExtractPriority(String testInput) {
+		return Misc.extractPriority(testInput);
 	}
 }

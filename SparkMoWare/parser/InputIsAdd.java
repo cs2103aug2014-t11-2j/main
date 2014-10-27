@@ -5,9 +5,18 @@ public class InputIsAdd {
 	protected static RefinedUserInput refineInput(String userInput) {
 		RefinedUserInput inputAdd = new RefinedUserInput();
 		String title = Misc.extractTitle(userInput, "add");
+		String priority = Misc.extractPriority(userInput);
+		
+		if(Misc.isFloatingAssignment(userInput)) {
+			inputAdd.setCommandType(EnumGroup.CommandType.ADD);
+			inputAdd.setTitle(title);
+			inputAdd.setPriority(priority);
+			inputAdd.setAssignmentType(EnumGroup.AssignmentType.ASSIGNMENT);
+			return inputAdd;
+		}
+		
 		String endDate = ParserDateLocal.extractEndDate(userInput);
 		String endTime = ParserTimeLocal.extractEndTime(userInput);
-		String priority = Misc.extractPriority(userInput);
 		
 		if(title.isEmpty() || endDate.isEmpty() || endTime.isEmpty()) {
 			inputAdd.setCommandType(EnumGroup.CommandType.INVALID_FORMAT);

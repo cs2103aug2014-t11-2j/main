@@ -8,6 +8,17 @@ import java.util.regex.Matcher;
  */
 public class Misc {
 	
+	protected static Boolean isFloatingAssignment(String userInput) {
+		Matcher dateMatcher = ParserPatternLocal.datePattern.matcher(userInput);
+		Matcher timeMatcher = ParserPatternLocal.timePattern.matcher(userInput);
+		
+		if(!dateMatcher.find() && !timeMatcher.find()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 	protected static String extractTitle(String userInput, String command) {
 		
 		userInput = ParserDateLocal.replaceAllDate(userInput);
@@ -61,7 +72,6 @@ public class Misc {
 		return refinedString.trim();
 	}
 	
-
 	protected static String extractId(String userInput) {
 		userInput = ParserDateLocal.replaceAllDate(userInput);
 		userInput = ParserTimeLocal.replaceAllTime(userInput);

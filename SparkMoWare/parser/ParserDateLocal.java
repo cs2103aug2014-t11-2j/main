@@ -67,7 +67,7 @@ public class ParserDateLocal {
 	}	
 	
 	public static String determineDateValidity(String inputDate) { 
-		if(!dateFormatValid(inputDate)) {
+		if(!dateFormatValid(inputDate) && !inputDate.equalsIgnoreCase("default")) {
 				return "";
 			}
 		return inputDate;
