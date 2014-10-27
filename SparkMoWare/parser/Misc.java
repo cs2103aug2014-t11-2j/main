@@ -39,11 +39,23 @@ public class Misc {
 		if(command.equals("add")) {
 			Matcher addMatcher = ParserPatternLocal.addPattern.matcher(input);
 			
-			return addMatcher.replaceFirst("");
+			return addMatcher.replaceFirst("").trim();
 		} else if(command.equals("tentative")) {
 			Matcher tentativeMatcher = ParserPatternLocal.tentativePattern.matcher(input);
 			
-			return tentativeMatcher.replaceFirst("");
+			return tentativeMatcher.replaceFirst("").trim();
+		} else if(command.equals("edit")) {
+			Matcher editMatcher = ParserPatternLocal.editPattern.matcher(input);
+			
+			return editMatcher.replaceFirst("").trim();
+		} else if(command.equals("confirm")) {
+			Matcher confirmMatcher = ParserPatternLocal.confirmPattern.matcher(input);
+			
+			return confirmMatcher.replaceFirst("").trim();
+		} else if(command.equals("delete")) {
+			Matcher deleteMatcher = ParserPatternLocal.deletePattern.matcher(input);
+			
+			return deleteMatcher.replaceFirst("").trim();
 		}
 		return input;
 	}
@@ -90,12 +102,14 @@ public class Misc {
 
 	protected static String extractPriority(String userInput) {
 		Matcher importantMatcher = ParserPatternLocal.importantPattern.matcher(userInput);
-		String priority = "NMPT";
+		String notImportant= "NIMPT";
+		String important = "IMPT";
 		
 		if(importantMatcher.find()) {
-			priority = "IMPT";
+			return important;
+		} else {
+			return notImportant;
 		}
-			return priority;
 	}
 
 	//This is a different determine validity method compared to the others

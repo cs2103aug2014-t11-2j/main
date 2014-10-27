@@ -86,9 +86,7 @@ public class ParserTimeLocal {
 		int min = time % 100;
 		int hr = time / 100;
 
-		if(min <= 59 && min >= 0) {
-			timeExist = true;
-		} else if(hr <= 23 && hr >= 0) {
+		if(min <= 59 && min >= 0 && hr <= 23 && hr >= 0) {
 			timeExist = true;
 		}
 		return timeExist;

@@ -27,7 +27,8 @@ public class RefinedUserInput {
 	/************** Constructors **********************/
 	
 	public RefinedUserInput() {
-		final String defaultContent  = "default";
+		final String defaultContent = "default";
+		final String defaultPriority = "NIMPT"; 
 		setCommandType(EnumGroup.CommandType.DEFAULT);
 		setId(defaultContent);
 		setTitle(defaultContent);
@@ -36,7 +37,7 @@ public class RefinedUserInput {
 		setEndDate(defaultContent);
 		setEndTime(defaultContent);
 		setAssignmentType(EnumGroup.AssignmentType.DEFAULT);
-		setPriority("NMPT");
+		setPriority("NIMPT");
 		setIsNewTentative(false);
 		setSpecialContent(defaultContent);
 	}

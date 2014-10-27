@@ -21,6 +21,7 @@ public class ParserTestDriver {
 		return ParserDateLocal.extractEndDate(testInput);
 	}
 	
+	//unsused test
 	public static String testDetermineDateValidity(String testInput) {
 		return ParserDateLocal.determineDateValidity(testInput);
 	}
@@ -31,10 +32,6 @@ public class ParserTestDriver {
 	
 	public static boolean testDateExists(int testInput) {
 		return ParserDateLocal.dateExists(testInput);
-	}
-	
-	public static String testDateString(String testInput) {
-		return ParserDateLocal.dateString(testInput);
 	}
 	
 	public static String testReplaceAllDate(String testInput) {
@@ -59,22 +56,50 @@ public class ParserTestDriver {
 		return ParserTimeLocal.replaceAllTime(testInput);
 	}
 	
-	/************Misc Component**************/
+	public static String testDetermineTimeValidity(String testInput) {
+		return ParserTimeLocal.determineTimeValidity(testInput);
+	}
 	
+	public static boolean testTimeFormatValid(String testInput) {
+		return ParserTimeLocal.timeFormatValid(testInput);
+	}
+
+	public static boolean testTimeExists(int testInput) {
+		return ParserTimeLocal.timeExists(testInput);
+	}
+
+	/************Misc Component**************/
+
 	public static String testRefineString(String[] testInput) {
 		return Misc.refineString(testInput);
 	}
-	
+
 	public static String testExtractTitle(String testInput, String command) {
 		return Misc.extractTitle(testInput, command);
 	}
-	
-		public static boolean testIsFloatingAssignment(String testInput) {
+
+	public static boolean testIsFloatingAssignment(String testInput) {
 		return Misc.isFloatingAssignment(testInput);
 	}
-	
-		public static String testExtractPriority(String testInput) {
+
+	public static String testExtractPriority(String testInput) {
 		return Misc.extractPriority(testInput);
+	}
+	
+	public static String testRemoveCommand(String testInput, String command) {
+		return Misc.removeCommand(testInput, command);
+	}
+	
+	public static String testExtractId(String testInput) {
+		return Misc.extractId(testInput);
+	}
+	
+	public static String testDetermineIdValidity(String testInput) {
+		return Misc.determineIdValidity(testInput);
+	}
+	
+	public static boolean testDeterminePriorityValidity(String testInput) {
+		return Misc.determinePriorityValidity(testInput);
 	}
 	
 	/************ExtractSpecialContent Component**************/
