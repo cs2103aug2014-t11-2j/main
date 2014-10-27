@@ -11,7 +11,7 @@ public class Filter {
 	protected static LinkedList<Assignment> multipleFilter(LinkedList<Assignment> filterBuffer,
 			String userInput) {
 		
-		assertTrue(filterBuffer.size()>0);
+		//assertTrue(filterBuffer.size()>0);
 		
 		String[] multipleFilterInput = userInput.split(";");
 		
@@ -24,7 +24,7 @@ public class Filter {
 	public static LinkedList<Assignment> filterMain(LinkedList<Assignment> buffer, String filterType,
 			String startDate, String endDate) {
 
-		assertTrue(buffer.size()>0);
+		//assertTrue(buffer.size()>0);
 		
 		LinkedList<Assignment> filteredList = new LinkedList<Assignment> ();
 		

@@ -80,23 +80,23 @@ public class DateLocal {
 	// decrementing date
 	protected static String updateDate(String date) {
 
-		assert(date.length() ==8);
+		assert(date.length() == 8);
 		
 		String[] endDate = new String[3];
 
-		endDate[0] = date.substring(0, 2);
-		endDate[1] = date.substring(2, 4);
-		endDate[2] = date.substring(4, 8);
+		endDate[0] = date.substring(0, 1);
+		endDate[1] = date.substring(2, 3);
+		endDate[2] = date.substring(3, 7);
 		
 		int[] intEndDate = new int[3];
 		String updatedDate = "";
 		
-		assert(endDate.length<4);
-		
 		for(int dateCharCount = 0; dateCharCount < endDate.length; dateCharCount++) {
 			intEndDate[dateCharCount] = Integer.parseInt(endDate[dateCharCount]); 
 		}
-
+		
+		assert(intEndDate[3] < 10000);
+		
 		if ((intEndDate[0] - 1) == 0) {
 			if ((intEndDate[1] - 1) == 0) {
 				intEndDate[2]--;
@@ -104,21 +104,25 @@ public class DateLocal {
 				intEndDate[0] = 31;
 				assert(intEndDate[2]>0);
 			} else {
-				intEndDate[1] = updateMonth(intEndDate[1], intEndDate[2]);
+				intEndDate[0] = updateByMonth(intEndDate[1], intEndDate[2]);
+				intEndDate[1]--;
 			}
-		} else {
+		} else { 
 			intEndDate[0]--;
 		}
 		
+		assert(intEndDate[0] < 32);
+		assert(intEndDate[1] < 13);
+		
 		for(int dateIntCount = 0; dateIntCount < intEndDate.length; dateIntCount++) {
-			updatedDate += String.valueOf(intEndDate[dateIntCount]);
+			updatedDate += Integer.toString(intEndDate[dateIntCount]);
 		}
 		
 		assert(dateExists(Integer.parseInt(updatedDate)));
 		return updatedDate;
 	}
 
-	private static int updateMonth(int intEndMonth, int intEndYear) {
+	private static int updateByMonth(int intEndMonth, int intEndYear) {
 
 		if(intEndMonth == 2){			
 			if (intEndYear % 4 == 0){
@@ -134,7 +138,7 @@ public class DateLocal {
 	
 	protected static String getStartDate() {
 		
-		String startDate = "01012014";
+		String startDate = "31121993";
 		
 		if(InternalStorage.getBuffer().getFirst().equals(AssignmentType.TASK)) {
 			Task firstTask = ((Task) InternalStorage.getBuffer().getFirst());
