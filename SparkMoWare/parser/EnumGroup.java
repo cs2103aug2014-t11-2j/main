@@ -5,7 +5,7 @@ package parser;
 public class EnumGroup {
 
 	public enum AssignmentType {
-		TASK, APPOINTMENT, TENTATIVE, DEFAULT
+		TASK, APPOINTMENT, ASSIGNMENT, TENTATIVE, DEFAULT
 	}
 	
 	public enum CommandType {

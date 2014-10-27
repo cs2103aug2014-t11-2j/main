@@ -295,7 +295,7 @@ public class ParserAllTest {
 		/**************************/
 		
 		//Test extractPriority
-		assertEquals("NMPT", ParserTestDriver.testExtractPriority("add buy eggs 0900 21072014"));
+		assertEquals("NIMPT", ParserTestDriver.testExtractPriority("add buy eggs 0900 21072014"));
 		assertEquals("IMPT", ParserTestDriver.testExtractPriority("add buy eggs 0900 21072014 Important"));
 		
 		/**************************/

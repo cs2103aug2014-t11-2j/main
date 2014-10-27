@@ -8,16 +8,16 @@ import java.util.regex.Matcher;
  */
 public class Misc {
 	
-	protected static Boolean isFloatingAssignment(String userInput) {
-		Matcher dateMatcher = ParserPatternLocal.datePattern.matcher(userInput);
-		Matcher timeMatcher = ParserPatternLocal.timePattern.matcher(userInput);
-		
-		if(!dateMatcher.find() && !timeMatcher.find()) {
-			return true;
-		} else {
-			return false;
-		}
-	}
+    protected static Boolean isFloatingAssignment(String userInput) {
+        Matcher dateMatcher = ParserPatternLocal.datePattern.matcher(userInput);
+        Matcher timeMatcher = ParserPatternLocal.timePattern.matcher(userInput);
+        
+        if(!dateMatcher.find() && !timeMatcher.find()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 	
 	protected static String extractTitle(String userInput, String command) {
 		
