@@ -32,8 +32,7 @@ public class Add {
 					userInput.getSpecialContent());
 		} else {
 
-			assert Integer.parseInt(userInput.getSpecialContent()) > 0
-					|| Integer.parseInt(userInput.getSpecialContent()) == 0;
+			// assert Integer.parseInt(userInput.getSpecialContent()) > 0 || Integer.parseInt(userInput.getSpecialContent()) == 0;
 			
 			return addAssignment(Id.serialNumGen(), userInput.getTitle(),
 					false, userInput.getSpecialContent());
@@ -92,7 +91,7 @@ public class Add {
 		if (InternalStorage.getLineCount() == 0) {
 			InternalStorage.addBuffer(newAppointment);
 		} else {
-			assert InternalStorage.getBuffer().element() == null;
+			// assert InternalStorage.getBuffer().element() == null;
 			
 			int position = Comparator.addToBigBuffer(newAppointment);
 			InternalStorage.addBuffer(position, newAppointment);

@@ -1,7 +1,7 @@
 package logic;
 
 import logic.Assignment;
-import static org.junit.Assert.*;
+// import static org.junit.Assert.*;
 import logic.Assignment.AssignmentType;
 import java.util.LinkedList;
 
@@ -41,7 +41,7 @@ public class Truncation {
 				}
 			}
 		}
-		//assertTrue(truncatedList.getFirst().getEndDate().equals(date));
+		// assertTrue(truncatedList.getFirst().getEndDate().equals(date));
 		return truncatedList;
 	}
 
@@ -63,7 +63,7 @@ public class Truncation {
 				}
 			}
 		}
-		assertFalse(truncatedList.contains(DateLocal.updateDate(date)));
+		// assertFalse(truncatedList.contains(DateLocal.updateDate(date)));
 		return truncatedList;
 	}
 }

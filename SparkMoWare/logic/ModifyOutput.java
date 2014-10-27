@@ -10,13 +10,15 @@ public class ModifyOutput {
 	
 	private static final String DEFAULT_NONE = "-";
 	
-	public static Output returnModification(LinkedList<Assignment> buffer,
+	protected static Output returnModification(LinkedList<Assignment> buffer,
 			String message, int totalAssignment, int totalCompleted, int totalOnTime,
 			boolean isStats, boolean isInValid) {
 		
 		LinkedList<Appointment> returnBuffer = new LinkedList<Appointment>();
 		
-		returnBuffer = modifyBuffer(buffer);
+		if(buffer.size() > 0) {
+			returnBuffer = modifyBuffer(buffer);
+		}
 		
 		returnOutput.setReturnBuffer(returnBuffer);
 		returnOutput.setFeedback(message);
@@ -29,7 +31,7 @@ public class ModifyOutput {
 		return returnOutput;
 	}
 	
-	static LinkedList<Appointment> modifyBuffer(LinkedList<Assignment> buffer) {
+	private static LinkedList<Appointment> modifyBuffer(LinkedList<Assignment> buffer) {
 		
 		LinkedList<Appointment> modifiedBuffer = new LinkedList<Appointment>();
 		Appointment temp = new Appointment();
