@@ -40,7 +40,7 @@ public class Comparator {
 		return serialCheck;
 	}
 
-	protected static int dateComparator(String dateA, String dateB) {
+	public static int dateComparator(String dateA, String dateB) {
 
 		assert(dateA.length() == 8 && dateB.length() == 8);
 
@@ -84,7 +84,7 @@ public class Comparator {
 		return SMALLER;
 	}
 
-	protected static int timeComparator(String timeA, String timeB) {
+	public static int timeComparator(String timeA, String timeB) {
 
 		assert(timeA.length() == 4 && timeB.length() == 4);
 
