@@ -115,25 +115,30 @@ public class Comparator {
 	protected static int addToBigBuffer(Appointment newAppointment) {
 
 		Appointment appointmentInBuffer = new Appointment();
-		int bufferCount;
+		Task taskInBuffer = new Task();
 		int count = 0;
+		ListIterator<Assignment> buffer = InternalStorage.getBuffer().listIterator();
+		
+		while(buffer.hasNext()) {
+			count++;
+			if (buffer.next().getAssignType().equals(AssignmentType.APPOINTMENT)) {
 
-		for (bufferCount = 0; bufferCount < InternalStorage.getLineCount(); bufferCount++) {
-
-			if (InternalStorage.getBuffer().get(bufferCount).getAssignType()
-					.equals(AssignmentType.APPOINTMENT) || InternalStorage.getBuffer().get(bufferCount)
-					.getAssignType().equals(AssignmentType.TASK)) {
-
-				appointmentInBuffer = ((Appointment) InternalStorage
-						.getBuffer().get(bufferCount));
+				appointmentInBuffer = ((Appointment) buffer.previous());
 
 				if (Comparator.dateComparator(newAppointment.getEndDate(),
 						appointmentInBuffer.getEndDate()) == -1) {
-					count = bufferCount;
 					break;
 				}
 			} 
 
+			if(buffer.previous().getAssignType().equals(AssignmentType.TASK)) {
+				taskInBuffer = ((Task) buffer.next());
+				
+				if (Comparator.dateComparator(newAppointment.getEndDate(),
+						taskInBuffer.getEndDate()) == -1) {
+					break;
+				}
+			}
 			// assert InternalStorage.getBuffer().get(bufferCount).getAssignType().equals(AssignmentType.APPOINTMENT)|| InternalStorage.getBuffer().get(bufferCount).getAssignType().equals(AssignmentType.TASK);
 		}
 		return count;

@@ -5,7 +5,7 @@ package parser;
 public class EnumGroup {
 
 	public enum AssignmentType {
-		TASK, APPOINTMENT, ASSIGNMENT, TENTATIVE, DEFAULT
+		TASK, APPOINTMENT, TENTATIVE, DEFAULT
 	}
 	
 	public enum CommandType {
@@ -15,7 +15,6 @@ public class EnumGroup {
 		//unlikely to use invalid or exit
 	}
 	
-	//Most likely useless
 	public enum EditType {
 		TITLE, START_DATE, START_TIME, END_DATE, END_TIME, INVALID, PRIORITY, DONE
 		//unlikely to use invalid or done

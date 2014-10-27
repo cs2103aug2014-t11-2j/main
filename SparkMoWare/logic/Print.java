@@ -1,8 +1,7 @@
 package logic;
 
-//import static org.junit.Assert.*;
-import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.ListIterator;
 
 public class Print {
 
@@ -26,18 +25,12 @@ public class Print {
 
 	public static void printList(LinkedList<Appointment> list) {
 		
-		// assertTrue(list.size()>0);
-		for (int i = 0; i < list.size(); i++) {
-			System.out.println(list.get(i).toString());
-		}
-	}
-
-	public static void printHelpList(ArrayList<String> list) {
+		ListIterator<Appointment> listIterate = list.listIterator();
 		
-		// assertTrue(list.size()>0);
-		for (int i = 0; i < list.size(); i++) {
-			System.out.println(list.get(i));
+		while(listIterate.hasNext()) {
+			System.out.println(listIterate.next().toString());
 		}
+		// assertTrue(list.size()>0);
 	}
 
 	public static void printToUser(String output) {

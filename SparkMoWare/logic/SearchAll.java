@@ -1,7 +1,6 @@
 package logic;
 
 import java.util.*;
-//import static org.junit.Assert.*;
 import logic.Assignment.AssignmentType;
 
 /*

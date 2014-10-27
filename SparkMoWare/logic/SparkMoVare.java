@@ -55,6 +55,7 @@ public class SparkMoVare {
 				InternalStorage.pushHistory(InternalStorage.getBuffer());
 			 */
 			//		}
+			
 			Print.printList(returnOutput.getReturnBuffer());
 			Print.printToUser(returnOutput.getFeedback());
 			System.out.println(returnOutput.getTotalAssignment());
@@ -90,13 +91,15 @@ public class SparkMoVare {
 		 switch (command) {
 		 case ADD:
 			 Add.addSomething(userInput);
-
+			 
 			 returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
 					 Message.ADDED, InternalStorage.getLineCount(), Statistic.getCompleted(), 
 					 Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
-
+			 
+			 
+			 
 			 // assertTrue(InternalStorage.getBufferPosition(userInput.getId()) > -1);
-			 return returnOutput;
+			 break;
 
 		 case EDIT:
 			 Edit.editAssignment(userInput);
@@ -105,7 +108,7 @@ public class SparkMoVare {
 					 Message.EDITED, InternalStorage.getLineCount(), Statistic.getCompleted(), 
 					 Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
 
-			 return returnOutput;
+			 break;
 
 		 case DELETE:
 			 Delete.delete(userInput.getId());
@@ -114,8 +117,11 @@ public class SparkMoVare {
 					 Message.DELETED, InternalStorage.getLineCount(), Statistic.getCompleted(), 
 					 Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
 
+			 System.out.println("File saved");
+			 Storage.saveFile(InternalStorage.getFilePath(), InternalStorage.getBuffer());
+			 
 			 // assertTrue(InternalStorage.getBufferPosition(userInput.getId()) > -1);
-			 return returnOutput;
+			 break;
 /*
 		 case TENTATIVE:
 
@@ -141,8 +147,11 @@ public class SparkMoVare {
 			 returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
 					 Message.TENTATIVE_CONFIRM, InternalStorage.getLineCount(), Statistic.getCompleted(), 
 					 Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
-
-			 return returnOutput;
+			 
+			 System.out.println("File saved");
+			 Storage.saveFile(InternalStorage.getFilePath(), InternalStorage.getBuffer());
+			 
+			 break;
 
 		 case CLEAR:
 			 Delete.deleteAll(userInput.getSpecialContent(), userInput.getStartDate(), userInput.getEndDate());
@@ -150,9 +159,12 @@ public class SparkMoVare {
 			 returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
 					 Message.DELETE_ALL, InternalStorage.getLineCount(), Statistic.getCompleted(), 
 					 Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
-
+			 
+			 System.out.println("File saved");
+			 Storage.saveFile(InternalStorage.getFilePath(), InternalStorage.getBuffer());
+			 
 			 // assertFalse(InternalStorage.getLineCount() > 0);
-			 return returnOutput;
+			 break;
 
 		 case SORT:
 			 LinkedList<Assignment> sortedBuffer = new LinkedList<Assignment>();
@@ -164,7 +176,7 @@ public class SparkMoVare {
 					 Message.SORT, InternalStorage.getLineCount(), Statistic.getCompleted(), 
 					 Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
 
-			 return returnOutput;
+			 break;
 
 		 case SEARCH:
 			 LinkedList<Assignment> searchBuffer = new LinkedList<Assignment>();
@@ -180,7 +192,7 @@ public class SparkMoVare {
 						 Message.SEARCH, InternalStorage.getLineCount(), Statistic.getCompleted(), 
 						 Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
 			 }
-			 return returnOutput;
+			 break;
 
 		 case DONE:
 			 Edit.completeAssignment(userInput.getId());
@@ -188,15 +200,18 @@ public class SparkMoVare {
 			 returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
 					 Message.DONE, InternalStorage.getLineCount(), Statistic.getCompleted(), 
 					 Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
-
-			 return returnOutput;
+			 
+			 System.out.println("File saved");
+			 Storage.saveFile(InternalStorage.getFilePath(), InternalStorage.getBuffer());
+			 
+			 break;
 
 		 case STATISTIC:
 			 returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
 					 Message.STATISTIC, InternalStorage.getLineCount(), Statistic.getCompleted(), 
 					 Statistic.getIsOnTime(), true, IS_NOT_STATS_OR_INVALID);
 
-			 return returnOutput;
+			 break;
 
 		 case UNDO:
 
@@ -211,7 +226,10 @@ public class SparkMoVare {
 						 Message.UNDO, InternalStorage.getLineCount(), Statistic.getCompleted(), 
 						 Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
 			 }
-			 return returnOutput;
+			 System.out.println("File saved");
+			 Storage.saveFile(InternalStorage.getFilePath(), InternalStorage.getBuffer());
+			 
+			 break;
 
 		 case REDO:
 
@@ -226,7 +244,11 @@ public class SparkMoVare {
 						 Message.REDO, InternalStorage.getLineCount(), Statistic.getCompleted(), 
 						 Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
 			 }
-			 return returnOutput;
+			 
+			 System.out.println("File saved");
+			 Storage.saveFile(InternalStorage.getFilePath(), InternalStorage.getBuffer());
+			 
+			 break;
 
 		 case DISPLAY:
 			 returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
@@ -234,7 +256,7 @@ public class SparkMoVare {
 					 Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
 
 			 Print.display();
-			 return returnOutput;
+			 break;
 
 		 case FILTER:
 			 LinkedList<Assignment> filteredBuffer = new LinkedList<Assignment>();
@@ -245,9 +267,10 @@ public class SparkMoVare {
 			 returnOutput = ModifyOutput.returnModification(filteredBuffer,
 					 Message.FILTER, InternalStorage.getLineCount(), Statistic.getCompleted(), 
 					 Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
+			 
+			 break;
 
-
-		 case EXIT:
+		 case EXIT:			 
 			 System.exit(SYSTEM_EXIT_NO_ERROR);
 			 break;
 
@@ -255,13 +278,12 @@ public class SparkMoVare {
 			 returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
 					 Message.INVALID_COMMAND, InternalStorage.getLineCount(), Statistic.getCompleted(), 
 					 Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, true);
-
-			 return returnOutput;
+			  
+			 break;
 		 }
-
 		 System.out.println("File saved");
 		 Storage.saveFile(InternalStorage.getFilePath(), InternalStorage.getBuffer());
-
+		 
 		 return returnOutput;
 	}
 }

@@ -56,7 +56,6 @@ public class Determine {
 	}
 	
 	//requires change to use pattern
-	//Most likely redundant
 	protected EnumGroup.EditType getEditType(String input) {
 		if(input.equalsIgnoreCase("title")) {
 			return EnumGroup.EditType.TITLE;
