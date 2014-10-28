@@ -3,11 +3,6 @@ package logic;
 import logic.Assignment;
 import java.util.LinkedList;
 
-/*
- * This is to sort out differently, as per user request
- * Can be either 
- * Deadlines, task, appointment or ID
- */
 public class Sort {
 
 	private static int listCount;

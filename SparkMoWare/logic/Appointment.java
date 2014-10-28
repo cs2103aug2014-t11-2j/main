@@ -14,29 +14,10 @@ public class Appointment extends Task {
 	private static final String DEFAULT_TIME = "0000";
 	
 	/************** Constructors **********************/
-	// Default constructor
+
 	public Appointment() {
 		this(DEFAULT_DATE, DEFAULT_TIME);
-		
-		//this(DEFAULT, DEFAULT_STRING, DEFAULT, DEFAULT_DATE, DEFAULT_TIME, DEFAULT_DATE, DEFAULT_TIME, false, false, PRIORITY_NONE);
 	}
-	
-	/*public Appointment(String id, String title, String type, String startDate, String startTime,
-			String endDate, String endTime, boolean isDone, boolean isOnTime, String priority) {
-		
-		setId(id);
-		setTitle(title);
-		setType(type);
-		setStartDate(startDate);
-		setStartTime(startTime);
-		setEndDate(endDate);
-		setEndTime(endTime);
-		setIsDone(isDone);
-		setIsOnTime(isOnTime);
-		setPriority(priority);
-		//setTag(tag);
-		numAppointment++;
-	}*/
 	
 	public Appointment(String startDate, String startTime) {
 		

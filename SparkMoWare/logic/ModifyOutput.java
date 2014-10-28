@@ -1,7 +1,6 @@
 package logic;
 
 import java.util.LinkedList;
-
 import logic.Assignment.AssignmentType;
 
 public class ModifyOutput {

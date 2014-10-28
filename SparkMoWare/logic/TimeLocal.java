@@ -1,9 +1,5 @@
 package logic;
 
-/*
- * This is to check time format and its validity
- * Prompt the user until the user input the correct format <hhmm>
- */
 public class TimeLocal {
 	
 	public static String determineTime(String inputTime) {

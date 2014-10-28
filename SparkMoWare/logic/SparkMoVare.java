@@ -1,7 +1,6 @@
 package logic;
 
 import java.util.LinkedList;
-import static org.junit.Assert.*;
 import parser.EnumGroup.CommandType;
 import parser.Interpreter;
 import parser.RefinedUserInput;
@@ -13,25 +12,6 @@ public class SparkMoVare {
 	protected static final int SYSTEM_EXIT_ERROR = -1;
 
 	protected static final boolean IS_NOT_STATS_OR_INVALID = false;
-
-	/* each index of refinedUserinput represent something
-	 * 0:The command string
-	 * 1:Serial Number (S/N) of the Assignment ASSUMPTION: serial number length is at most 12 digits DD/MM/YYYY/0000
-	 * 2:Title of the Assignment
-	 * 3:Start Date
-	 * 4:Start Time
-	 * 5:End Date
-	 * 6:End Time
-	 * 7:Type: Task(0), Appointment(1) and Tentative(2)
-	 * 8:For command types: delete all (on, before, during)
-	 *					   edit which is to be edited, such as title or start date
-	 *					   tentative (number of days)
-	 *					   sort and search by date, serial number, etc.
-	 * 9:Priority 
-	 */
-
-
-	//Fundamentally the same as CommandType, but without single word commands 
 
 	public static void main(String[] args) {
 
@@ -48,14 +28,7 @@ public class SparkMoVare {
 			Print.printToUser(Message.PROMPT);
 
 			returnOutput = executeCommand(InternalStorage.getScanner().nextLine());
-			/*	
-			if (getCommandType(refinedUserInput[0]) != CommandType.UNDO &&
-					getCommandType(refinedUserInput[0]) != CommandType.REDO &&
-					getCommandType(refinedUserInput[0]) != CommandType.INVALID &&
-					getCommandType(refinedUserInput[0]) != CommandType.DISPLAY) {
-				InternalStorage.pushHistory(InternalStorage.getBuffer());
-			 */
-			//		}
+
 			Print.printList(returnOutput.getReturnBuffer());
 			Print.printToUser(returnOutput.getFeedback());
 			System.out.println(returnOutput.getTotalAssignment());
@@ -72,21 +45,12 @@ public class SparkMoVare {
 		userInput = Interpreter.reader(userStringInput);
 
 		CommandType command = userInput.getCommandType();
-		/*
+		
 		if (command != CommandType.UNDO && command != CommandType.REDO ) {
 			while (!InternalStorage.getFuture().empty()){
 				InternalStorage.popFuture();
 			}
-		}
-		 */		
-		if(!command.equals(CommandType.TENTATIVE) && 
-			!InternalStorage.getTentative().getStartDate().isEmpty()) {
-			InternalStorage.addBuffer(InternalStorage.getTentative());
-			
-		 } else {
-			 Tentative newTentative = new Tentative();
-			InternalStorage.setTentative(newTentative); 
-		 }
+		}		
 		
 		 switch (command) {
 		 case ADD:
@@ -96,7 +60,6 @@ public class SparkMoVare {
 					 Message.ADDED, InternalStorage.getLineCount(), Statistic.getCompleted(), 
 					 Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
 
-			 assertTrue(InternalStorage.getBufferPosition(userInput.getId()) > -1);
 			 return returnOutput;
 
 		 case EDIT:
@@ -115,20 +78,11 @@ public class SparkMoVare {
 					 Message.DELETED, InternalStorage.getLineCount(), Statistic.getCompleted(), 
 					 Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
 
-			 assertTrue(InternalStorage.getBufferPosition(userInput.getId()) > -1);
 			 return returnOutput;
 
 		 case TENTATIVE:
-
-			 if(userInput.getIsNewTentative()) {
-				 Tentative newTentative = SetTentative.addTentative(userInput.getTitle());
-				 InternalStorage.setTentative(newTentative);
-
-			 } else {
-				 SetTentative.addTentativeAppt(InternalStorage.getTentative(), userInput.getStartDate(), 
-						 userInput.getStartTime(), userInput.getEndDate(), userInput.getEndTime());
-			 }
-
+			 SetTentative.addTentative(userInput.getTitle(), userInput.getTentativeDates(), userInput.getTentativeTimes());
+			 
 			 returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
 					 Message.TENTATIVE_ADDED, InternalStorage.getLineCount(), Statistic.getCompleted(), 
 					 Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
@@ -152,7 +106,6 @@ public class SparkMoVare {
 					 Message.DELETE_ALL, InternalStorage.getLineCount(), Statistic.getCompleted(), 
 					 Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
 
-			 assertFalse(InternalStorage.getLineCount() > 0);
 			 return returnOutput;
 
 		 case SORT:
@@ -207,11 +160,7 @@ public class SparkMoVare {
 						 Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
 			 } else {
 				 RedoUndo.undo();
-<<<<<<< HEAD
-				 
-=======
 
->>>>>>> origin/master
 				 returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
 						 Message.UNDO, InternalStorage.getLineCount(), Statistic.getCompleted(), 
 						 Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
@@ -226,11 +175,7 @@ public class SparkMoVare {
 						 Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
 			 } else {
 				 RedoUndo.redo();
-<<<<<<< HEAD
-				 
-=======
 
->>>>>>> origin/master
 				 returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
 						 Message.REDO, InternalStorage.getLineCount(), Statistic.getCompleted(), 
 						 Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);

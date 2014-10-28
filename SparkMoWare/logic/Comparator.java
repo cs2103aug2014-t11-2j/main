@@ -117,29 +117,31 @@ public class Comparator {
 	protected static int addToBigBuffer(Appointment newAppointment) {
 
 		Appointment appointmentInBuffer = new Appointment();
-		int bufferCount;
+		Task taskInBuffer = new Task();
 		int count = 0;
 
-		for (bufferCount = 0; bufferCount < InternalStorage.getLineCount(); bufferCount++) {
+		ListIterator<Assignment> buffer = InternalStorage.getBuffer().listIterator();
 
-			if (InternalStorage.getBuffer().get(bufferCount).getAssignType()
-					.equals(AssignmentType.APPOINTMENT) || InternalStorage.getBuffer().get(bufferCount)
-					.getAssignType().equals(AssignmentType.TASK)) {
+		while(buffer.hasNext()) {
+			count++;
+			if (buffer.next().getAssignType().equals(AssignmentType.APPOINTMENT)) {
 
-				appointmentInBuffer = ((Appointment) InternalStorage
-						.getBuffer().get(bufferCount));
+				appointmentInBuffer = ((Appointment) buffer.previous());
 
 				if (Comparator.dateComparator(newAppointment.getEndDate(),
 						appointmentInBuffer.getEndDate()) == -1) {
-					count = bufferCount;
 					break;
 				}
-			} 
 
-			assert InternalStorage.getBuffer().get(bufferCount).getAssignType()
-			.equals(AssignmentType.APPOINTMENT)
-			|| InternalStorage.getBuffer().get(bufferCount)
-			.getAssignType().equals(AssignmentType.TASK);
+			} else if(buffer.previous().getAssignType().equals(AssignmentType.TASK)) {
+				taskInBuffer = ((Task) buffer.next());
+
+				if (Comparator.dateComparator(newAppointment.getEndDate(),
+						taskInBuffer.getEndDate()) == -1) {
+					break;
+				}
+			}
+
 		}
 		return count;
 	}
@@ -154,23 +156,23 @@ public class Comparator {
 			if(buffer.next().getAssignType().equals(AssignmentType.APPOINTMENT)) {
 				checkAppointment = ((Appointment) buffer.next()); 
 			}
-			
+
 			if(Comparator.dateComparator(newAppointment.getEndDate(), 
 					checkAppointment.getEndDate()) == SAME &&
 					Comparator.dateComparator(newAppointment.getStartDate(), 
 							checkAppointment.getStartDate()) == SAME) {
-				
+
 				isClashing = isClashingTime(newAppointment, checkAppointment);
 			}
 			isClashing = isClashingDate(newAppointment, checkAppointment);
 		}
 		return isClashing;
 	}
-	
+
 	private static boolean isClashingDate(Appointment newAppointment, Appointment checkAppointment) {
-		
+
 		boolean isClashing = false;
-		
+
 		if(Comparator.dateComparator(newAppointment.getEndDate(), 
 				checkAppointment.getEndDate()) == SMALLER &&
 				Comparator.dateComparator(newAppointment.getStartDate(), 
@@ -182,13 +184,13 @@ public class Comparator {
 				Comparator.dateComparator(newAppointment.getStartDate(), 
 						checkAppointment.getStartDate()) == SMALLER) {
 			isClashing = true;
-		
+
 		} else if(Comparator.dateComparator(newAppointment.getEndDate(), 
 				checkAppointment.getEndDate()) == LARGER &&
 				Comparator.dateComparator(newAppointment.getStartDate(), 
 						checkAppointment.getEndDate()) == SMALLER) {
 			isClashing = true;
-			
+
 		} else if(Comparator.dateComparator(newAppointment.getEndDate(), 
 				checkAppointment.getEndDate()) == LARGER &&
 				Comparator.dateComparator(newAppointment.getStartDate(), 
@@ -197,11 +199,11 @@ public class Comparator {
 		} 
 		return isClashing;
 	}
-	
+
 	private static boolean isClashingTime(Appointment newAppointment, Appointment checkAppointment) {
-		
+
 		boolean isClashing = false;
-		
+
 		if(Comparator.dateComparator(newAppointment.getEndTime(), 
 				checkAppointment.getEndTime()) == SMALLER &&
 				Comparator.dateComparator(newAppointment.getStartTime(), 
@@ -213,13 +215,13 @@ public class Comparator {
 				Comparator.dateComparator(newAppointment.getStartTime(), 
 						checkAppointment.getStartTime()) == SMALLER) {
 			isClashing = true;
-		
+
 		} else if(Comparator.dateComparator(newAppointment.getEndTime(), 
 				checkAppointment.getEndTime()) == LARGER &&
 				Comparator.dateComparator(newAppointment.getStartTime(), 
 						checkAppointment.getEndTime()) == SMALLER) {
 			isClashing = true;
-			
+
 		} else if(Comparator.dateComparator(newAppointment.getEndTime(), 
 				checkAppointment.getEndTime()) == LARGER &&
 				Comparator.dateComparator(newAppointment.getStartTime(), 

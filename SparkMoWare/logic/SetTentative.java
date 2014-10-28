@@ -1,53 +1,31 @@
 package logic;
 
 import java.util.ListIterator;
+import java.util.Vector;
 import logic.Assignment.AssignmentType;
-
-/*
- * Allows the user to create a number of tentative dates 
- * before confirming to have only one date for user's appointment
- * Title will be attached with the word [tentative]
- * userInput must be in this format:
- * <title><ddmmyyyy><hhmm><ddmmyyyy><hhmm>
- */
 
 public class SetTentative {
 
-	public static Tentative addTentative(String tentativeTitle) {
+	public static void addTentative(String title, Vector<String> dates, Vector<String> times) {
 
 		Tentative newTentative = new Tentative();
 
 		String tentativeIdGenerated = Id.serialNumGen();
 
 		newTentative.setId(tentativeIdGenerated);
-		newTentative.setTitle(tentativeTitle);
-		newTentative.setPriority(Assignment.PRIORITY_NONE);
-
-		return newTentative;
-	}
-
-	protected static void addTentativeAppt(Tentative newTentative, String startDate,
-			String startTime, String endDate, String endTime) {
-
-		newTentative.addStartDate(startDate);
-		newTentative.addStartTime(startTime);
-		newTentative.addEndDate(endDate);
-		newTentative.addEndTime(endTime);
-	}
-
-	protected static void addSingleTentative(String title, String startDate, String startTime,
-			String endDate, String endTime) {
-
-		Tentative newTentative = new Tentative();
-		
-		newTentative.setId(Id.serialNumGen());
 		newTentative.setTitle(title);
-		newTentative.addStartDate(startDate);
-		newTentative.addStartTime(startTime);
-		newTentative.addEndDate(endDate);
-		newTentative.addEndTime(endTime);
-
-		addTentativeToBuffer(newTentative);
+		newTentative.setPriority(Assignment.PRIORITY_NONE);
+		
+		for(int vectorCount = 0; vectorCount < dates.size(); vectorCount++) {
+			if(vectorCount % 2 == 0) {
+				newTentative.addStartDate(dates.get(vectorCount));
+				newTentative.addStartTime(times.get(vectorCount));
+			} else {
+				newTentative.addEndDate(dates.get(vectorCount));
+				newTentative.addEndTime(times.get(vectorCount));
+			}
+		}
+		InternalStorage.addBuffer(newTentative);
 	}
 	
 	protected static void setToTentative(Appointment newAppointment) {
@@ -77,9 +55,9 @@ public class SetTentative {
 			while(buffer.hasNext()) {
 
 				if(buffer.next().getAssignType().equals(AssignmentType.APPOINTMENT)
-						|| buffer.next().getAssignType().equals(AssignmentType.TASK)
+						|| buffer.previous().getAssignType().equals(AssignmentType.TASK)
 						|| buffer.next().getAssignType().equals(AssignmentType.TENTATIVE)) {
-					InternalStorage.addBuffer(bufferPosition, newTentative);
+					InternalStorage.addBuffer(bufferPosition - 1, newTentative);
 				}
 				bufferPosition++;
 			}

@@ -5,31 +5,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import logic.Assignment.AssignmentType;
 
-/*
- * Prompt the user for a valid date
- * Check for date validity with the format <ddmmyyyy>
- * and
- * Check if the given date exists
- */
-
 public class DateLocal {
 	
-	protected static String determineDate(String inputDate) {
-		
-		// will continuously prompt user for correct date format currently no way to exit
-		while(!dateFormatValid(inputDate)) {
-			
-			Print.printToUser(Message.INVALID_FORMAT);
-			Print.printToUser(String.format(Message.FORMAT_PROMPT, "date"));
-			inputDate = InternalStorage.getScanner().nextLine();
-		}
-		return inputDate;
-	}
-
 	protected static boolean dateFormatValid(String date) {
-		
 		boolean validDateFormat = true;
-		
+
 		if(date.length() != 8) {
 			validDateFormat = false;
 		} else if(!date.matches("[0-9]+")) {
@@ -40,10 +20,8 @@ public class DateLocal {
 		return validDateFormat;
 	}
 	
-	protected static boolean dateExists(int date) {
+	private static boolean dateExists(int date) {
 
-		assert(String.valueOf(date).length() == 8);
-		
 		boolean leapYear = false;
 		boolean dateExist = false;
 		
@@ -80,8 +58,6 @@ public class DateLocal {
 	// decrementing date
 	protected static String updateDate(String date) {
 
-		assert(date.length() == 8);
-		
 		String[] endDate = new String[3];
 
 		endDate[0] = date.substring(0, 1);
@@ -94,9 +70,7 @@ public class DateLocal {
 		for(int dateCharCount = 0; dateCharCount < endDate.length; dateCharCount++) {
 			intEndDate[dateCharCount] = Integer.parseInt(endDate[dateCharCount]); 
 		}
-		
-		assert(intEndDate[3] < 10000);
-		
+
 		if ((intEndDate[0] - 1) == 0) {
 			if ((intEndDate[1] - 1) == 0) {
 				intEndDate[2]--;
@@ -110,15 +84,11 @@ public class DateLocal {
 		} else { 
 			intEndDate[0]--;
 		}
-		
-		assert(intEndDate[0] < 32);
-		assert(intEndDate[1] < 13);
-		
+
 		for(int dateIntCount = 0; dateIntCount < intEndDate.length; dateIntCount++) {
 			updatedDate += Integer.toString(intEndDate[dateIntCount]);
 		}
 		
-		assert(dateExists(Integer.parseInt(updatedDate)));
 		return updatedDate;
 	}
 
@@ -138,7 +108,7 @@ public class DateLocal {
 	
 	protected static String getStartDate() {
 		
-		String startDate = "31121993";
+		String startDate = "31122013";
 		
 		if(InternalStorage.getBuffer().getFirst().equals(AssignmentType.TASK)) {
 			Task firstTask = ((Task) InternalStorage.getBuffer().getFirst());
@@ -148,8 +118,6 @@ public class DateLocal {
 			Appointment firstAppointment = ((Appointment) InternalStorage.getBuffer().getFirst());
 			startDate = firstAppointment.getStartDate();
 		}
-		
-		//null pointer exception in case assignment(floating task)
 		return startDate;
 	}
 }

@@ -1,16 +1,13 @@
 package logic;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.Vector;
 
-/*
- * This will delete all the tentative with the same SIN
- * and save the confirmed one with new SIN
- */
 public class ConfirmTentative {
 
 	private static Tentative tentativeNeeded = new Tentative();
 
-	public static void confirmTentative(String serialId, String confirmStartDate, String confirmStartTime, 
+	protected static void confirmTentative(String serialId, String confirmStartDate, String confirmStartTime, 
 			String confirmEndDate, String confirmEndTime) {
 
 		Appointment confirmAppointment = new Appointment();

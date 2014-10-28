@@ -1,18 +1,7 @@
 package logic;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.*;
 
 import java.util.LinkedList;
 
-/*
- * Able to delete individual assignment as per requested
- * or
- * delete the period where all the assignments have
- * 
- * Other than deleting individually,
- * all methods will call search function and receive a linkedlist before 
- * deleting them one by one
- */
 public class Delete {
 	
 	enum DeleteAllType {
@@ -49,17 +38,11 @@ public class Delete {
 		LinkedList<Assignment> idFound = new LinkedList<Assignment>();
 		idFound = SearchAll.searchAll(InternalStorage.getBuffer(), id);
 		
-		// PS: Have to check if nullAssignment will increase the numAppointment by 1
-		Appointment nullAssignment = new Appointment();
-		nullAssignment.setNumAppointment(nullAssignment.getNumAppointment() - 1); 
-		
 		if(idFound.size() > 0) {
 			
 			int bufferPosition = InternalStorage.getBufferPosition(id);
 						
 			InternalStorage.getBuffer().remove(bufferPosition);
-			
-			nullAssignment.setNumAppointment(nullAssignment.getNumAppointment() - 1);
 		}
 	}
 
@@ -72,7 +55,6 @@ public class Delete {
 		} else if (duration.length() == 7) {
 			return DeleteAllType.DELETEALL_BETWEEN;
 		} else {
-			assertTrue(duration.equalsIgnoreCase("CLEAR"));
 			return DeleteAllType.CLEAR;
 		}
 	}
@@ -85,7 +67,6 @@ public class Delete {
 		for (int toDeleteCount = 0; toDeleteCount < toDelete.size(); toDeleteCount++) {
 			delete(toDelete.get(toDeleteCount).getId());
 		}
-		assertFalse(SearchAll.searchByDeadline(InternalStorage.getBuffer(), deleteOnDate).size()>0);
 	}
 
 	private static void deleteBetween(String deleteTill, String startDate) {
@@ -95,7 +76,5 @@ public class Delete {
 			deleteTill = DateLocal.updateDate(deleteTill);
 		}
 		deleteOn(startDate);
-		
-		assertFalse(SearchAll.searchByDeadline(InternalStorage.getBuffer(), startDate).size()>0);
 	}
 }

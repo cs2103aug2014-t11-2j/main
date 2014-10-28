@@ -1,15 +1,8 @@
 package logic;
 
-import java.util.*;
-import static org.junit.Assert.*;
+import java.util.LinkedList;
 import logic.Assignment.AssignmentType;
 
-/*
- * Able to search for:
- * ID, Date, Time, Completion, OnTime or Title
- * 
- * It will return a linkedlist back to the system
- */
 public class SearchAll {
 
 	private static final int ID_FORMAT_LENGTH = 12;
@@ -43,7 +36,6 @@ public class SearchAll {
 			}/* else if (userInput.equalsIgnoreCase(TYPE_TENTATIVE)) {
 				stringsFound = searchByTentative(buffer);
 			}*/
-			assertTrue(userInput.equalsIgnoreCase(TYPE_TASK) || userInput.equalsIgnoreCase(TYPE_APPOINTMENT));
 
 		} else if(userInput.length() == TIME_FORMAT_LENGTH && userInput.matches("\\d+")) {
 			stringsFound = searchByTime(buffer, userInput);
@@ -164,7 +156,6 @@ public class SearchAll {
 		return idFound;
 	}
 
-	// accepts into the searchedList as long as startTime or endTime is the same as input
 	private static LinkedList<Assignment> searchByTime(LinkedList<Assignment> buffer, String searchTime) {
 
 		LinkedList<Assignment> timeFound = new LinkedList<Assignment>();
@@ -219,7 +210,6 @@ public class SearchAll {
 		return endTimeFound;
 	}
 
-	// accepts into the searchedList as long as startDate or endDate is the same as input
 	private static LinkedList<Assignment> searchByDate(LinkedList<Assignment> buffer, 
 			String searchDate) {
 
@@ -274,11 +264,7 @@ public class SearchAll {
 		}
 		return deadlineFound;
 	}
-	/*
-	 * Method will check for key phrases or keyword in the title
-	 * or
-	 * When the searchKey is only a word long or equals to the title
-	 */
+
 	private static LinkedList<Assignment> searchByWords(LinkedList<Assignment> buffer, 
 			String searchKeyWord) {
 

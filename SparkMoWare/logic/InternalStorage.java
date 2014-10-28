@@ -39,6 +39,10 @@ public class InternalStorage {
 		buffer.add(position, assignment);
 	}
 	
+	public static void addBufferFirst(Assignment assignment) {
+		buffer.addFirst(assignment);
+	}
+	
 	public static int getLineCount() {
 		return buffer.size();
 	}

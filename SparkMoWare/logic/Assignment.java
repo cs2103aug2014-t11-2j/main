@@ -5,17 +5,13 @@ public class Assignment {
 	/************** Data members **********************/
 
 	private String title;
-	private String id; // date of creation and index;in the format DDMMYYYIIII
+	private String id; 
 	private String dateCreation;
 	private int index;
 	private boolean isDone;
 	private boolean isOnTime;
-	private String priority; // IMPT else NIMPT
-	private AssignmentType aType;
-
-	// private String description;
-	// private int alarm; // in the format HHMM, if inactive null
-	// private Vector<String> tag; // to support tagging
+	private String priority; 
+	private AssignmentType assignType;
 
 	/************** Constants **********************/
 
@@ -35,7 +31,6 @@ public class Assignment {
 
 	/************** Constructors **********************/
 
-	// Default constructor
 	public Assignment() {
 		this(DEFAULT, DEFAULT_STRING, false, false, PRIORITY_NONE,
 				AssignmentType.ASSIGNMENT);
@@ -51,7 +46,6 @@ public class Assignment {
 		setIsDone(isDone);
 		setIsOnTime(isOnTime);
 		setPriority(priority);
-		// setTag(tag);
 		setAssignType(atype);
 	}
 
@@ -86,16 +80,8 @@ public class Assignment {
 	}
 
 	public AssignmentType getAssignType() {
-		return this.aType;
+		return this.assignType;
 	}
-
-	/*
-	 * public String getDescription() { return description; }
-	 * 
-	 * public int getAlarm() { return alarm; }
-	 * 
-	 * public Vector<String> getTag() { return this.tag; }
-	 */
 
 	/**************** Mutators ************************/
 
@@ -108,7 +94,7 @@ public class Assignment {
 	}
 
 	public void setAssignType(AssignmentType atype) {
-		this.aType = atype;
+		this.assignType = atype;
 	}
 
 	public void setIsDone(boolean newIsDone) {
@@ -130,15 +116,6 @@ public class Assignment {
 	public void setIndex(int newIndex) {
 		this.index = newIndex;
 	}
-
-	/*
-	 * public void setDescription(String newDescription) { description =
-	 * newDescription; }
-	 * 
-	 * public void setAlarm(int newAlarm) { alarm = newAlarm; }
-	 * 
-	 * public void setTag(Vector<String> newTag) { tag = newTag; }
-	 */
 
 	/**************** Overriding ************************/
 

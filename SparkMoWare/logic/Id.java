@@ -4,10 +4,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-/* 
- * only work till Sn 9999 otherwise the year will be corrupted
- * Malfunctions if latestSerialNumber is in the future (in theory should not happen? unless system clock change)
- */
 public class Id {
 
 	private static final int SERIAL_LENGTH = 12;
@@ -26,7 +22,6 @@ public class Id {
 		String serialNum = "";
 		DateFormat dateFormat = new SimpleDateFormat("ddMMyyyy");
 
-		//get current date time with Date()
 		Date todayDate = new Date();
 
 		serialNum += dateFormat.format(todayDate);
@@ -55,10 +50,6 @@ public class Id {
 		return newSerialNum;
 	}
 
-	/* 
-	 * will continuously prompt user for correct ID format currently no way to exit
-	 * FATAL ERROR: if user enters edit command while file/program is empty, this prompt will run forever.
-	 */
 	public static String determineID(String id){
 
 		while(!_IDFormatValid(id)) {
