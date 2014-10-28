@@ -97,7 +97,10 @@ public class ParserTimeLocal {
 	protected static String replaceAllTime(String input) {
 		Matcher timeMatcher = ParserPatternLocal.timePattern.matcher(input);
 		
-		return timeMatcher.replaceAll("");
+		//if(timeMatcher.requireEnd()) {
+			input = timeMatcher.replaceAll("");
+		//}
+		return input;
 	}
 }
 

@@ -102,6 +102,10 @@ public class ParserTestDriver {
 		return Misc.determinePriorityValidity(testInput);
 	}
 	
+	public static String testRemovePriority(String testInput) {
+		return Misc.removePriority(testInput);
+	}
+	
 	/************ExtractSpecialContent Component**************/
 		
 	

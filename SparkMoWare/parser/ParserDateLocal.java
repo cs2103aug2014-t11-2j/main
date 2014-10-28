@@ -122,7 +122,10 @@ public class ParserDateLocal {
 	protected static String replaceAllDate(String input) {
 		Matcher dateMatcher = ParserPatternLocal.datePattern.matcher(input);
 		
-		return dateMatcher.replaceAll("");
+		//if(dateMatcher.requireEnd()) {
+			input = dateMatcher.replaceAll("");
+		//}
+		return input;
 	}
 	
 	// unused methods in parser?

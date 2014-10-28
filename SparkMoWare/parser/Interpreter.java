@@ -10,7 +10,7 @@ public class Interpreter {
 			return InputIsAdd.refineInput(userInput);
 			
 		case EDIT:
-			return RefineInputWithId.inputIsEdit(userInput);
+			return InputIsEdit.refineInput(userInput);
 
 		case DELETE:
 			return RefineInputWithId.inputIsDelete(userInput);
@@ -65,9 +65,6 @@ public class Interpreter {
 			
 		case DONE:
 			return RefineInputWithId.inputIsFinish(userInput);
-			
-		case EDITED:
-			return InputIsEdited.refineInput(userInput);
 
 		default:
 			return null;

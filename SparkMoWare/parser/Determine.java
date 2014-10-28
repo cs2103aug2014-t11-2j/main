@@ -56,7 +56,7 @@ public class Determine {
 	}
 	
 	//requires change to use pattern
-	protected EnumGroup.EditType getEditType(String input) {
+	protected static EnumGroup.EditType getEditType(String input) {
 		if(input.equalsIgnoreCase("title")) {
 			return EnumGroup.EditType.TITLE;
 		} else if(input.equalsIgnoreCase("START_DATE")) {

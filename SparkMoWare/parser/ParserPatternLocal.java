@@ -42,6 +42,8 @@ public class ParserPatternLocal {
 	
 	protected static Pattern timePattern = Pattern.compile("([0-9]{4})");
 	
+	protected static Pattern idPattern = Pattern.compile("([0-2][0-9][0-1][0-9]{9})");
+	
 	protected static Pattern datePattern = Pattern.compile("(([0-9]?[0-9])/([0-9]?[0-9])/([0-9]{4}))|"
 														 + "(([0-9]?[0-9])-([0-9]?[0-9])-([0-9]{4}))|"
 														 + "(([0-9]?[0-9]).([0-9]?[0-9]).([0-9]{4}))");

@@ -12,40 +12,6 @@ public class ParserAllTest {
 	@Test
 	public void test() {
 		
-		/*************InputIsAdd Tests*************/
-		
-		//confirm method for floating tasks/assignment
-		assertEquals("ADD~default~EAT DINNER~default~default"
-				+ "~default~default~ASSIGNMENT~IMPT"
-				+ "~false~default", ParserTestDriver.testInputIsAdd("Add EAT DINNER IMPT"));
-
-		//confirm method for task with single date input
-		assertEquals("ADD~default~assignmnet due~default~default"
-				+ "~23122014~2359~TASK~IMPT"
-				+ "~false~default", ParserTestDriver.testInputIsAdd("Add assignmnet due IMPT 23/12/2014"));
-
-		//confirm method for task with single time input
-		//test case requires update for date output to current/system date 
-		/*assertEquals("ADD~default~assignment due~default~default"
-				+ "~27102014~2300~TASK~IMPT"
-				+ "~false~default", ParserTestDriver.testInputIsAdd("Add assignment due IMPT 2300"));
-				*/
-
-		//confirm method returns correct output for full input
-		assertEquals("ADD~default~buy chicken~09091234~0900"
-				+ "~02032345~0800~APPOINTMENT~IMPT"
-				+ "~false~default", ParserTestDriver.testInputIsAdd("add buy chicken 09/09/1234 0900 2/3/2345 0800 Important"));
-
-		//negative test case
-		/*assertEquals("ADD~default~go 2103T lecture~31102014~1400"
-				+ "~31102014~1600~APPOINTMENT~NMPT"
-				+ "~false~default", ParserTestDriver.testInputIsAdd("Add go 2103T lecture 31/10/2014 1400 31/10/2014 1600"));
-				*/
-		//Design flaw: returns <go T lecture> instead of <go 2103T lecture>
-		//The replace time method replaces the any 4 number pattern
-
-		
-		
 		/*************ParserDateLocal Tests*************/
 		
 		//Test extractEndDate()
@@ -226,7 +192,7 @@ public class ParserAllTest {
 		//Test fails
 		//reason: pattern detects the year portion of date input as time
 		// pattern cannot differentiate between them
-
+		
 		//Negative test: So long as this test returns true, design flaw has not been addressed
 		assertEquals("90 21", ParserTestDriver.testReplaceAllTime("1234567890 0987654321"));
 		
@@ -269,9 +235,14 @@ public class ParserAllTest {
 		
 		//Test removePriority
 		
-		//test 
-		assertEquals("consultation", ParserTestDriver.testRemoveCommand("tentative consultation", "tentative"));
+		//test removal of various pattern of important
+		assertEquals("add buy eggs 0900 21072014", ParserTestDriver.testRemovePriority("add buy eggs 0900 21072014 Important"));
+		assertEquals("add buy eggs 0900 21072014", ParserTestDriver.testRemovePriority("add buy eggs 0900 21072014 Impt"));
+		assertEquals("add buy eggs 0900 21072014", ParserTestDriver.testRemovePriority("add buy eggs 0900 21072014 IMPT"));
 		
+		//test removal of various patterns of not important
+		assertEquals("add buy eggs 0900 21072014", ParserTestDriver.testRemovePriority("add buy eggs 0900 21072014 Nimportant"));
+		assertEquals("add buy eggs 0900 21072014", ParserTestDriver.testRemovePriority("add buy eggs 0900 21072014 NIMPT"));
 
 		/**************************/
 		
@@ -286,6 +257,8 @@ public class ParserAllTest {
 		
 		//Test extractId
 		
+		//generalised test case
+		assertEquals("090820140001", ParserTestDriver.testExtractId("delete 090820140001"));
 		
 		/**************************/
 		
@@ -344,8 +317,42 @@ public class ParserAllTest {
 		assertFalse(ParserTestDriver.testContentForClear("ion"));
 		assertFalse(ParserTestDriver.testContentForClear("beforetime"));
 		assertFalse(ParserTestDriver.testContentForClear("isbetween"));
+			
+		/*************InputIsAdd Tests*************/
 		
-		/**************************/	
-	
+		//confirm method for floating tasks/assignment
+		assertEquals("ADD~default~EAT DINNER~default~default"
+				+ "~default~default~ASSIGNMENT~IMPT"
+				+ "~false~default", ParserTestDriver.testInputIsAdd("Add EAT DINNER IMPT"));
+
+		//confirm method for task with single date input
+		assertEquals("ADD~default~assignment due~default~default"
+				+ "~23122014~2359~TASK~IMPT"
+				+ "~false~default", ParserTestDriver.testInputIsAdd("Add assignment due IMPT 23/12/2014"));
+
+		//confirm method for task with single time input
+		//test case requires update for date output to current/system date 
+		/*assertEquals("ADD~default~assignment due~default~default"
+				+ "~27102014~2300~TASK~IMPT"
+				+ "~false~default", ParserTestDriver.testInputIsAdd("Add assignment due IMPT 2300"));
+				*/
+
+		//confirm method returns correct output for full input
+		assertEquals("ADD~default~buy chicken~09091234~0900"
+				+ "~02032345~0800~APPOINTMENT~IMPT"
+				+ "~false~default", ParserTestDriver.testInputIsAdd("add buy chicken 09/09/1234 0900 2/3/2345 0800 Important"));
+
+		//negative test case
+		/*assertEquals("ADD~default~go 2103T lecture~31102014~1400"
+				+ "~31102014~1600~APPOINTMENT~NMPT"
+				+ "~false~default", ParserTestDriver.testInputIsAdd("Add go 2103T lecture 31/10/2014 1400 31/10/2014 1600"));
+				*/
+		//Design flaw: returns <go T lecture> instead of <go 2103T lecture>
+		//The replace time method replaces the any 4 number pattern
+
+		
+
+		
+		
 	}
 }

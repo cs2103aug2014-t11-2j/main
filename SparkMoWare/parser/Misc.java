@@ -62,11 +62,14 @@ public class Misc {
 	
 	protected static String removePriority(String input) {
 		Matcher importantMatcher = ParserPatternLocal.importantPattern.matcher(input);
+		Matcher notImportantMatcher = ParserPatternLocal.notImportantPattern.matcher(input);
 		
-		if(importantMatcher.find()) {
+		if(notImportantMatcher.find()) {
+			input = notImportantMatcher.replaceAll("");
+		}else if(importantMatcher.find()) {
 			input = importantMatcher.replaceAll("");
 		}
-		return input;
+		return input.trim();
 	}
 	
 	protected static String refineString(String [] unrefinedString) {
@@ -85,19 +88,28 @@ public class Misc {
 	}
 	
 	protected static String extractId(String userInput) {
-		userInput = ParserDateLocal.replaceAllDate(userInput);
-		userInput = ParserTimeLocal.replaceAllTime(userInput);
+		Matcher idMatcher = ParserPatternLocal.idPattern.matcher(userInput);
+		String id = new String();
 		
-		return determineIdValidity(userInput);
+		if(idMatcher.find()) {
+			id = idMatcher.group();
+		}
+		
+		return determineIdValidity(id);
 	}
 	
 	protected static String determineIdValidity(String id) {
-		String datePortion = id.substring(0, 7);
+		
+		if(id.length() != 12 || id.isEmpty()) {
+			return "";
+		}
+		
+		String datePortion = id.substring(0, 8);
 
 		if(!ParserDateLocal.dateFormatValid(datePortion)) {
 			return "";
 		}
-		return datePortion;
+		return id;
 	}
 
 	protected static String extractPriority(String userInput) {
