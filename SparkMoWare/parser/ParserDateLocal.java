@@ -31,10 +31,17 @@ public class ParserDateLocal {
 	}
 	
 	//Checks if there are 2 date inputs
-	protected static boolean hasTwoDateInputs(String userInput) {		
-		String[] temp = ParserPatternLocal.datePattern.split(userInput);
+	protected static boolean hasTwoDateInputs(String input) {		
+		Matcher dateMatcher = ParserPatternLocal.datePattern.matcher(input);
+		int n = 0;
 		
-		if(temp.length == 2 || temp.length == 3) {
+		while(dateMatcher.find()) {
+			input = dateMatcher.replaceFirst("");
+			dateMatcher = ParserPatternLocal.datePattern.matcher(input);
+			n++;
+		}
+		
+		if(n > 1) {
 			return true;
 		} else {
 			return false;
@@ -67,7 +74,7 @@ public class ParserDateLocal {
 	}	
 	
 	public static String determineDateValidity(String inputDate) { 
-		if(!dateFormatValid(inputDate)) {
+        if(!dateFormatValid(inputDate) && !inputDate.equalsIgnoreCase("default")) {
 				return "";
 			}
 		return inputDate;

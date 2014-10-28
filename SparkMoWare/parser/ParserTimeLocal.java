@@ -37,9 +37,16 @@ public class ParserTimeLocal {
 	}
 
 	protected static boolean hasTwoTimeInputs(String input) {
-		String[] temp = ParserPatternLocal.timePattern.split(input);
+		Matcher timeMatcher = ParserPatternLocal.timePattern.matcher(input);
+		int n = 0;
+		
+		while(timeMatcher.find()) {
+			input = timeMatcher.replaceFirst("");
+			timeMatcher = ParserPatternLocal.timePattern.matcher(input);
+			n++;
+		}
 
-		if(temp.length >= 2) {
+		if(n > 1) {
 			return true;
 		} else {
 			return false;
@@ -61,8 +68,8 @@ public class ParserTimeLocal {
 	}
 
 	public static String determineTimeValidity(String inputTime) {
-		if(!timeFormatValid(inputTime)) {
-			return "";
+        if(!timeFormatValid(inputTime) && !inputTime.equalsIgnoreCase("default")) {
+        	return "";
 		}
 		return inputTime;
 	}
@@ -86,9 +93,7 @@ public class ParserTimeLocal {
 		int min = time % 100;
 		int hr = time / 100;
 
-		if(min <= 59 && min >= 0) {
-			timeExist = true;
-		} else if(hr <= 23 && hr >= 0) {
+		if(min <= 59 && min >= 0 && hr <= 23 && hr >= 0) {
 			timeExist = true;
 		}
 		return timeExist;

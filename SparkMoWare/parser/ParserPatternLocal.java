@@ -30,7 +30,7 @@ public class ParserPatternLocal {
 	protected static Pattern redoPattern = Pattern.compile("redo|Redo");
 	
 	protected static Pattern statisticPattern = Pattern.compile("statistic|stat|Statistic|Stat|"
-															+ "statistics|stats|Statistics|Stats");
+															  + "statistics|stats|Statistics|Stats");
 	
 	protected static Pattern exitPattern = Pattern.compile("exit|Exit");
 	
@@ -67,5 +67,34 @@ public class ParserPatternLocal {
 	
 	protected static Pattern importantPattern = Pattern.compile("important|IMPT|Impt|impt|Important");
 
-	protected static Pattern notImportantPattern = Pattern.compile("NMPT|nMPT");
+    protected static Pattern notImportantPattern = Pattern.compile("NIMPT|nIMPT|Nimportant|nimportant|"
+    															 + "nimpt|NIMPORTANT");
+
+    protected static Pattern startDatePattern = Pattern.compile("start date|start_date|start-date|-sd|"
+    														  + "Start Date|Start_Date|Start-Date|-SD|"
+    														  + "Start date|Start_date|Start-date|-Sd|"
+    														  + "start Date|start_Date|start-Date|-sD|"
+    														  + "startdate|STARTDATE|Startdate|StartDate");
+    
+    protected static Pattern startTimePattern = Pattern.compile("start time|start_time|start-time|-st|"
+    														  + "Start Time|Start_Time|Start-Time|-ST|"
+    														  + "Start time|Start_time|Start-time|-St|"
+    														  + "start Time|start_Time|start-Time|-sT|"
+    														  + "starttime|STARTTIME|Starttime|StartTime");
+    
+    protected static Pattern endDatePattern = Pattern.compile("end date|end_date|end-date|-ed|"
+			  												+ "End Date|End_Date|End-Date|-ED|"
+			  												+ "End date|End_date|End-date|-Ed|"
+			  												+ "end Date|end_Date|end-Date|-eD|"
+			  												+ "enddate|ENDDATE|Enddate|EndDate");
+    
+    protected static Pattern endTimePattern = Pattern.compile("end time|end_time|endtime|-et|"
+    														+ "End Time|End_Time|End-Time|-ET|"
+    														+ "End time|End_time|End-time|-Et|"
+  														  	+ "end Time|end_Time|end-Time|-eT|"
+  														  	+ "endtime|ENDTIME|Endtime|EndTime");
+    
+    protected static Pattern titlePattern = Pattern.compile("title|name|Title|Name");
+    
+    protected static Pattern priorityPattern = Pattern.compile("priority|Priority|-pri|-Pri");
 }

@@ -57,20 +57,25 @@ public class Determine {
 	
 	//requires change to use pattern
 	protected static EnumGroup.EditType getEditType(String input) {
-		if(input.equalsIgnoreCase("title")) {
+		Matcher titleMatcher = ParserPatternLocal.titlePattern.matcher(input);
+		Matcher startDateMatcher = ParserPatternLocal.startDatePattern.matcher(input);
+		Matcher startTimeMatcher = ParserPatternLocal.startTimePattern.matcher(input);
+		Matcher endDateMatcher = ParserPatternLocal.endDatePattern.matcher(input);
+		Matcher endTimeMatcher = ParserPatternLocal.endTimePattern.matcher(input);
+		Matcher priorityMatcher = ParserPatternLocal.priorityPattern.matcher(input);
+		
+		if(priorityMatcher.find()) {
 			return EnumGroup.EditType.TITLE;
-		} else if(input.equalsIgnoreCase("START_DATE")) {
+		} else if(startDateMatcher.find()) {
 			return EnumGroup.EditType.START_DATE;
-		} else if(input.equalsIgnoreCase("START_TIME")) {
+		} else if(startTimeMatcher.find()) {
 			return EnumGroup.EditType.START_TIME;
-		} else if(input.equalsIgnoreCase("END_DATE")) {
+		} else if(endDateMatcher.find()) {
 			return EnumGroup.EditType.END_DATE;
-		} else if(input.equalsIgnoreCase("END_TIME")) {
+		} else if(endTimeMatcher.find()) {
 			return EnumGroup.EditType.END_TIME;
-		} else if(input.equalsIgnoreCase("PRIORITY")) {
+		} else if(priorityMatcher.find()) {
 			return EnumGroup.EditType.PRIORITY;
-		} else if(input.equalsIgnoreCase("DONE")) {
-			return EnumGroup.EditType.DONE;
 		} else {
 			return EnumGroup.EditType.INVALID;
 		}

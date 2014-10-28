@@ -1,5 +1,7 @@
 package parser;
 
+import java.util.Vector;
+
 import parser.EnumGroup.AssignmentType;
 import parser.EnumGroup.CommandType;
 
@@ -23,11 +25,14 @@ public class RefinedUserInput {
 	 * tentative (number of days)
 	 * sort and search (date, serial number, etc.)
 	 */
+	private Vector<String> tentativeDates;
+	private Vector<String> tentativeTimes;
 	
 	/************** Constructors **********************/
 	
 	public RefinedUserInput() {
 		final String defaultContent  = "default";
+		final String defaultPriority = "NIMPT";
 		setCommandType(EnumGroup.CommandType.DEFAULT);
 		setId(defaultContent);
 		setTitle(defaultContent);
@@ -36,7 +41,7 @@ public class RefinedUserInput {
 		setEndDate(defaultContent);
 		setEndTime(defaultContent);
 		setAssignmentType(EnumGroup.AssignmentType.DEFAULT);
-		setPriority("NMPT");
+		setPriority(defaultPriority);
 		setIsNewTentative(false);
 		setSpecialContent(defaultContent);
 	}
@@ -84,8 +89,15 @@ public class RefinedUserInput {
 	}
 	
 	public String getSpecialContent() {
-
 		return this.specialContent;
+	}
+	
+	public Vector<String> getTentativeDates() {
+		return this.tentativeDates;
+	}
+	
+	public Vector<String> getTentativeTimes() {
+		return this.tentativeTimes;
 	}
 	
 	/**************** Mutators **************************/
@@ -134,10 +146,19 @@ public class RefinedUserInput {
 		this.specialContent = specialContent;
 	}
 	
+	protected void setTentativeDates(String tentativeDate) {
+		this.tentativeDates.add(tentativeDate);
+	}
+	
+	protected void setTentativeTimes(String tentativeTime) {
+		this.tentativeDates.add(tentativeTime);
+	}
+	
 	/**************** Overriding ************************/
 	
 	public String toString() {
 		return getCommandType() + "~" + getId() + "~" + getTitle() + "~" + getStartDate() + "~" + getStartTime() + "~"
-				+ getEndDate() + "~" + getEndTime() + "~" + getAssignmentType() + "~" + getPriority( )+ "~" + getIsNewTentative() + "~" + getSpecialContent();
+				+ getEndDate() + "~" + getEndTime() + "~" + getAssignmentType() + "~" + getPriority( )+ "~"
+				+ getIsNewTentative() + "~" + getSpecialContent() + "~" + getTentativeDates() + "~" + getTentativeTimes();
 	}
 }

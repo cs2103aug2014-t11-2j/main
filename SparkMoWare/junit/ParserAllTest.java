@@ -46,9 +46,11 @@ public class ParserAllTest {
 		//confirm method returns false if only 1 date input
 		assertFalse(ParserTestDriver.testHasTwoDateInputs("09/08/1245"));
 		
-		/* Methods should change the date input from whatever format
-		 * for eg. 12/3/2014 or 12-3-2014 to 12032014 
-		 */
+		//case of inputs around date
+		assertFalse(ParserTestDriver.testHasTwoDateInputs("add assignment due 09/09/1234 IMPT"));
+		
+		//negative test
+		//assertFalse(ParserTestDriver.testHasTwoDateInputs("add assignment 12345678 due 09/09/1234 IMPT"));
 		
 		/**************************/
 		
