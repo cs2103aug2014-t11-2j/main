@@ -15,12 +15,17 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 
+/**
+ * Utility class to display helplist
+ * @author Zhengyang
+ */
+
 public class HelplistPopup {
 	private static Table table;
 	static LinkedList<String> helplistBuffer = new LinkedList<String>();
-	
 
 	/**
+	 * helplistPopup open up the helplist in a new shell
 	 * @wbp.parser.entryPoint
 	 */
 	protected static void helplistPopup() {
@@ -50,6 +55,9 @@ public class HelplistPopup {
 		helpList.open();
 	}
 	
+	/**
+	 * openFile loads the help list from file
+	 */
 	protected static void openFile() {
 		try { 
 			InputStream in = HelplistPopup.class.getResourceAsStream("/resource/text/HelpList.txt");

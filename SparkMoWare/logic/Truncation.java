@@ -1,6 +1,7 @@
 package logic;
 
 import logic.Assignment;
+import static org.junit.Assert.*;
 import logic.Assignment.AssignmentType;
 import java.util.LinkedList;
 
@@ -62,7 +63,38 @@ public class Truncation {
 				}
 			}
 		}
-		// assertFalse(truncatedList.contains(DateLocal.updateDate(date)));
+		assertFalse(truncatedList.contains(DateLocal.updateDate(date)));
 		return truncatedList;
 	}
 }
+
+/*
+ * 
+	private static int searchLimit(LinkedList<Assignment> trancatedList,
+			String date, String limitType) {
+
+		int limitIndex = 0;
+		LinkedList<Assignment> possibleIndexes = new LinkedList<Assignment>(); 
+		possibleIndexes = SearchAll.searchAll(date);
+
+		if(limitType.equals("lower")){
+			for(int i = 0; i < possibleIndexes.size(); i++){
+				if(possibleIndexes.get(i).getStartDate().equals(date)){
+					if(i > limitIndex){
+						return i;
+					}
+				}
+			}
+		} else {
+			for(int i = 0; i < possibleIndexes.size(); i++){
+				if(possibleIndexes.get(i).getEndDate().equals(date)){
+					if(i > limitIndex){
+						limitIndex = i;
+					}
+				}
+			}
+		}
+		return limitIndex;
+	}
+
+ */

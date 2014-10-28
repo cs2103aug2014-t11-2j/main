@@ -52,7 +52,6 @@ public class MainController {
 	static Timer clockUpdater = new Timer("clockUpdater", true);
 	private Text dateDisplay;
 	private Text quoteViewer;
-	private String userInput="";
 	private Text feedback;
 	private Table table;
 	private LinkedList<Appointment> buffer = InternalStorage.getAppointmentBuffer();
@@ -245,7 +244,7 @@ public class MainController {
 			public void keyReleased(KeyEvent e) {
 				if (e.keyCode == SWT.CR || e.keyCode == SWT.LF) {
 					CommandHistory.addCmd(cli.getText());
-					CommandHandler.commandHandle(cli, feedback, userInput, tableViewer);
+					CommandHandler.commandHandle(cli, feedback, tableViewer);
 				}else if (e.keyCode == SWT.ARROW_UP) {
 					String commandCheck = CommandHistory.getPrevCmd();
 					if (!commandCheck.equals("")) {
@@ -256,11 +255,14 @@ public class MainController {
 					if (!commandCheck.equals("")) {
 						cli.setText(commandCheck);
 					}
-				}
-				else if (e.keyCode == SWT.F12 && cli.getText().equals("testing")) {
-					StatsPopup.statsAppear(12, 2, 10);
+				}else if (e.keyCode == SWT.F12 && cli.getText().equals("di")) {
+					TextToAppointment.loadDI( tableViewer);
+					feedback.setText("DI TEST MODE!");
+				}else if (e.keyCode == SWT.F12 && cli.getText().equals("testing")) {
+					StatsPopup.statsAppear(12, 10, 2);
 					//easter egg
-					feedback.setText("ACHIEVEMENT UNLOCK : Dumb Ways to Die!");
+					feedback.setText("TEST MODE!");
+					quoteViewer.setText("Whenever you are asked if you can do a job, tell 'em, 'Certainly I can!' Then get busy and find out how to do it. ~ Theodore Roosevelt");
 					//					try {
 					//						JFXPanel fxPanel = new JFXPanel();
 					//						URL url = this.getClass().getResource("Tangerine Kitty - Dumb Ways To Die.mp3");
@@ -293,7 +295,7 @@ public class MainController {
 		btnEnter.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				CommandHandler.commandHandle(cli, feedback, userInput, tableViewer);
+				CommandHandler.commandHandle(cli, feedback, tableViewer);
 			}
 		});
 

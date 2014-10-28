@@ -1,4 +1,6 @@
 package logic;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.util.LinkedList;
 
@@ -19,7 +21,7 @@ public class Delete {
 	
 	protected static void deleteAll(String duration, String startDate, String endDate) {
 		
-		// assert(startDate.length() == 8 && endDate.length() == 8);
+		assert(startDate.length() == 8 && endDate.length() == 8);
 		
 		switch (getDuration(duration)) {
 
@@ -70,7 +72,7 @@ public class Delete {
 		} else if (duration.length() == 7) {
 			return DeleteAllType.DELETEALL_BETWEEN;
 		} else {
-			// assertTrue(duration.equalsIgnoreCase("CLEAR"));
+			assertTrue(duration.equalsIgnoreCase("CLEAR"));
 			return DeleteAllType.CLEAR;
 		}
 	}
@@ -83,7 +85,7 @@ public class Delete {
 		for (int toDeleteCount = 0; toDeleteCount < toDelete.size(); toDeleteCount++) {
 			delete(toDelete.get(toDeleteCount).getId());
 		}
-		// assertFalse(SearchAll.searchByDeadline(InternalStorage.getBuffer(), deleteOnDate).size()>0);
+		assertFalse(SearchAll.searchByDeadline(InternalStorage.getBuffer(), deleteOnDate).size()>0);
 	}
 
 	private static void deleteBetween(String deleteTill, String startDate) {
@@ -94,6 +96,6 @@ public class Delete {
 		}
 		deleteOn(startDate);
 		
-		// assertFalse(SearchAll.searchByDeadline(InternalStorage.getBuffer(), startDate).size()>0);
+		assertFalse(SearchAll.searchByDeadline(InternalStorage.getBuffer(), startDate).size()>0);
 	}
 }

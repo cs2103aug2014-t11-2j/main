@@ -9,8 +9,6 @@ public class InternalStorage {
 	private static LinkedList<Assignment> buffer = new LinkedList<Assignment>();
 	private static String filePath = "Storage.txt";
 
-    private static Tentative newTentative = new Tentative();
-
 	private static int counter = 0;
 	private static int size = 0;
 
@@ -53,13 +51,13 @@ public class InternalStorage {
 		return buffer;
 	}
 	
-    public static Tentative getNewTentative() {
-        return newTentative;
-    }
-    
-    public static void setNewTentative(Tentative tentative) {
-        newTentative = tentative;
-    }
+	public static LinkedList<Appointment> getAppointmentBuffer() {
+		if (buffer.isEmpty()) {
+			return new LinkedList<Appointment>();
+		}
+		LinkedList<Appointment> convertedBuffer = ModifyOutput.modifyBuffer(buffer);
+		return convertedBuffer;
+	}
 	
 	public static Stack <LinkedList<Assignment>> getHistory() {
 		return actionHistory;

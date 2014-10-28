@@ -3,7 +3,7 @@ package parser;
 public class RefineInputWithId {
 	
 	protected static RefinedUserInput inputIsDelete(String userInput) {
-		String id = Misc.extractId(Misc.removeCommand(userInput, "delete"));
+		String id = Misc.extractId(userInput);
 		RefinedUserInput inputDelete = new RefinedUserInput();
 		
 		if(id.isEmpty()) {
@@ -18,7 +18,7 @@ public class RefineInputWithId {
 	}
 	
 	protected static RefinedUserInput inputIsEdit(String userInput) {
-		String id = Misc.extractId(Misc.removeCommand(userInput, "edit"));
+		String id = Misc.extractId(userInput);
 		RefinedUserInput inputEdit = new RefinedUserInput();
 		
 		if(id.isEmpty()) {
@@ -34,7 +34,7 @@ public class RefineInputWithId {
 
 	protected static RefinedUserInput inputIsFinish(String userInput) {
 		RefinedUserInput inputFinish = new RefinedUserInput();
-		String id = Misc.extractId(Misc.removeCommand(userInput, "delete"));	
+		String id = Misc.extractId(userInput);		
 		
 		if(id.isEmpty()) {
 			inputFinish.setCommandType(EnumGroup.CommandType.INVALID_FORMAT);

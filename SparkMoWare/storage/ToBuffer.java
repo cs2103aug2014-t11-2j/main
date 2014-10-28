@@ -51,11 +51,10 @@ public class ToBuffer {
 
 		// adding as Assignment
 		Assignment temp = new Assignment();
-		int index = ValidityCheck.removeFrontZero(lineArray[0].substring(8));
+
+		setLatestSerialNumber(lineArray[0]);
 
 		temp.setId(lineArray[0]);
-		temp.setDateCreation(lineArray[0].substring(0, 8));
-		temp.setIndex(index);
 		temp.setTitle(lineArray[1]);
 		temp.setIsDone(Boolean.parseBoolean(lineArray[3]));
 		temp.setIsOnTime(Boolean.parseBoolean(lineArray[4]));
@@ -68,11 +67,10 @@ public class ToBuffer {
 
 		// adding as Task
 		Task temp = new Task();
-		int index = ValidityCheck.removeFrontZero(lineArray[0].substring(8));
+
+		setLatestSerialNumber(lineArray[0]);
 
 		temp.setId(lineArray[0]);
-		temp.setDateCreation(lineArray[0].substring(0, 8));
-		temp.setIndex(index);
 		temp.setTitle(lineArray[1]);
 		temp.setIsDone(Boolean.parseBoolean(lineArray[5]));
 		temp.setIsOnTime(Boolean.parseBoolean(lineArray[6]));
@@ -87,11 +85,8 @@ public class ToBuffer {
 
 		// adding as Appointment
 		Appointment temp = new Appointment();
-		int index = ValidityCheck.removeFrontZero(lineArray[0].substring(8));
-		
+
 		temp.setId(lineArray[0]);
-		temp.setDateCreation(lineArray[0].substring(0, 8));
-		temp.setIndex(index);
 		temp.setTitle(lineArray[1]);
 		temp.setIsDone(Boolean.parseBoolean(lineArray[7]));
 		temp.setIsOnTime(Boolean.parseBoolean(lineArray[8]));

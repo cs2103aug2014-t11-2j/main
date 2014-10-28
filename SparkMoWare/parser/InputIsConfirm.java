@@ -4,7 +4,7 @@ public class InputIsConfirm {
 	
 	protected static RefinedUserInput refineInput(String userInput) {
 		RefinedUserInput inputConfirm = new RefinedUserInput();
-		String id = Misc.extractId(Misc.removeCommand(userInput, "confirm"));
+		String id = Misc.extractId(userInput);
 		String date = ParserDateLocal.extractStartDate(userInput);
 		String time = ParserTimeLocal.extractStartTime(userInput);
 		
