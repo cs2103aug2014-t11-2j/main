@@ -196,7 +196,6 @@ public class SparkMoVare {
 			 } else {
 				 
 				 RedoUndo.undo();
-				 RedoUndo.pushIntoFuture();
 				 
 				 returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
 						 Message.UNDO, InternalStorage.getLineCount(), Statistic.getCompleted(), 
@@ -214,7 +213,6 @@ public class SparkMoVare {
 			 } else {
 				 
 				 RedoUndo.redo();
-				 RedoUndo.pushIntoHistory();
 				 
 				 returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
 						 Message.REDO, InternalStorage.getLineCount(), Statistic.getCompleted(), 
