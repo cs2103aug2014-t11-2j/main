@@ -1,6 +1,7 @@
 package logic;
 
 import java.util.LinkedList;
+import static org.junit.Assert.*;
 
 public class Filter {
 	
@@ -10,7 +11,7 @@ public class Filter {
 	protected static LinkedList<Assignment> multipleFilter(LinkedList<Assignment> filterBuffer,
 			String userInput) {
 		
-		// assertTrue(filterBuffer.size()>0);
+		//assertTrue(filterBuffer.size()>0);
 		
 		String[] multipleFilterInput = userInput.split(";");
 		
@@ -23,7 +24,7 @@ public class Filter {
 	public static LinkedList<Assignment> filterMain(LinkedList<Assignment> buffer, String filterType,
 			String startDate, String endDate) {
 
-		// assertTrue(buffer.size()>0);
+		//assertTrue(buffer.size()>0);
 		
 		LinkedList<Assignment> filteredList = new LinkedList<Assignment> ();
 		
@@ -33,7 +34,7 @@ public class Filter {
 			filteredList = Truncation.truncateList(filteredList, startDate, endDate);
 		}
 		
-		// assertFalse(SearchAll.searchByDeadline(filteredList, DateLocal.updateDate(endDate)).size()>0);
+		assertFalse(SearchAll.searchByDeadline(filteredList, DateLocal.updateDate(endDate)).size()>0);
 		
 		return filteredList;
 	}

@@ -6,8 +6,7 @@ public class InputIsEdited {
 		RefinedUserInput inputEdited = new RefinedUserInput(); 
 		String[] newContentArray = userInput.split("~");
 		
-        if(!(newContentArray.length == 8) || (Misc.determineIdValidity(newContentArray[1])).isEmpty()
-                || newContentArray[2].isEmpty()
+		if(!(newContentArray.length == 8) || newContentArray[2].isEmpty()
 				|| ParserDateLocal.determineDateValidity(newContentArray[3]).isEmpty()
 				|| ParserTimeLocal.determineTimeValidity(newContentArray[4]).isEmpty()
 				|| ParserDateLocal.determineDateValidity(newContentArray[5]).isEmpty()

@@ -126,11 +126,4 @@ public class ValidityCheck {
 		}
 		return priorityChecked;
 	}
-	
-	protected static int removeFrontZero(String input) {
-		while (input.length() > 0 && input.charAt(0) == '0') {
-			input = input.substring(1);
-		}
-		return Integer.parseInt(input);
-	}
 }

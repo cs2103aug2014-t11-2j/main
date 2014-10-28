@@ -65,6 +65,5 @@ public class ParserPatternLocal {
 	
 	protected static Pattern importantPattern = Pattern.compile("important|IMPT|Impt|impt|Important");
 
-	protected static Pattern notImportantPattern = Pattern.compile("NIMPT|nIMPT|Nimportant|nimportant|"
-																 + "nimpt|NIMPORTANT");
+	protected static Pattern notImportantPattern = Pattern.compile("NMPT|nMPT");
 }
