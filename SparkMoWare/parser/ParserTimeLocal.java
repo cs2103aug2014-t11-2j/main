@@ -1,5 +1,6 @@
 package parser;
 
+import java.util.Vector;
 import java.util.regex.Matcher;
 
 /*
@@ -108,6 +109,28 @@ public class ParserTimeLocal {
 			input = timeMatcher.replaceAll("");
 		//}
 		return input;
+	}
+
+	public static Vector<String> extractTentativeTimes(String input) {
+		Vector<String> tentativeTimes = new Vector<String> ();
+		Matcher dateMatcher = ParserPatternLocal.datePattern.matcher(input);
+		input = dateMatcher.replaceFirst("");
+		Matcher timeMatcher = ParserPatternLocal.timePattern.matcher(input);
+		
+		while(timeMatcher.find()) {
+			tentativeTimes.add(timeMatcher.group());
+			input = timeMatcher.replaceFirst("");
+			
+			dateMatcher = ParserPatternLocal.datePattern.matcher(input);
+			
+			if(dateMatcher.find()) {
+				input = dateMatcher.replaceFirst("");
+			}
+			
+			timeMatcher = ParserPatternLocal.timePattern.matcher(input);
+		}
+		
+		return tentativeTimes;
 	}
 }
 

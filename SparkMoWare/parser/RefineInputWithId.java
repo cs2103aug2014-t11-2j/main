@@ -16,21 +16,6 @@ public class RefineInputWithId {
 		
 		return inputDelete;
 	}
-	
-	protected static RefinedUserInput inputIsEdit(String userInput) {
-		String id = Misc.extractId(userInput);
-		RefinedUserInput inputEdit = new RefinedUserInput();
-		
-		if(id.isEmpty()) {
-			inputEdit.setCommandType(EnumGroup.CommandType.INVALID_FORMAT);
-			return inputEdit;
-		}
-		
-		inputEdit.setCommandType(EnumGroup.CommandType.EDIT);
-		inputEdit.setId(id);
-		
-		return inputEdit;
-	}
 
 	protected static RefinedUserInput inputIsFinish(String userInput) {
 		RefinedUserInput inputFinish = new RefinedUserInput();

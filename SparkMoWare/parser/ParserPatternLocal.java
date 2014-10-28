@@ -47,6 +47,8 @@ public class ParserPatternLocal {
 	protected static Pattern datePattern = Pattern.compile("(([0-9]?[0-9])/([0-9]?[0-9])/([0-9]{4}))|"
 														 + "(([0-9]?[0-9])-([0-9]?[0-9])-([0-9]{4}))|"
 														 + "(([0-9]?[0-9]).([0-9]?[0-9]).([0-9]{4}))");
+														// + "(([0-9]?[0-9]) ([0-9]?[0-9]) ([0-9]{4}))|"
+														// + "([0-9])([0-9])([0-9])([0-9])([0-9])([0-9])([0-9])([0-9])");
 	
 	/* private Pattern TimePattern = Pattern.compile("[0-2][0-3][0-5][0-9]{4}"); //no 2400	
 	 * private Pattern datePattern = Pattern.compile("[0-2]?[0-9]/[0-1]?[0-9]/[0-9]{4}");

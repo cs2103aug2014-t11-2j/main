@@ -56,6 +56,22 @@ public class Misc {
 			Matcher deleteMatcher = ParserPatternLocal.deletePattern.matcher(input);
 
 			return deleteMatcher.replaceFirst("").trim();
+		} else if(command.equals("clear")) {
+			Matcher clearMatcher = ParserPatternLocal.clearPattern.matcher(input);
+			
+			return clearMatcher.replaceFirst("");
+		} else if(command.equals("search")) {
+			Matcher searchMatcher = ParserPatternLocal.searchPattern.matcher(input);
+			
+			return searchMatcher.replaceFirst("");
+		} else if(command.equals("sort")) {
+			Matcher sortMatcher = ParserPatternLocal.sortPattern.matcher(input);
+			
+			return sortMatcher.replaceFirst("");
+		} else if(command.equals("filter")) {
+			Matcher filterMatcher = ParserPatternLocal.filterPattern.matcher(input);
+			
+			return filterMatcher.replaceFirst("");
 		}
 		return input;
 	}
@@ -76,7 +92,7 @@ public class Misc {
 		Matcher idMatcher = ParserPatternLocal.idPattern.matcher(input);
 		
 		if(idMatcher.find()) {
-			input = idMatcher.replaceAll("");
+			input = idMatcher.replaceFirst("");
 		}
 		return input.trim();
 	}
@@ -123,11 +139,14 @@ public class Misc {
 	}
 
 	protected static String extractPriority(String userInput) {
+		Matcher notimportantMatcher = ParserPatternLocal.notImportantPattern.matcher(userInput);
 		Matcher importantMatcher = ParserPatternLocal.importantPattern.matcher(userInput);
 		String notImportant = "NIMPT";
 		String important = "IMPT";
 		
-		if(importantMatcher.find()) {
+		if(notimportantMatcher.find()) {
+			return notImportant;
+		} else if(importantMatcher.find()) {
 			return important;
 		} else {
 			return notImportant;

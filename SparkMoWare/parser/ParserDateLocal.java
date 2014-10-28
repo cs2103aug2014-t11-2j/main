@@ -3,6 +3,7 @@ package parser;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Vector;
 import java.util.regex.Matcher;
 
 /*
@@ -56,7 +57,7 @@ public class ParserDateLocal {
 		
 		if(dateMatcher.find()) {
 			
-			if(dateMatcher.group(2).length() !=2) {
+				if(dateMatcher.group(2).length() !=2) {
 				startDate = "0".concat(dateMatcher.group(2));
 			} else {
 				startDate = dateMatcher.group(2);
@@ -135,6 +136,25 @@ public class ParserDateLocal {
 		return input;
 	}
 	
+	protected static Vector<String> extractTentativeDates(String input) {
+		Vector<String> tentativeDates = new Vector<String> ();
+		Matcher dateMatcher = ParserPatternLocal.datePattern.matcher(input);
+		String temp = new String();
+		
+		while(dateMatcher.find()) {
+			//temp = extractEndDate(dateMatcher.group());
+			tentativeDates.add(extractEndDate(dateMatcher.group()));
+			input = dateMatcher.replaceFirst("");
+			
+			Matcher timeMatcher = ParserPatternLocal.timePattern.matcher(input);
+			input = timeMatcher.replaceFirst("");
+			
+			dateMatcher = ParserPatternLocal.datePattern.matcher(input);
+		}
+		
+		return tentativeDates;
+	}
+
 	// unused methods in parser?
 	// decrementing date
 	protected static String updateDate(String date) {
@@ -185,4 +205,5 @@ public class ParserDateLocal {
 		return 31;	
 	}
 
+	
 }

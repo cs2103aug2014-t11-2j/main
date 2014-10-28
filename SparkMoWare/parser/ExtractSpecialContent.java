@@ -8,35 +8,22 @@ public class ExtractSpecialContent {
 	// (on, between, before) have more than one word
 	protected static String forClear(String input) {
 		input = ParserDateLocal.replaceAllDate(input);
+		input = Misc.removeCommand(input, "clear");
 
 		if(!InvalidSpecialContent.contentForClear(input)) {
 			return "";
 		}
 
-		return input;
+		return input.trim();
 	}
 
-	//untested method
 	protected static String forSearch(String input) {
 		Matcher searchMatcher = ParserPatternLocal.searchPattern.matcher(input);
 
 		if(searchMatcher.find()) {
-			String[] temp = ParserPatternLocal.searchPattern.split(input);
+			input = Misc.removeCommand(input, "search");
 
-			return temp[1]; //might be 0
-		} else {
-			return "";
-		}
-	}
-
-	//untested method
-	protected static String forTentative(String input) {
-		Matcher tentativeMatcher = ParserPatternLocal.tentativePattern.matcher(input);
-
-		if(tentativeMatcher.find()) {
-			String[] temp = ParserPatternLocal.tentativePattern.split(input);
-
-			return temp[1]; //might be 0
+			return input.trim();
 		} else {
 			return "";
 		}
@@ -47,16 +34,23 @@ public class ExtractSpecialContent {
 		Matcher sortMatcher = ParserPatternLocal.sortPattern.matcher(input);
 
 		if(sortMatcher.find()) {
-			String[] temp = ParserPatternLocal.sortPattern.split(input);
+			input = Misc.removeCommand(input, "sort");
 
-			return temp[1]; //might be 0
+			return input.trim();
 		} else {
 			return "";
 		}
 	}
 
-	protected static String forFilter(String userInput) {
-		// TODO Auto-generated method stub
-		return null;
+	protected static String forFilter(String input) {
+		Matcher filterMatcher = ParserPatternLocal.filterPattern.matcher(input);
+		
+		if(filterMatcher.find()) {
+			input = Misc.removeCommand(input, "filter");
+
+			return input.trim();
+		} else {
+			return "";
+		}
 	}
 }

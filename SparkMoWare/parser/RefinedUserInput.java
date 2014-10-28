@@ -146,12 +146,12 @@ public class RefinedUserInput {
 		this.specialContent = specialContent;
 	}
 	
-	protected void setTentativeDates(String tentativeDate) {
-		this.tentativeDates.add(tentativeDate);
+	protected void setTentativeDates(Vector <String> tentativeDate) {
+		this.tentativeDates = (tentativeDate);
 	}
 	
-	protected void setTentativeTimes(String tentativeTime) {
-		this.tentativeDates.add(tentativeTime);
+	protected void setTentativeTimes(Vector <String> tentativeTime) {
+		this.tentativeTimes = (tentativeTime);
 	}
 	
 	/**************** Overriding ************************/
