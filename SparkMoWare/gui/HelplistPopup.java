@@ -51,8 +51,9 @@ public class HelplistPopup {
 				item.setFont(font);
 			}
 		}
-		
+		helplistBuffer.clear();
 		helpList.open();
+		
 	}
 	
 	/**

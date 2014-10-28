@@ -2,7 +2,7 @@ package gui;
 
 import logic.Output;
 
-import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 
 /**
@@ -25,7 +25,7 @@ public class CommandHandler {
 	 * @param tableViewer
 	 * 				Display the table from logic to user in this tableviewer
 	 */
-	public static void commandHandle(Text cli, Text feedback, TableViewer tableViewer) {
+	public static void commandHandle(Text cli, Text feedback, Table table) {
 
 		String userInput= cli.getText().toString();
 		System.out.println(userInput);
@@ -36,7 +36,7 @@ public class CommandHandler {
 		if(output.getIsStats()) {
 			StatsPopup.statsAppear(output.getTotalAssignment(), output.getTotalCompleted(), output.getTotalOnTime());
 		} else {
-			TablerLoader.populateTable(tableViewer, output.getReturnBuffer());
+			TablerLoader.populateTable(table, output.getReturnBuffer());
 		}
 	}
 }

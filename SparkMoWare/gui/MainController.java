@@ -16,7 +16,6 @@ import logic.Id;
 import logic.InternalStorage;
 import logic.Message;
 
-import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
@@ -58,7 +57,12 @@ public class MainController {
 	private boolean isPlaying = false;
 	private boolean isReady = false;
 	private static MediaPlayer mediaPlayer;
-
+	private Text text;
+	
+	/**
+	 *  Sets up the GUI for user
+	 * @param display
+	 */
 	public MainController(Display display) {
 		//ImageGetter.loadimage();
 		shell = new Shell(display);
@@ -152,7 +156,7 @@ public class MainController {
 				}
 			});
 		}
-		shell.getDisplay().addFilter(SWT.KeyDown, new Listener()
+		shell.getDisplay().addFilter(SWT.KeyUp, new Listener()
 		{
 			@Override
 			public void handleEvent(Event e) {
@@ -187,11 +191,17 @@ public class MainController {
 		/**
 		 * TableViewer
 		 */
+		text = new Text(shell, SWT.CENTER);
+		text.setEditable(false);
+		text.setEnabled(false);
+		text.setBounds(0, 615, 1008, 21);
+		formToolkit.adapt(text, true, true);
+		text.setText("F1: Help | F5: Refresh Interface | F6: Play/Stop Music | UP/DOWN Arrow: Command History");
 		////logger.log("GUI, setting up table");
 
-		final TableViewer tableViewer = new TableViewer(shell, SWT.BORDER | SWT.FULL_SELECTION);
-		table = tableViewer.getTable();
-		table.setBounds(43, 157, 921, 371);
+		table = new Table(shell, SWT.BORDER | SWT.FULL_SELECTION);
+		//table = tableViewer.getTable();
+		table.setBounds(43, 140, 921, 371);
 		table.setLinesVisible(true);
 		formToolkit.paintBordersFor(table);
 		TableColumn tc0 = new TableColumn(table, SWT.CENTER);
@@ -231,7 +241,7 @@ public class MainController {
 		/**
 		 * For display purpose during launch
 		 **/
-		TablerLoader.populateTable(tableViewer,buffer);
+		TablerLoader.populateTable(table,buffer);
 
 		/**
 		 * Command Line Interface
@@ -239,12 +249,12 @@ public class MainController {
 		////logger.log("GUI, setting up CLI");
 
 		final Text cli = new Text(shell, SWT.NONE);
-		cli.setBounds(53, 544, 809, 26);
+		cli.setBounds(53, 527, 809, 26);
 		cli.addKeyListener(new KeyListener() {
 			public void keyReleased(KeyEvent e) {
 				if (e.keyCode == SWT.CR || e.keyCode == SWT.LF) {
 					CommandHistory.addCmd(cli.getText());
-					CommandHandler.commandHandle(cli, feedback, tableViewer);
+					CommandHandler.commandHandle(cli, feedback, table);
 				}else if (e.keyCode == SWT.ARROW_UP) {
 					String commandCheck = CommandHistory.getPrevCmd();
 					if (!commandCheck.equals("")) {
@@ -256,7 +266,8 @@ public class MainController {
 						cli.setText(commandCheck);
 					}
 				}else if (e.keyCode == SWT.F12 && cli.getText().equals("di")) {
-					TextToAppointment.loadDI( tableViewer);
+					table.removeAll();
+					TextToAppointment.loadDI(table);
 					feedback.setText("DI TEST MODE!");
 				}else if (e.keyCode == SWT.F12 && cli.getText().equals("testing")) {
 					StatsPopup.statsAppear(12, 10, 2);
@@ -290,12 +301,12 @@ public class MainController {
 		////logger.log("GUI, setting up enter button");
 
 		Button btnEnter = new Button(shell, SWT.NONE);
-		btnEnter.setBounds(874, 544, 90, 30);
+		btnEnter.setBounds(868, 527, 96, 26);
 		btnEnter.setText("Enter");
 		btnEnter.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				CommandHandler.commandHandle(cli, feedback, tableViewer);
+				CommandHandler.commandHandle(cli, feedback, table);
 			}
 		});
 
@@ -309,7 +320,7 @@ public class MainController {
 		dateDisplay.setFont(SWTResourceManager.getFont("Segoe UI", 13, SWT.BOLD));
 		dateDisplay.setEnabled(false);
 		dateDisplay.setEditable(false);
-		dateDisplay.setBounds(761, 10, 235, 30);
+		dateDisplay.setBounds(763, 10, 235, 30);
 		dateDisplay.setText(dateFormat.format(date).toString());
 
 		/**
@@ -323,7 +334,7 @@ public class MainController {
 		clockDisplay.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		clockDisplay.setEnabled(false);
 		clockDisplay.setEditable(false);
-		clockDisplay.setBounds(344, 55, 310, 52);
+		clockDisplay.setBounds(344, 38, 310, 52);
 		clockDisplay.setText(timeFormat.format(date).toString());
 
 
@@ -335,7 +346,7 @@ public class MainController {
 		feedback = new Text(shell, SWT.BORDER | SWT.CENTER);
 		feedback.setEnabled(false);
 		feedback.setEditable(false);
-		feedback.setBounds(344, 113, 310, 26);
+		feedback.setBounds(344, 96, 310, 26);
 		formToolkit.adapt(feedback, true, true);
 
 		/**
@@ -347,8 +358,12 @@ public class MainController {
 		quoteViewer.setFont(SWTResourceManager.getFont("Segoe UI", 11, SWT.NORMAL));
 		quoteViewer.setEnabled(false);
 		quoteViewer.setEditable(false);
-		quoteViewer.setBounds(43, 597, 921, 26);
+		quoteViewer.setBounds(43, 574, 921, 26);
 		quoteViewer.setText(QuoteLib.getQuote());
+		
+		/**
+		 * help text on gui
+		 */
 
 		/**
 		 * Update Clock

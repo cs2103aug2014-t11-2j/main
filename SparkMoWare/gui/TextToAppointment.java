@@ -4,12 +4,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Device;
@@ -48,16 +45,19 @@ public class TextToAppointment {
 		}
 	}
 
-	protected static void loadDI(TableViewer tableViewer) {
+	protected static void loadDI(Table table) {
 
-		Table table = tableViewer.getTable();
 		Device device = Display.getCurrent ();
 		Color Red = new Color (device, 255, 0, 0);
+		TableItem item = new TableItem(table,SWT.NONE);
+		
+		table.removeAll();
+		
 		openFile();
 		Iterator<String> buffIter =  stringBuffer.iterator();
 		while( buffIter.hasNext()) {
 			String[] holding = buffIter.next().split("~");
-			TableItem item = new TableItem(table,SWT.NONE);
+			item = new TableItem(table,SWT.NONE);
 			String temp ="";
 			// swap title and type for better user aesthetic
 			temp = holding[2];
@@ -67,6 +67,8 @@ public class TextToAppointment {
 			if (holding[1].equals("TTV")||holding[1].equals("2")) {
 				item.setForeground(Red);
 			}
+
 		}
+		stringBuffer.clear();
 	}
 }

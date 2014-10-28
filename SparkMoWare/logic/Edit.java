@@ -5,8 +5,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
 
-import parser.RefinedUserInput;
 import logic.Assignment.AssignmentType;
+import parser.EnumGroup.EditType;
+import parser.RefinedUserInput;
 
 /*
  * This edit method will edit any part of the assignment requested by the user
@@ -14,60 +15,56 @@ import logic.Assignment.AssignmentType;
  */
 public class Edit {
 
-	//Enum for determining which assignment attribute is being edited
-	enum EditType {
-		TITLE, START_DATE, START_TIME, END_DATE, END_TIME, INVALID, PRIORITY, DONE
-	}
-
 	public static String editAssignment(RefinedUserInput userInput) {
 
 		LinkedList<Assignment> idFound = new LinkedList<Assignment>();
-		idFound = SearchAll.searchAll(InternalStorage.getBuffer(), refinedUserInput[1]);
+		idFound = SearchAll.searchAll(InternalStorage.getBuffer(), userInput.getId());
 
 		if(idFound.size() == 0) {
 
-			String toUser = String.format(Message.DOES_NOT_EXISTS, "Serial Number " + refinedUserInput[1]);
+			String toUser = String.format(Message.DOES_NOT_EXISTS, "Serial Number " + userInput.getId());
 
 			Print.printToUser(toUser);
 
 			return toUser;
 		} else {
 
-			int bufferPosition = InternalStorage.getBufferPosition(refinedUserInput[1]);
+			int bufferPosition = InternalStorage.getBufferPosition(userInput.getId());
 
-			switch(getEditType(refinedUserInput[8])) {
+			switch(getEditType(userInput.getSpecialContent())) {
 
 			case TITLE:
-				InternalStorage.getBuffer().get(bufferPosition).setTitle(refinedUserInput[2]);
+				InternalStorage.getBuffer().get(bufferPosition).setTitle(userInput.getTitle());
 				break;
 
 			case START_DATE:
-				editStartDate(bufferPosition, refinedUserInput[3]);
+				editStartDate(bufferPosition, userInput.getStartDate());
 				break;
 
 			case START_TIME:
-				editStartTime(bufferPosition, refinedUserInput[4]);
+				editStartTime(bufferPosition, userInput.getStartTime());
 				break;
 
 			case END_DATE:
-				editEndDate(bufferPosition, refinedUserInput[5]);
+				editEndDate(bufferPosition, userInput.getEndDate());
 				break;
 
 			case END_TIME:
-				editEndTime(bufferPosition, refinedUserInput[6]);
+				editEndTime(bufferPosition, userInput.getEndTime());
 				break;
 
 			case PRIORITY:
-				InternalStorage.getBuffer().get(bufferPosition).setPriority(refinedUserInput[9]);
+				InternalStorage.getBuffer().get(bufferPosition).setPriority(userInput.getPriority());
 				break;
 
 			case DONE:
-				editDone(bufferPosition, refinedUserInput[5], refinedUserInput[6]);
+				editDone(bufferPosition, userInput.getEndDate(), userInput.getEndTime());
 				break;
 
 			case INVALID:
 				Print.printToUser(Message.INVALID_SEARCH_PARAMETER);
-
+				break;
+				
 			default:
 				Print.printToUser(Message.INVALID_SEARCH_PARAMETER);
 			}
@@ -147,7 +144,7 @@ public class Edit {
 				}
 			}
 		} else {
-			InternalStorage.getBuffer().get(bufferPosition).setIsOnTime(true);
+			InternalStorage.getBuffer().get(bufferPosition).setIsOnTime(false);
 		}
 	}
 
