@@ -10,18 +10,6 @@ public class LogicTestDrive {
 		public static String addSomething(RefinedUserInput userInput){
 			return addSomething(userInput);
 		}
-
-		public static String addAssignment(String id, String title, boolean isDone, String priority) {
-			return Add.addAssignment(id, title, isDone, priority);
-		}
-		
-		public static String addTask(String id, String title, String endDate, String endTime, boolean isDone, String priority) {
-			return Add.addTask(id, title, endDate, endTime, isDone, priority);
-		}
-		
-		public static String addAppointment(String id, String title, String startDate, String startTime, String endDate, String endTime, boolean isDone, String priority) {
-			return Add.addAppointment(id, title, startDate, startTime, endDate, endTime, isDone, priority);
-		}
 		
 		public static boolean serialNumberComparator(String idA, String idB){
 			return Comparator.serialNumberComparator(idA, idB);
@@ -38,11 +26,11 @@ public class LogicTestDrive {
 		public static boolean isClashing(Appointment newAppointment){
 			return Comparator.isClashing(newAppointment);
 		}	
-		
+		/*
 		public static String determineDate(String inputDate) {
 			return DateLocal.determineDate(inputDate);
 		}
-		
+		*/
 		public static boolean dateFormatValid(String date) {
 			return DateLocal.dateFormatValid(date);
 		}
