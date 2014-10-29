@@ -55,14 +55,6 @@ public class InternalStorage {
 		return buffer;
 	}
 
-	public static LinkedList<Appointment> getAppointmentBuffer() {
-		if (buffer.isEmpty()) {
-			return new LinkedList<Appointment>();
-		}
-		LinkedList<Appointment> convertedBuffer = ModifyOutput.modifyBuffer(buffer);
-		return convertedBuffer;
-	}
-
 	public static Stack<FutureHistory> getHistory() {
 		return actionHistory;
 	}
