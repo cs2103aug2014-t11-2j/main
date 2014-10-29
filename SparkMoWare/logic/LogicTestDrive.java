@@ -2,14 +2,8 @@ package logic;
 
 import java.util.LinkedList;
 
-import parser.RefinedUserInput;
-
 
 public class LogicTestDrive {
-	
-		public static String addSomething(RefinedUserInput userInput){
-			return addSomething(userInput);
-		}
 
 		public static String addAssignment(String id, String title, boolean isDone, String priority) {
 			return Add.addAssignment(id, title, isDone, priority);
