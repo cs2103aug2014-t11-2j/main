@@ -5,22 +5,22 @@ import java.util.Scanner;
 import java.util.Stack;
 
 public class InternalStorage {
-	
+
 	private static LinkedList<Assignment> buffer = new LinkedList<Assignment>();
 	private static String filePath = "Storage.txt";
 
 	private static int counter = 0;
 	private static int size = 0;
 
-	private static Stack< LinkedList<Assignment>> actionHistory = new Stack< LinkedList<Assignment>>();
-	private static Stack< LinkedList<Assignment>> actionFuture = new Stack< LinkedList<Assignment>>();
+	private static Stack<FutureHistory> actionHistory = new Stack<FutureHistory>();
+	private static Stack<FutureHistory> actionFuture = new Stack<FutureHistory>();
 
 	private static Scanner scanner = new Scanner(System.in);
-	
+
 	public static Scanner getScanner() {
 		return scanner;
 	}
-	
+
 	public static int getBufferPosition(String id) {
 		counter = 0;
 		size = buffer.size();
@@ -30,19 +30,19 @@ public class InternalStorage {
 		}	
 		return counter;
 	}
-	
+
 	public static void addBuffer(Assignment assignment) {
 		buffer.add(assignment);
 	}
-	
+
 	public static void addBuffer(int position, Assignment assignment) {
 		buffer.add(position, assignment);
 	}
-	
+
 	public static void addBufferFirst(Assignment assignment) {
 		buffer.addFirst(assignment);
 	}
-	
+
 	public static int getLineCount() {
 		return buffer.size();
 	}
@@ -50,11 +50,11 @@ public class InternalStorage {
 	public static String getFilePath(){
 		return filePath;
 	}
-	
+
 	public static LinkedList<Assignment> getBuffer() {
 		return buffer;
 	}
-	
+
 	public static LinkedList<Appointment> getAppointmentBuffer() {
 		if (buffer.isEmpty()) {
 			return new LinkedList<Appointment>();
@@ -62,36 +62,36 @@ public class InternalStorage {
 		LinkedList<Appointment> convertedBuffer = ModifyOutput.modifyBuffer(buffer);
 		return convertedBuffer;
 	}
-	
-	public static Stack <LinkedList<Assignment>> getHistory() {
+
+	public static Stack<FutureHistory> getHistory() {
 		return actionHistory;
 	}
-	
-	public static Stack <LinkedList<Assignment>> getFuture() {
+
+	public static Stack<FutureHistory> getFuture() {
 		return actionFuture;
 	}
-	
-	public static void pushHistory(LinkedList<Assignment> buffered) {
-		actionHistory.push(buffered);
+
+	public static void pushHistory(FutureHistory history) {
+		actionHistory.push(history);
 	}
-	
-	public static void pushFuture(LinkedList<Assignment> buffered) {
-		actionFuture.push(buffered);
+
+	public static void pushFuture(FutureHistory future) {
+		actionFuture.push(future);
 	}
-	
-	public static LinkedList<Assignment> peekHistory() {
+
+	public static FutureHistory peekHistory() {
 		return actionHistory.peek();
 	}
-	
-	public static LinkedList<Assignment> peekFuture() {
+
+	public static FutureHistory peekFuture() {
 		return actionFuture.peek();
 	}
-	
-	public static LinkedList<Assignment> popHistory() {
+
+	public static FutureHistory popHistory() {
 		return actionHistory.pop();
 	}
-	
-	public static LinkedList<Assignment> popFuture() {
+
+	public static FutureHistory popFuture() {
 		return actionFuture.pop();
 	}
 }
