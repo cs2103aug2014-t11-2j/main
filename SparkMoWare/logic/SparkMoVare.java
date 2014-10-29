@@ -1,7 +1,6 @@
 package logic;
 
 import java.util.LinkedList;
-import logic.Assignment.AssignmentType;
 import parser.EnumGroup.CommandType;
 import parser.Interpreter;
 import parser.RefinedUserInput;
@@ -45,7 +44,7 @@ public class SparkMoVare {
 		RefinedUserInput userInput = new RefinedUserInput();
 		String id;
 		int position;
-		
+
 		userInput = Interpreter.reader(userStringInput);
 
 		CommandType command = userInput.getCommandType();
@@ -58,11 +57,11 @@ public class SparkMoVare {
 		switch (command) {
 		case ADD:
 			id = Add.addSomething(userInput);
-			futureHistory.setCommand(CommandType.ADD);
-			futureHistory.setSerial(id);
 
+			futureHistory = RedoUndoUpdate.updateAdd(id);
+			
 			InternalStorage.pushHistory(futureHistory);
-
+			
 			returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
 					Message.ADDED, InternalStorage.getLineCount(), Statistic.getCompleted(), 
 					Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
@@ -71,29 +70,8 @@ public class SparkMoVare {
 
 		case EDIT:
 			position = InternalStorage.getBufferPosition(userInput.getId());
-			
-			futureHistory.setSerial(userInput.getId());
-			
-			if(InternalStorage.getBuffer().get(position).getAssignType().equals(AssignmentType.ASSIGNMENT)) {
-				futureHistory.setAssignment(InternalStorage.getBuffer().get(position));
-				futureHistory.setAssignType(AssignmentType.ASSIGNMENT);
-				
-			} else if(InternalStorage.getBuffer().get(position).getAssignType().equals(AssignmentType.APPOINTMENT)) {
-				Appointment appointment = (Appointment) InternalStorage.getBuffer().get(position);
-				futureHistory.setAppointment(appointment);
-				futureHistory.setAssignType(AssignmentType.APPOINTMENT);
-				
-			} else if(InternalStorage.getBuffer().get(position).getAssignType().equals(AssignmentType.TASK)) {
-				Task task = (Task) InternalStorage.getBuffer().get(position);
-				futureHistory.setTask(task);
-				futureHistory.setAssignType(AssignmentType.TASK);
-				
-			} else {
-				Tentative tentative = (Tentative) InternalStorage.getBuffer().get(position);
-				futureHistory.setTentative(tentative);
-				futureHistory.setAssignType(AssignmentType.TENTATIVE);
-			}
-			futureHistory.setCommand(CommandType.EDIT);
+
+			futureHistory = RedoUndoUpdate.updateEdit(userInput.getId(), position);
 			
 			InternalStorage.pushHistory(futureHistory);
 			
@@ -108,22 +86,7 @@ public class SparkMoVare {
 		case DELETE:
 			position = InternalStorage.getBufferPosition(userInput.getId());
 
-			if(InternalStorage.getBuffer().get(position).getAssignType().equals(AssignmentType.ASSIGNMENT)) {
-				futureHistory.setAssignment(InternalStorage.getBuffer().get(position));
-
-			} else if(InternalStorage.getBuffer().get(position).getAssignType().equals(AssignmentType.APPOINTMENT)) {
-				Appointment appointment = (Appointment) InternalStorage.getBuffer().get(position);
-				futureHistory.setAppointment(appointment);
-
-			} else if(InternalStorage.getBuffer().get(position).getAssignType().equals(AssignmentType.TASK)) {
-				Task task = (Task) InternalStorage.getBuffer().get(position);
-				futureHistory.setTask(task);
-
-			} else {
-				Tentative tentative = (Tentative) InternalStorage.getBuffer().get(position);
-				futureHistory.setTentative(tentative);
-			}
-			futureHistory.setCommand(CommandType.DELETE);
+			futureHistory = RedoUndoUpdate.updateDelete(position);
 			
 			InternalStorage.pushHistory(futureHistory);
 			
@@ -137,9 +100,9 @@ public class SparkMoVare {
 
 		case TENTATIVE:
 			id = SetTentative.addTentative(userInput.getTitle(), userInput.getTentativeDates(), userInput.getTentativeTimes());
-			futureHistory.setCommand(CommandType.TENTATIVE);
-			futureHistory.setSerial(id);
 
+			futureHistory = RedoUndoUpdate.updateTentative(id);
+			
 			InternalStorage.pushHistory(futureHistory);
 
 			returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
@@ -150,16 +113,16 @@ public class SparkMoVare {
 
 		case CONFIRM:
 			position = InternalStorage.getBufferPosition(userInput.getId());
-			futureHistory.setTentative((Tentative) InternalStorage.getBuffer().get(position));
-			futureHistory.setCommand(CommandType.CONFIRM);
-			
+
+			Tentative tentative = ((Tentative) InternalStorage.getBuffer().get(position)); 
+
 			id = ConfirmTentative.confirmTentative(userInput.getId(), userInput.getStartDate(),
 					userInput.getStartTime(), userInput.getEndDate(), userInput.getEndTime());
-			
-			futureHistory.setSerial(id);
+
+			futureHistory = RedoUndoUpdate.updateConfirm(tentative, id);
 			
 			InternalStorage.pushHistory(futureHistory);
-			
+
 			returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
 					Message.TENTATIVE_CONFIRM, InternalStorage.getLineCount(), Statistic.getCompleted(), 
 					Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
@@ -168,14 +131,13 @@ public class SparkMoVare {
 
 		case CLEAR:
 			LinkedList<Assignment> deleted = new LinkedList<Assignment>();
-			
+
 			deleted = Delete.deleteAll(userInput.getSpecialContent(), userInput.getStartDate(), userInput.getEndDate());
-			
-			futureHistory.setCommand(CommandType.CLEAR);
-			futureHistory.addClearedHistory(deleted);
+
+			futureHistory = RedoUndoUpdate.updateClear(deleted);
 			
 			InternalStorage.pushHistory(futureHistory);
-			
+
 			returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
 					Message.DELETE_ALL, InternalStorage.getLineCount(), Statistic.getCompleted(), 
 					Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
@@ -215,9 +177,8 @@ public class SparkMoVare {
 
 			Edit.completeAssignment(id);
 
-			futureHistory.setCommand(CommandType.DONE);
-			futureHistory.setSerial(id);
-
+			futureHistory = RedoUndoUpdate.updateDone(id);
+			
 			InternalStorage.pushHistory(futureHistory);
 
 			returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),

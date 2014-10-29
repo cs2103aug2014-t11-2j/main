@@ -6,65 +6,128 @@ import parser.EnumGroup.CommandType;
 
 public class UndoTask {
 	
+	private static int position;
+	
 	public static void undo() {
 		
 		FutureHistory futureHistory = InternalStorage.popHistory();
-		int position;
-
+		
 		if(futureHistory.getCommand().equals(CommandType.ADD) ||
 				futureHistory.getCommand().equals(CommandType.TENTATIVE)) {
-			futureHistory.setCommand(CommandType.DELETE);
-			Delete.delete(futureHistory.getSerial());
+			undoAdd(futureHistory.getSerial());
 			
 		} else if(futureHistory.getCommand().equals(CommandType.DONE)) {
-			position = InternalStorage.getBufferPosition(futureHistory.getSerial());
-			InternalStorage.getBuffer().get(position).setIsDone(false);
+			undoDone(futureHistory.getSerial());
 			
 		} else if(futureHistory.getCommand().equals(CommandType.EDIT)) {
-			position = InternalStorage.getBufferPosition(futureHistory.getSerial());
-
-			if(futureHistory.getAssignType().equals(AssignmentType.ASSIGNMENT)) {
-				InternalStorage.getBuffer().remove(position);
-				Add.addAssignmentToBuffer(futureHistory.getAssignment());				
-			} else if(futureHistory.getAssignType().equals(AssignmentType.APPOINTMENT)) {
-				InternalStorage.getBuffer().remove(position);
-				Add.addAppointmentToBuffer(futureHistory.getAppointment());
-			} else if(futureHistory.getAssignType().equals(AssignmentType.TASK)) {
-				InternalStorage.getBuffer().remove(position);
-				Add.addTaskToBuffer(futureHistory.getTask());
-			} else {
-				InternalStorage.getBuffer().remove(position);
-				SetTentative.addTentativeToBuffer(futureHistory.getTentative());
-			}
+			undoEdit(futureHistory);
 
 		} else if(futureHistory.getCommand().equals(CommandType.DELETE)) {
-			position = InternalStorage.getBufferPosition(futureHistory.getSerial());
-
-			if(futureHistory.getAssignType().equals(AssignmentType.ASSIGNMENT)) {
-				
-				Add.addAssignmentToBuffer(futureHistory.getAssignment());				
-			} else if(futureHistory.getAssignType().equals(AssignmentType.APPOINTMENT)) {
-				
-				Add.addAppointmentToBuffer(futureHistory.getAppointment());
-			} else if(futureHistory.getAssignType().equals(AssignmentType.TASK)) {
-				
-				Add.addTaskToBuffer(futureHistory.getTask());
-			} else {
-				
-				SetTentative.addTentativeToBuffer(futureHistory.getTentative());
-			}
+			undoDelete(futureHistory);
+			
 		} else if(futureHistory.getCommand().equals(CommandType.CLEAR)) {
 			LinkedList<Assignment> buffer = futureHistory.getClearedHistory();
-			buffer.addAll(InternalStorage.getBuffer());
+			undoClear(buffer);
 			
-			Sort.insertionSortDeadline(buffer);
-			InternalStorage.setBuffer(buffer);
 		} else {
 			position = InternalStorage.getBufferPosition(futureHistory.getSerial());
+			undoConfirm(position, futureHistory.getTentative());
+		}
+	}
+	
+	private static void undoAdd(String id) {
+	
+		FutureHistory historyFuture = new FutureHistory();
+		position = InternalStorage.getBufferPosition(id);
+		
+		historyFuture = RedoUndoUpdate.updateDelete(position);
+		InternalStorage.pushFuture(historyFuture);
+		Delete.delete(id);
+	}
+	
+	private static void undoDone(String id) {
+		
+		FutureHistory historyFuture = new FutureHistory();
+		position = InternalStorage.getBufferPosition(id);
+		
+		InternalStorage.getBuffer().get(position).setIsDone(false);
+		
+		historyFuture = RedoUndoUpdate.updateDone(id);
+		InternalStorage.pushFuture(historyFuture);
+	}
+	
+	private static void undoEdit(FutureHistory futureHistory) {
+		
+		FutureHistory historyFuture = new FutureHistory();
+		position = InternalStorage.getBufferPosition(futureHistory.getSerial());
+		
+		historyFuture = RedoUndoUpdate.updateEdit(futureHistory.getSerial(), position);
+		
+		if(futureHistory.getAssignType().equals(AssignmentType.ASSIGNMENT)) {
+			InternalStorage.getBuffer().remove(position);
+			Add.addAssignmentToBuffer(futureHistory.getAssignment());				
+		} else if(futureHistory.getAssignType().equals(AssignmentType.APPOINTMENT)) {
+			InternalStorage.getBuffer().remove(position);
+			Add.addAppointmentToBuffer(futureHistory.getAppointment());
+		} else if(futureHistory.getAssignType().equals(AssignmentType.TASK)) {
+			InternalStorage.getBuffer().remove(position);
+			Add.addTaskToBuffer(futureHistory.getTask());
+		} else {
 			InternalStorage.getBuffer().remove(position);
 			SetTentative.addTentativeToBuffer(futureHistory.getTentative());
 		}
+		InternalStorage.pushFuture(historyFuture);
+	}
+	
+	private static void undoDelete(FutureHistory futureHistory) {
 		
-		InternalStorage.pushFuture(futureHistory);
+		FutureHistory historyFuture = new FutureHistory();
+		position = InternalStorage.getBufferPosition(futureHistory.getSerial());
+		String id;
+		
+		if(futureHistory.getAssignType().equals(AssignmentType.ASSIGNMENT)) {
+			Add.addAssignmentToBuffer(futureHistory.getAssignment());
+			id = futureHistory.getAssignment().getId();
+			
+		} else if(futureHistory.getAssignType().equals(AssignmentType.APPOINTMENT)) {
+			Add.addAppointmentToBuffer(futureHistory.getAppointment());
+			id = futureHistory.getAppointment().getId();
+			
+		} else if(futureHistory.getAssignType().equals(AssignmentType.TASK)) {
+			Add.addTaskToBuffer(futureHistory.getTask());
+			id = futureHistory.getTask().getId();
+			
+		} else {
+			SetTentative.addTentativeToBuffer(futureHistory.getTentative());
+			id = futureHistory.getTentative().getId();
+		}
+		historyFuture = RedoUndoUpdate.updateAdd(id);
+		
+		InternalStorage.pushFuture(historyFuture);
+	}
+	
+	private static void undoClear(LinkedList<Assignment> buffer) {
+		
+		FutureHistory historyFuture = new FutureHistory();
+		
+		historyFuture = RedoUndoUpdate.updateClear(buffer);
+		
+		buffer.addAll(InternalStorage.getBuffer());
+		Sort.insertionSortDeadline(buffer);
+		InternalStorage.setBuffer(buffer);
+		
+		InternalStorage.pushFuture(historyFuture);
+	}
+	
+	private static void undoConfirm(int position, Tentative tentative) {
+		
+		FutureHistory historyFuture = new FutureHistory();
+		Appointment appointment = ((Appointment) InternalStorage.getBuffer().get(position));
+		historyFuture = RedoUndoUpdate.updateConfirmBack(appointment, tentative.getId());
+		
+		InternalStorage.getBuffer().remove(position);
+		SetTentative.addTentativeToBuffer(tentative);
+		
+		InternalStorage.pushFuture(historyFuture);
 	}
 }
