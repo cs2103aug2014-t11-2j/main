@@ -8,29 +8,32 @@ public class Delete {
 		DELETEALL_ON, DELETEALL_BEFORE, DELETEALL_BETWEEN, CLEAR;
 	}
 	
-	protected static void deleteAll(String duration, String startDate, String endDate) {
+	protected static LinkedList<Assignment> deleteAll(String duration, String startDate, String endDate) {
 		
-		assert(startDate.length() == 8 && endDate.length() == 8);
+		LinkedList<Assignment> deleted = new LinkedList<Assignment>();
 		
 		switch (getDuration(duration)) {
 
 		case DELETEALL_ON:
-			deleteOn(endDate);
+			deleted = deleteOn(endDate);
 			break;
 
 		case DELETEALL_BEFORE:
 			startDate = DateLocal.getStartDate();
-			deleteBetween(endDate, startDate);
+			deleted = deleteBetween(endDate, startDate);
 			break;
 
 		case DELETEALL_BETWEEN:
-			deleteBetween(endDate, startDate);
+			deleted = deleteBetween(endDate, startDate);
 			break;
 
 		default:
+			deleted = InternalStorage.getBuffer();
 			InternalStorage.getBuffer().clear();
+			
 			break;
 		}
+		return deleted;
 	}
 	
 	protected static void delete(String id) {
@@ -59,7 +62,7 @@ public class Delete {
 		}
 	}
 
-	private static void deleteOn(String deleteOnDate) {
+	private static LinkedList<Assignment> deleteOn(String deleteOnDate) {
 
 		LinkedList<Assignment> toDelete = new LinkedList<Assignment>();
 		toDelete = SearchAll.searchByDeadline(InternalStorage.getBuffer(), deleteOnDate);
@@ -67,14 +70,19 @@ public class Delete {
 		for (int toDeleteCount = 0; toDeleteCount < toDelete.size(); toDeleteCount++) {
 			delete(toDelete.get(toDeleteCount).getId());
 		}
+		return toDelete;
 	}
 
-	private static void deleteBetween(String deleteTill, String startDate) {
-
+	private static LinkedList<Assignment> deleteBetween(String deleteTill, String startDate) {
+		
+		LinkedList<Assignment> deleteInBetween = new LinkedList<Assignment>();
+		
 		while (!deleteTill.equals(startDate)) {
-			deleteOn(deleteTill);
+			deleteInBetween.addAll(deleteOn(deleteTill));
 			deleteTill = DateLocal.updateDate(deleteTill);
 		}
-		deleteOn(startDate);
+		deleteInBetween.addAll(deleteOn(startDate));
+		
+		return deleteInBetween;
 	}
 }

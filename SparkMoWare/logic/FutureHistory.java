@@ -8,7 +8,6 @@ public class FutureHistory {
 	
 	private CommandType command; 
 	private LinkedList<Assignment> clearedHistory = new LinkedList<Assignment>();
-	private LinkedList<Assignment> clearedFuture = new LinkedList<Assignment>();
 	
 	private Assignment assignment = new Assignment();
 	private Task task = new Task();
@@ -17,7 +16,7 @@ public class FutureHistory {
 	
 	private RefinedUserInput userInput = new RefinedUserInput();
 	
-	private String serial = "31122013";
+	private String serial = "311220130001";
 	
 	public CommandType getCommand() {
 		return this.command;
@@ -25,10 +24,6 @@ public class FutureHistory {
 	
 	public LinkedList<Assignment> getClearedHistory() {
 		return this.clearedHistory;
-	}
-	
-	public LinkedList<Assignment> getClearedFuture() {
-		return this.clearedFuture;
 	}
 	
 	public String getSerial() {
@@ -60,10 +55,6 @@ public class FutureHistory {
 	}
 	public void addClearedHistory(LinkedList<Assignment> history) {
 		this.clearedHistory.addAll(history);
-	}
-	
-	public void addClearedFuture(LinkedList<Assignment> future) {
-		this.clearedFuture.addAll(future);
 	}
 	
 	public void setSerial(String serialNumber) {

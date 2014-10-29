@@ -6,7 +6,7 @@ import logic.Assignment.AssignmentType;
 
 public class SetTentative {
 
-	public static void addTentative(String title, Vector<String> dates, Vector<String> times) {
+	public static String addTentative(String title, Vector<String> dates, Vector<String> times) {
 
 		Tentative newTentative = new Tentative();
 
@@ -26,6 +26,8 @@ public class SetTentative {
 			}
 		}
 		InternalStorage.addBuffer(newTentative);
+		
+		return tentativeIdGenerated;
 	}
 	
 	protected static void setToTentative(Appointment newAppointment) {

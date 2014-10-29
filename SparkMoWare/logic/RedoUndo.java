@@ -1,22 +1,13 @@
 package logic;
 
-import java.util.LinkedList;
-
-
-/*
- * Use 2 different stacks to redo or undo the actions respectively
- */
 public class RedoUndo {
-	
-	public static void pushIntoHistory() {
 		
-	}
-	
 	public static void undo() {
 		
+		pushIntoFuture();
 	}
 	
-	public static void pushIntofuture() {
+	public static void pushIntoFuture() {
 		
 	}
 	
@@ -24,3 +15,12 @@ public class RedoUndo {
 		
 	}
 }
+/*
+add -> store serial -> delete
+done -> store serial -> check undone
+edit -> store assignment -> swap back
+delete -> store assignment -> add back
+clear -> store linkedlist -> add back
+tentative -> store serial -> delete
+confirm -> store tentative -> add back
+*/

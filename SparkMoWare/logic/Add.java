@@ -12,24 +12,27 @@ public class Add {
 	 * @param refinedUserInput
 	 * @return new assignment
 	 */
-	protected static void addSomething(RefinedUserInput userInput) {
-
+	protected static String addSomething(RefinedUserInput userInput) {
+		
+		String id = Id.serialNumGen();
+		
 		if (userInput.getAssignmentType().equals(AssignmentType.APPOINTMENT)) {
 
-			addAppointment(Id.serialNumGen(), userInput.getTitle(),
+			addAppointment(id, userInput.getTitle(),
 					userInput.getStartDate(), userInput.getStartTime(),
 					userInput.getEndDate(), userInput.getEndTime(), false,
 					userInput.getPriority());
 
 		} else if (userInput.getAssignmentType().equals(AssignmentType.TASK)) {
 
-			addTask(Id.serialNumGen(), userInput.getTitle(),
+			addTask(id, userInput.getTitle(),
 					userInput.getEndDate(), userInput.getEndTime(), false,
 					userInput.getPriority());
 		} else {
-			addAssignment(Id.serialNumGen(), userInput.getTitle(),
+			addAssignment(id, userInput.getTitle(),
 					false, userInput.getPriority());
 		}
+		return id;
 	}
 
 	private static void addAssignment(String id, String title,
