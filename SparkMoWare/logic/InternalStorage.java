@@ -30,7 +30,7 @@ public class InternalStorage {
 		}	
 		return counter;
 	}
-
+	
 	public static void addBuffer(Assignment assignment) {
 		buffer.add(assignment);
 	}
@@ -42,7 +42,11 @@ public class InternalStorage {
 	public static void addBufferFirst(Assignment assignment) {
 		buffer.addFirst(assignment);
 	}
-
+	
+	public static void setBuffer(LinkedList<Assignment> bufferIn) {
+		buffer = bufferIn;
+	}
+	
 	public static int getLineCount() {
 		return buffer.size();
 	}
@@ -50,7 +54,7 @@ public class InternalStorage {
 	public static String getFilePath(){
 		return filePath;
 	}
-
+	
 	public static LinkedList<Assignment> getBuffer() {
 		return buffer;
 	}

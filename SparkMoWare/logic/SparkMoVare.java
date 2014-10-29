@@ -71,23 +71,29 @@ public class SparkMoVare {
 
 		case EDIT:
 			position = InternalStorage.getBufferPosition(userInput.getId());
-
+			
+			futureHistory.setSerial(userInput.getId());
+			
 			if(InternalStorage.getBuffer().get(position).getAssignType().equals(AssignmentType.ASSIGNMENT)) {
 				futureHistory.setAssignment(InternalStorage.getBuffer().get(position));
-
+				futureHistory.setAssignType(AssignmentType.ASSIGNMENT);
+				
 			} else if(InternalStorage.getBuffer().get(position).getAssignType().equals(AssignmentType.APPOINTMENT)) {
 				Appointment appointment = (Appointment) InternalStorage.getBuffer().get(position);
 				futureHistory.setAppointment(appointment);
-
+				futureHistory.setAssignType(AssignmentType.APPOINTMENT);
+				
 			} else if(InternalStorage.getBuffer().get(position).getAssignType().equals(AssignmentType.TASK)) {
 				Task task = (Task) InternalStorage.getBuffer().get(position);
 				futureHistory.setTask(task);
-
+				futureHistory.setAssignType(AssignmentType.TASK);
+				
 			} else {
 				Tentative tentative = (Tentative) InternalStorage.getBuffer().get(position);
 				futureHistory.setTentative(tentative);
+				futureHistory.setAssignType(AssignmentType.TENTATIVE);
 			}
-			futureHistory.setCommand(CommandType.DELETE);
+			futureHistory.setCommand(CommandType.EDIT);
 			
 			InternalStorage.pushHistory(futureHistory);
 			
@@ -147,11 +153,13 @@ public class SparkMoVare {
 			futureHistory.setTentative((Tentative) InternalStorage.getBuffer().get(position));
 			futureHistory.setCommand(CommandType.CONFIRM);
 			
+			id = ConfirmTentative.confirmTentative(userInput.getId(), userInput.getStartDate(),
+					userInput.getStartTime(), userInput.getEndDate(), userInput.getEndTime());
+			
+			futureHistory.setSerial(id);
+			
 			InternalStorage.pushHistory(futureHistory);
 			
-			ConfirmTentative.confirmTentative(userInput.getId(), userInput.getStartDate(),
-					userInput.getStartTime(), userInput.getEndDate(), userInput.getEndTime());
-
 			returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
 					Message.TENTATIVE_CONFIRM, InternalStorage.getLineCount(), Statistic.getCompleted(), 
 					Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
@@ -232,7 +240,7 @@ public class SparkMoVare {
 						Message.UNABLE_TO_UNDO, InternalStorage.getLineCount(), Statistic.getCompleted(), 
 						Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
 			} else {
-				RedoUndo.undo();
+				UndoTask.undo();
 
 				returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
 						Message.UNDO, InternalStorage.getLineCount(), Statistic.getCompleted(), 
@@ -247,7 +255,7 @@ public class SparkMoVare {
 						Message.UNABLE_TO_REDO, InternalStorage.getLineCount(), Statistic.getCompleted(), 
 						Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
 			} else {
-				RedoUndo.redo();
+				RedoTask.redo();
 
 				returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
 						Message.REDO, InternalStorage.getLineCount(), Statistic.getCompleted(), 

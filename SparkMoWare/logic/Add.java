@@ -52,7 +52,7 @@ public class Add {
 
 	}
 	
-	private static void addAssignmentToBuffer(Assignment newAssignment) {
+	protected static void addAssignmentToBuffer(Assignment newAssignment) {
 		
 		int count = 0;
 		
@@ -128,7 +128,7 @@ public class Add {
 		return newTask.toString();
 	}
 
-	private static void addTaskToBuffer(Task newTask) {
+	protected static void addTaskToBuffer(Task newTask) {
 
 		if (InternalStorage.getLineCount() == 0) {
 			InternalStorage.addBuffer(newTask);

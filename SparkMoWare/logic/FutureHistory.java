@@ -1,6 +1,8 @@
 package logic;
 
 import java.util.LinkedList;
+
+import logic.Assignment.AssignmentType;
 import parser.EnumGroup.CommandType;
 import parser.RefinedUserInput;
 
@@ -9,6 +11,7 @@ public class FutureHistory {
 	private CommandType command; 
 	private LinkedList<Assignment> clearedHistory = new LinkedList<Assignment>();
 	
+	private AssignmentType assignType;
 	private Assignment assignment = new Assignment();
 	private Task task = new Task();
 	private Appointment appointment = new Appointment();
@@ -48,6 +51,14 @@ public class FutureHistory {
 	
 	public Tentative getTentative() {
 		return this.tentative;
+	}
+	
+	public AssignmentType getAssignType() {
+		return this.assignType;
+	}
+	
+	public void setAssignType(AssignmentType assignType) {
+		this.assignType = assignType;
 	}
 	
 	public void setCommand(CommandType commandIn) {

@@ -7,7 +7,7 @@ public class ConfirmTentative {
 
 	private static Tentative tentativeNeeded = new Tentative();
 
-	protected static void confirmTentative(String serialId, String confirmStartDate, String confirmStartTime, 
+	protected static String confirmTentative(String serialId, String confirmStartDate, String confirmStartTime, 
 			String confirmEndDate, String confirmEndTime) {
 
 		Appointment confirmAppointment = new Appointment();
@@ -25,6 +25,7 @@ public class ConfirmTentative {
 			Delete.delete(tentativeNeeded.getId());
 			Add.addAppointmentToBuffer(confirmAppointment);
 		}
+		return confirmAppointment.getId();
 	}
 
 	private static Appointment findConfirmTentative(String confirmStartDate, String confirmStartTime, 

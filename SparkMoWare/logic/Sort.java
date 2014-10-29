@@ -22,7 +22,7 @@ public class Sort {
 		return sortBuffer;
 	}
 	
-	protected static LinkedList<Assignment> sortRequired(LinkedList<Assignment> buffer,
+	private static LinkedList<Assignment> sortRequired(LinkedList<Assignment> buffer,
 			String sortType){
 
 		LinkedList<Assignment> sortedList = new LinkedList<Assignment>();
@@ -117,5 +117,11 @@ public class Sort {
 			}
 		}
 		return titleListSorted;
+	}
+	
+	protected static LinkedList<Assignment> insertionSortDeadline(LinkedList<Assignment> buffer) {
+		LinkedList<Assignment> UndoListSort = new LinkedList<Assignment>();
+		
+		return UndoListSort;
 	}
 }

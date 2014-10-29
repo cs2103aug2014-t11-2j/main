@@ -44,7 +44,7 @@ public class SetTentative {
 		addTentativeToBuffer(newTentative);
 	}
 
-	private static void addTentativeToBuffer(Tentative newTentative) {
+	protected static void addTentativeToBuffer(Tentative newTentative) {
 
 		int bufferPosition = 0;
 
