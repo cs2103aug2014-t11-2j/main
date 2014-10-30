@@ -43,120 +43,91 @@ import storage.Storage;
 
 public class MainController {
 
-	private final FormToolkit formToolkit = new FormToolkit(Display.getDefault());
-	private static Text clockDisplay;
+	public static final String SONGNAME = "soundtrack.mp3";
+
 	private static DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
 	private static DateFormat dateFormat = new SimpleDateFormat("E, d MMM yyyy");
 	private static Date date = new Date();
 	private static Shell shell;
 	static Timer clockUpdater = new Timer("clockUpdater", true);
 	private Text dateDisplay;
+	private Text clockDisplay;
+	private Text cli;
 	private Text quoteViewer;
 	private Text feedback;
+	private Text hotkeyGuide;
+	private Button btnEnter;
 	private Table table;
+	private Tray tray;
 	private boolean isPlaying = false;
 	private boolean isReady = false;
 	private static MediaPlayer mediaPlayer;
-	private Text text;
-	
+
+	public static void main(String[] args) {
+
+		System.out.println(Message.WELCOME);
+
+		Display display = new Display();
+		new MainController(display);
+
+		display.dispose();
+		mediaPlayer.stop();
+		mediaPlayer.dispose();
+	}
+
 	/**
 	 *  Sets up the GUI for user
 	 * @param display
 	 */
 	public MainController(Display display) {
-		//ImageGetter.loadimage();
+
 		shell = new Shell(display);
-		////logger.log("GUI, setting up shell");
-		
-		
+		shell.setSize(1025, 681);
+		Image background = SWTResourceManager.getImage(MainController.class, "/resource/image/wallpaper1.jpg");
+		shell.setBackgroundImage(background);
+		shell.setText("SparkMoVare");
+
+		//Setting up the various components of GUI
+		hotkeyGuide = HotkeyHintManager.hotkeySetup(shell);
+		table = TableManager.setupTable(shell);
+		cli = CLImanager.cliSetup(shell);
+		btnEnter = BtnEnterManager.butEnterSetup(shell);
+		quoteViewer = QuoteViewerManager.quoteViewerSetup(shell);
+		feedback = FeedbackManager.feedbackSetup(shell);
+		clockDisplay = ClockAndDateManager.clockDisplaySetup(shell);
+		dateDisplay = ClockAndDateManager.dateDisplaySetup(shell);	
+		tray = TrayIconManager.trayIconSetup(shell, display);
+
+		//initial loading
+		TablerLoader.populateTable(table,SparkMoVare.storageSetup().getReturnBuffer());
+		quoteViewer.setText(QuoteLib.getQuote());
+		clockDisplay.setText(timeFormat.format(date));
+		dateDisplay.setText(dateFormat.format(date));
+
+		// detecting MP3 and update option
+		try {
+			new JFXPanel();
+			File f = new File(SONGNAME);
+			Media hit = new Media(f.toURI().toString());
+			mediaPlayer = new MediaPlayer(hit);
+			isReady=true;
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			System.out.println("Song not found");
+		}
+
+		// activate thread to run clock
+		clockUpdater.schedule(new UpdateTimerTask(), 1000, 1000);
+
+		// set listeners for resizing and stop them
 		shell.addControlListener(new ControlAdapter() {
 			@Override
 			public void controlResized(ControlEvent e) {
 				shell.setSize(1025, 681);	// force aspect so user cannot resize	
 			}
 		});
-		shell.setSize(1025, 681);
-		////logger.log("GUI, importing background");
-		Image background = SWTResourceManager.getImage(MainController.class, "/resource/image/wallpaper1.jpg");
-		//logger.log("GUI, setting Background");
-		shell.setBackgroundImage(background);
-		shell.setText("SparkMoVare");
 
-		/**
-		 * Setting to tray and minimising to tray
-		 */
-		try {
-			@SuppressWarnings("unused")
-			JFXPanel fxPanel = new JFXPanel();
-			File f = new File("soundtrack.mp3");
-			Media hit = new Media(f.toURI().toString());
-			mediaPlayer = new MediaPlayer(hit);
-			isReady=true;
-			f.deleteOnExit();
-
-		} catch(Exception ex) {
-			ex.printStackTrace();
-			System.out.println("Exception");
-		}
-
-
-		/**
-		 * Setting to tray and minimising to tray
-		 */
-		////logger.log("GUI, setting up trayicon");
-
-		final Tray tray = display.getSystemTray();
-		if (tray == null) {
-			System.out.println("The system tray is not available");
-		} else {
-			final TrayItem item = new TrayItem(tray, SWT.NONE);
-			item.setToolTipText("SparkMoVare");
-			Image trayicon = SWTResourceManager.getImage(MainController.class, "/resource/image/SparkMoVareTrayIcon.png");
-			item.setImage(trayicon);
-			shell.setImage(trayicon);
-			item.addListener(SWT.Selection, new Listener() {
-				public void handleEvent(Event event) {
-					if(shell.getVisible() == false) {
-						shell.setVisible(true);
-					}
-					shell.setFocus();
-					shell.setActive();
-				}
-			});
-			final Menu menu = new Menu(shell, SWT.POP_UP);
-			MenuItem miHide = new MenuItem(menu, SWT.PUSH);
-			miHide.setText("Hide" );
-			miHide.addListener(SWT.Selection, new Listener() {
-				public void handleEvent(Event event) {
-					if(shell.getVisible() == true) {
-						shell.setVisible(false);
-					}
-				}
-			});
-			MenuItem miRestore = new MenuItem(menu, SWT.PUSH);
-			miRestore.setText("Restore" );
-			miRestore.addListener(SWT.Selection, new Listener() {
-				public void handleEvent(Event event) {
-					if(shell.getVisible() == false) {
-						shell.setVisible(true);
-					}
-					shell.setFocus();
-					shell.setActive();
-				}
-			});
-			MenuItem miExit = new MenuItem(menu, SWT.PUSH);
-			miExit.setText("Exit" );
-			miExit.addListener(SWT.Selection, new Listener() {
-				public void handleEvent(Event event) {
-					System.exit(0);
-				}
-			});
-			item.addListener(SWT.MenuDetect, new Listener() {
-				public void handleEvent(Event event) {
-					menu.setVisible(true);
-				}
-			});
-		}
+		// set listeners for hotkeys
 		shell.getDisplay().addFilter(SWT.KeyUp, new Listener()
 		{
 			@Override
@@ -189,70 +160,7 @@ public class MainController {
 			}
 		});
 
-		/**
-		 * TableViewer
-		 */
-		text = new Text(shell, SWT.CENTER);
-		text.setEditable(false);
-		text.setEnabled(false);
-		text.setBounds(0, 615, 1008, 21);
-		formToolkit.adapt(text, true, true);
-		text.setText("F1: Help | F5: Refresh Interface | F6: Play/Stop Music | UP/DOWN Arrow: Command History");
-		////logger.log("GUI, setting up table");
-
-		table = new Table(shell, SWT.BORDER | SWT.FULL_SELECTION);
-		//table = tableViewer.getTable();
-		table.setBounds(43, 140, 921, 371);
-		table.setLinesVisible(true);
-		formToolkit.paintBordersFor(table);
-		TableColumn tc0 = new TableColumn(table, SWT.CENTER);
-		tc0.setResizable(false);
-		TableColumn tc1 = new TableColumn(table, SWT.CENTER);
-		tc1.setResizable(false);
-		TableColumn tc2 = new TableColumn(table, SWT.CENTER);
-		tc2.setResizable(false);
-		TableColumn tc3 = new TableColumn(table, SWT.CENTER);
-		tc3.setResizable(false);
-		TableColumn tc4 = new TableColumn(table, SWT.CENTER);
-		tc4.setResizable(false);
-		TableColumn tc5 = new TableColumn(table, SWT.CENTER);
-		tc5.setResizable(false);
-		TableColumn tc6 = new TableColumn(table, SWT.CENTER);
-		tc6.setResizable(false);
-		TableColumn tc7 = new TableColumn(table, SWT.CENTER);
-		tc7.setResizable(false);
-		tc0.setText("Creation");
-		tc1.setText("Serial");
-		tc2.setText("Type");
-		tc3.setText("Title");
-		tc4.setText("Start Date");
-		tc5.setText("Start Time");
-		tc6.setText("End Date");
-		tc7.setText("End Time");
-		tc0.setWidth(57);
-		tc1.setWidth(50);
-		tc2.setWidth(70);
-		tc3.setWidth(395);
-		tc4.setWidth(91);
-		tc5.setWidth(81);
-		tc6.setWidth(91);
-		tc7.setWidth(81);
-		table.setHeaderVisible(true);
-
-		/**
-		 * For display purpose during launch
-		 **/
-
-		TablerLoader.populateTable(table,SparkMoVare.storageSetup().getReturnBuffer());
-
-		
-		/**
-		 * Command Line Interface
-		 */
-		////logger.log("GUI, setting up CLI");
-
-		final Text cli = new Text(shell, SWT.NONE);
-		cli.setBounds(53, 527, 809, 26);
+		// set cli listener
 		cli.addKeyListener(new KeyListener() {
 			public void keyReleased(KeyEvent e) {
 				if (e.keyCode == SWT.CR || e.keyCode == SWT.LF) {
@@ -277,35 +185,13 @@ public class MainController {
 					//easter egg
 					feedback.setText("TEST MODE!");
 					quoteViewer.setText("Whenever you are asked if you can do a job, tell 'em, 'Certainly I can!' Then get busy and find out how to do it. ~ Theodore Roosevelt");
-					//					try {
-					//						JFXPanel fxPanel = new JFXPanel();
-					//						URL url = this.getClass().getResource("Tangerine Kitty - Dumb Ways To Die.mp3");
-					//						//File f = new File(url.toURI());
-					//
-					//						File f = new File("Tangerine Kitty - Dumb Ways To Die.mp3");
-					//					
-					//						Media hit = new Media(f.toURI().toString());
-					//						MediaPlayer mediaPlayer = new MediaPlayer(hit);
-					//						mediaPlayer.play();
-					//
-					//					} catch(Exception ex) {
-					//						ex.printStackTrace();
-					//						System.out.println("Exception");
-					//					}
 				}
 			}
 			public void keyPressed(KeyEvent e) {
 			}
 		});
 
-		/**
-		 * Enter button
-		 */
-		////logger.log("GUI, setting up enter button");
-
-		Button btnEnter = new Button(shell, SWT.NONE);
-		btnEnter.setBounds(868, 527, 96, 26);
-		btnEnter.setText("Enter");
+		// set button listener
 		btnEnter.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -313,94 +199,13 @@ public class MainController {
 			}
 		});
 
-		/**
-		 * Date Display
-		 */
-		////logger.log("GUI, setting up date");
-
-		dateDisplay = new Text(shell, SWT.BORDER | SWT.CENTER);
-		dateDisplay.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
-		dateDisplay.setFont(SWTResourceManager.getFont("Segoe UI", 13, SWT.BOLD));
-		dateDisplay.setEnabled(false);
-		dateDisplay.setEditable(false);
-		dateDisplay.setBounds(763, 10, 235, 30);
-		dateDisplay.setText(dateFormat.format(date).toString());
-
-		/**
-		 * Clock Display
-		 */
-		////logger.log("GUI, setting up clock");
-
-		clockDisplay = formToolkit.createText(shell, "New Text", SWT.CENTER);
-		clockDisplay.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
-		clockDisplay.setFont(SWTResourceManager.getFont("Segoe UI", 16, SWT.NORMAL));
-		clockDisplay.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
-		clockDisplay.setEnabled(false);
-		clockDisplay.setEditable(false);
-		clockDisplay.setBounds(344, 38, 310, 52);
-		clockDisplay.setText(timeFormat.format(date).toString());
-
-
-		/**
-		 * feedbackDisplay
-		 */
-		////logger.log("GUI, setting up feedback");
-
-		feedback = new Text(shell, SWT.BORDER | SWT.CENTER);
-		feedback.setEnabled(false);
-		feedback.setEditable(false);
-		feedback.setBounds(344, 96, 310, 26);
-		formToolkit.adapt(feedback, true, true);
-
-		/**
-		 * quoteViewer
-		 */
-		//logger.log("GUI, setting up qoute viewer");
-
-		quoteViewer = formToolkit.createText(shell, "New Text", SWT.CENTER);
-		quoteViewer.setFont(SWTResourceManager.getFont("Segoe UI", 11, SWT.NORMAL));
-		quoteViewer.setEnabled(false);
-		quoteViewer.setEditable(false);
-		quoteViewer.setBounds(43, 569, 921, 35);
-		quoteViewer.setText(QuoteLib.getQuote());
-		
-		/**
-		 * help text on gui
-		 */
-
-		/**
-		 * Update Clock
-		 */
-		//logger.log("GUI, start thread to update clock");
-
-		clockUpdater.schedule(new UpdateTimerTask(), 1000, 1000);
-
-
-		
 		shell.open();
 
-
-		
 		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch()) {
 				display.sleep();
 			}
 		}        
-	}
-
-
-	public static void main(String[] args) {
-
-		//logger.log("~~NEW LAUNCH~~");
-
-		System.out.println(Message.WELCOME);
-
-		Display display = new Display();
-		new MainController(display);
-
-		display.dispose();
-		mediaPlayer.stop();
-		mediaPlayer.dispose();
 	}
 
 	private class UpdateTimerTask extends TimerTask
