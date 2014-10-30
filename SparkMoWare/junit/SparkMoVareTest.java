@@ -29,6 +29,15 @@ public class SparkMoVareTest<Assignment> {
 	private static final String id_1 = "140119940001";
 	private static final String id_2 = "140119940002";
 	private static final String id_3 = "150119940001";
+	private static final String id_4 = "200219940001";
+	private static final String id_5 = "180119940001";
+	private static final String id_6 = "130219940001";
+	private static final String id_7 = "020219940001";
+	private static final String id_8 = "290119940001";
+	private static final String id_9 = "310119940001";
+	private static final String id_10 = "150219940001";
+	private static final String id_11 = "160219940001";
+	private static final String id_12 = "170219940001";
 	private static final String title = "testing";
 	private static final String startDate = "14011994";
 	private static final String startTime = "0101";
@@ -55,20 +64,20 @@ public class SparkMoVareTest<Assignment> {
 	/*
 	 * IDs have to be changed henceforth for all cases henceforth
 	 */
-	private static final String test4 = id_3 + "~" + title + "~" + "TASK" + "~"
+	private static final String test4 = id_4 + "~" + title + "~" + "TASK" + "~"
 			+ endDate + "~" + endTime + "~" + "false" + "~" + "false" + "~";
-	private static final String test5 = id_3 + "~" + title + "~" + "TASK" + "~"
+	private static final String test5 = id_5 + "~" + title + "~" + "TASK" + "~"
 			+ endDate + "~" + "false" + "~" + "false" + "~" + priority;
-	private static final String test6 = id_3 + "~" + title + "~" + "TASK" + "~"
+	private static final String test6 = id_6 + "~" + title + "~" + "TASK" + "~"
 		    + "~" + endTime + "~" + "false" + "~" + "false" + "~"
 			+ priority;
-	private static final String test7 = id_2 + "~" + title + "~"
+	private static final String test7 = id_7 + "~" + title + "~"
 			+ "APPOINTMENT" + "~" + startTime + "~" + endDate
 			+ "~" + endTime + "~" + "false" + "~" + "false" + "~" + priority;
-	private static final String test8 = id_2 + "~" + title + "~"
+	private static final String test8 = id_8 + "~" + title + "~"
 			+ "APPOINTMENT" + "~" + startDate + "~" + endDate
 			+ "~" + endTime + "~" + "false" + "~" + "false" + "~" + priority;
-	private static final String test9 = id_2 + "~" + title + "~"
+	private static final String test9 = id_9 + "~" + title + "~"
 			+ "APPOINTMENT" + "~" + startDate + "~" + startTime + "~" + endDate
 			+ "~" + endTime + "~" + "false" + "~" + priority;
 	
@@ -86,12 +95,12 @@ public class SparkMoVareTest<Assignment> {
 	private static final String invalid_endTime2 = "23590";
 	private static final String invalid_priority = "IMP";
 
-	private static final String test10 = id_1 + "~" + title + "~" + "ASSIGNMENT"
+	private static final String test10 = id_10 + "~" + title + "~" + "ASSIGNMENT"
 			+ "~" + "false" + "~" + "false" + "~" + invalid_priority;
-	private static final String test11 = id_2 + "~" + title + "~"
+	private static final String test11 = id_11 + "~" + title + "~"
 			+ "APPOINTMENT" + "~" + invalid_startDate1 + "~" + invalid_startTime1 + "~" + endDate
 			+ "~" + endTime + "~" + "false" + "~" + "false" + "~" + priority;
-	private static final String test12 = id_2 + "~" + title + "~"
+	private static final String test12 = id_12 + "~" + title + "~"
 			+ "APPOINTMENT" + "~" + invalid_startDate2 + "~" + invalid_startTime2 + "~" + endDate
 			+ "~" + endTime + "~" + "false" + "~" + "false" + "~" + priority;
 	private static final String test13 = id_3 + "~" + title + "~" + "TASK" + "~"
@@ -120,6 +129,9 @@ public class SparkMoVareTest<Assignment> {
 		testAddClass(testBuffer, parsedInput);
 		testComparatorClass();
 		testDateLocalClass();
+		
+		InternalStorage.getBuffer().clear();
+		testBuffer = InternalStorage.getBuffer();
 		testDeleteClass(testBuffer);
 		
 		InternalStorage.getBuffer().clear();
@@ -131,7 +143,6 @@ public class SparkMoVareTest<Assignment> {
 		testSortClass(testBuffer);
 		testTimeLocalClass();
 		testTruncationClass(testBuffer);
-		
 	}
 
 
@@ -178,6 +189,10 @@ public class SparkMoVareTest<Assignment> {
 		}
 	}
 
+	/*
+	 * NOTE: test cases for edit will be resolved once edit is finalized
+	 */
+	
 	private void testComparatorClass() {
 
 		assertFalse(LogicTestDrive.serialNumberComparator(id_1, id_2));
@@ -208,9 +223,13 @@ public class SparkMoVareTest<Assignment> {
 	private void testDeleteClass(LinkedList<logic.Assignment> testBuffer) {
 		
 		/*
-		 * NOTE: expected result in assertEquals() need to be changed
+		 * NOTE: expected results in assertEquals() need to be changed
 		 */
+		LogicTestDrive.addSomething(parsedInput[0]);
+		LogicTestDrive.addSomething(parsedInput[1]);
+		LogicTestDrive.addSomething(parsedInput[2]);
 		int initialSize = testBuffer.size();
+		
 		LogicTestDrive.delete(id_1);
 		assertEquals(initialSize - 1, testBuffer.size());
 		initialSize = testBuffer.size();
@@ -249,7 +268,6 @@ public class SparkMoVareTest<Assignment> {
 		 * testAddClass(testBuffer); LogicTestDrive.deleteAll("before", endDate,
 		 * endDate); assertEquals(1, testBuffer.size());
 		 */
-		 
 	}
 
 	private void testFilterClass(LinkedList<logic.Assignment> testBuffer) {
@@ -352,6 +370,10 @@ public class SparkMoVareTest<Assignment> {
 		// default
 		tempBuffer = (LinkedList<logic.Assignment>) LogicTestDrive.searchAll(
 				testSearchBuffer, "isontime");
+		assertEquals(0, tempBuffer.size());
+		
+		tempBuffer = (LinkedList<logic.Assignment>) LogicTestDrive.searchAll(
+				testSearchBuffer, "iscompleted");
 		assertEquals(0, tempBuffer.size());
 
 		tempBuffer = (LinkedList<logic.Assignment>) LogicTestDrive.searchAll(
