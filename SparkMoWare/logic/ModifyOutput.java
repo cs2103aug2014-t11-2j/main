@@ -35,21 +35,20 @@ public class ModifyOutput {
 	static LinkedList<Appointment> modifyBuffer(LinkedList<Assignment> buffer) {
 		
 		LinkedList<Appointment> modifiedBuffer = new LinkedList<Appointment>();
+		Assignment tempOrginal = new Assignment();
 		Appointment temp = new Appointment();
         ListIterator<Assignment> bufferIterator = buffer.listIterator();
-        
-        while(bufferIterator.hasNext()) {
-            if(bufferIterator.next().getAssignType().equals(AssignmentType.APPOINTMENT)) {
-                temp = ((Appointment) bufferIterator.previous());
-                modifiedBuffer.addLast(temp);
                 
-            } else if(bufferIterator.previous().getAssignType().equals(AssignmentType.TASK)) {
-                Task tmp = (Task) bufferIterator.next();
+        while(bufferIterator.hasNext()) {
+        	tempOrginal= bufferIterator.next();
+            if(tempOrginal.getAssignType().equals(AssignmentType.APPOINTMENT)) {
+                temp = ((Appointment) tempOrginal);
+                modifiedBuffer.addLast(temp);          
+            } else if(tempOrginal.getAssignType().equals(AssignmentType.TASK)) {
+                Task tmp = (Task)tempOrginal;
                 modifiedBuffer.addLast(addTask(tmp));
-
 			} else {
-				
-                Assignment tmp = (Assignment) bufferIterator.next();
+                Assignment tmp = (Assignment)tempOrginal;
                 modifiedBuffer.add(addAssignment(tmp));
 			}
 		}

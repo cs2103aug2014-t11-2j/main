@@ -3,6 +3,8 @@ package gui;
 import java.util.LinkedList;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ControlAdapter;
+import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
@@ -34,7 +36,14 @@ public class StatsPopup {
 		Image trayicon = SWTResourceManager.getImage(MainController.class, "/resource/image/SparkMoVareTrayIcon.png");
 		popup.setImage(trayicon);
 		popup.setBackgroundImage(background);
-		popup.setSize(474, 285);
+		popup.setSize(484, 285);
+		
+		popup.addControlListener(new ControlAdapter() {
+			@Override
+			public void controlResized(ControlEvent e) {
+				popup.setSize(484, 285);	// force aspect so user cannot resize	
+			}
+		});
 		
 		ProgressBar progressBar = new ProgressBar(popup, SWT.NONE);
 		progressBar.setBounds(86, 83, 202, 21);
@@ -43,7 +52,7 @@ public class StatsPopup {
 		progressBar.setSelection((int)(((float)onTimeTask/totalTask)*100));
 		
 		table = new Table(popup, SWT.BORDER | SWT.FULL_SELECTION);
-		table.setBounds(55, 110, 326, 63);
+		table.setBounds(55, 110, 329, 79);
 		TableColumn tc0 = new TableColumn(table, SWT.CENTER);
 		tc0.setResizable(false);
 		tc0.setWidth(220);
@@ -54,16 +63,16 @@ public class StatsPopup {
 		table.setLinesVisible(true);
 		
 		Percentage = new Text(popup, SWT.BORDER | SWT.READ_ONLY | SWT.CENTER);
-		Percentage.setBounds(294, 83, 46, 21);
+		Percentage.setBounds(294, 83, 52, 21);
 		Percentage.setText(Integer.toString(percentageOntime)+"%");
 		
 		txtUserStatistics = new Text(popup, SWT.BORDER | SWT.READ_ONLY);
 		txtUserStatistics.setFont(SWTResourceManager.getFont("Showcard Gothic", 16, SWT.BOLD));
 		txtUserStatistics.setText("User Statistics");
-		txtUserStatistics.setBounds(133, 32, 178, 33);
+		txtUserStatistics.setBounds(86, 32, 251, 33);
 		
 		QuoteFeedback = new Text(popup, SWT.BORDER | SWT.READ_ONLY | SWT.CENTER);
-		QuoteFeedback.setBounds(10, 179, 438, 27);
+		QuoteFeedback.setBounds(10, 205, 438, 27);
 	    if (totalTask==0) {
 			QuoteFeedback.setText("You have yet to set any item, start one today!");
 	    } else if (percentageOntime<33) {

@@ -10,15 +10,14 @@ public class SparkMoVare {
 
 	protected static final int SYSTEM_EXIT_NO_ERROR = 0;
 	protected static final int SYSTEM_EXIT_ERROR = -1;
-
 	protected static final boolean IS_NOT_STATS_OR_INVALID = false;
 
-	public static void main(String[] args) {
-
-		Print.printToUser(Message.WELCOME);
-		Storage.openFile(InternalStorage.getFilePath(),Id.getLatestSerialNumber(), InternalStorage.getBuffer());
-		toDoManager();
-	}
+	//	public static void main(String[] args) {
+	//
+	//		Print.printToUser(Message.WELCOME);
+	//		Storage.openFile(InternalStorage.getFilePath(),Id.getLatestSerialNumber(), InternalStorage.getBuffer());
+	//		toDoManager();
+	//	}
 
 	public static void toDoManager() {
 
@@ -36,11 +35,11 @@ public class SparkMoVare {
 			System.out.println(returnOutput.getTotalOnTime());
 		}		
 	} 
-	
-	public static LinkedList<Appointment> loadFromFile() {
-		return ModifyOutput.modifyBuffer(Storage.openFile(InternalStorage.getFilePath(),Id.getLatestSerialNumber(),InternalStorage.getBuffer()));
-	}
 
+	public static Output storageSetup() {
+		Storage.openFile(InternalStorage.getFilePath(),Id.getLatestSerialNumber(), InternalStorage.getBuffer());
+		return executeCommand("Display");
+	}
 
 	public static Output executeCommand(String userStringInput) {
 
@@ -64,12 +63,14 @@ public class SparkMoVare {
 			id = Add.addSomething(userInput);
 
 			futureHistory = RedoUndoUpdate.updateAdd(id);
-			
+
 			InternalStorage.pushHistory(futureHistory);
-			
+
 			returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
 					Message.ADDED, InternalStorage.getLineCount(), Statistic.getCompleted(), 
 					Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
+			
+			Storage.saveFile(InternalStorage.getFilePath(), InternalStorage.getBuffer());
 
 			return returnOutput;
 
@@ -77,43 +78,49 @@ public class SparkMoVare {
 			position = InternalStorage.getBufferPosition(userInput.getId());
 
 			futureHistory = RedoUndoUpdate.updateEdit(userInput.getId(), position);
-			
+
 			InternalStorage.pushHistory(futureHistory);
-			
+
 			Edit.editAssignment(userInput);
 
 			returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
 					Message.EDITED, InternalStorage.getLineCount(), Statistic.getCompleted(), 
 					Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
-
+			
+			Storage.saveFile(InternalStorage.getFilePath(), InternalStorage.getBuffer());
+			
 			return returnOutput;
 
 		case DELETE:
 			position = InternalStorage.getBufferPosition(userInput.getId());
 
 			futureHistory = RedoUndoUpdate.updateDelete(position);
-			
+
 			InternalStorage.pushHistory(futureHistory);
-			
+
 			Delete.delete(userInput.getId());
 
 			returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
 					Message.DELETED, InternalStorage.getLineCount(), Statistic.getCompleted(), 
 					Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
 
+			Storage.saveFile(InternalStorage.getFilePath(), InternalStorage.getBuffer());
+			
 			return returnOutput;
 
 		case TENTATIVE:
 			id = SetTentative.addTentative(userInput.getTitle(), userInput.getTentativeDates(), userInput.getTentativeTimes());
 
 			futureHistory = RedoUndoUpdate.updateTentative(id);
-			
+
 			InternalStorage.pushHistory(futureHistory);
 
 			returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
 					Message.TENTATIVE_ADDED, InternalStorage.getLineCount(), Statistic.getCompleted(), 
 					Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
 
+			Storage.saveFile(InternalStorage.getFilePath(), InternalStorage.getBuffer());
+			
 			return returnOutput;
 
 		case CONFIRM:
@@ -125,13 +132,16 @@ public class SparkMoVare {
 					userInput.getStartTime(), userInput.getEndDate(), userInput.getEndTime());
 
 			futureHistory = RedoUndoUpdate.updateConfirm(tentative, id);
-			
+
 			InternalStorage.pushHistory(futureHistory);
 
 			returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
 					Message.TENTATIVE_CONFIRM, InternalStorage.getLineCount(), Statistic.getCompleted(), 
 					Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
 
+			Storage.saveFile(InternalStorage.getFilePath(), InternalStorage.getBuffer());
+
+			
 			return returnOutput;
 
 		case CLEAR:
@@ -140,13 +150,15 @@ public class SparkMoVare {
 			deleted = Delete.deleteAll(userInput.getSpecialContent(), userInput.getStartDate(), userInput.getEndDate());
 
 			futureHistory = RedoUndoUpdate.updateClear(deleted);
-			
+
 			InternalStorage.pushHistory(futureHistory);
 
 			returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
 					Message.DELETE_ALL, InternalStorage.getLineCount(), Statistic.getCompleted(), 
 					Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
 
+			Storage.saveFile(InternalStorage.getFilePath(), InternalStorage.getBuffer());
+			
 			return returnOutput;
 
 		case SORT:
@@ -183,13 +195,15 @@ public class SparkMoVare {
 			Edit.completeAssignment(id);
 
 			futureHistory = RedoUndoUpdate.updateDone(id);
-			
+
 			InternalStorage.pushHistory(futureHistory);
 
 			returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
 					Message.DONE, InternalStorage.getLineCount(), Statistic.getCompleted(), 
 					Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
 
+			Storage.saveFile(InternalStorage.getFilePath(), InternalStorage.getBuffer());
+			
 			return returnOutput;
 
 		case STATISTIC:
@@ -230,11 +244,12 @@ public class SparkMoVare {
 			return returnOutput;
 
 		case DISPLAY:
+
 			returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
 					Message.DISPLAY, InternalStorage.getLineCount(), Statistic.getCompleted(), 
 					Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
-
 			Print.display();
+
 			return returnOutput;
 
 		case FILTER:
@@ -261,7 +276,7 @@ public class SparkMoVare {
 			return returnOutput;
 		}
 		System.out.println("File saved");
-		Storage.saveFile(InternalStorage.getFilePath(), InternalStorage.getBuffer());
+		//Storage.saveFile(InternalStorage.getFilePath(), InternalStorage.getBuffer());
 
 		return returnOutput;
 	}

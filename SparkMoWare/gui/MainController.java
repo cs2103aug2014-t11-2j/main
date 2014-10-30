@@ -54,7 +54,6 @@ public class MainController {
 	private Text quoteViewer;
 	private Text feedback;
 	private Table table;
-	private LinkedList<Appointment> buffer = SparkMoVare.loadFromFile();
 	private boolean isPlaying = false;
 	private boolean isReady = false;
 	private static MediaPlayer mediaPlayer;
@@ -243,8 +242,10 @@ public class MainController {
 		/**
 		 * For display purpose during launch
 		 **/
-		TablerLoader.populateTable(table,buffer);
 
+		TablerLoader.populateTable(table,SparkMoVare.storageSetup().getReturnBuffer());
+
+		
 		/**
 		 * Command Line Interface
 		 */
@@ -374,8 +375,12 @@ public class MainController {
 
 		clockUpdater.schedule(new UpdateTimerTask(), 1000, 1000);
 
+
+		
 		shell.open();
 
+
+		
 		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch()) {
 				display.sleep();
@@ -389,13 +394,13 @@ public class MainController {
 		//logger.log("~~NEW LAUNCH~~");
 
 		System.out.println(Message.WELCOME);
-		Storage.openFile(InternalStorage.getFilePath(),Id.getLatestSerialNumber(), InternalStorage.getBuffer());
 
 		Display display = new Display();
 		new MainController(display);
 
 		display.dispose();
 		mediaPlayer.stop();
+		mediaPlayer.dispose();
 	}
 
 	private class UpdateTimerTask extends TimerTask
