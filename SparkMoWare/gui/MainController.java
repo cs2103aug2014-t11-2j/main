@@ -68,14 +68,15 @@ public class MainController {
 		//ImageGetter.loadimage();
 		shell = new Shell(display);
 		////logger.log("GUI, setting up shell");
-
+		
+		
 		shell.addControlListener(new ControlAdapter() {
 			@Override
 			public void controlResized(ControlEvent e) {
-				shell.setSize(1024, 674);	// force aspect so user cannot resize	
+				shell.setSize(1025, 681);	// force aspect so user cannot resize	
 			}
 		});
-		shell.setSize(1024, 674);
+		shell.setSize(1025, 681);
 		////logger.log("GUI, importing background");
 		Image background = SWTResourceManager.getImage(MainController.class, "/resource/image/wallpaper1.jpg");
 		//logger.log("GUI, setting Background");
@@ -359,7 +360,7 @@ public class MainController {
 		quoteViewer.setFont(SWTResourceManager.getFont("Segoe UI", 11, SWT.NORMAL));
 		quoteViewer.setEnabled(false);
 		quoteViewer.setEditable(false);
-		quoteViewer.setBounds(43, 574, 921, 26);
+		quoteViewer.setBounds(43, 569, 921, 35);
 		quoteViewer.setText(QuoteLib.getQuote());
 		
 		/**
@@ -395,8 +396,6 @@ public class MainController {
 
 		display.dispose();
 		mediaPlayer.stop();
-		mediaPlayer.dispose();
-		
 	}
 
 	private class UpdateTimerTask extends TimerTask

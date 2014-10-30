@@ -9,8 +9,6 @@ import java.util.LinkedList;
 
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ControlAdapter;
-import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Shell;
@@ -36,13 +34,6 @@ public class HelplistPopup {
 		helpList.setText("Help List");
 		Image trayicon = SWTResourceManager.getImage(MainController.class, "/resource/image/SparkMoVareTrayIcon.png");
 		helpList.setImage(trayicon);
-		
-		helpList.addControlListener(new ControlAdapter() {
-			@Override
-			public void controlResized(ControlEvent e) {
-				helpList.setSize(550, 400);	// force aspect so user cannot resize	
-			}
-		});
 		
 		Font font = new Font(helpList.getDisplay(), "Courier New", 15, SWT.BOLD);
 

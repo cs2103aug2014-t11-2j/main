@@ -17,7 +17,9 @@ public class TablerLoader {
 		//Table table = tableViewer.getTable();
 		Device device = Display.getCurrent ();
 		Color Red = new Color (device, 255, 0, 0);
-
+		
+		table.removeAll();
+		
 		Iterator<Appointment> TableLoaderiterator = tableBuffer.iterator();
 		while (TableLoaderiterator.hasNext()) {
 		  Appointment appointmentToLoad = TableLoaderiterator.next();
