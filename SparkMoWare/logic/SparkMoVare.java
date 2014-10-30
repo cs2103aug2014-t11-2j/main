@@ -36,6 +36,11 @@ public class SparkMoVare {
 			System.out.println(returnOutput.getTotalOnTime());
 		}		
 	} 
+	
+	public static LinkedList<Appointment> loadFromFile() {
+		return ModifyOutput.modifyBuffer(Storage.openFile(InternalStorage.getFilePath(),Id.getLatestSerialNumber(),InternalStorage.getBuffer()));
+	}
+
 
 	public static Output executeCommand(String userStringInput) {
 

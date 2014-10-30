@@ -15,6 +15,7 @@ import logic.Appointment;
 import logic.Id;
 import logic.InternalStorage;
 import logic.Message;
+import logic.SparkMoVare;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlAdapter;
@@ -53,7 +54,7 @@ public class MainController {
 	private Text quoteViewer;
 	private Text feedback;
 	private Table table;
-	private LinkedList<Appointment> buffer = InternalStorage.getAppointmentBuffer();
+	private LinkedList<Appointment> buffer = SparkMoVare.loadFromFile();
 	private boolean isPlaying = false;
 	private boolean isReady = false;
 	private static MediaPlayer mediaPlayer;
@@ -394,6 +395,8 @@ public class MainController {
 
 		display.dispose();
 		mediaPlayer.stop();
+		mediaPlayer.dispose();
+		
 	}
 
 	private class UpdateTimerTask extends TimerTask
