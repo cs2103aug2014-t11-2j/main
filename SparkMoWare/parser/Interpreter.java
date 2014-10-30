@@ -16,7 +16,7 @@ public class Interpreter {
 			return RefineInputWithId.inputIsDelete(userInput);
 
 		case TENTATIVE:
-			//return InputIsTentative.refineInput(userInput);
+			return InputIsTentative.refineInput(userInput);
 
 		case CONFIRM:
 			return InputIsConfirm.refineInput(userInput);
@@ -65,9 +65,12 @@ public class Interpreter {
 			
 		case DONE:
 			return RefineInputWithId.inputIsFinish(userInput);
+			
+		case INVALID:
+			return new RefinedUserInput();
 
 		default:
-			return null;
+			return new RefinedUserInput();
 		}
 	}
 }

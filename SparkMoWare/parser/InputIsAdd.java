@@ -9,6 +9,11 @@ public class InputIsAdd {
 		String endTime = ParserTimeLocal.extractEndTime(userInput);
 		String priority = Misc.extractPriority(userInput);
 		
+		if(title.isEmpty()) {
+			inputAdd.setCommandType(EnumGroup.CommandType.INVALID_FORMAT);
+			return inputAdd;
+		}
+		
         if(Misc.isFloatingAssignment(userInput)) {
             inputAdd.setCommandType(EnumGroup.CommandType.ADD);
             inputAdd.setTitle(title);
@@ -17,7 +22,7 @@ public class InputIsAdd {
             return inputAdd;
         }
 		
-		if(title.isEmpty() || endDate.isEmpty() || endTime.isEmpty()) {
+		if(endDate.isEmpty() || endTime.isEmpty()) {
 			inputAdd.setCommandType(EnumGroup.CommandType.INVALID_FORMAT);
 			return inputAdd;
 		}

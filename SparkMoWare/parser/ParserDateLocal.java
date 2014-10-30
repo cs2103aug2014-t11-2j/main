@@ -75,7 +75,7 @@ public class ParserDateLocal {
 	}	
 	
 	public static String determineDateValidity(String inputDate) { 
-        if(!dateFormatValid(inputDate) && !inputDate.equalsIgnoreCase("default")) {
+        if(!dateFormatValid(inputDate)) {
 				return "";
 			}
 		return inputDate;
@@ -130,9 +130,8 @@ public class ParserDateLocal {
 	protected static String replaceAllDate(String input) {
 		Matcher dateMatcher = ParserPatternLocal.datePattern.matcher(input);
 		
-		//if(dateMatcher.requireEnd()) {
 			input = dateMatcher.replaceAll("");
-		//}
+			
 		return input;
 	}
 	

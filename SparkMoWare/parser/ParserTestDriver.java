@@ -115,6 +115,17 @@ public class ParserTestDriver {
 	public static String testExtractTentativeTimes(String testInput) {
 		return ParserTimeLocal.extractTentativeTimes(testInput).toString();
 	}
+	
+	/************ParserIdLocal Component**************/
+
+	public static String testExtractId(String testInput) {
+		return ParserIdLocal.extractId(testInput);
+	}
+
+	public static String testRefineId(String testInputdate, String testInputIndex) {
+		return ParserIdLocal.refineId(testInputdate, testInputIndex);
+	}
+
 	/************Misc Component**************/
 
 	public static String testRefineString(String[] testInput) {
@@ -135,14 +146,6 @@ public class ParserTestDriver {
 	
 	public static String testRemoveCommand(String testInput, String command) {
 		return Misc.removeCommand(testInput, command);
-	}
-	
-	public static String testExtractId(String testInput) {
-		return Misc.extractId(testInput);
-	}
-	
-	public static String testDetermineIdValidity(String testInput) {
-		return Misc.determineIdValidity(testInput);
 	}
 	
 	public static boolean testDeterminePriorityValidity(String testInput) {
@@ -179,5 +182,11 @@ public class ParserTestDriver {
 	
 	public static String testforFilter(String testInput) {
 		return ExtractSpecialContent.forFilter(testInput);
+	}
+
+	/************Interpreter Component**************/
+	
+	public static String testReader(String testInput) {
+		return Interpreter.reader(testInput).toString();
 	}
 }

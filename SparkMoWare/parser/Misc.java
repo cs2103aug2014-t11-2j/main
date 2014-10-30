@@ -88,15 +88,6 @@ public class Misc {
 		return input.trim();
 	}
 	
-	protected static String removeId(String input) {
-		Matcher idMatcher = ParserPatternLocal.idPattern.matcher(input);
-		
-		if(idMatcher.find()) {
-			input = idMatcher.replaceFirst("");
-		}
-		return input.trim();
-	}
-	
 	protected static String refineString(String [] unrefinedString) {
 		int length = unrefinedString.length;
 		String refinedString = new String();
@@ -112,32 +103,6 @@ public class Misc {
 		return refinedString.trim();
 	}
 	
-
-	protected static String extractId(String userInput) {
-		Matcher idMatcher = ParserPatternLocal.idPattern.matcher(userInput);
-		String id = new String();
-		
-		if(idMatcher.find()) {
-			id = idMatcher.group();
-		}
-		
-		return determineIdValidity(id);
-	}
-	
-	protected static String determineIdValidity(String id) {
-		
-		if(id.length() != 12 || id.isEmpty()) {
-			return "";
-		}
-		
-		String datePortion = id.substring(0, 8);
-
-		if(!ParserDateLocal.dateFormatValid(datePortion)) {
-			return "";
-		}
-		return id;
-	}
-
 	protected static String extractPriority(String userInput) {
 		Matcher notimportantMatcher = ParserPatternLocal.notImportantPattern.matcher(userInput);
 		Matcher importantMatcher = ParserPatternLocal.importantPattern.matcher(userInput);

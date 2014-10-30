@@ -9,9 +9,9 @@ public class InputIsTentative {
 		RefinedUserInput inputTentative = new RefinedUserInput();
 		Vector<String> tentativeDates = new Vector<String>();
 		Vector<String> tentativeTimes = new Vector<String>();
-		String id = Misc.extractId(userInput);
+		String id = ParserIdLocal.extractId(userInput);
 		
-		userInput = Misc.removeId(userInput);
+		userInput = ParserIdLocal.removeId(userInput);
 		
 		Matcher dateMatcher = ParserPatternLocal.datePattern.matcher(userInput);
 		Matcher timeMatcher = ParserPatternLocal.timePattern.matcher(userInput);

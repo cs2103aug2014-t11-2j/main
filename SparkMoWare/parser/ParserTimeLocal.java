@@ -69,7 +69,7 @@ public class ParserTimeLocal {
 	}
 
 	public static String determineTimeValidity(String inputTime) {
-        if(!timeFormatValid(inputTime) && !inputTime.equalsIgnoreCase("default")) {
+        if(!timeFormatValid(inputTime)) {
         	return "";
 		}
 		return inputTime;
@@ -105,9 +105,8 @@ public class ParserTimeLocal {
 	protected static String replaceAllTime(String input) {
 		Matcher timeMatcher = ParserPatternLocal.timePattern.matcher(input);
 		
-		//if(timeMatcher.requireEnd()) {
 			input = timeMatcher.replaceAll("");
-		//}
+			
 		return input;
 	}
 

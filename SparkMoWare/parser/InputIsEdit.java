@@ -4,7 +4,7 @@ public class InputIsEdit {
 
 	protected static RefinedUserInput refineInput(String userInput) {
 		RefinedUserInput inputEdit = new RefinedUserInput();
-		String id = Misc.extractId(userInput);
+		String id = ParserIdLocal.extractId(userInput);
 		
 		switch(Determine.getEditType(userInput)) {
 		

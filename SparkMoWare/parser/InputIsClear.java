@@ -15,16 +15,16 @@ public class InputIsClear {
 		}
 		
 		Matcher onMatcher = ParserPatternLocal.onPattern.matcher(specialContent);
-		Matcher beforeMatcher = ParserPatternLocal.onPattern.matcher(specialContent);
-		Matcher betweenMatcher = ParserPatternLocal.onPattern.matcher(specialContent);
+		Matcher beforeMatcher = ParserPatternLocal.beforePattern.matcher(specialContent);
+		Matcher betweenMatcher = ParserPatternLocal.betweenPattern.matcher(specialContent);
 
-		if(onMatcher.matches() || beforeMatcher.matches()) {
+		if(onMatcher.find() || beforeMatcher.find()) {
 			
 			inputClear.setCommandType(EnumGroup.CommandType.CLEAR);
 			inputClear.setEndDate(endDate);
 			inputClear.setSpecialContent(specialContent);
 
-		} else if (betweenMatcher.matches()) { 
+		} else if (betweenMatcher.find()) { 
 			String startDate = ParserDateLocal.extractStartDate(userInput);
 
 			if(startDate.isEmpty()){
