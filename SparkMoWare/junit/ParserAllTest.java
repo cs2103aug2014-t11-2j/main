@@ -49,7 +49,7 @@ public class ParserAllTest {
 		//case of inputs around date
 		assertFalse(ParserTestDriver.testHasTwoDateInputs("add assignment due 09/09/1234 IMPT"));
 		
-		//negative test
+		//negative test 1
 		//assertTrueParserTestDriver.testHasTwoDateInputs("add assignment 12345678 due 09/09/1234 IMPT"));
 		
 		/**************************/
@@ -106,7 +106,7 @@ public class ParserAllTest {
 		//confirm method replaces date input according to actual ideal user add appointment input
 		assertEquals("add  0900  0800 work", ParserTestDriver.testReplaceAllDate("add 09/08/1223 0900 2/3/2345 0800 work"));
 		
-		//Error test 1
+		//negative test 2
 		//assertEquals("add 0900 0800", ParserTestDriver.testReplaceAllDate("add 0900 0800"));
 		
 		/**************************/
@@ -152,7 +152,7 @@ public class ParserAllTest {
 		//confirm method returns first time input
 		assertEquals("0900", ParserTestDriver.testExtractStartTime("add void 0900 nada 0800 nothing"));
 		
-		//ERROR: Pattern interprets 1234 5678 as a date input, refer to error test 1
+		//negative test 3
 		//assertEquals("0900", ParserTestDriver.testExtractStartTime("add 0900 0800"));
 
 		//confirm method returns time input instead of the year 2345
@@ -202,11 +202,8 @@ public class ParserAllTest {
 		assertEquals("add  work", ParserTestDriver.testReplaceAllTime("add 0900 work"));
 		assertEquals("add~%work", ParserTestDriver.testReplaceAllTime("add~0900%work"));
 
-		//confirm method replaces date input according to actual ideal user add appointment input
+		//negative test 3
 		//assertEquals("add 09/08/1223  2/3/2345  work", ParserTestDriver.testReplaceAllTime("add 09/08/1223 0900 2/3/2345 0800 work"));
-		//Test fails
-		//reason: pattern detects the year portion of date input as time
-		// pattern cannot differentiate between them
 		
 		//Negative test: So long as this test returns true, design flaw has not been addressed
 		assertEquals("90 21", ParserTestDriver.testReplaceAllTime("1234567890 0987654321"));
@@ -258,7 +255,7 @@ public class ParserAllTest {
 		assertEquals("090820140002", ParserTestDriver.testExtractId("delete 09082014_2"));
 
 		//test without seperator
-		//negative test
+		//negative test 4
 		//cannot interpret digits only
 		//assertEquals("090820140001", ParserTestDriver.testExtractId("delete 090820140001"));
 		
@@ -439,7 +436,7 @@ public class ParserAllTest {
 				+ "~false~default~null~null",
 				ParserTestDriver.testInputIsAdd("add buy chicken 09/09/1234 0900 2/3/2345 0800 Important"));
 
-		//negative test case
+		//negative test case 5
 		/*assertEquals("ADD~default~go 2103T lecture~31102014~1400"
 				+ "~31102014~1600~APPOINTMENT~NMPT"
 				+ "~false~default",
@@ -578,8 +575,5 @@ public class ParserAllTest {
 		assertEquals("DEFAULT~default~default~default~default"
 				+ "~default~default~DEFAULT~NIMPT"
 				+ "~false~default~null~null", ParserTestDriver.testReader("play"));
-		
-
-
 	}
 }
