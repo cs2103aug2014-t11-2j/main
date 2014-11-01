@@ -49,6 +49,11 @@ public class ParserTestDriver {
 	}
 	
 	/************ParserDateLocal Component**************/
+
+	public static int testDateComparator(String testInput1, String testInput2) {
+		return ParserDateLocal.dateComparator(testInput1, testInput2);
+	}
+
 	public static Boolean testHasTwoDateInputs(String testInput) {
 		return ParserDateLocal.hasTwoDateInputs(testInput);
 	}
@@ -83,6 +88,11 @@ public class ParserTestDriver {
 	}
 	
 	/************ParserTimeLocal Component**************/
+	
+
+	public static int testTimeComparator(String testInput1, String testInput2) {
+		return ParserTimeLocal.timeComparator(testInput1, testInput2);
+	}
 	
 	public static String testExtractStartTime(String testInput) {
 		return ParserTimeLocal.extractStartTime(testInput);
@@ -128,6 +138,10 @@ public class ParserTestDriver {
 
 	public static String testRemoveId(String testInput) {
 		return ParserIdLocal.removeId(testInput);
+	}
+	
+	public static String testRemoveFrontZero(String testInput) {
+		return ParserIdLocal.removeFrontZero(testInput);
 	}
 
 	/************Misc Component**************/
@@ -193,6 +207,4 @@ public class ParserTestDriver {
 	public static String testReader(String testInput) {
 		return Interpreter.reader(testInput).toString();
 	}
-
-	
 }

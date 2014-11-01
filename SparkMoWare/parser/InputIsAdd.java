@@ -38,12 +38,38 @@ public class InputIsAdd {
 				return inputAdd;
 			}
 
+			inputAdd.setStartTime(startTime);
+			inputAdd.setEndTime(endTime);
+			
+			if(ParserDateLocal.dateComparator(startDate, endDate) == -1) {
+				inputAdd.setStartDate(startDate);
+				inputAdd.setEndDate(endDate);
+				
+			} else if(ParserDateLocal.dateComparator(startDate, endDate) == 1) {
+				inputAdd.setStartDate(endDate);
+				inputAdd.setEndDate(startDate);
+				
+			} else {
+				
+				inputAdd.setStartDate(startDate);
+				inputAdd.setEndDate(endDate);
+				
+				if(ParserTimeLocal.timeComparator(startTime, endTime) == -1) {
+					inputAdd.setStartTime(startTime);
+					inputAdd.setEndTime(endTime);
+					
+				} else if(ParserTimeLocal.timeComparator(startTime, endTime) == 1) {
+					inputAdd.setStartTime(endTime);
+					inputAdd.setEndTime(startTime);
+					
+				} else {
+					inputAdd.setCommandType(EnumGroup.CommandType.INVALID_FORMAT);
+					return inputAdd;
+				}
+			}
+			
 			inputAdd.setCommandType(EnumGroup.CommandType.ADD);
 			inputAdd.setTitle(title);
-			inputAdd.setStartDate(startDate);
-			inputAdd.setStartTime(startTime);
-			inputAdd.setEndDate(endDate);
-			inputAdd.setEndTime(endTime);
 			inputAdd.setPriority(priority);
 			inputAdd.setAssignmentType(AssignmentType.APPT);
 

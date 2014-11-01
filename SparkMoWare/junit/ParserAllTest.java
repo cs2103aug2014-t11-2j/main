@@ -14,6 +14,23 @@ public class ParserAllTest {
 		
 		/*************ParserDateLocal Tests*************/
 		
+		//test dateComparator
+
+		//test first date smaller than second date
+		assertEquals(-1, ParserTestDriver.testDateComparator("09082014","10082014"));
+		assertEquals(-1, ParserTestDriver.testDateComparator("09082014","09092014"));
+		assertEquals(-1, ParserTestDriver.testDateComparator("09082014","09082015"));
+
+		//test first date larger than second date
+		assertEquals(1, ParserTestDriver.testDateComparator("10082014", "09082014"));
+		assertEquals(1, ParserTestDriver.testDateComparator("09092014", "09082014"));
+		assertEquals(1, ParserTestDriver.testDateComparator("09082015", "09082014"));
+		
+		//test dates are the same
+		assertEquals(0, ParserTestDriver.testDateComparator("09082014", "09082014"));
+
+		/**************************/
+		
 		//Test extractEndDate()
 
 		//confirm method returns date input
@@ -120,6 +137,21 @@ public class ParserAllTest {
 		assertEquals("[09081234, 02031234]", ParserTestDriver.testExtractTentativeDates("09/08/1234 0900 02/03/1234 0800"));
 		
 		/***********ParserTimeLocal Tests***************/
+		
+		//test timeComparator
+		
+		//test first time smaller than second time
+		assertEquals(-1, ParserTestDriver.testTimeComparator("0900", "1000"));
+		assertEquals(-1, ParserTestDriver.testTimeComparator("0900", "0959"));
+		
+		//test first time smaller than second time
+		assertEquals(1, ParserTestDriver.testTimeComparator("1000", "0900"));
+		assertEquals(1, ParserTestDriver.testTimeComparator("0959", "0900"));
+		
+		//test times are the same
+		assertEquals(0, ParserTestDriver.testTimeComparator("0900", "0900"));
+		
+		/**************************/
 		
 		//Test extractEndTime
 		
@@ -274,6 +306,15 @@ public class ParserAllTest {
 		//test for edit input
 		assertEquals("edit  start date 09/08/2014", ParserTestDriver.testRemoveId("edit 09082014.0001 start date 09/08/2014"));
 		
+		/**************************/
+		
+		//Test removeFrontZero
+		
+		//generalised test case
+		assertEquals("1", ParserTestDriver.testRemoveFrontZero("000001"));
+		
+		//ensure method doesn't remove other zeroes
+		assertEquals("1030", ParserTestDriver.testRemoveFrontZero("000001030"));
 		
 		/*************Misc Tests*************/
 		
@@ -414,6 +455,11 @@ public class ParserAllTest {
 		assertEquals("INVALID_FORMAT~default~default~default~default"
 				+ "~default~default~DEFAULT~NIMPT"
 				+ "~false~default~null~null", ParserTestDriver.testInputIsAdd("Add"));
+		
+		//confirm method returns invalid if appointment dates and times are the same
+		assertEquals("INVALID_FORMAT~default~default~31102014~2359"
+				+ "~31102014~2359~DEFAULT~NIMPT"
+				+ "~false~default~null~null", ParserTestDriver.testInputIsAdd("Add buy fish 31/10/2014 2359 31/10/2014 2359"));
 
 		//confirm method for floating tasks/assignment && without indication of importance
 		assertEquals("ADD~default~EAT DINNER~default~default"
@@ -461,6 +507,18 @@ public class ParserAllTest {
 		//Design flaw: returns <go T lecture> instead of <go 2103T lecture>
 		//The replace time method replaces the any 4 number pattern
 
+		//test correct output if dates are in wrong order
+		assertEquals("ADD~default~buy fish~31102014~2359"
+				+ "~01102015~2359~APPT~NIMPT"
+				+ "~false~default~null~null",
+				ParserTestDriver.testInputIsAdd("Add buy fish 01/10/2015 2359 31/10/2014 2359"));
+		
+		//test correct output if times are in the wrong order
+		assertEquals("ADD~default~buy fish~31102014~2300"
+				+ "~31102014~2359~APPT~NIMPT"
+				+ "~false~default~null~null",
+				ParserTestDriver.testInputIsAdd("Add buy fish 31/10/2014 2359 31/10/2014 2300"));
+		
 		/*************InputIsClear Tests*************/
 
 		//confirm method works for clear, aka clear all
@@ -599,7 +657,6 @@ public class ParserAllTest {
 				+ "~false~default~null~null", ParserTestDriver.testInputIsFilter("filter assignment "));
 		
 		*/
-
 
 		/**************************/
 

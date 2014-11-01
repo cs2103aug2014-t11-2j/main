@@ -50,4 +50,11 @@ public class ParserIdLocal {
 		}
 		return input.trim();
 	}
+	
+	protected static String removeFrontZero(String input) {
+		while (input.length() > 0 && input.charAt(0) == '0') {
+			input = input.substring(1);
+		}
+		return input;
+	}
 }

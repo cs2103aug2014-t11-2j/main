@@ -6,14 +6,49 @@ import java.util.Date;
 import java.util.Vector;
 import java.util.regex.Matcher;
 
-/*
- * Prompt the user for a valid date
- * Check for date validity with the format <ddmmyyyy>
- * and
- * Check if the given date exists
- */
-
 public class ParserDateLocal {
+	
+	private static final int SMALLER = -1;
+	private static final int SAME = 0;
+	private static final int LARGER = 1;
+	
+	// Comparison for Date.
+	// -1 (A < B), 0 (A = B), 1 (A > B) 
+	protected static int dateComparator(String dateA, String dateB) {
+
+		String yearA = dateA.trim().substring(4, 8);
+		String yearB = dateB.trim().substring(4, 8);
+
+		String monthA = dateA.trim().substring(2, 4);
+		String monthB = dateB.trim().substring(2, 4);
+
+		String dayA = dateA.trim().substring(0, 2);
+		String dayB = dateB.trim().substring(0, 2);
+
+		yearA = ParserIdLocal.removeFrontZero(yearA);
+		yearB = ParserIdLocal.removeFrontZero(yearB);
+
+		monthA = ParserIdLocal.removeFrontZero(monthA);
+		monthB = ParserIdLocal.removeFrontZero(monthB);
+
+		dayA = ParserIdLocal.removeFrontZero(dayA);
+		dayB = ParserIdLocal.removeFrontZero(dayB);
+
+		if (dateA.equals(dateB)) {
+			return SAME;
+		} else if (Integer.parseInt(yearA) > Integer.parseInt(yearB)) {
+			return LARGER;
+		} else if (Integer.parseInt(yearA) < Integer.parseInt(yearB)) {
+			return SMALLER;
+		} else if (Integer.parseInt(monthA) > Integer.parseInt(monthB)) {
+			return LARGER;
+		} else if (Integer.parseInt(monthA) < Integer.parseInt(monthB)) {
+			return SMALLER;
+		} else if (Integer.parseInt(dayA) > Integer.parseInt(dayB)) {
+			return LARGER;
+		}
+		return SMALLER;
+	}
 	
 	protected static String extractEndDate(String userInput) {
 		userInput = ParserIdLocal.removeId(userInput);
@@ -50,7 +85,6 @@ public class ParserDateLocal {
 			}
 		}
 	
-	//ASSUMPTION: in appointment case, input format is start date followed by end date
 	protected static String extractStartDate(String userInput) {
 		userInput = ParserIdLocal.removeId(userInput);
 		Matcher dateMatcher = ParserPatternLocal.datePattern.matcher(userInput);
@@ -156,6 +190,10 @@ public class ParserDateLocal {
 		return tentativeDates;
 	}
 
+	
+
+
+	
 	// unused methods in parser?
 	// decrementing date
 	protected static String updateDate(String date) {
