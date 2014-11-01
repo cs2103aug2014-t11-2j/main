@@ -57,7 +57,7 @@ public class SetTentative {
 			while(buffer.hasNext()) {
 				Assignment assignment = buffer.next();
 				
-				if(assignment.getAssignType().equals(AssignmentType.APPOINTMENT) ||
+				if(assignment.getAssignType().equals(AssignmentType.APPT) ||
 						assignment.getAssignType().equals(AssignmentType.TASK)) {
 					InternalStorage.addBuffer(bufferPosition, newTentative);
 					break;

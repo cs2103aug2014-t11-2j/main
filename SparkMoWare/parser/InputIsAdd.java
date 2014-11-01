@@ -20,7 +20,7 @@ public class InputIsAdd {
             inputAdd.setCommandType(EnumGroup.CommandType.ADD);
             inputAdd.setTitle(title);
             inputAdd.setPriority(priority);
-            inputAdd.setAssignmentType(AssignmentType.ASSIGNMENT);
+            inputAdd.setAssignmentType(AssignmentType.ASGN);
             return inputAdd;
         }
 		
@@ -45,7 +45,7 @@ public class InputIsAdd {
 			inputAdd.setEndDate(endDate);
 			inputAdd.setEndTime(endTime);
 			inputAdd.setPriority(priority);
-			inputAdd.setAssignmentType(AssignmentType.APPOINTMENT);
+			inputAdd.setAssignmentType(AssignmentType.APPT);
 
 		} else {
 			

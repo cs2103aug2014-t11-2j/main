@@ -41,9 +41,9 @@ public class TableManager {
 		tc6.setText("End Date");
 		tc7.setText("End Time");
 		tc0.setWidth(57);
-		tc1.setWidth(50);
+		tc1.setWidth(55);
 		tc2.setWidth(70);
-		tc3.setWidth(395);
+		tc3.setWidth(390);
 		tc4.setWidth(91);
 		tc5.setWidth(81);
 		tc6.setWidth(91);

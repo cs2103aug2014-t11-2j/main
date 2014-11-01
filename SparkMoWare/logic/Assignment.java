@@ -16,7 +16,7 @@ public class Assignment {
 	/************** Constants **********************/
 
 	public enum AssignmentType {
-		TASK, APPOINTMENT, TENTATIVE, ASSIGNMENT, DEFAULT;
+		TASK, APPT, TNTV, ASGN, DEFAULT;
 	}
 
 	protected static final String DEFAULT_STRING = "DEFAULT";
@@ -33,7 +33,7 @@ public class Assignment {
 
 	public Assignment() {
 		this(DEFAULT, DEFAULT_STRING, false, false, PRIORITY_NONE,
-				AssignmentType.ASSIGNMENT);
+				AssignmentType.ASGN);
 	}
 
 	public Assignment(String id, String title, boolean isDone,

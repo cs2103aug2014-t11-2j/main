@@ -16,7 +16,7 @@ public class Add {
 
 		String id = Id.serialNumGen();
 
-		if (userInput.getAssignmentType().equals(AssignmentType.APPOINTMENT)) {
+		if (userInput.getAssignmentType().equals(AssignmentType.APPT)) {
 
 			addAppointment(id, userInput.getTitle(),
 					userInput.getStartDate(), userInput.getStartTime(),

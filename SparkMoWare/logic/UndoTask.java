@@ -63,10 +63,10 @@ public class UndoTask {
 		
 		historyFuture = RedoUndoUpdate.updateEdit(futureHistory.getSerial(), position);
 		
-		if(futureHistory.getAssignType().equals(AssignmentType.ASSIGNMENT)) {
+		if(futureHistory.getAssignType().equals(AssignmentType.ASGN)) {
 			InternalStorage.getBuffer().remove(position);
 			Add.addAssignmentToBuffer(futureHistory.getAssignment());				
-		} else if(futureHistory.getAssignType().equals(AssignmentType.APPOINTMENT)) {
+		} else if(futureHistory.getAssignType().equals(AssignmentType.APPT)) {
 			InternalStorage.getBuffer().remove(position);
 			Add.addAppointmentToBuffer(futureHistory.getAppointment());
 		} else if(futureHistory.getAssignType().equals(AssignmentType.TASK)) {
@@ -85,11 +85,11 @@ public class UndoTask {
 		position = InternalStorage.getBufferPosition(futureHistory.getSerial());
 		String id;
 		
-		if(futureHistory.getAssignType().equals(AssignmentType.ASSIGNMENT)) {
+		if(futureHistory.getAssignType().equals(AssignmentType.ASGN)) {
 			Add.addAssignmentToBuffer(futureHistory.getAssignment());
 			id = futureHistory.getAssignment().getId();
 			
-		} else if(futureHistory.getAssignType().equals(AssignmentType.APPOINTMENT)) {
+		} else if(futureHistory.getAssignType().equals(AssignmentType.APPT)) {
 			Add.addAppointmentToBuffer(futureHistory.getAppointment());
 			id = futureHistory.getAppointment().getId();
 			

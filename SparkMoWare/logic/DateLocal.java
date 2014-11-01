@@ -82,7 +82,7 @@ public class DateLocal {
 		if(InternalStorage.getBuffer().getFirst().equals(AssignmentType.TASK)) {
 			Task firstTask = ((Task) InternalStorage.getBuffer().getFirst());
 			startDate = firstTask.getEndDate();
-		} else if(InternalStorage.getBuffer().getFirst().equals(AssignmentType.APPOINTMENT)) {
+		} else if(InternalStorage.getBuffer().getFirst().equals(AssignmentType.APPT)) {
 			
 			Appointment firstAppointment = ((Appointment) InternalStorage.getBuffer().getFirst());
 			startDate = firstAppointment.getStartDate();

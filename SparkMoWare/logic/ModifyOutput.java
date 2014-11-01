@@ -41,7 +41,7 @@ public class ModifyOutput {
                 
         while(bufferIterator.hasNext()) {
         	tempOrginal= bufferIterator.next();
-            if(tempOrginal.getAssignType().equals(AssignmentType.APPOINTMENT)) {
+            if(tempOrginal.getAssignType().equals(AssignmentType.APPT)) {
                 temp = ((Appointment) tempOrginal);
                 modifiedBuffer.addLast(temp);          
             } else if(tempOrginal.getAssignType().equals(AssignmentType.TASK)) {
@@ -79,7 +79,7 @@ public class ModifyOutput {
         
         temp.setId(tmp.getId());
         temp.setTitle(tmp.getTitle());
-        temp.setAssignType(AssignmentType.ASSIGNMENT);
+        temp.setAssignType(AssignmentType.ASGN);
         temp.setStartDate(DEFAULT_NONE);
         temp.setStartTime(DEFAULT_NONE);
         temp.setEndDate(DEFAULT_NONE);

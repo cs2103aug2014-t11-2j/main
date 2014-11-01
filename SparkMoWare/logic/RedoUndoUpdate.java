@@ -36,14 +36,14 @@ public class RedoUndoUpdate {
 	
 	private static void updateAssignment(int position) {
 		
-		if(InternalStorage.getBuffer().get(position).getAssignType().equals(AssignmentType.ASSIGNMENT)) {
+		if(InternalStorage.getBuffer().get(position).getAssignType().equals(AssignmentType.ASGN)) {
 			futureHistory.setAssignment(InternalStorage.getBuffer().get(position));
-			futureHistory.setAssignType(AssignmentType.ASSIGNMENT);
+			futureHistory.setAssignType(AssignmentType.ASGN);
 			
-		} else if(InternalStorage.getBuffer().get(position).getAssignType().equals(AssignmentType.APPOINTMENT)) {
+		} else if(InternalStorage.getBuffer().get(position).getAssignType().equals(AssignmentType.APPT)) {
 			Appointment appointment = (Appointment) InternalStorage.getBuffer().get(position);
 			futureHistory.setAppointment(appointment);
-			futureHistory.setAssignType(AssignmentType.APPOINTMENT);
+			futureHistory.setAssignType(AssignmentType.APPT);
 			
 		} else if(InternalStorage.getBuffer().get(position).getAssignType().equals(AssignmentType.TASK)) {
 			Task task = (Task) InternalStorage.getBuffer().get(position);
@@ -53,7 +53,7 @@ public class RedoUndoUpdate {
 		} else {
 			Tentative tentative = (Tentative) InternalStorage.getBuffer().get(position);
 			futureHistory.setTentative(tentative);
-			futureHistory.setAssignType(AssignmentType.TENTATIVE);
+			futureHistory.setAssignType(AssignmentType.TNTV);
 		}
 	}
 	

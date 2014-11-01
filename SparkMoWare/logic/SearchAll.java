@@ -139,7 +139,7 @@ public class SearchAll {
 
 		for(listCount = 0; listCount < buffer.size(); listCount++) {
 
-			if(buffer.get(listCount).getAssignType().equals(AssignmentType.APPOINTMENT)) {
+			if(buffer.get(listCount).getAssignType().equals(AssignmentType.APPT)) {
 				appointmentFound.add(buffer.get(listCount));
 			}
 		}
@@ -152,7 +152,7 @@ public class SearchAll {
 
 		for(listCount = 0; listCount < buffer.size(); listCount++) {
 
-			if(buffer.get(listCount).getAssignType().equals(AssignmentType.TENTATIVE)) {
+			if(buffer.get(listCount).getAssignType().equals(AssignmentType.TNTV)) {
 				tentativeFound.add(buffer.get(listCount));
 			}
 		}
@@ -189,7 +189,7 @@ public class SearchAll {
 		Appointment appointmentInBuffer = new Appointment();
 
 		for(listCount = 0; listCount < buffer.size(); listCount++) {
-			if(buffer.get(listCount).getAssignType().equals(AssignmentType.APPOINTMENT)) {
+			if(buffer.get(listCount).getAssignType().equals(AssignmentType.APPT)) {
 				appointmentInBuffer = ((Appointment) buffer.get(listCount)); 
 			}
 			if(appointmentInBuffer.getStartTime().equals(searchStartTime)) {
@@ -208,7 +208,7 @@ public class SearchAll {
 
 		for(listCount = 0; listCount < buffer.size(); listCount++) {
 
-			if(buffer.get(listCount).getAssignType().equals(AssignmentType.APPOINTMENT)) {
+			if(buffer.get(listCount).getAssignType().equals(AssignmentType.APPT)) {
 				appointmentInBuffer = ((Appointment) buffer.get(listCount)); 
 
 				if(appointmentInBuffer.getEndTime().equals(searchEndTime)) {
@@ -244,7 +244,7 @@ public class SearchAll {
 		Appointment appointmentInBuffer = new Appointment();
 
 		for(listCount = 0; listCount < buffer.size(); listCount++) {
-			if(buffer.get(listCount).getAssignType().equals(AssignmentType.APPOINTMENT)) {
+			if(buffer.get(listCount).getAssignType().equals(AssignmentType.APPT)) {
 				appointmentInBuffer = ((Appointment) buffer.get(listCount)); 
 			}
 			if(appointmentInBuffer.getStartTime().equals(searchStartDate)) {
@@ -263,7 +263,7 @@ public class SearchAll {
 
 		for(listCount = 0; listCount < buffer.size(); listCount++) {
 
-			if(buffer.get(listCount).getAssignType().equals(AssignmentType.APPOINTMENT)) {
+			if(buffer.get(listCount).getAssignType().equals(AssignmentType.APPT)) {
 				appointmentInBuffer = ((Appointment) buffer.get(listCount)); 
 
 				if(appointmentInBuffer.getEndDate().equals(searchDeadline)) {

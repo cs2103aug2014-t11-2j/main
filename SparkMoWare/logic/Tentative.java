@@ -21,7 +21,7 @@ public class Tentative extends Assignment {
 		startTime = new Vector<String>();
 		endDate = new Vector<String>();
 		endTime = new Vector<String>();
-		setAssignType(AssignmentType.TENTATIVE);
+		setAssignType(AssignmentType.TNTV);
 	}
 	
 	public Vector<String> getStartDate() {

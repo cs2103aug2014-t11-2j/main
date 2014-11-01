@@ -32,7 +32,7 @@ public class Truncation {
 				if(Comparator.dateComparator(taskInList.getEndDate(), date) == -1) {
 					truncatedList.remove(truncatedCount);
 				}
-			} else if(truncatedList.get(truncatedCount).getAssignType().equals(AssignmentType.APPOINTMENT)) {
+			} else if(truncatedList.get(truncatedCount).getAssignType().equals(AssignmentType.APPT)) {
 				appointmentInList = ((Appointment) truncatedList.get(truncatedCount));
 
 				if(Comparator.dateComparator(appointmentInList.getEndDate(), date) == -1) {
@@ -53,7 +53,7 @@ public class Truncation {
 				if(Comparator.dateComparator(taskInList.getEndDate(), date) == 1) {
 					truncatedList.remove(truncatedCount);
 				}
-			} else if(truncatedList.get(truncatedCount).getAssignType().equals(AssignmentType.APPOINTMENT)) {
+			} else if(truncatedList.get(truncatedCount).getAssignType().equals(AssignmentType.APPT)) {
 				appointmentInList = ((Appointment) truncatedList.get(truncatedCount));
 
 				if(Comparator.dateComparator(appointmentInList.getEndDate(), date) == 1) {

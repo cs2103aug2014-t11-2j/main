@@ -137,7 +137,7 @@ public class Comparator {
 			Assignment assignment = buffer.next();
 
 			if(count == 0) {
-				if (assignment.getAssignType().equals(AssignmentType.APPOINTMENT)) {
+				if (assignment.getAssignType().equals(AssignmentType.APPT)) {
 
 					nextAppointmentInBuffer = ((Appointment) assignment);
 
@@ -171,7 +171,7 @@ public class Comparator {
 					}
 				}
 			} else {
-				if (assignment.getAssignType().equals(AssignmentType.APPOINTMENT)) {
+				if (assignment.getAssignType().equals(AssignmentType.APPT)) {
 
 					nextAppointmentInBuffer = ((Appointment) assignment);
 
@@ -298,7 +298,7 @@ public class Comparator {
 			Assignment assignment = buffer.next();
 
 			if(count == 0 || (!previousIsTask && !previousIsAppointment)) {
-				if (assignment.getAssignType().equals(AssignmentType.APPOINTMENT)) {
+				if (assignment.getAssignType().equals(AssignmentType.APPT)) {
 
 					nextAppointmentInBuffer = ((Appointment) assignment);
 
@@ -332,7 +332,7 @@ public class Comparator {
 					}
 				}
 			} else {
-				if (assignment.getAssignType().equals(AssignmentType.APPOINTMENT)) {
+				if (assignment.getAssignType().equals(AssignmentType.APPT)) {
 
 					nextAppointmentInBuffer = ((Appointment) assignment);
 
@@ -457,7 +457,7 @@ public class Comparator {
 		while(buffer.hasNext()) {
 			Assignment assignment = buffer.next();
 			if(!assignment.getIsDone()) {
-				if(assignment.getAssignType().equals(AssignmentType.APPOINTMENT)) {
+				if(assignment.getAssignType().equals(AssignmentType.APPT)) {
 					checkAppointment = ((Appointment) assignment); 
 
 					if(dateComparator(newAppointment.getEndDate(), 

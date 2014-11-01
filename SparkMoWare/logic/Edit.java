@@ -132,7 +132,7 @@ public class Edit {
 					InternalStorage.getBuffer().get(bufferPosition).setIsOnTime(true);
 				}
 			}
-		} else if(InternalStorage.getBuffer().get(bufferPosition).getAssignType().equals(AssignmentType.APPOINTMENT)) {
+		} else if(InternalStorage.getBuffer().get(bufferPosition).getAssignType().equals(AssignmentType.APPT)) {
 			appointmentInBuffer = ((Appointment) InternalStorage.getBuffer().get(bufferPosition)); 
 
 			if (Comparator.dateComparator(currentDate, appointmentInBuffer.getEndDate()) == -1) {
@@ -151,7 +151,7 @@ public class Edit {
 	private static void editStartDate(int bufferPosition, String date) {
 		Appointment appointmentInBuffer = new Appointment();
 
-		if(InternalStorage.getBuffer().get(bufferPosition).getAssignType().equals(AssignmentType.APPOINTMENT)) {
+		if(InternalStorage.getBuffer().get(bufferPosition).getAssignType().equals(AssignmentType.APPT)) {
 			appointmentInBuffer = ((Appointment) InternalStorage.getBuffer().get(bufferPosition));
 			appointmentInBuffer.setStartDate(date);
 		}
@@ -160,7 +160,7 @@ public class Edit {
 	private static void editStartTime(int bufferPosition, String time) {
 		Appointment appointmentInBuffer = new Appointment();
 
-		if(InternalStorage.getBuffer().get(bufferPosition).getAssignType().equals(AssignmentType.APPOINTMENT)) {
+		if(InternalStorage.getBuffer().get(bufferPosition).getAssignType().equals(AssignmentType.APPT)) {
 			appointmentInBuffer = ((Appointment) InternalStorage.getBuffer().get(bufferPosition));
 			appointmentInBuffer.setStartTime(time);
 		}
@@ -171,7 +171,7 @@ public class Edit {
 		Appointment appointmentInBuffer = new Appointment();
 		Task taskInBuffer = new Task();
 
-		if(InternalStorage.getBuffer().get(bufferPosition).getAssignType().equals(AssignmentType.APPOINTMENT)) {
+		if(InternalStorage.getBuffer().get(bufferPosition).getAssignType().equals(AssignmentType.APPT)) {
 			appointmentInBuffer = ((Appointment) InternalStorage.getBuffer().get(bufferPosition));
 			appointmentInBuffer.setEndDate(date);
 		} else if(InternalStorage.getBuffer().get(bufferPosition).getAssignType().equals(AssignmentType.TASK)) {
@@ -185,7 +185,7 @@ public class Edit {
 		Appointment appointmentInBuffer = new Appointment();
 		Task taskInBuffer = new Task();
 
-		if(InternalStorage.getBuffer().get(bufferPosition).getAssignType().equals(AssignmentType.APPOINTMENT)) {
+		if(InternalStorage.getBuffer().get(bufferPosition).getAssignType().equals(AssignmentType.APPT)) {
 			appointmentInBuffer = ((Appointment) InternalStorage.getBuffer().get(bufferPosition));
 			appointmentInBuffer.setEndTime(time);
 		} else if(InternalStorage.getBuffer().get(bufferPosition).getAssignType().equals(AssignmentType.TASK)) {
