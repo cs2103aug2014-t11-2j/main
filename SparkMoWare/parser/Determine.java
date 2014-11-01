@@ -20,7 +20,7 @@ public class Determine {
 		Matcher helpMatcher = ParserPatternLocal.helpPattern.matcher(command);
 		Matcher exitMatcher = ParserPatternLocal.exitPattern.matcher(command);
 		Matcher displayMatcher = ParserPatternLocal.displayPattern.matcher(command);
-		
+		Matcher finishMatcher = ParserPatternLocal.finishPattern.matcher(command);
 		
 		if (addMatcher.find()) {
 			return EnumGroup.CommandType.ADD;
@@ -48,8 +48,10 @@ public class Determine {
 			return EnumGroup.CommandType.HELP;
 		} else if (exitMatcher.find()) {
 			return EnumGroup.CommandType.EXIT;
-		} else if (displayMatcher.find()){
+		} else if (displayMatcher.find()) {
 			return EnumGroup.CommandType.DISPLAY;
+		} else if (finishMatcher.find()) {
+			return EnumGroup.CommandType.DONE;
 		} else {
 			return EnumGroup.CommandType.INVALID;
 		}		
@@ -64,7 +66,7 @@ public class Determine {
 		Matcher endTimeMatcher = ParserPatternLocal.endTimePattern.matcher(input);
 		Matcher priorityMatcher = ParserPatternLocal.priorityPattern.matcher(input);
 		
-		if(priorityMatcher.find()) {
+		if(titleMatcher.find()) {
 			return EnumGroup.EditType.TITLE;
 		} else if(startDateMatcher.find()) {
 			return EnumGroup.EditType.START_DATE;

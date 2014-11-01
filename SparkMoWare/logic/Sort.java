@@ -7,21 +7,26 @@ public class Sort {
 
 	private static int listCount;
 	private static int sortedListCount;
-	
+
 	protected static LinkedList<Assignment> multipleSortRequired(LinkedList<Assignment> sortBuffer,
 			String sortType, String startDate, String endDate) {
-		
-		String[] multipleSortInput = sortType.split(";");
-		
-		for(int sortCount = 0; sortCount < multipleSortInput.length; sortCount++) {
-			sortBuffer = sortRequired(sortBuffer, multipleSortInput[sortCount]);
+
+		if(sortType.contains(";")) {
+			String[] multipleSortInput = sortType.split(";");
+
+			for(int sortCount = 0; sortCount < multipleSortInput.length; sortCount++) {
+				sortBuffer = sortRequired(sortBuffer, multipleSortInput[sortCount]);
+			}
+		} else {
+			sortBuffer = sortRequired(sortBuffer, sortType);
 		}
+		
 		if(startDate != null && endDate != null) {
 			sortBuffer = Truncation.truncateList(sortBuffer, startDate, endDate);
 		}
 		return sortBuffer;
 	}
-	
+
 	private static LinkedList<Assignment> sortRequired(LinkedList<Assignment> buffer,
 			String sortType){
 
@@ -41,14 +46,14 @@ public class Sort {
 	private static LinkedList<Assignment> insertionSortPriority(LinkedList<Assignment> buffer) {
 
 		LinkedList<Assignment> prioritySortList = new LinkedList<Assignment>();
-		
+
 		prioritySortList = SearchAll.searchAll(buffer, "important");
 
 		for(int counter = 0; counter < InternalStorage.getLineCount(); counter++){
-			
-				if(!buffer.get(counter).getPriority().equals("important")){
-					prioritySortList.add(buffer.get(counter));
-				}
+
+			if(!buffer.get(counter).getPriority().equals("important")){
+				prioritySortList.add(buffer.get(counter));
+			}
 		}
 		return prioritySortList;
 	}
@@ -83,10 +88,10 @@ public class Sort {
 		}
 		return idListSorted;
 	}
-	
+
 	private static LinkedList<Assignment> insertionSortId2(LinkedList<Assignment> buffer, 
 			LinkedList<Assignment> idListSorted) {
-		
+
 		for(sortedListCount = 0; sortedListCount < idListSorted.size(); sortedListCount++) {
 
 			if(Comparator.serialNumberComparator(idListSorted.get(sortedListCount).getId(), 
@@ -101,16 +106,16 @@ public class Sort {
 		}
 		return idListSorted;
 	}
-	
+
 	private static LinkedList<Assignment> insertionSortTitle2(LinkedList<Assignment> buffer, 
 			LinkedList<Assignment> titleListSorted) {
-		
+
 		for(sortedListCount = 0; sortedListCount < titleListSorted.size(); sortedListCount++) {
-			
+
 			if(titleListSorted.get(sortedListCount).getTitle().compareToIgnoreCase(buffer.get(listCount).getTitle()) >= 0) {
 				titleListSorted.add(sortedListCount, buffer.get(listCount));
 				break;
-				
+
 			} else if(sortedListCount == titleListSorted.size() - 1) {
 				titleListSorted.add(buffer.get(listCount));
 				break;
@@ -118,10 +123,10 @@ public class Sort {
 		}
 		return titleListSorted;
 	}
-	
+
 	protected static LinkedList<Assignment> insertionSortDeadline(LinkedList<Assignment> buffer) {
 		LinkedList<Assignment> UndoListSort = new LinkedList<Assignment>();
-		
+
 		return UndoListSort;
 	}
 }

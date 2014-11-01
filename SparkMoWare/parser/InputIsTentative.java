@@ -9,9 +9,6 @@ public class InputIsTentative {
 		RefinedUserInput inputTentative = new RefinedUserInput();
 		Vector<String> tentativeDates = new Vector<String>();
 		Vector<String> tentativeTimes = new Vector<String>();
-		String id = ParserIdLocal.extractId(userInput);
-		
-		userInput = ParserIdLocal.removeId(userInput);
 		
 		Matcher dateMatcher = ParserPatternLocal.datePattern.matcher(userInput);
 		Matcher timeMatcher = ParserPatternLocal.timePattern.matcher(userInput);
@@ -21,14 +18,13 @@ public class InputIsTentative {
 		String title = Misc.extractTitle(userInput, "tentative");
 		
 		if(tentativeDates.size() == 0 || tentativeTimes.size() == 0 || !(tentativeDates.size() == tentativeTimes.size()) ||
-		   title.isEmpty() || id.isEmpty()) {
+		   title.isEmpty()) {
 			inputTentative.setCommandType(EnumGroup.CommandType.INVALID_FORMAT);
 			
 			return inputTentative;
 		} else {
 
 			inputTentative.setCommandType(EnumGroup.CommandType.TENTATIVE);
-			inputTentative.setId(id);
 			inputTentative.setTitle(title);
 			inputTentative.setIsNewTentative(true);
 			inputTentative.setTentativeDates(tentativeDates);

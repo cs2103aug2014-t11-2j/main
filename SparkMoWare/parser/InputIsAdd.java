@@ -1,5 +1,7 @@
 package parser;
 
+import logic.Assignment.AssignmentType;
+
 public class InputIsAdd {
 
 	protected static RefinedUserInput refineInput(String userInput) {
@@ -18,7 +20,7 @@ public class InputIsAdd {
             inputAdd.setCommandType(EnumGroup.CommandType.ADD);
             inputAdd.setTitle(title);
             inputAdd.setPriority(priority);
-            inputAdd.setAssignmentType(EnumGroup.AssignmentType.ASSIGNMENT);
+            inputAdd.setAssignmentType(AssignmentType.ASSIGNMENT);
             return inputAdd;
         }
 		
@@ -43,7 +45,7 @@ public class InputIsAdd {
 			inputAdd.setEndDate(endDate);
 			inputAdd.setEndTime(endTime);
 			inputAdd.setPriority(priority);
-			inputAdd.setAssignmentType(EnumGroup.AssignmentType.APPOINTMENT);
+			inputAdd.setAssignmentType(AssignmentType.APPOINTMENT);
 
 		} else {
 			
@@ -52,7 +54,7 @@ public class InputIsAdd {
 			inputAdd.setEndDate(endDate);
 			inputAdd.setEndTime(endTime);
 			inputAdd.setPriority(priority);
-			inputAdd.setAssignmentType(EnumGroup.AssignmentType.TASK);
+			inputAdd.setAssignmentType(AssignmentType.TASK);
 		}
 
 		return inputAdd;

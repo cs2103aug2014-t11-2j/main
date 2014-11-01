@@ -2,8 +2,8 @@ package logic;
 
 import java.util.ListIterator;
 
-import parser.RefinedUserInput;
 import logic.Assignment.AssignmentType;
+import parser.RefinedUserInput;
 
 public class Add {
 
@@ -13,9 +13,9 @@ public class Add {
 	 * @return new assignment
 	 */
 	protected static String addSomething(RefinedUserInput userInput) {
-		
+
 		String id = Id.serialNumGen();
-		
+
 		if (userInput.getAssignmentType().equals(AssignmentType.APPOINTMENT)) {
 
 			addAppointment(id, userInput.getTitle(),
@@ -51,18 +51,18 @@ public class Add {
 		addAssignmentToBuffer(newAssignment);
 
 	}
-	
+
 	protected static void addAssignmentToBuffer(Assignment newAssignment) {
-		
+
 		int count = 0;
-		
+
 		if(InternalStorage.getLineCount() == 0) {
 			InternalStorage.addBuffer(newAssignment);
 		} else {
 			ListIterator<Assignment> listIterate = InternalStorage.getBuffer().listIterator();
-			
+
 			while(listIterate.hasNext()) {
-				
+
 				if(listIterate.next().getIsDone() == false) {
 					InternalStorage.addBuffer(count, newAssignment);
 					break;
@@ -71,7 +71,7 @@ public class Add {
 			}
 		}
 	}
-	
+
 	private static String addAppointment(String id, String title,
 			String startDate, String startTime, String endDate, String endTime,
 			boolean isDone, String priority) {
@@ -89,7 +89,7 @@ public class Add {
 		newAppointment.setEndTime(endTime);
 		newAppointment.setIsDone(isDone);
 		newAppointment.setPriority(priority);
-		
+
 		if(Comparator.isClashing(newAppointment)) {
 			SetTentative.setToTentative(newAppointment);
 		} else {
@@ -104,7 +104,7 @@ public class Add {
 			InternalStorage.addBuffer(newAppointment);
 		} else {
 			int position = Comparator.addToBigBuffer(newAppointment);
-			
+
 			InternalStorage.addBuffer(position, newAppointment);
 		}
 	}
@@ -134,7 +134,7 @@ public class Add {
 			InternalStorage.addBuffer(newTask);
 		} else {
 
-			int position = Comparator.addToBigBuffer((Appointment) newTask);
+			int position = Comparator.addTaskToBigBuffer(newTask);
 			InternalStorage.addBuffer(position, newTask);
 		}
 	}

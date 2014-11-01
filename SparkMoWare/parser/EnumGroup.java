@@ -4,10 +4,6 @@ package parser;
 
 public class EnumGroup {
 
-	public enum AssignmentType {
-		TASK, APPOINTMENT, ASSIGNMENT, TENTATIVE, DEFAULT
-	}
-	
 	public enum CommandType {
 		ADD, EDIT, DELETE, TENTATIVE, CONFIRM, SORT, SEARCH, FILTER,
 		CLEAR, UNDO, REDO, STATISTIC, EXIT, INVALID, DISPLAY, HELP,

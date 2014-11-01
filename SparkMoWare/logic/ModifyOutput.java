@@ -32,7 +32,7 @@ public class ModifyOutput {
 		return returnOutput;
 	}
 	
-	static LinkedList<Appointment> modifyBuffer(LinkedList<Assignment> buffer) {
+	private static LinkedList<Appointment> modifyBuffer(LinkedList<Assignment> buffer) {
 		
 		LinkedList<Appointment> modifiedBuffer = new LinkedList<Appointment>();
 		Assignment tempOrginal = new Assignment();

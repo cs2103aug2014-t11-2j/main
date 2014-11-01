@@ -12,12 +12,12 @@ public class SparkMoVare {
 	protected static final int SYSTEM_EXIT_ERROR = -1;
 	protected static final boolean IS_NOT_STATS_OR_INVALID = false;
 
-	//	public static void main(String[] args) {
-	//
-	//		Print.printToUser(Message.WELCOME);
-	//		Storage.openFile(InternalStorage.getFilePath(),Id.getLatestSerialNumber(), InternalStorage.getBuffer());
-	//		toDoManager();
-	//	}
+	public static void main(String[] args) {
+	
+		Print.printToUser(Message.WELCOME);
+			Storage.openFile(InternalStorage.getFilePath(),Id.getLatestSerialNumber(), InternalStorage.getBuffer());
+			toDoManager();
+	}
 
 	public static void toDoManager() {
 
@@ -38,6 +38,7 @@ public class SparkMoVare {
 
 	public static Output storageSetup() {
 		Storage.openFile(InternalStorage.getFilePath(),Id.getLatestSerialNumber(), InternalStorage.getBuffer());
+		
 		return executeCommand("Display");
 	}
 
@@ -58,6 +59,9 @@ public class SparkMoVare {
 				InternalStorage.popFuture();
 			}
 		}		
+		System.out.println(userInput.toString());
+		System.out.println("");
+		
 		switch (command) {
 		case ADD:
 			id = Add.addSomething(userInput);
@@ -109,6 +113,7 @@ public class SparkMoVare {
 			return returnOutput;
 
 		case TENTATIVE:
+			
 			id = SetTentative.addTentative(userInput.getTitle(), userInput.getTentativeDates(), userInput.getTentativeTimes());
 
 			futureHistory = RedoUndoUpdate.updateTentative(id);

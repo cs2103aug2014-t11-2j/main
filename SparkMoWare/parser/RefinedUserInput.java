@@ -2,7 +2,7 @@ package parser;
 
 import java.util.Vector;
 
-import parser.EnumGroup.AssignmentType;
+import logic.Assignment.AssignmentType;
 import parser.EnumGroup.CommandType;
 
 public class RefinedUserInput {
@@ -40,7 +40,7 @@ public class RefinedUserInput {
 		setStartTime(defaultContent);
 		setEndDate(defaultContent);
 		setEndTime(defaultContent);
-		setAssignmentType(EnumGroup.AssignmentType.DEFAULT);
+		setAssignmentType(AssignmentType.DEFAULT);
 		setPriority(defaultPriority);
 		setIsNewTentative(false);
 		setSpecialContent(defaultContent);

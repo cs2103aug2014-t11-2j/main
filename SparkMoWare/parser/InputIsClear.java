@@ -4,13 +4,16 @@ import java.util.regex.Matcher;
 
 public class InputIsClear {
 	
+	private static final String START_DATE = "01012014";
+	
 	protected static RefinedUserInput refineInput(String userInput) {
 		RefinedUserInput inputClear = new RefinedUserInput();
 		String specialContent = ExtractSpecialContent.forClear(userInput);
 		String endDate = ParserDateLocal.extractEndDate(userInput);
 		
 		if(specialContent.isEmpty() || endDate.isEmpty()){
-			inputClear.setCommandType(EnumGroup.CommandType.INVALID_FORMAT);
+			inputClear.setCommandType(EnumGroup.CommandType.CLEAR);
+			inputClear.setSpecialContent("clear");
 			return inputClear;
 		}
 		
@@ -21,6 +24,7 @@ public class InputIsClear {
 		if(onMatcher.find() || beforeMatcher.find()) {
 			
 			inputClear.setCommandType(EnumGroup.CommandType.CLEAR);
+			inputClear.setStartDate(START_DATE);
 			inputClear.setEndDate(endDate);
 			inputClear.setSpecialContent(specialContent);
 

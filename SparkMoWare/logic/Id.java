@@ -6,8 +6,8 @@ import java.util.Date;
 
 public class Id {
 
-	private static final int SERIAL_LENGTH = 12;
 	protected static String latestSerialNumber = "";
+	private static final int SERIAL_LENGTH = 12;
 
 	public static void setLatestSerialNumber(String newSn) {
 		latestSerialNumber = newSn;
@@ -17,7 +17,7 @@ public class Id {
 		return latestSerialNumber;
 	}
 
-	public static String serialNumGen() {
+	protected static String serialNumGen() {
 
 		String serialNum = "";
 		DateFormat dateFormat = new SimpleDateFormat("ddMMyyyy");
@@ -50,18 +50,14 @@ public class Id {
 		return newSerialNum;
 	}
 
-	public static String determineID(String id){
-
-		while(!_IDFormatValid(id)) {
-
-			Print.printToUser(Message.INVALID_FORMAT);
-			Print.printToUser(String.format(Message.FORMAT_PROMPT, "ID"));		
-			id = InternalStorage.getScanner().nextLine();			
+	protected static String removeFrontZero(String input) {
+		while (input.length() > 0 && input.charAt(0) == '0') {
+			input = input.substring(1);
 		}
-		return id;
+		return input;
 	}
 
-	public static boolean _IDFormatValid(String id) {
+	protected static boolean _IDFormatValid(String id) {
 
 		boolean idFormatValidity = true;
 
@@ -72,27 +68,21 @@ public class Id {
 			return true;
 		}*/
 		else if(id.matches("\\d+")) {
-			
+
 			if(!_IDExists(id)) {
 				return false;
 			}
 		}
 		return idFormatValidity;
 	}
+	
+	private static boolean _IDExists(String id) {
 
-	public static boolean _IDExists(String id) {
-		
 		if(DateLocal.dateFormatValid(id.substring(0, 8))) {
 			return true;
 		} else{
 			return false;
 		}
 	}
-	
-	protected static String removeFrontZero(String input) {
-		while (input.length() > 0 && input.charAt(0) == '0') {
-			input = input.substring(1);
-		}
-		return input;
-	}
+
 }

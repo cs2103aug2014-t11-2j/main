@@ -9,7 +9,7 @@ public class Truncation {
 	private static Appointment appointmentInList = new Appointment();
 	private static Task taskInList = new Task();
 
-	public static LinkedList<Assignment> truncateList(LinkedList<Assignment> truncatedList, String startDate,
+	protected static LinkedList<Assignment> truncateList(LinkedList<Assignment> truncatedList, String startDate,
 			String endDate) {
 
 		LinkedList<Assignment> limitRemoved = new LinkedList<Assignment>();
@@ -25,16 +25,16 @@ public class Truncation {
 	private static LinkedList<Assignment> removeLowerLimit(LinkedList<Assignment> truncatedList, String date) {
 
 		for(int truncatedCount = truncatedList.size() - 1; truncatedCount >= 0; truncatedCount--) {
-			
+
 			if(truncatedList.get(truncatedCount).getAssignType().equals(AssignmentType.TASK)) {
 				taskInList = ((Task) truncatedList.get(truncatedCount));
-				
+
 				if(Comparator.dateComparator(taskInList.getEndDate(), date) == -1) {
 					truncatedList.remove(truncatedCount);
 				}
 			} else if(truncatedList.get(truncatedCount).getAssignType().equals(AssignmentType.APPOINTMENT)) {
 				appointmentInList = ((Appointment) truncatedList.get(truncatedCount));
-				
+
 				if(Comparator.dateComparator(appointmentInList.getEndDate(), date) == -1) {
 					truncatedList.remove(truncatedCount);
 				}
@@ -46,16 +46,16 @@ public class Truncation {
 	private static LinkedList<Assignment> removeUpperLimit(LinkedList<Assignment> truncatedList, String date) {
 
 		for(int truncatedCount = truncatedList.size() - 1; truncatedCount >= 0; truncatedCount--) {
-			
+
 			if(truncatedList.get(truncatedCount).getAssignType().equals(AssignmentType.TASK)) {
 				taskInList = ((Task) truncatedList.get(truncatedCount));
-				
+
 				if(Comparator.dateComparator(taskInList.getEndDate(), date) == 1) {
 					truncatedList.remove(truncatedCount);
 				}
 			} else if(truncatedList.get(truncatedCount).getAssignType().equals(AssignmentType.APPOINTMENT)) {
 				appointmentInList = ((Appointment) truncatedList.get(truncatedCount));
-				
+
 				if(Comparator.dateComparator(appointmentInList.getEndDate(), date) == 1) {
 					truncatedList.remove(truncatedCount);
 				}

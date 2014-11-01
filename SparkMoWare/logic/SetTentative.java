@@ -55,11 +55,12 @@ public class SetTentative {
 			ListIterator<Assignment> buffer = InternalStorage.getBuffer().listIterator();
 
 			while(buffer.hasNext()) {
-
-				if(buffer.next().getAssignType().equals(AssignmentType.APPOINTMENT)
-						|| buffer.previous().getAssignType().equals(AssignmentType.TASK)
-						|| buffer.next().getAssignType().equals(AssignmentType.TENTATIVE)) {
-					InternalStorage.addBuffer(bufferPosition - 1, newTentative);
+				Assignment assignment = buffer.next();
+				
+				if(assignment.getAssignType().equals(AssignmentType.APPOINTMENT) ||
+						assignment.getAssignType().equals(AssignmentType.TASK)) {
+					InternalStorage.addBuffer(bufferPosition, newTentative);
+					break;
 				}
 				bufferPosition++;
 			}

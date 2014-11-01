@@ -7,7 +7,7 @@ public class Filter {
 	private static final int FORMAT_DEADLINE = 8;
 	private static final String IMPORTANT = "important";
 	
-	protected static LinkedList<Assignment> multipleFilter(LinkedList<Assignment> filterBuffer,
+	private static LinkedList<Assignment> multipleFilter(LinkedList<Assignment> filterBuffer,
 			String userInput) {
 		
 		String[] multipleFilterInput = userInput.split(";");
@@ -18,7 +18,7 @@ public class Filter {
 		return filterBuffer;
 	}
 		
-	public static LinkedList<Assignment> filterMain(LinkedList<Assignment> buffer, String filterType,
+	protected static LinkedList<Assignment> filterMain(LinkedList<Assignment> buffer, String filterType,
 			String startDate, String endDate) {
 		
 		LinkedList<Assignment> filteredList = new LinkedList<Assignment> ();
@@ -31,7 +31,7 @@ public class Filter {
 		return filteredList;
 	}
 
-	public static LinkedList<Assignment> filter(LinkedList<Assignment> buffer, String type) {
+	private static LinkedList<Assignment> filter(LinkedList<Assignment> buffer, String type) {
 		
 		LinkedList<Assignment> filterList = new LinkedList<Assignment>();
 		
