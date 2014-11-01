@@ -3,6 +3,8 @@ package parser;
 
 public class RefineInputWithSpecial {
 	
+	private static final String START_DATE = "01012000";
+	private static final String END_DATE = "31122600";
 	//incomplete. Refer to project manual
 	protected static RefinedUserInput inputIsFilter(String userInput) {
 		RefinedUserInput inputFilter = new RefinedUserInput(); 
@@ -14,6 +16,8 @@ public class RefineInputWithSpecial {
 		}
 		
 		inputFilter.setCommandType(EnumGroup.CommandType.FILTER);
+		inputFilter.setStartDate(START_DATE);
+		inputFilter.setEndDate(END_DATE);
 		inputFilter.setSpecialContent(specialContent);
 		
 		return inputFilter;
@@ -45,6 +49,8 @@ public class RefineInputWithSpecial {
 		}
 		
 		inputSort.setCommandType(EnumGroup.CommandType.SORT);
+		inputSort.setStartDate(START_DATE);
+		inputSort.setEndDate(END_DATE);
 		inputSort.setSpecialContent(specialContent);
 		
 		return inputSort;

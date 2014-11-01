@@ -21,6 +21,7 @@ public class Determine {
 		Matcher exitMatcher = ParserPatternLocal.exitPattern.matcher(command);
 		Matcher displayMatcher = ParserPatternLocal.displayPattern.matcher(command);
 		Matcher finishMatcher = ParserPatternLocal.finishPattern.matcher(command);
+		Matcher filterMatcher = ParserPatternLocal.filterPattern.matcher(command);
 		
 		if (addMatcher.find()) {
 			return EnumGroup.CommandType.ADD;
@@ -36,6 +37,8 @@ public class Determine {
 			return EnumGroup.CommandType.EDIT;
 		} else if (clearMatcher.find()) {
 			return EnumGroup.CommandType.CLEAR;
+		} else if(filterMatcher.find()) {
+			return EnumGroup.CommandType.FILTER;
 		} else if (sortMatcher.find()) {
 			return EnumGroup.CommandType.SORT;
 		} else if (statisticMatcher.find()) {

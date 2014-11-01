@@ -1,9 +1,9 @@
 package storage;
 
 import java.util.LinkedList;
+
 import logic.Appointment;
 import logic.Assignment;
-import logic.Comparator;
 import logic.Id;
 import logic.Task;
 
@@ -103,7 +103,7 @@ public class ToBuffer {
 		
 		if(Id.getLatestSerialNumber().equals("")) {
 			Id.setLatestSerialNumber(id);
-		} else if(Comparator.serialNumberComparator(id, Id.getLatestSerialNumber())) {
+		} else if(ValidityCheck.serialNumberComparator(id, Id.getLatestSerialNumber())) {
 			Id.setLatestSerialNumber(id);
 		}
 	}

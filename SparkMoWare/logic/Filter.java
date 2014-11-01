@@ -45,7 +45,7 @@ public class Filter {
 		}
 		
 		else if(type.equals(IMPORTANT)){
-			filterList = SearchAll.searchAll(buffer, IMPORTANT);
+			filterList = SearchAll.searchAll(buffer, "IMPT");
 		}
 		return filterList; 
 	}

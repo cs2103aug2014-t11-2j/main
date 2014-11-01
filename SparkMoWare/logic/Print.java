@@ -24,14 +24,23 @@ public class Print {
 	}
 
 	public static void printList(LinkedList<Appointment> list) {
-		
+
 		ListIterator<Appointment> listIterate = list.listIterator();
-		
+
 		while(listIterate.hasNext()) {
 			System.out.println(listIterate.next().toString());
 		}
 	}
+	
+	public static void printAssignmentList(LinkedList<Assignment> list) {
 
+		ListIterator<Assignment> listIterate = list.listIterator();
+
+		while(listIterate.hasNext()) {
+			System.out.println(listIterate.next().toString());
+		}
+	}
+	
 	public static void printToUser(String output) {
 
 		if (!output.equals("")) {

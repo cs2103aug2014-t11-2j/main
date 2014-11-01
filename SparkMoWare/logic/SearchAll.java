@@ -17,7 +17,7 @@ public class SearchAll {
 
 	private static final String TYPE_TASK = "task";
 	private static final String TYPE_APPOINTMENT = "appt";
-	//private static final String TYPE_TENTATIVE = "tntv";
+	private static final String TYPE_TENTATIVE = "tntv";
 
 	protected static LinkedList<Assignment> searchAll(LinkedList<Assignment> buffer, 
 			String userInput){
@@ -27,15 +27,18 @@ public class SearchAll {
 		if(userInput.length() == ID_FORMAT_LENGTH) {
 			stringsFound = searchById(buffer, userInput);
 
+		} else if(userInput.equalsIgnoreCase("IMPT")) {
+			stringsFound = searchByPriority(buffer);
+
 		} else if(userInput.length() == TYPE_FORMAT_LENGTH && !userInput.matches("\\d+")) {
 
 			if(userInput.equalsIgnoreCase(TYPE_TASK)) {
 				stringsFound = searchByTask(buffer);
 			} else if (userInput.equalsIgnoreCase(TYPE_APPOINTMENT)) {
 				stringsFound = searchByAppointment(buffer);
-			}/* else if (userInput.equalsIgnoreCase(TYPE_TENTATIVE)) {
+			} else if (userInput.equalsIgnoreCase(TYPE_TENTATIVE)) {
 				stringsFound = searchByTentative(buffer);
-			}*/
+			}
 
 		} else if(userInput.length() == TIME_FORMAT_LENGTH && userInput.matches("\\d+")) {
 			stringsFound = searchByTime(buffer, userInput);
@@ -49,10 +52,11 @@ public class SearchAll {
 		} else if(userInput.length() == IS_ON_TIME && userInput.equalsIgnoreCase("isontime")) {
 			stringsFound = searchByOnTime(buffer);
 
-		} else if(userInput.equalsIgnoreCase("important")) {
-			stringsFound = searchByPriority(buffer);
-
+		} else if(userInput.equalsIgnoreCase("NIMPT")) {
+			stringsFound = searchByNonPriority(buffer);
+			
 		} else {
+		
 			stringsFound = searchByWords(buffer, userInput);
 		}
 
@@ -97,13 +101,25 @@ public class SearchAll {
 
 		for(listCount = 0; listCount < buffer.size(); listCount++) {
 
-			if(buffer.get(listCount).getPriority().equals("important")) {
+			if(buffer.get(listCount).getPriority().equals("IMPT")) {
 				priorityFound.add(buffer.get(listCount));
 			}
 		}
 		return priorityFound;
 	}
+	
+	private static LinkedList<Assignment> searchByNonPriority(LinkedList<Assignment> buffer) {
 
+		LinkedList<Assignment> priorityFound = new LinkedList<Assignment>();
+
+		for(listCount = 0; listCount < buffer.size(); listCount++) {
+
+			if(buffer.get(listCount).getPriority().equals("NIMPT")) {
+				priorityFound.add(buffer.get(listCount));
+			}
+		}
+		return priorityFound;
+	}
 	private static LinkedList<Assignment> searchByTask(LinkedList<Assignment> buffer) {
 
 		LinkedList<Assignment> taskFound = new LinkedList<Assignment> ();
@@ -129,20 +145,20 @@ public class SearchAll {
 		}
 		return appointmentFound;
 	}
-	/*
+	
 	private static LinkedList<Assignment> searchByTentative(LinkedList<Assignment> buffer) {
 
 		LinkedList<Assignment> tentativeFound = new LinkedList<Assignment> ();
 
 		for(listCount = 0; listCount < buffer.size(); listCount++) {
 
-			if(buffer.get(listCount).getType() == searchTentative) {
+			if(buffer.get(listCount).getAssignType().equals(AssignmentType.TENTATIVE)) {
 				tentativeFound.add(buffer.get(listCount));
 			}
 		}
 		return tentativeFound;
 	}
-	 */
+	 
 	private static LinkedList<Assignment> searchById(LinkedList<Assignment> buffer, String searchId) {
 
 		LinkedList<Assignment> idFound = new LinkedList<Assignment>();

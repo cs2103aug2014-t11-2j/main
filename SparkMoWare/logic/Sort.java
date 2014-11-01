@@ -20,7 +20,7 @@ public class Sort {
 		} else {
 			sortBuffer = sortRequired(sortBuffer, sortType);
 		}
-		
+		Print.printAssignmentList(sortBuffer);
 		if(startDate != null && endDate != null) {
 			sortBuffer = Truncation.truncateList(sortBuffer, startDate, endDate);
 		}
@@ -47,14 +47,10 @@ public class Sort {
 
 		LinkedList<Assignment> prioritySortList = new LinkedList<Assignment>();
 
-		prioritySortList = SearchAll.searchAll(buffer, "important");
+		prioritySortList.addAll(SearchAll.searchAll(buffer, "IMPT"));
 
-		for(int counter = 0; counter < InternalStorage.getLineCount(); counter++){
-
-			if(!buffer.get(counter).getPriority().equals("important")){
-				prioritySortList.add(buffer.get(counter));
-			}
-		}
+		prioritySortList.addAll(SearchAll.searchAll(buffer, "NIMPT"));
+		
 		return prioritySortList;
 	}
 

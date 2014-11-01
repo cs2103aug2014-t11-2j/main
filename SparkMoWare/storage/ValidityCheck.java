@@ -1,9 +1,13 @@
 package storage;
 
+
 public class ValidityCheck {
 
 	private static final int SERIAL_LENGTH = 12;
 	private static final boolean DEFAULT_NONE = false;
+	private static final int SMALLER = -1;
+	private static final int SAME = 0;
+	private static final int LARGER = 1;
 	
 	protected static boolean validType(String assignType) {
 		
@@ -125,5 +129,70 @@ public class ValidityCheck {
 			priorityChecked = true;
 		}
 		return priorityChecked;
+	}
+	
+	protected static boolean serialNumberComparator(String idA, String idB) {
+
+		assert(idA.length() == 12 && idA.length() == 12);
+
+		int checkDate = dateComparator(idA.substring(0, 8), idB.substring(0, 8));
+		boolean serialCheck = false;
+
+		if (checkDate == SAME) {
+			// check Sn
+			idA = removeFrontZero(idA.substring(8));
+
+			idB = removeFrontZero(idB.substring(8));
+
+			if (Integer.parseInt(idA) > Integer.parseInt(idB)) {
+				serialCheck = true;
+			}
+		} else if (checkDate == LARGER) {
+			serialCheck = true;
+		}
+		return serialCheck;
+	}
+	
+	private static int dateComparator(String dateA, String dateB) {
+
+		String yearA = dateA.trim().substring(4, 8);
+		String yearB = dateB.trim().substring(4, 8);
+
+		String monthA = dateA.trim().substring(2, 4);
+		String monthB = dateB.trim().substring(2, 4);
+
+		String dayA = dateA.trim().substring(0, 2);
+		String dayB = dateB.trim().substring(0, 2);
+
+		yearA = removeFrontZero(yearA);
+		yearB = removeFrontZero(yearB);
+
+		monthA = removeFrontZero(monthA);
+		monthB = removeFrontZero(monthB);
+
+		dayA = removeFrontZero(dayA);
+		dayB = removeFrontZero(dayB);
+
+		if (dateA.equals(dateB)) {
+			return SAME;
+		} else if (Integer.parseInt(yearA) > Integer.parseInt(yearB)) {
+			return LARGER;
+		} else if (Integer.parseInt(yearA) < Integer.parseInt(yearB)) {
+			return SMALLER;
+		} else if (Integer.parseInt(monthA) > Integer.parseInt(monthB)) {
+			return LARGER;
+		} else if (Integer.parseInt(monthA) < Integer.parseInt(monthB)) {
+			return SMALLER;
+		} else if (Integer.parseInt(dayA) > Integer.parseInt(dayB)) {
+			return LARGER;
+		}
+		return SMALLER;
+	}
+	
+	private static String removeFrontZero(String input) {
+		while (input.length() > 0 && input.charAt(0) == '0') {
+			input = input.substring(1);
+		}
+		return input;
 	}
 }
