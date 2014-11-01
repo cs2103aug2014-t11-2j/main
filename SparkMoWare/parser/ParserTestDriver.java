@@ -126,6 +126,10 @@ public class ParserTestDriver {
 		return ParserIdLocal.refineId(testInputdate, testInputIndex);
 	}
 
+	public static String testRemoveId(String testInput) {
+		return ParserIdLocal.removeId(testInput);
+	}
+
 	/************Misc Component**************/
 
 	public static String testRefineString(String[] testInput) {
@@ -189,4 +193,6 @@ public class ParserTestDriver {
 	public static String testReader(String testInput) {
 		return Interpreter.reader(testInput).toString();
 	}
+
+	
 }

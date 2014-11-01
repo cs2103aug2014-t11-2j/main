@@ -20,7 +20,7 @@ public class Misc {
     }
 	
 	protected static String extractTitle(String userInput, String command) {
-		
+		userInput = ParserIdLocal.removeId(userInput);
 		userInput = ParserDateLocal.replaceAllDate(userInput);
 		userInput = ParserTimeLocal.replaceAllTime(userInput);
 		userInput = removeCommand(userInput, command);
@@ -128,5 +128,15 @@ public class Misc {
 		} else {
 			return true;
 		}
+	}
+
+	protected static String removeEditTitle(String userInput) {
+		Matcher titleMatcher = ParserPatternLocal.titlePattern.matcher(userInput);
+		
+		if(titleMatcher.find()) {
+			userInput = titleMatcher.replaceFirst("");
+		}
+		
+		return userInput;
 	}
 }

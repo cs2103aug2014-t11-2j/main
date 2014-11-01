@@ -3,6 +3,8 @@ package parser;
 import java.util.Vector;
 import java.util.regex.Matcher;
 
+import logic.Assignment.AssignmentType;
+
 public class InputIsTentative {
 
 	protected static RefinedUserInput refineInput(String userInput) {
@@ -26,6 +28,7 @@ public class InputIsTentative {
 
 			inputTentative.setCommandType(EnumGroup.CommandType.TENTATIVE);
 			inputTentative.setTitle(title);
+			inputTentative.setAssignmentType(AssignmentType.TNTV);
 			inputTentative.setIsNewTentative(true);
 			inputTentative.setTentativeDates(tentativeDates);
 			inputTentative.setTentativeTimes(tentativeTimes);

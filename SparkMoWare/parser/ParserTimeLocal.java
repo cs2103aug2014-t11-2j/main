@@ -18,6 +18,7 @@ public class ParserTimeLocal {
 	 * Parser cannot distinguish between the two YET
 	 */
 	protected static String extractEndTime(String userInput) {
+		userInput = ParserIdLocal.removeId(userInput);
 		userInput = ParserDateLocal.replaceAllDate(userInput);
 		Matcher timeMatcher = ParserPatternLocal.timePattern.matcher(userInput);
 		String endTime = new String();
@@ -55,6 +56,7 @@ public class ParserTimeLocal {
 	}
 
 	protected static String extractStartTime(String userInput) {
+		userInput = ParserIdLocal.removeId(userInput);
 		userInput = ParserDateLocal.replaceAllDate(userInput);
 		Matcher timeMatcher = ParserPatternLocal.timePattern.matcher(userInput);
 		String startTime = new String();

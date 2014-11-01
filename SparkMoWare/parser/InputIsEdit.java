@@ -6,9 +6,15 @@ public class InputIsEdit {
 		RefinedUserInput inputEdit = new RefinedUserInput();
 		String id = ParserIdLocal.extractId(userInput);
 		
+		if(id.isEmpty()) {
+			inputEdit.setCommandType(EnumGroup.CommandType.INVALID_FORMAT);
+			return inputEdit;
+		}
+		
 		switch(Determine.getEditType(userInput)) {
 		
 		case TITLE:
+			userInput = Misc.removeEditTitle(userInput);
 			String title = Misc.extractTitle(userInput, "edit");
 			
 			if(title.isEmpty()) {

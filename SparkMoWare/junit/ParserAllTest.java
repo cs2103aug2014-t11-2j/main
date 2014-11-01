@@ -49,8 +49,8 @@ public class ParserAllTest {
 		//case of inputs around date
 		assertFalse(ParserTestDriver.testHasTwoDateInputs("add assignment due 09/09/1234 IMPT"));
 		
-		//negative test 1
-		//assertTrueParserTestDriver.testHasTwoDateInputs("add assignment 12345678 due 09/09/1234 IMPT"));
+		//hasTwoDateInputsTest negative test 1
+		assertTrue(ParserTestDriver.testHasTwoDateInputs("add assignment 12345678 due 09/09/1234 IMPT"));
 		
 		/**************************/
 		
@@ -106,7 +106,7 @@ public class ParserAllTest {
 		//confirm method replaces date input according to actual ideal user add appointment input
 		assertEquals("add  0900  0800 work", ParserTestDriver.testReplaceAllDate("add 09/08/1223 0900 2/3/2345 0800 work"));
 		
-		//negative test 2
+		//replaceAllDate negative test 1
 		//assertEquals("add 0900 0800", ParserTestDriver.testReplaceAllDate("add 0900 0800"));
 		
 		/**************************/
@@ -152,7 +152,7 @@ public class ParserAllTest {
 		//confirm method returns first time input
 		assertEquals("0900", ParserTestDriver.testExtractStartTime("add void 0900 nada 0800 nothing"));
 		
-		//negative test 3
+		//extractStartTime negative test 1
 		//assertEquals("0900", ParserTestDriver.testExtractStartTime("add 0900 0800"));
 
 		//confirm method returns time input instead of the year 2345
@@ -202,10 +202,10 @@ public class ParserAllTest {
 		assertEquals("add  work", ParserTestDriver.testReplaceAllTime("add 0900 work"));
 		assertEquals("add~%work", ParserTestDriver.testReplaceAllTime("add~0900%work"));
 
-		//negative test 3
+		//replaceAllTime negative test 1
 		//assertEquals("add 09/08/1223  2/3/2345  work", ParserTestDriver.testReplaceAllTime("add 09/08/1223 0900 2/3/2345 0800 work"));
 		
-		//Negative test: So long as this test returns true, design flaw has not been addressed
+		//replaceAllTime Negative test 2: So long as this test returns true, design flaw has not been addressed
 		assertEquals("90 21", ParserTestDriver.testReplaceAllTime("1234567890 0987654321"));
 		
 		/**************************/
@@ -249,15 +249,31 @@ public class ParserAllTest {
 		//generalised test case
 		assertEquals("090820140001", ParserTestDriver.testExtractId("delete 09082014.0001"));
 
-		//test decreasing number of digits and differing  symbols
+		//test decreasing number of digits and differing symbols
 		assertEquals("090820140200", ParserTestDriver.testExtractId("delete 09082014/200"));
 		assertEquals("090820140020", ParserTestDriver.testExtractId("delete 09082014-20"));
 		assertEquals("090820140002", ParserTestDriver.testExtractId("delete 09082014_2"));
 
 		//test without seperator
-		//negative test 4
+		//extractId negative test 1
 		//cannot interpret digits only
 		//assertEquals("090820140001", ParserTestDriver.testExtractId("delete 090820140001"));
+		
+		/**************************/
+		
+		//Test removeId
+
+		//generalised test case
+		assertEquals("delete", ParserTestDriver.testRemoveId("delete 09082014.0001"));
+
+		//test decreasing number of digits and differing symbols
+		assertEquals("delete", ParserTestDriver.testRemoveId("delete 09082014/200"));
+		assertEquals("delete", ParserTestDriver.testRemoveId("delete 09082014-20"));
+		assertEquals("delete", ParserTestDriver.testRemoveId("delete 09082014_2"));
+		
+		//test for edit input
+		assertEquals("edit  start date 09/08/2014", ParserTestDriver.testRemoveId("edit 09082014.0001 start date 09/08/2014"));
+		
 		
 		/*************Misc Tests*************/
 		
@@ -401,7 +417,7 @@ public class ParserAllTest {
 
 		//confirm method for floating tasks/assignment && without indication of importance
 		assertEquals("ADD~default~EAT DINNER~default~default"
-				+ "~default~default~ASSIGNMENT~NIMPT"
+				+ "~default~default~ASGN~NIMPT"
 				+ "~false~default~null~null", ParserTestDriver.testInputIsAdd("Add EAT DINNER"));
 
 		//confirm method for task with single date input
@@ -418,7 +434,7 @@ public class ParserAllTest {
 
 		//ZY 2
 		assertEquals("ADD~default~buy fish~31102014~2359"
-				+ "~01102015~2359~APPOINTMENT~NIMPT"
+				+ "~01102015~2359~APPT~NIMPT"
 				+ "~false~default~null~null",
 				ParserTestDriver.testInputIsAdd("Add buy fish 31/10/2014 2359 01/10/2015 2359"));
 
@@ -432,13 +448,13 @@ public class ParserAllTest {
 
 		//confirm method returns correct output for full input
 		assertEquals("ADD~default~buy chicken~09091234~0900"
-				+ "~02032345~0800~APPOINTMENT~IMPT"
+				+ "~02032345~0800~APPT~IMPT"
 				+ "~false~default~null~null",
 				ParserTestDriver.testInputIsAdd("add buy chicken 09/09/1234 0900 2/3/2345 0800 Important"));
 
-		//negative test case 5
+		//InputIsAdd negative test case 1
 		/*assertEquals("ADD~default~go 2103T lecture~31102014~1400"
-				+ "~31102014~1600~APPOINTMENT~NMPT"
+				+ "~31102014~1600~APPT~NMPT"
 				+ "~false~default",
 				ParserTestDriver.testInputIsAdd("Add go 2103T lecture 31/10/2014 1400 31/10/2014 1600"));
 		 */
@@ -447,15 +463,29 @@ public class ParserAllTest {
 
 		/*************InputIsClear Tests*************/
 
-		//confirm method returns invalid for single command
-		assertEquals("INVALID_FORMAT~default~default~default~default"
+		//confirm method works for clear, aka clear all
+		assertEquals("CLEAR~default~default~default~default"
 				+ "~default~default~DEFAULT~NIMPT"
-				+ "~false~default~null~null", ParserTestDriver.testInputIsClear("clear"));
+				+ "~false~clear~null~null", ParserTestDriver.testInputIsClear("clear"));
 
+		//confirm method works for between 2 dates
 		assertEquals("CLEAR~default~default~29082014~default"
 				+ "~03092014~default~DEFAULT~NIMPT"
 				+ "~false~between~null~null",
 				ParserTestDriver.testInputIsClear("clear between 29/08/2014 3/9/2014"));
+		
+		//confirm method works for before a date
+		assertEquals("CLEAR~default~default~01012014~default"
+				+ "~03092014~default~DEFAULT~NIMPT"
+				+ "~false~before~null~null",
+				ParserTestDriver.testInputIsClear("clear before 3/9/2014"));
+
+		//confirm method works for on a date
+		//clear issue 1
+		assertEquals("CLEAR~default~default~01012014~default"
+				+ "~03092014~default~DEFAULT~NIMPT"
+				+ "~false~on~null~null",
+				ParserTestDriver.testInputIsClear("clear on 3/9/2014"));
 
 		/*************InputIsConfirm Tests*************/
 
@@ -464,13 +494,28 @@ public class ParserAllTest {
 				+ "~default~default~DEFAULT~NIMPT"
 				+ "~false~default~null~null", ParserTestDriver.testInputIsConfirm("confirm"));
 
+		//generalised test case
+		assertEquals("CONFIRM~011120140005~default~15102014~1300"
+				+ "~15102014~1500~DEFAULT~NIMPT"
+				+ "~false~default~null~null", ParserTestDriver.testInputIsConfirm("confirm 01112014.0005 15/10/2014 1300 15/10/2014 1500"));
+
 		/*************InputIsEdit Tests*************/
 
 		//confirm method returns invalid for single command
 		assertEquals("INVALID_FORMAT~default~default~default~default"
 				+ "~default~default~DEFAULT~NIMPT"
 				+ "~false~default~null~null", ParserTestDriver.testInputIsEdit("edit"));
+		
+		//confirm method does not work without id
+		assertEquals("INVALID_FORMAT~default~default~default~default"
+				+ "~default~default~DEFAULT~NIMPT"
+				+ "~false~default~null~null", ParserTestDriver.testInputIsEdit("edit title this is an appointment"));
 
+		//confirm method works for editing title
+		assertEquals("EDIT~011120140005~this is an appointment~default~default"
+				+ "~default~default~DEFAULT~NIMPT"
+				+ "~false~title~null~null", ParserTestDriver.testInputIsEdit("edit 01112014/0005 title this is an appointment"));
+		
 		/*************InputIsTentative Tests*************/
 
 		//confirm method returns invalid for single command
@@ -479,25 +524,25 @@ public class ParserAllTest {
 				+ "~false~default~null~null", ParserTestDriver.testInputIsTentative("tentative"));
 
 		//single tentative
-		assertEquals("TENTATIVE~010320140001~consultation~default~default"
-				+ "~default~default~DEFAULT~NIMPT"
-				+ "~true~default~[12082014]~[0900]", ParserTestDriver.testInputIsTentative("Tentative 010320140001 consultation 12/8/2014 0900"));
+		assertEquals("TENTATIVE~default~consultation~default~default"
+				+ "~default~default~TNTV~NIMPT"
+				+ "~true~default~[12082014]~[0900]", ParserTestDriver.testInputIsTentative("Tentative consultation 12/8/2014 0900"));
 
 		//more than one tentative
-		assertEquals("TENTATIVE~010320140001~consultation~default~default"
-				+ "~default~default~DEFAULT~NIMPT"
+		assertEquals("TENTATIVE~default~consultation~default~default"
+				+ "~default~default~TNTV~NIMPT"
 				+ "~true~default~[12082014, 01092014, 01092014]"
-				+ "~[0900, 1000, 1100]", ParserTestDriver.testInputIsTentative("Tentative 010320140001 consultation 12/8/2014 0900 1/09/2014 1000 1/9/2014 1100"));
+				+ "~[0900, 1000, 1100]", ParserTestDriver.testInputIsTentative("Tentative consultation 12/8/2014 0900 1/09/2014 1000 1/9/2014 1100"));
 
 		//confirm invalid if number of date and times dont correspond
 		assertEquals("INVALID_FORMAT~default~default~default~default"
 				+ "~default~default~DEFAULT~NIMPT"
-				+ "~false~default~null~null", ParserTestDriver.testInputIsTentative("Tentative 010320140001 consultation 12/8/2014 0900 1/09/2014 1000 1/9/2014"));
+				+ "~false~default~null~null", ParserTestDriver.testInputIsTentative("Tentative consultation 12/8/2014 0900 1/09/2014 1000 1/9/2014"));
 
 		//confirm invalid if title is empty
 		assertEquals("INVALID_FORMAT~default~default~default~default"
 				+ "~default~default~DEFAULT~NIMPT"
-				+ "~false~default~null~null", ParserTestDriver.testInputIsTentative("Tentative 010320140001 12/8/2014 0900 1/09/2014 1000 1/9/2014 1100"));
+				+ "~false~default~null~null", ParserTestDriver.testInputIsTentative("Tentative 12/8/2014 0900 1/09/2014 1000 1/9/2014 1100"));
 
 		/*************RefineInputWithId Tests*************/
 
@@ -511,7 +556,7 @@ public class ParserAllTest {
 		//generalised test  case
 		/*assertEquals("INVALID_FORMAT~default~default~default~default"
 				+ "~default~default~DEFAULT~NIMPT"
-				+ "~false~default~null~null", ParserTestDriver.testInputIsDelete("delete 090820140001"));*/
+				+ "~false~default~null~null", ParserTestDriver.testInputIsDelete("delete 09082014/0001"));*/
 
 		/**************************/
 
@@ -531,15 +576,30 @@ public class ParserAllTest {
 
 		//test inputIsFilter
 
+		/*
+		
 		//confirm method returns invalid for single command
 		assertEquals("INVALID_FORMAT~default~default~default~default"
 				+ "~default~default~DEFAULT~NIMPT"
 				+ "~false~default~null~null", ParserTestDriver.testInputIsFilter("filter"));
 		
 		//generalised test case
-		assertEquals("FILTER~default~default~default~default"
-				+ "~default~default~DEFAULT~NIMPT"
+		assertEquals("FILTER~default~default~01012000~default"
+				+ "~31122600~default~DEFAULT~NIMPT"
 				+ "~false~assignment~null~null", ParserTestDriver.testInputIsFilter("filter assignment"));
+		
+		//test for changing deadline
+				assertEquals("FILTER~default~default~01012000~default"
+						+ "~15102014~default~DEFAULT~NIMPT"
+						+ "~false~default~null~null", ParserTestDriver.testInputIsFilter("filter 15/10/2014"));
+		
+		//test for multiple filter types
+		assertEquals("FILTER~default~default~01012000~default"
+				+ "~31122600~default~DEFAULT~NIMPT"
+				+ "~false~default~null~null", ParserTestDriver.testInputIsFilter("filter assignment "));
+		
+		*/
+
 
 		/**************************/
 
@@ -565,8 +625,8 @@ public class ParserAllTest {
 				+ "~false~default~null~null", ParserTestDriver.testInputIsSort("sort"));
 		
 		//generalised test case
-		assertEquals("SORT~default~default~default~default"
-				+ "~default~default~DEFAULT~NIMPT"
+		assertEquals("SORT~default~default~01012000~default"
+				+ "~31122600~default~DEFAULT~NIMPT"
 				+ "~false~id~null~null", ParserTestDriver.testInputIsSort("sort id"));	
 		
 		/***********Interpreter***************/

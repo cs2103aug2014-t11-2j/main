@@ -16,6 +16,7 @@ import java.util.regex.Matcher;
 public class ParserDateLocal {
 	
 	protected static String extractEndDate(String userInput) {
+		userInput = ParserIdLocal.removeId(userInput);
 		Matcher dateMatcher = ParserPatternLocal.datePattern.matcher(userInput);
 		
 		if(!dateMatcher.find()) {
@@ -51,6 +52,7 @@ public class ParserDateLocal {
 	
 	//ASSUMPTION: in appointment case, input format is start date followed by end date
 	protected static String extractStartDate(String userInput) {
+		userInput = ParserIdLocal.removeId(userInput);
 		Matcher dateMatcher = ParserPatternLocal.datePattern.matcher(userInput);
 		String startDate = new String();
 		String temp = new String();

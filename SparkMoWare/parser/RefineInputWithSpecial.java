@@ -1,5 +1,6 @@
 package parser;
 
+import java.util.regex.Matcher;
 
 public class RefineInputWithSpecial {
 	
@@ -7,18 +8,34 @@ public class RefineInputWithSpecial {
 	private static final String END_DATE = "31122600";
 	//incomplete. Refer to project manual
 	protected static RefinedUserInput inputIsFilter(String userInput) {
+		Matcher dateMatcher = ParserPatternLocal.datePattern.matcher(userInput);
 		RefinedUserInput inputFilter = new RefinedUserInput(); 
 		String specialContent  = ExtractSpecialContent.forFilter(userInput);
 
-		if(specialContent.isEmpty()) {
+		//there might be redundancy at this step.
+		if(!dateMatcher.find() && specialContent.isEmpty()) {
 			inputFilter.setCommandType(EnumGroup.CommandType.INVALID_FORMAT);
 			return inputFilter;
+		} else if(dateMatcher.find() && specialContent.isEmpty()) {
+			String deadline = ParserDateLocal.extractEndDate(userInput);
+			
+			inputFilter.setCommandType(EnumGroup.CommandType.FILTER);
+			inputFilter.setStartDate(START_DATE);
+			inputFilter.setEndDate(deadline);
+		} else if(!dateMatcher.find() && !specialContent.isEmpty()) {
+			
+			inputFilter.setCommandType(EnumGroup.CommandType.FILTER);
+			inputFilter.setStartDate(START_DATE);
+			inputFilter.setEndDate(END_DATE);
+			inputFilter.setSpecialContent(specialContent);
+		} else if(dateMatcher.find() && !specialContent.isEmpty()){
+			String deadline = ParserDateLocal.extractEndDate(userInput);
+			
+			inputFilter.setCommandType(EnumGroup.CommandType.FILTER);
+			inputFilter.setStartDate(START_DATE);
+			inputFilter.setEndDate(deadline);
+			inputFilter.setSpecialContent(specialContent);
 		}
-		
-		inputFilter.setCommandType(EnumGroup.CommandType.FILTER);
-		inputFilter.setStartDate(START_DATE);
-		inputFilter.setEndDate(END_DATE);
-		inputFilter.setSpecialContent(specialContent);
 		
 		return inputFilter;
 	}
