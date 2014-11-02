@@ -50,7 +50,7 @@ public class Task extends Assignment{
 
 	@Override
 	public String toString() {
-		return getId() + "~" + getTitle() + "~" + getAssignType() + "~"
+		return getDateCreation() + "~" + getIndex() + "~" + getAssignType() + "~" + getTitle() + "~"
 				+ getEndDate() + "~" + getEndTime() + "~" + getIsDone() + "~"
 				+ getIsOnTime() + "~" + getPriority();
 	}

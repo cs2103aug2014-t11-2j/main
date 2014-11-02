@@ -11,14 +11,14 @@ public class SparkMoVare {
 	protected static final int SYSTEM_EXIT_NO_ERROR = 0;
 	protected static final int SYSTEM_EXIT_ERROR = -1;
 	protected static final boolean IS_NOT_STATS_OR_INVALID = false;
-
+/*
 	public static void main(String[] args) {
 	
 		Print.printToUser(Message.WELCOME);
 			Storage.openFile(InternalStorage.getFilePath(),Id.getLatestSerialNumber(), InternalStorage.getBuffer());
 			toDoManager();
 	}
-
+*/
 	public static void toDoManager() {
 
 		Output returnOutput = new Output();
@@ -59,9 +59,6 @@ public class SparkMoVare {
 				InternalStorage.popFuture();
 			}
 		}		
-		System.out.println(userInput.toString());
-		System.out.println("");
-		
 		switch (command) {
 		case ADD:
 			id = Add.addSomething(userInput);
@@ -281,7 +278,7 @@ public class SparkMoVare {
 			return returnOutput;
 		}
 		System.out.println("File saved");
-		//Storage.saveFile(InternalStorage.getFilePath(), InternalStorage.getBuffer());
+		Storage.saveFile(InternalStorage.getFilePath(), InternalStorage.getBuffer());
 
 		return returnOutput;
 	}

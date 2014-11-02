@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /.classpath
 /.project
 /Logger/
@@ -6,3 +7,10 @@
 /logic/
 /parser/
 /storage/
+=======
+/gui/
+/junit/
+/logic/
+/storage/
+/parser/
+>>>>>>> e422a9ab893fc40242bc88c4822497010e82c32f
