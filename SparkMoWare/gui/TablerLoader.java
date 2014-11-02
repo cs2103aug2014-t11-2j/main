@@ -23,13 +23,13 @@ public class TablerLoader {
 		Iterator<Appointment> TableLoaderiterator = tableBuffer.iterator();
 		while (TableLoaderiterator.hasNext()) {
 		  Appointment appointmentToLoad = TableLoaderiterator.next();
-		  String[] holding = ("Dummy Slot~"+appointmentToLoad).toString().split("~");
+		  String[] holding = (" ~"+appointmentToLoad).toString().split("~");
 		  TableItem item = new TableItem(table,SWT.NONE);
 			String temp ="";
 			// swap title and type for better user aesthetic
-			temp = holding[2];
-			holding[2] = holding[3];
-			holding[3] = temp;
+//			temp = holding[2];
+//			holding[2] = holding[3];
+//			holding[3] = temp;
 			item.setText(holding);
 			if (holding[holding.length-1].equals("IMPT")) {
 				item.setForeground(Red);
