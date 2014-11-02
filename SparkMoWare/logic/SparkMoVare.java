@@ -53,15 +53,12 @@ public class SparkMoVare {
 		userInput = Interpreter.reader(userStringInput);
 
 		CommandType command = userInput.getCommandType();
-
+		
 		if (command != CommandType.UNDO && command != CommandType.REDO ) {
 			while (!InternalStorage.getFuture().empty()){
 				InternalStorage.popFuture();
 			}
 		}		
-		System.out.println(userInput.toString());
-		System.out.println("");
-		
 		switch (command) {
 		case ADD:
 			id = Add.addSomething(userInput);
@@ -80,7 +77,7 @@ public class SparkMoVare {
 
 		case EDIT:
 			position = InternalStorage.getBufferPosition(userInput.getId());
-
+	
 			futureHistory = RedoUndoUpdate.updateEdit(userInput.getId(), position);
 
 			InternalStorage.pushHistory(futureHistory);
@@ -281,7 +278,7 @@ public class SparkMoVare {
 			return returnOutput;
 		}
 		System.out.println("File saved");
-		//Storage.saveFile(InternalStorage.getFilePath(), InternalStorage.getBuffer());
+		Storage.saveFile(InternalStorage.getFilePath(), InternalStorage.getBuffer());
 
 		return returnOutput;
 	}

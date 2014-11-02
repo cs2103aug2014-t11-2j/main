@@ -120,7 +120,7 @@ public class Assignment {
 	/**************** Overriding ************************/
 
 	public String toString() {
-		return getId() + "~" + getTitle() + "~" + getAssignType() + "~"
+		return getDateCreation() + "~" + getIndex() + "~" + getAssignType() + "~" + getTitle() + "~"
 				+ getIsDone() + "~" + getIsOnTime() + "~" + getPriority();
 	}
 }

@@ -1,5 +1,6 @@
 package gui;
 
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -19,19 +20,18 @@ public class TablerLoader {
 		Color Red = new Color (device, 255, 0, 0);
 		
 		table.removeAll();
-		
 		Iterator<Appointment> TableLoaderiterator = tableBuffer.iterator();
 		while (TableLoaderiterator.hasNext()) {
 		  Appointment appointmentToLoad = TableLoaderiterator.next();
-		  String[] holding = appointmentToLoad.toString().split("~");
+		  String[] holding = (" ~"+appointmentToLoad).toString().split("~");
 		  TableItem item = new TableItem(table,SWT.NONE);
 			String temp ="";
 			// swap title and type for better user aesthetic
-			temp = holding[1];
-			holding[1] = holding[2];
-			holding[2] = temp;
+//			temp = holding[2];
+//			holding[2] = holding[3];
+//			holding[3] = temp;
 			item.setText(holding);
-			if (holding[1].equals("TTV")||holding[1].equals("2")) {
+			if (holding[holding.length-1].equals("IMPT")) {
 				item.setForeground(Red);
 			}
 		}
