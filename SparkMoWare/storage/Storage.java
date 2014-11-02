@@ -41,6 +41,7 @@ public class Storage {
 			Print.printToUser(StorageMessage.SAVE_FILE_ERROR);
 			System.exit(SYSTEM_EXIT_ERROR);
 		}		
+		System.out.println("File Saved");
 		return buffer;
 	}
 

@@ -15,9 +15,9 @@ public class ValidityCheck {
 		
 		if(assignType.equalsIgnoreCase("task")) {
 			typeChecked = true;
-		} else if(assignType.equalsIgnoreCase("appointment")) {
+		} else if(assignType.equalsIgnoreCase("appt")) {
 			typeChecked = true;
-		} else if(assignType.equalsIgnoreCase("assignment")) {
+		} else if(assignType.equalsIgnoreCase("asgn")) {
 			typeChecked = true;
 		}
 		return typeChecked;

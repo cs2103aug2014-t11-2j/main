@@ -7,6 +7,9 @@ import org.eclipse.swt.widgets.TableColumn;
 
 public class TableManager {
 	
+	/**
+	 * @wbp.parser.entryPoint
+	 */
 	protected static Table setupTable(Shell shell) {
 		/**
 		 * TableViewer
@@ -40,8 +43,8 @@ public class TableManager {
 		tc5.setText("Start Time");
 		tc6.setText("End Date");
 		tc7.setText("End Time");
-		tc0.setWidth(57);
-		tc1.setWidth(55);
+		tc0.setWidth(0);
+		tc1.setWidth(55+57);
 		tc2.setWidth(70);
 		tc3.setWidth(390);
 		tc4.setWidth(91);
