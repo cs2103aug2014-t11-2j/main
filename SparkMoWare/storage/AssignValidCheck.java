@@ -21,7 +21,7 @@ public class AssignValidCheck {
 				checkIndex = true;
 			}
 		}
-		checkType = ValidityCheck.validType(line[3]);
+		checkType = ValidityCheck.validType(line[2]);
 		checkPriority = ValidityCheck.priorityChecker(line[6]);
 
 		if(checkType && checkDateCreation && checkIndex && checkPriority) {
@@ -38,7 +38,7 @@ public class AssignValidCheck {
 				checkIndex = true;
 			}
 		}
-		checkType = ValidityCheck.validType(line[3]);
+		checkType = ValidityCheck.validType(line[2]);
 		checkEndDate = ValidityCheck.dateFormatValid(line[4]);
 		checkEndTime = ValidityCheck.timeFormatValid(line[5]);
 		checkPriority = ValidityCheck.priorityChecker(line[8]);
@@ -58,7 +58,7 @@ public class AssignValidCheck {
 				checkIndex = true;
 			}
 		}
-		checkType = ValidityCheck.validType(line[3]);
+		checkType = ValidityCheck.validType(line[2]);
 		checkEndDate = ValidityCheck.dateFormatValid(line[6]);
 		checkEndTime = ValidityCheck.timeFormatValid(line[7]);
 		checkStartDate = ValidityCheck.dateFormatValid(line[4]);
@@ -80,7 +80,7 @@ public class AssignValidCheck {
 				checkIndex = true;
 			}
 		}
-		checkType = ValidityCheck.validType(line[3]);
+		checkType = ValidityCheck.validType(line[2]);
 		checkPriority = ValidityCheck.priorityChecker(line[10]);
 		checkStartDate = ValidityCheck.checkDates(line[4]);
 		checkStartTime = ValidityCheck.checkTimes(line[5]);

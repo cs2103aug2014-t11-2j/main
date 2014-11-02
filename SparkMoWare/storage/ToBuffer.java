@@ -93,7 +93,7 @@ public class ToBuffer {
 		temp.setId(serial);
 		temp.setDateCreation(lineArray[0]);
 		temp.setIndex(Integer.parseInt(lineArray[1]));
-		temp.setTitle(lineArray[2]);
+		temp.setTitle(lineArray[3]);
 		temp.setIsDone(Boolean.parseBoolean(lineArray[4]));
 		temp.setIsOnTime(Boolean.parseBoolean(lineArray[5]));
 		temp.setPriority(lineArray[6]);
@@ -115,7 +115,7 @@ public class ToBuffer {
 		temp.setId(serial);
 		temp.setDateCreation(lineArray[0]);
 		temp.setIndex(Integer.parseInt(lineArray[1]));
-		temp.setTitle(lineArray[2]);
+		temp.setTitle(lineArray[3]);
 		temp.setIsDone(Boolean.parseBoolean(lineArray[6]));
 		temp.setIsOnTime(Boolean.parseBoolean(lineArray[7]));
 		temp.setPriority(lineArray[8]);
@@ -140,7 +140,7 @@ public class ToBuffer {
 		temp.setId(serial);
 		temp.setDateCreation(lineArray[0]);
 		temp.setIndex(Integer.parseInt(lineArray[1]));
-		temp.setTitle(lineArray[2]);
+		temp.setTitle(lineArray[3]);
 		temp.setStartDate(lineArray[4]);
 		temp.setStartTime(lineArray[5]);
 		temp.setEndDate(lineArray[6]);
@@ -165,7 +165,7 @@ public class ToBuffer {
 		temp.setId(serial);
 		temp.setDateCreation(lineArray[0]);
 		temp.setIndex(Integer.parseInt(lineArray[1]));
-		temp.setTitle(lineArray[2]);
+		temp.setTitle(lineArray[3]);
 		setTimeSlot(temp, lineArray[4], lineArray[5], lineArray[6], lineArray[7]);
 		temp.setIsDone(Boolean.parseBoolean(lineArray[8]));
 		temp.setIsOnTime(Boolean.parseBoolean(lineArray[9]));

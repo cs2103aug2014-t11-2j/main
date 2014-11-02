@@ -179,8 +179,8 @@ public class ValidityCheck {
 			datesSlot[i].trim();
 		}
 		
-		datesSlot[0] = datesSlot[0].substring(1, 8);
-		datesSlot[datesSlot.length - 1] = datesSlot[datesSlot.length - 1].substring(0, 8);
+		datesSlot[0] = datesSlot[0].substring(1, 9);
+		datesSlot[datesSlot.length - 1] = datesSlot[datesSlot.length - 1].substring(1, 9);
 		
 		do {
 			checkDates = dateFormatValid(datesSlot[count]);
@@ -201,7 +201,7 @@ public class ValidityCheck {
 		}
 		
 		timesSlot[0] = timesSlot[0].substring(1, 5);
-		timesSlot[timesSlot.length - 1] = timesSlot[timesSlot.length - 1].substring(0, 4);
+		timesSlot[timesSlot.length - 1] = timesSlot[timesSlot.length - 1].substring(1, 5);
 		
 		do {
 			checkTimes = dateFormatValid(timesSlot[count]);
