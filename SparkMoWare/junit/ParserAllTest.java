@@ -291,6 +291,10 @@ public class ParserAllTest {
 		//cannot interpret digits only
 		//assertEquals("090820140001", ParserTestDriver.testExtractId("delete 090820140001"));
 		
+		//test rejection of just numbers input for id
+		assertEquals("", ParserTestDriver.testExtractId("delete 090820140001"));
+		assertEquals("", ParserTestDriver.testExtractId("delete 09082014001"));
+		
 		/**************************/
 		
 		//Test removeId
@@ -574,6 +578,11 @@ public class ParserAllTest {
 				+ "~default~default~DEFAULT~NIMPT"
 				+ "~false~title~null~null", ParserTestDriver.testInputIsEdit("edit 01112014/0005 title this is an appointment"));
 		
+		//confirm method works for editing title
+		assertEquals("EDIT~021120140001~tsk tsk~default~default"
+				+ "~default~default~DEFAULT~NIMPT"
+				+ "~false~title~null~null", ParserTestDriver.testInputIsEdit("edit 02112014(1) title tsk tsk"));
+		
 		/*************InputIsTentative Tests*************/
 
 		//confirm method returns invalid for single command
@@ -689,7 +698,7 @@ public class ParserAllTest {
 		//generalised test case
 		assertEquals("SORT~default~default~01012000~default"
 				+ "~31122600~default~DEFAULT~NIMPT"
-				+ "~false~id~null~null", ParserTestDriver.testInputIsSort("sort id"));	
+				+ "~false~id~null~null", ParserTestDriver.testInputIsSort("sort id"));
 		
 		/***********Interpreter***************/
 		

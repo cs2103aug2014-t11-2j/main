@@ -7,7 +7,17 @@ public class ParserIdLocal {
 		Matcher idMatcher = ParserPatternLocal.idPattern.matcher(userInput);
 		String id = new String();
 		String datePortion = new String();
-		String index = new String();
+;		String index = new String();
+		
+		if(idMatcher.find()) {
+			String checker = idMatcher.group(0);
+
+			if(checker.matches("^\\d+?$")) {
+				return id;
+			}
+		}
+		
+		idMatcher.reset();
 		
 		if(idMatcher.find()) {
 			datePortion = idMatcher.group(2);

@@ -1,10 +1,13 @@
 package parser;
 
+import java.util.regex.Matcher;
+
 public class InputIsEdit {
 
 	protected static RefinedUserInput refineInput(String userInput) {
 		RefinedUserInput inputEdit = new RefinedUserInput();
 		String id = ParserIdLocal.extractId(userInput);
+		
 		
 		if(id.isEmpty()) {
 			inputEdit.setCommandType(EnumGroup.CommandType.INVALID_FORMAT);
@@ -17,11 +20,18 @@ public class InputIsEdit {
 			userInput = Misc.removeEditTitle(userInput);
 			String title = Misc.extractTitle(userInput, "edit");
 			
+			Matcher symbolMatcher = ParserPatternLocal.symbolsPattern.matcher(title);
+			
 			if(title.isEmpty()) {
 				inputEdit.setCommandType(EnumGroup.CommandType.INVALID_FORMAT);
 				return inputEdit;
 			}
-			inputEdit.setTitle(title);
+			
+			if(symbolMatcher.find()) {
+				title = symbolMatcher.replaceFirst("");
+			}
+			
+			inputEdit.setTitle(title.trim());
 			inputEdit.setSpecialContent("title");
 			break;
 			

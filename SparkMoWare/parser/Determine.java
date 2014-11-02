@@ -60,7 +60,6 @@ public class Determine {
 		}		
 	}
 	
-	//requires change to use pattern
 	protected static EnumGroup.EditType getEditType(String input) {
 		Matcher titleMatcher = ParserPatternLocal.titlePattern.matcher(input);
 		Matcher startDateMatcher = ParserPatternLocal.startDatePattern.matcher(input);
