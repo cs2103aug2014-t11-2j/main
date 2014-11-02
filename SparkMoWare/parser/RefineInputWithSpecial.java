@@ -43,10 +43,15 @@ public class RefineInputWithSpecial {
 	protected static RefinedUserInput inputIsSearch(String userInput) {
 		RefinedUserInput inputSearch = new RefinedUserInput(); 
 		String specialContent  = ExtractSpecialContent.forSearch(userInput);
+		Matcher dateMatcher = ParserPatternLocal.datePattern.matcher(specialContent);
 
 		if(specialContent.isEmpty()) {
 			inputSearch.setCommandType(EnumGroup.CommandType.INVALID_FORMAT);
 			return inputSearch;
+		}
+		
+		if(dateMatcher.find()) {
+			specialContent = ParserDateLocal.extractEndDate(specialContent);
 		}
 		
 		inputSearch.setCommandType(EnumGroup.CommandType.SEARCH);

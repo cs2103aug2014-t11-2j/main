@@ -672,6 +672,11 @@ public class ParserAllTest {
 				+ "~default~default~DEFAULT~NIMPT"
 				+ "~false~assignment~null~null", ParserTestDriver.testInputIsSearch("search assignment"));
 		
+		//test input date is converted into a string consisting only of digits
+		assertEquals("SEARCH~default~default~default~default"
+				+ "~default~default~DEFAULT~NIMPT"
+				+ "~false~10082014~null~null", ParserTestDriver.testInputIsSearch("search 10/8/2014"));
+		
 		/**************************/
 
 		//test inputIsSort
