@@ -61,8 +61,8 @@ public class Tentative extends Assignment {
 	/**************** Overriding ************************/
 	
 	public String toString() {
-		return getId() + "~" + getTitle() + "~" + getAssignType() + "~" + getStartDate() + "~" + 
-				getStartTime() + "~" + getEndDate() + "~" + getEndTime() + "~" + getIsDone() + 
-				"~" + getIsOnTime() + "~" + getPriority();
+		return getDateCreation() + "~" + getIndex() + "~" + getTitle() + "~" + getAssignType() + 
+				"~" + getStartDate() + "~" + getStartTime() + "~" + getEndDate() + "~" + 
+				getEndTime() + "~" + getIsDone() + "~" + getIsOnTime() + "~" + getPriority();
 	}
 }

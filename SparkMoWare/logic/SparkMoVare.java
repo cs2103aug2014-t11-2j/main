@@ -59,9 +59,6 @@ public class SparkMoVare {
 				InternalStorage.popFuture();
 			}
 		}		
-		System.out.println(userInput.toString());
-		System.out.println("");
-		
 		switch (command) {
 		case ADD:
 			id = Add.addSomething(userInput);
@@ -281,7 +278,7 @@ public class SparkMoVare {
 			return returnOutput;
 		}
 		System.out.println("File saved");
-		//Storage.saveFile(InternalStorage.getFilePath(), InternalStorage.getBuffer());
+		Storage.saveFile(InternalStorage.getFilePath(), InternalStorage.getBuffer());
 
 		return returnOutput;
 	}
