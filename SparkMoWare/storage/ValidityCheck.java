@@ -182,10 +182,10 @@ public class ValidityCheck {
 			datesSlot[0] = datesSlot[0].substring(1, 9);
 			datesSlot[datesSlot.length - 1] = datesSlot[datesSlot.length - 1].substring(1, 9);
 
-			do {
+			while( checkDates && count < datesSlot.length) {
 				checkDates = dateFormatValid(datesSlot[count]);
 				count++;
-			} while(checkDates || count == datesSlot.length);
+			} ;
 
 		} else {
 			datesSlot[0] = datesSlot[0].substring(1,9);
@@ -207,10 +207,10 @@ public class ValidityCheck {
 			timesSlot[0] = timesSlot[0].substring(1, 5);
 			timesSlot[timesSlot.length - 1] = timesSlot[timesSlot.length - 1].substring(1, 5);
 
-			do {
+			while( checkTimes && count < timesSlot.length){
 				checkTimes = timeFormatValid(timesSlot[count]);
 				count++;
-			} while(checkTimes || count == timesSlot.length);
+			}
 		} else {
 			timesSlot[0] = timesSlot[0].substring(1, 5);
 			checkTimes = timeFormatValid(timesSlot[0]);
