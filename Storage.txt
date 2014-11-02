@@ -8,11 +8,11 @@
 02102014~2~TASK~get chocolates for rachel~17102014~1500~true~false~IMPT
 03102014~1~TASK~get flowers for mum~03102014~1400~true~false~IMPT
 03102014~2~APPT~dinner with mum~20112014~1200~20112014~1400~true~false~NIMPT
-01112014~1~ASGN~assignment~false~false~NIMPT
-01112014~4~TASK~task1~15112014~1500~false~false~IMPT
-01112014~3~TASK~task2~01112014~1400~false~false~IMPT
-01112014~2~APPT~appointment~11112014~1300~11112014~1400~false~false~NIMPT
-01112014~5~TNTV~tentative appointment~[15112014]~[1300]~[15112014]~[1500]~false~false~NIMPT
+01112014~1~ASGN~circuit report assignment~false~false~NIMPT
+01112014~4~TASK~math tutorial~15112014~1500~false~false~IMPT
+01112014~3~TASK~physics tutorial~01112014~1400~false~false~IMPT
+01112014~2~APPT~dental appointment~11112014~1300~11112014~1400~false~false~NIMPT
+01112014~5~TNTV~consultation with prof chan~[15112014]~[1300]~[15112014]~[1500]~false~false~NIMPT
 01112014~6~APPT~date with rachel~16112014~2000~16112014~2100~false~false~NIMPT
 02112014~1~ASGN~Lab assignment~false~false~NIMPT
 02112014~2~TASK~graded homework~17112014~1500~false~false~IMPT
