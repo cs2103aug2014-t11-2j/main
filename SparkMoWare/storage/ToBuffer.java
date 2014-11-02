@@ -148,7 +148,7 @@ public class ToBuffer {
 		temp.setIsDone(Boolean.parseBoolean(lineArray[8]));
 		temp.setIsOnTime(Boolean.parseBoolean(lineArray[9]));
 		temp.setPriority(lineArray[10]);
-		
+
 		return temp;	
 	}
 
@@ -170,10 +170,10 @@ public class ToBuffer {
 		temp.setIsDone(Boolean.parseBoolean(lineArray[8]));
 		temp.setIsOnTime(Boolean.parseBoolean(lineArray[9]));
 		temp.setPriority(lineArray[10]);
-		
+
 		return temp;
 	}
-	
+
 	private static void setLatestSerialNumber(String id) {
 
 		if(Id.getLatestSerialNumber().equals("")) {
@@ -182,35 +182,47 @@ public class ToBuffer {
 			Id.setLatestSerialNumber(id);
 		}
 	}
-	
+
 	private static void setTimeSlot(Tentative temp, String startDate, String startTime, String endDate, String endTime) {
-		
+
 		String[] startDates = startDate.split(",");
 		String[] startTimes = startTime.split(",");
 		String[] endDates = endDate.split(",");
 		String[] endTimes = endTime.split(",");
-		
+
 		for(int i = 0; i < startDates.length; i++) {
 			startDates[i].trim();
 			startTimes[i].trim();
 			endDates[i].trim();
 			endTimes[i].trim();
 		}
-		
-		startDates[0] = startDates[0].substring(1, 9);
-		startDates[startDates.length - 1] = startDates[startDates.length - 1].substring(1, 9);
-		startTimes[0] = startTimes[0].substring(1, 5);
-		startTimes[startTimes.length - 1] = startTimes[startTimes.length - 1].substring(1, 5);
-		endDates[0] = endDates[0].substring(1, 9);
-		endDates[endDates.length - 1] = endDates[endDates.length - 1].substring(1, 9);
-		endTimes[0] = endTimes[0].substring(1, 5);
-		endTimes[endTimes.length - 1] = endTimes[startTimes.length - 1].substring(1, 5);
-		
-		for(int slotsCount = 0; slotsCount < startDates.length; slotsCount++) {
-			temp.addStartDate(startDates[slotsCount]);
-			temp.addStartTime(startTimes[slotsCount]);
-			temp.addEndDate(endDates[slotsCount]);
-			temp.addEndTime(endTimes[slotsCount]);
+		if(startDates.length > 1) {
+			
+			startDates[0] = startDates[0].substring(1, 9);
+			startDates[startDates.length - 1] = startDates[startDates.length - 1].substring(1, 9);
+			startTimes[0] = startTimes[0].substring(1, 5);
+			startTimes[startTimes.length - 1] = startTimes[startTimes.length - 1].substring(1, 5);
+			endDates[0] = endDates[0].substring(1, 9);
+			endDates[endDates.length - 1] = endDates[endDates.length - 1].substring(1, 9);
+			endTimes[0] = endTimes[0].substring(1, 5);
+			endTimes[endTimes.length - 1] = endTimes[startTimes.length - 1].substring(1, 5);
+
+			for(int slotsCount = 0; slotsCount < startDates.length; slotsCount++) {
+				temp.addStartDate(startDates[slotsCount]);
+				temp.addStartTime(startTimes[slotsCount]);
+				temp.addEndDate(endDates[slotsCount]);
+				temp.addEndTime(endTimes[slotsCount]);
+			}
+		} else {
+			startDates[0] = startDates[0].substring(1, 9);
+			startTimes[0] = startTimes[0].substring(1, 5);
+			endDates[0] = endDates[0].substring(1, 9);
+			endTimes[0] = endTimes[0].substring(1, 5);
+			
+			temp.addStartDate(startDates[0]);
+			temp.addStartTime(startTimes[0]);
+			temp.addEndDate(endDates[0]);
+			temp.addEndTime(endTimes[0]);
 		}
 	}
 }

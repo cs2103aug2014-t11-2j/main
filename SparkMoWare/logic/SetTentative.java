@@ -13,6 +13,8 @@ public class SetTentative {
 		String tentativeIdGenerated = Id.serialNumGen();
 
 		newTentative.setId(tentativeIdGenerated);
+		newTentative.setDateCreation(tentativeIdGenerated.substring(0, 8));
+		newTentative.setIndex(8);
 		newTentative.setTitle(title);
 		newTentative.setPriority(Assignment.PRIORITY_NONE);
 		

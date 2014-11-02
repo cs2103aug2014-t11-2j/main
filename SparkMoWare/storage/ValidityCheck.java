@@ -7,11 +7,11 @@ public class ValidityCheck {
 	private static final int SMALLER = -1;
 	private static final int SAME = 0;
 	private static final int LARGER = 1;
-	
+
 	protected static boolean validType(String assignType) {
-		
+
 		boolean typeChecked = DEFAULT_NONE;
-		
+
 		if(assignType.equalsIgnoreCase("task")) {
 			typeChecked = true;
 		} else if(assignType.equalsIgnoreCase("appt")) {
@@ -94,17 +94,17 @@ public class ValidityCheck {
 		}
 		return timeExist;
 	}
-	
+
 	protected static boolean priorityChecker(String priority) {
-		
+
 		boolean priorityChecked = false;
-		
+
 		if (priority.equalsIgnoreCase("NIMPT") || priority.equalsIgnoreCase("IMPT")) {
 			priorityChecked = true;
 		}
 		return priorityChecked;
 	}
-	
+
 	protected static boolean serialNumberComparator(String idA, String idB) {
 
 		int checkDate = dateComparator(idA.substring(0, 8), idB.substring(0, 8));
@@ -124,7 +124,7 @@ public class ValidityCheck {
 		}
 		return serialCheck;
 	}
-	
+
 	private static int dateComparator(String dateA, String dateB) {
 
 		String yearA = dateA.trim().substring(4, 8);
@@ -160,54 +160,61 @@ public class ValidityCheck {
 		}
 		return SMALLER;
 	}
-	
+
 	private static String removeFrontZero(String input) {
-		
+
 		while (input.length() > 0 && input.charAt(0) == '0') {
 			input = input.substring(1);
 		}
 		return input;
 	}
-	
+
 	protected static boolean checkDates(String dates) {
-		
+
 		boolean checkDates = false;
 		String[] datesSlot = dates.split(",");
 		int count = 0;
-		
+
 		for(int i = 0; i < datesSlot.length; i++) {
 			datesSlot[i].trim();
 		}
-		
-		datesSlot[0] = datesSlot[0].substring(1, 9);
-		datesSlot[datesSlot.length - 1] = datesSlot[datesSlot.length - 1].substring(1, 9);
-		
-		do {
-			checkDates = dateFormatValid(datesSlot[count]);
-			count++;
-		} while(checkDates || count == datesSlot.length);
-		
+		if(datesSlot.length > 1) {
+			datesSlot[0] = datesSlot[0].substring(1, 9);
+			datesSlot[datesSlot.length - 1] = datesSlot[datesSlot.length - 1].substring(1, 9);
+
+			do {
+				checkDates = dateFormatValid(datesSlot[count]);
+				count++;
+			} while(checkDates || count == datesSlot.length);
+
+		} else {
+			datesSlot[0] = datesSlot[0].substring(1,9);
+			checkDates = dateFormatValid(datesSlot[0]);
+		}
 		return checkDates; 
 	}
-	
+
 	protected static boolean checkTimes(String times) {
-		
+
 		boolean checkTimes = false;
 		String[] timesSlot = times.split(",");
 		int count = 0;
-		
+
 		for(int i = 0; i < timesSlot.length; i++) {
 			timesSlot[i].trim();
 		}
-		
-		timesSlot[0] = timesSlot[0].substring(1, 5);
-		timesSlot[timesSlot.length - 1] = timesSlot[timesSlot.length - 1].substring(1, 5);
-		
-		do {
-			checkTimes = dateFormatValid(timesSlot[count]);
-			count++;
-		} while(checkTimes || count == timesSlot.length);
-		 
+		if(timesSlot.length > 1) {
+			timesSlot[0] = timesSlot[0].substring(1, 5);
+			timesSlot[timesSlot.length - 1] = timesSlot[timesSlot.length - 1].substring(1, 5);
+
+			do {
+				checkTimes = timeFormatValid(timesSlot[count]);
+				count++;
+			} while(checkTimes || count == timesSlot.length);
+		} else {
+			timesSlot[0] = timesSlot[0].substring(1, 5);
+			checkTimes = timeFormatValid(timesSlot[0]);
+		}
 		return checkTimes;
 	}
 }

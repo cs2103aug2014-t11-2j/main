@@ -11,14 +11,14 @@ public class SparkMoVare {
 	protected static final int SYSTEM_EXIT_NO_ERROR = 0;
 	protected static final int SYSTEM_EXIT_ERROR = -1;
 	protected static final boolean IS_NOT_STATS_OR_INVALID = false;
-/*
+
 	public static void main(String[] args) {
 	
 		Print.printToUser(Message.WELCOME);
 			Storage.openFile(InternalStorage.getFilePath(),Id.getLatestSerialNumber(), InternalStorage.getBuffer());
 			toDoManager();
 	}
-*/
+
 	public static void toDoManager() {
 
 		Output returnOutput = new Output();
@@ -53,7 +53,7 @@ public class SparkMoVare {
 		userInput = Interpreter.reader(userStringInput);
 
 		CommandType command = userInput.getCommandType();
-
+		
 		if (command != CommandType.UNDO && command != CommandType.REDO ) {
 			while (!InternalStorage.getFuture().empty()){
 				InternalStorage.popFuture();
@@ -77,7 +77,7 @@ public class SparkMoVare {
 
 		case EDIT:
 			position = InternalStorage.getBufferPosition(userInput.getId());
-
+	
 			futureHistory = RedoUndoUpdate.updateEdit(userInput.getId(), position);
 
 			InternalStorage.pushHistory(futureHistory);

@@ -41,7 +41,7 @@ public class RedoTask {
 		position = InternalStorage.getBufferPosition(id);
 		
 		historyFuture = RedoUndoUpdate.updateDelete(position);
-		InternalStorage.pushFuture(historyFuture);
+		InternalStorage.pushHistory(historyFuture);
 		Delete.delete(id);
 	}
 	
@@ -53,7 +53,7 @@ public class RedoTask {
 		InternalStorage.getBuffer().get(position).setIsDone(false);
 		
 		historyFuture = RedoUndoUpdate.updateDone(id);
-		InternalStorage.pushFuture(historyFuture);
+		InternalStorage.pushHistory(historyFuture);
 	}
 	
 	private static void redoEdit(FutureHistory futureHistory) {
@@ -76,7 +76,7 @@ public class RedoTask {
 			InternalStorage.getBuffer().remove(position);
 			SetTentative.addTentativeToBuffer(futureHistory.getTentative());
 		}
-		InternalStorage.pushFuture(historyFuture);
+		InternalStorage.pushHistory(historyFuture);
 	}
 	
 	private static void redoDelete(FutureHistory futureHistory) {
@@ -103,7 +103,7 @@ public class RedoTask {
 		}
 		historyFuture = RedoUndoUpdate.updateAdd(id);
 		
-		InternalStorage.pushFuture(historyFuture);
+		InternalStorage.pushHistory(historyFuture);
 	}
 	
 	private static void redoClear(LinkedList<Assignment> buffer) {
@@ -116,7 +116,7 @@ public class RedoTask {
 		Sort.insertionSortDeadline(buffer);
 		InternalStorage.setBuffer(buffer);
 		
-		InternalStorage.pushFuture(historyFuture);
+		InternalStorage.pushHistory(historyFuture);
 	}
 	
 	private static void redoConfirm(int position, Tentative tentative) {
@@ -128,6 +128,6 @@ public class RedoTask {
 		InternalStorage.getBuffer().remove(position);
 		SetTentative.addTentativeToBuffer(tentative);
 		
-		InternalStorage.pushFuture(historyFuture);
+		InternalStorage.pushHistory(historyFuture);
 	}
 }
