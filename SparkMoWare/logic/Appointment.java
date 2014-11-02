@@ -59,7 +59,7 @@ public class Appointment extends Task {
 	/**************** Overriding ************************/
 	
 	public String toString() {
-		return getDateCreation() + "~" + getIndex() + "~" + getTitle() + "~" + getAssignType() + "~" 
+		return getDateCreation() + "~" + getIndex() + "~" + getAssignType() + "~" + getTitle() + "~" 
 				+ getStartDate() + "~" + getStartTime() + "~" + getEndDate() + "~" + getEndTime() + "~" 
 				+ getIsDone() +	"~" + getIsOnTime() + "~" + getPriority();
 	}
