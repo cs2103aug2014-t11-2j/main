@@ -1,16 +1,4 @@
-<<<<<<< HEAD
-/.classpath
-/.project
+/gui/
+/junit/
+/logic/
 /Logger/
-/gui/
-/junit/
-/logic/
-/parser/
-/storage/
-=======
-/gui/
-/junit/
-/logic/
-/storage/
-/parser/
->>>>>>> e422a9ab893fc40242bc88c4822497010e82c32f
