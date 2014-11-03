@@ -16,6 +16,7 @@ public class FutureHistory {
 	private Task task = new Task();
 	private Appointment appointment = new Appointment();
 	private Tentative tentative = new Tentative();
+	private int position;
 	
 	private RefinedUserInput userInput = new RefinedUserInput();
 	
@@ -31,6 +32,10 @@ public class FutureHistory {
 	
 	public String getSerial() {
 		return this.serial;
+	}
+	
+	public int getPosition() {
+		return this.position;
 	}
 	
 	public RefinedUserInput getUserInput() {
@@ -72,23 +77,27 @@ public class FutureHistory {
 		this.serial = serialNumber;
 	}
 	
-	public void setTask(Task taskIn) {
-		this.task = taskIn;
+	public void setTask(Task task) {
+		this.task = task;
 	}
 	
 	public void setAppointment(Appointment appointmentIn) {
 		this.appointment = appointmentIn;
 	}
 	
-	public void setAssignment(Assignment assignmentIn) {
-		this.assignment = assignmentIn;
+	public void setAssignment(Assignment assignment) {
+		this.assignment = assignment;
 	}
 	
-	public void setTentative(Tentative tentativeIn) {
-		this.tentative = tentativeIn;
+	public void setTentative(Tentative tentative) {
+		this.tentative = tentative;
 	}
 	
-	public void setUserInput(RefinedUserInput userInputIn) {
-		this.userInput = userInputIn;
+	public void setUserInput(RefinedUserInput userInput) {
+		this.userInput = userInput;
+	}
+	
+	public void setPosition(int position) {
+		this.position = position;
 	}
 }

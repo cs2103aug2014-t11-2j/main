@@ -1,7 +1,5 @@
 package logic;
 
-import java.util.ListIterator;
-
 import logic.Assignment.AssignmentType;
 import parser.RefinedUserInput;
 
@@ -55,19 +53,22 @@ public class Add {
 	protected static void addAssignmentToBuffer(Assignment newAssignment) {
 
 		int count = 0;
-
+//		Assignment assignment;
+		
 		if(InternalStorage.getLineCount() == 0) {
 			InternalStorage.addBuffer(newAssignment);
 		} else {
-			ListIterator<Assignment> listIterate = InternalStorage.getBuffer().listIterator();
-
-			while(listIterate.hasNext()) {
-
-				if(listIterate.next().getIsDone() == false) {
-					InternalStorage.addBuffer(count, newAssignment);
+			int size = InternalStorage.getLineCount();
+		//	ListIterator<Assignment> listIterate = InternalStorage.getBuffer().listIterator();
+			
+			for(int i = 0; i < size; i++) {
+				if(!InternalStorage.getBuffer().get(i).getIsDone()) {
+					InternalStorage.addBuffer(i, newAssignment);
+				} else if(i == size - 1) {
+					count = i;
+					InternalStorage.addBuffer(count + 1, newAssignment);
 					break;
 				}
-				count++;
 			}
 		}
 	}

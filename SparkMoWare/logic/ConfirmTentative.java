@@ -20,8 +20,10 @@ public class ConfirmTentative {
 			tentativeNeeded = ((Tentative) tentatives.get(0));
 
 			confirmAppointment = findConfirmTentative(confirmStartDate, confirmStartTime, confirmEndDate, confirmEndTime);
-			confirmAppointment.setId(Id.serialNumGen());
-			
+			String id = Id.serialNumGen();
+			confirmAppointment.setId(id);
+			confirmAppointment.setDateCreation(DateLocal.dateString());
+			confirmAppointment.setIndex(Integer.parseInt(Id.removeFrontZero(id.substring(8))));
 			Delete.delete(tentativeNeeded.getId());
 			Add.addAppointmentToBuffer(confirmAppointment);
 		}
