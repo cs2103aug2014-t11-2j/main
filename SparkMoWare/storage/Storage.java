@@ -44,7 +44,7 @@ public class Storage {
 		return buffer;
 	}
 
-	public static LinkedList<Assignment> openFile(String filePath, String latestSerialNumber, LinkedList<Assignment> buffer) {
+	public static LinkedList<Assignment> openFile(String filePath, LinkedList<Assignment> buffer) {
 
 		try {
 			File file = new File(filePath);

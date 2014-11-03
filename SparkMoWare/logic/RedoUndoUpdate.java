@@ -9,7 +9,7 @@ public class RedoUndoUpdate {
 	
 	private static FutureHistory futureHistory = new FutureHistory();
 	
-	protected static FutureHistory updateAdd(String id) {
+	protected static FutureHistory updateAdd(int id) {
 		
 		futureHistory.setCommand(CommandType.ADD);
 		futureHistory.setSerial(id);
@@ -17,7 +17,7 @@ public class RedoUndoUpdate {
 		return futureHistory;
 	}
 	
-	protected static FutureHistory updateEdit(String id, int position) {
+	protected static FutureHistory updateEdit(int id, int position) {
 		
 		futureHistory.setSerial(id);
 		updateAssignment(position);
@@ -65,7 +65,7 @@ public class RedoUndoUpdate {
 		}
 	}
 	
-	protected static FutureHistory updateTentative(String id) {
+	protected static FutureHistory updateTentative(int id) {
 		
 		futureHistory.setCommand(CommandType.TENTATIVE);
 		futureHistory.setSerial(id);
@@ -73,7 +73,7 @@ public class RedoUndoUpdate {
 		return futureHistory;
 	}
 	
-	protected static FutureHistory updateConfirm(Tentative tentative, String id) {
+	protected static FutureHistory updateConfirm(Tentative tentative, int id) {
 		
 		futureHistory.setTentative(tentative);
 		futureHistory.setCommand(CommandType.CONFIRM);
@@ -82,7 +82,7 @@ public class RedoUndoUpdate {
 		return futureHistory;
 	}
 	
-	protected static FutureHistory updateConfirmBack(Appointment appointment, String id) {
+	protected static FutureHistory updateConfirmBack(Appointment appointment, int id) {
 		
 		futureHistory.setAppointment(appointment);
 		futureHistory.setCommand(CommandType.CONFIRM);
@@ -99,7 +99,7 @@ public class RedoUndoUpdate {
 		return futureHistory;
 	}
 	
-	protected static FutureHistory updateDone(String id, int position) {
+	protected static FutureHistory updateDone(int id, int position) {
 		
 		futureHistory.setCommand(CommandType.DONE);
 		futureHistory.setPosition(position);

@@ -23,30 +23,46 @@ public class ValidityCheck {
 		}
 		return typeChecked;
 	}
-
+	
+	protected static boolean indexFormat(String index) {
+		
+		boolean checkIndex = false;
+		
+		if(index.matches("\\d+")) {
+			if(Integer.parseInt(index) > 0) {
+				checkIndex = true;
+			}
+		}
+		return checkIndex;
+	}
+	
 	protected static boolean dateFormatValid(String date) {
 
 		boolean validDateFormat = true;
 
 		if (date.length() != 8) {
 			validDateFormat = false;
-		} else if (!date.matches("[0-9]+")) {
+		} else if (!date.contains("/")) {
 			validDateFormat = false;
-		} else if (!dateExists(Integer.parseInt(date))) {
+		} else if (!dateExists(date)) {
 			validDateFormat = false;
 		}
 		return validDateFormat;
 	}
 
-	private static boolean dateExists(int date) {
+	private static boolean dateExists(String date) {
 
 		boolean leapYear = false;
 		boolean dateExist = false;
 
-		int day = date / 1000000;
-		int month = (date / 10000) % 100;
-		int year = date % 10000;
+		String dayString = date.substring(0, 2);
+		String monthString = date.substring(3, 5);
+		String yearString = date.substring(6, 8);
 
+		int day = Integer.parseInt(dayString);
+		int month = Integer.parseInt(monthString);
+		int year = Integer.parseInt(yearString);
+		
 		if (year % 4 == 0) {
 			leapYear = true;
 		}
@@ -182,11 +198,10 @@ public class ValidityCheck {
 			datesSlot[0] = datesSlot[0].substring(1, 9);
 			datesSlot[datesSlot.length - 1] = datesSlot[datesSlot.length - 1].substring(1, 9);
 
-			while( checkDates && count < datesSlot.length) {
+			while(checkDates && count < datesSlot.length) {
 				checkDates = dateFormatValid(datesSlot[count]);
 				count++;
-			} ;
-
+			}
 		} else {
 			datesSlot[0] = datesSlot[0].substring(1,9);
 			checkDates = dateFormatValid(datesSlot[0]);

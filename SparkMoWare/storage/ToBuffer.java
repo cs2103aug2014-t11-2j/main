@@ -17,7 +17,7 @@ public class ToBuffer {
 	protected static LinkedList<Assignment> addToBuffer(String[] lineArray) {
 
 		boolean check = false;
-		String serial = "";
+		int serial = 0;
 		LinkedList<Assignment> buffer = new LinkedList<Assignment>();
 
 		if(lineArray.length == ASSIGNMENT_LENGTH) {
@@ -25,13 +25,8 @@ public class ToBuffer {
 			check = AssignValidCheck.checkAssignment(lineArray);
 
 			if(check) {
-				if(lineArray[1].length() == 1) {
-					serial = lineArray[0] + "000" + lineArray[1];
-				} else if(lineArray[1].length() == 2) {
-					serial = lineArray[0] + "00" + lineArray[1];
-				}
-
-				setLatestSerialNumber(serial);
+				serial = Integer.parseInt(lineArray[0]);
+				Id.setLatestSerialNumber(serial);
 				buffer.add(toBufferAssignment(lineArray));
 			}
 		} else if (lineArray.length == TASK_LENGTH) {
@@ -39,26 +34,16 @@ public class ToBuffer {
 			check = AssignValidCheck.checkTask(lineArray);
 
 			if(check) {
-				if(lineArray[1].length() == 1) {
-					serial = lineArray[0] + "000" + lineArray[1];
-				} else if(lineArray[1].length() == 2) {
-					serial = lineArray[0] + "00" + lineArray[1];
-				}
-
-				setLatestSerialNumber(serial);
+				serial = Integer.parseInt(lineArray[0]);
+				Id.setLatestSerialNumber(serial);
 				buffer.add(toBufferTask(lineArray));
 			}
 		} else if(lineArray.length == APPOINTMENT_LENGTH && lineArray[4].contains("[")) {
 			check = AssignValidCheck.checkTentative(lineArray);
 
 			if(check) {
-				if(lineArray[1].length() == 1) {
-					serial = lineArray[0] + "000" + lineArray[1];
-				} else if(lineArray[1].length() == 2) {
-					serial = lineArray[0] + "00" + lineArray[1];
-				}
-
-				setLatestSerialNumber(serial);
+				serial = Integer.parseInt(lineArray[0]);
+				Id.setLatestSerialNumber(serial);
 				buffer.add(toBufferTentative(lineArray));
 			}
 		} else if(lineArray.length == APPOINTMENT_LENGTH) {
@@ -66,13 +51,8 @@ public class ToBuffer {
 			check = AssignValidCheck.checkAppointment(lineArray);
 
 			if(check) {
-				if(lineArray[1].length() == 1) {
-					serial = lineArray[0] + "000" + lineArray[1];
-				} else if(lineArray[1].length() == 2) {
-					serial = lineArray[0] + "00" + lineArray[1];
-				}
-
-				setLatestSerialNumber(serial);
+				serial = Integer.parseInt(lineArray[0]);
+				Id.setLatestSerialNumber(serial);
 				buffer.add(toBufferAppointment(lineArray));
 			}
 		}
@@ -83,20 +63,12 @@ public class ToBuffer {
 
 		// adding as Assignment
 		Assignment temp = new Assignment();
-		String serial = "";
 
-		if(lineArray[1].length() == 1) {
-			serial = lineArray[0] + "000" + lineArray[1];
-		} else if(lineArray[1].length() == 2) {
-			serial = lineArray[0] + "00" + lineArray[1];
-		}
-		temp.setId(serial);
-		temp.setDateCreation(lineArray[0]);
-		temp.setIndex(Integer.parseInt(lineArray[1]));
-		temp.setTitle(lineArray[3]);
-		temp.setIsDone(Boolean.parseBoolean(lineArray[4]));
-		temp.setIsOnTime(Boolean.parseBoolean(lineArray[5]));
-		temp.setPriority(lineArray[6]);
+		temp.setIndex(Integer.parseInt(lineArray[0]));
+		temp.setTitle(lineArray[2]);
+		temp.setIsDone(Boolean.parseBoolean(lineArray[3]));
+		temp.setIsOnTime(Boolean.parseBoolean(lineArray[4]));
+		temp.setPriority(lineArray[5]);
 
 		return temp;
 	}
@@ -105,22 +77,14 @@ public class ToBuffer {
 
 		// adding as Task
 		Task temp = new Task();
-		String serial = "";
 
-		if(lineArray[1].length() == 1) {
-			serial = lineArray[0] + "000" + lineArray[1];
-		} else if(lineArray[1].length() == 2) {
-			serial = lineArray[0] + "00" + lineArray[1];
-		}
-		temp.setId(serial);
-		temp.setDateCreation(lineArray[0]);
-		temp.setIndex(Integer.parseInt(lineArray[1]));
-		temp.setTitle(lineArray[3]);
-		temp.setIsDone(Boolean.parseBoolean(lineArray[6]));
-		temp.setIsOnTime(Boolean.parseBoolean(lineArray[7]));
-		temp.setPriority(lineArray[8]);
-		temp.setEndDate(lineArray[4]);
-		temp.setEndTime(lineArray[5]);
+		temp.setIndex(Integer.parseInt(lineArray[0]));
+		temp.setTitle(lineArray[2]);
+		temp.setIsDone(Boolean.parseBoolean(lineArray[5]));
+		temp.setIsOnTime(Boolean.parseBoolean(lineArray[6]));
+		temp.setPriority(lineArray[7]);
+		temp.setEndDate(lineArray[3]);
+		temp.setEndTime(lineArray[4]);
 
 		return temp;	
 	}
@@ -129,25 +93,16 @@ public class ToBuffer {
 
 		// adding as Appointment
 		Appointment temp = new Appointment();
-
-		String serial = "";
-
-		if(lineArray[1].length() == 1) {
-			serial = lineArray[0] + "000" + lineArray[1];
-		} else if(lineArray[1].length() == 2) {
-			serial = lineArray[0] + "00" + lineArray[1];
-		}
-		temp.setId(serial);
-		temp.setDateCreation(lineArray[0]);
-		temp.setIndex(Integer.parseInt(lineArray[1]));
-		temp.setTitle(lineArray[3]);
-		temp.setStartDate(lineArray[4]);
-		temp.setStartTime(lineArray[5]);
-		temp.setEndDate(lineArray[6]);
-		temp.setEndTime(lineArray[7]);
-		temp.setIsDone(Boolean.parseBoolean(lineArray[8]));
-		temp.setIsOnTime(Boolean.parseBoolean(lineArray[9]));
-		temp.setPriority(lineArray[10]);
+		
+		temp.setIndex(Integer.parseInt(lineArray[0]));
+		temp.setTitle(lineArray[2]);
+		temp.setStartDate(lineArray[3]);
+		temp.setStartTime(lineArray[4]);
+		temp.setEndDate(lineArray[5]);
+		temp.setEndTime(lineArray[6]);
+		temp.setIsDone(Boolean.parseBoolean(lineArray[7]));
+		temp.setIsOnTime(Boolean.parseBoolean(lineArray[8]));
+		temp.setPriority(lineArray[9]);
 
 		return temp;	
 	}
@@ -155,32 +110,15 @@ public class ToBuffer {
 	protected static Tentative toBufferTentative(String[] lineArray) {
 
 		Tentative temp = new Tentative();
-		String serial = "";
-
-		if(lineArray[1].length() == 1) {
-			serial = lineArray[0] + "000" + lineArray[1];
-		} else if(lineArray[1].length() == 2) {
-			serial = lineArray[0] + "00" + lineArray[1];
-		}
-		temp.setId(serial);
-		temp.setDateCreation(lineArray[0]);
-		temp.setIndex(Integer.parseInt(lineArray[1]));
-		temp.setTitle(lineArray[3]);
-		setTimeSlot(temp, lineArray[4], lineArray[5], lineArray[6], lineArray[7]);
-		temp.setIsDone(Boolean.parseBoolean(lineArray[8]));
-		temp.setIsOnTime(Boolean.parseBoolean(lineArray[9]));
-		temp.setPriority(lineArray[10]);
+		
+		temp.setIndex(Integer.parseInt(lineArray[0]));
+		temp.setTitle(lineArray[2]);
+		setTimeSlot(temp, lineArray[3], lineArray[4], lineArray[5], lineArray[6]);
+		temp.setIsDone(Boolean.parseBoolean(lineArray[7]));
+		temp.setIsOnTime(Boolean.parseBoolean(lineArray[8]));
+		temp.setPriority(lineArray[9]);
 
 		return temp;
-	}
-
-	private static void setLatestSerialNumber(String id) {
-
-		if(Id.getLatestSerialNumber().equals("")) {
-			Id.setLatestSerialNumber(id);
-		} else if(ValidityCheck.serialNumberComparator(id, Id.getLatestSerialNumber())) {
-			Id.setLatestSerialNumber(id);
-		}
 	}
 
 	private static void setTimeSlot(Tentative temp, String startDate, String startTime, String endDate, String endTime) {

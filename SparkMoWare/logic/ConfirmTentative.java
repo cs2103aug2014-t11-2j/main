@@ -7,27 +7,25 @@ public class ConfirmTentative {
 
 	private static Tentative tentativeNeeded = new Tentative();
 
-	protected static String confirmTentative(String serialId, String confirmStartDate, String confirmStartTime, 
+	protected static int confirmTentative(int serialId, String confirmStartDate, String confirmStartTime, 
 			String confirmEndDate, String confirmEndTime) {
 
 		Appointment confirmAppointment = new Appointment();
 		LinkedList<Assignment> tentatives = new LinkedList<Assignment> ();
 
-		tentatives = SearchAll.searchAll(InternalStorage.getBuffer(), serialId);
+		tentatives = SearchAll.searchAll(InternalStorage.getBuffer(), Integer.toString(serialId));
 
 		if(tentatives.size() > 0) {
 		 
 			tentativeNeeded = ((Tentative) tentatives.get(0));
 
 			confirmAppointment = findConfirmTentative(confirmStartDate, confirmStartTime, confirmEndDate, confirmEndTime);
-			String id = Id.serialNumGen();
-			confirmAppointment.setId(id);
-			confirmAppointment.setDateCreation(DateLocal.dateString());
-			confirmAppointment.setIndex(Integer.parseInt(Id.removeFrontZero(id.substring(8))));
-			Delete.delete(tentativeNeeded.getId());
+			int id = Id.serialNumGen();
+			confirmAppointment.setIndex(id);
+			Delete.delete(tentativeNeeded.getIndex());
 			Add.addAppointmentToBuffer(confirmAppointment);
 		}
-		return confirmAppointment.getId();
+		return confirmAppointment.getIndex();
 	}
 
 	private static Appointment findConfirmTentative(String confirmStartDate, String confirmStartTime, 

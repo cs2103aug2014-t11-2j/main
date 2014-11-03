@@ -15,7 +15,7 @@ public class ModifyOutput {
 			String message, int totalAssignment, int totalCompleted, int totalOnTime,
 			boolean isStats, boolean isInValid) {
 		
-		LinkedList<Appointment> returnBuffer = new LinkedList<Appointment>();
+		LinkedList<Mission> returnBuffer = new LinkedList<Mission>();
 
         if(buffer.size() > 0) {
             returnBuffer.addAll(modifyBuffer(buffer));
@@ -32,9 +32,9 @@ public class ModifyOutput {
 		return returnOutput;
 	}
 	
-	private static LinkedList<Appointment> modifyBuffer(LinkedList<Assignment> buffer) {
+	private static LinkedList<Mission> modifyBuffer(LinkedList<Assignment> buffer) {
 		
-		LinkedList<Appointment> modifiedBuffer = new LinkedList<Appointment>();
+		LinkedList<Mission> modifiedBuffer = new LinkedList<Mission>();
 		Assignment tempOriginal = new Assignment();
 		Appointment temp = new Appointment();
         ListIterator<Assignment> bufferIterator = buffer.listIterator();
@@ -44,7 +44,7 @@ public class ModifyOutput {
         	
             if(tempOriginal.getAssignType().equals(AssignmentType.APPT)) {
                 temp = ((Appointment) tempOriginal);
-                modifiedBuffer.addLast(temp);
+                modifiedBuffer.addLast(addAppt(temp));
                 
             } else if(tempOriginal.getAssignType().equals(AssignmentType.TASK)) {
                 Task tmp = ((Task) tempOriginal);
@@ -60,12 +60,28 @@ public class ModifyOutput {
 		return modifiedBuffer;
 	}
     
-    private static Appointment addTask(Task tmp) {
+	private static Mission addAppt(Appointment tmp) {
+	
+		Mission temp = new Mission();
+		
+		temp.setIndex(tmp.getIndex());
+        temp.setTitle(tmp.getTitle());
+        temp.setAssignType(AssignmentType.TASK);
+        temp.setStartDate(tmp.getStartDate());
+        temp.setStartTime(tmp.getStartTime());
+        temp.setEndDate(tmp.getEndDate());
+        temp.setEndTime(tmp.getEndTime());
+        temp.setIsDone(tmp.getIsDone());
+        temp.setIsOnTime(tmp.getIsOnTime());
+        temp.setPriority(tmp.getPriority());
         
-        Appointment temp = new Appointment();
+		return temp;
+	}
+	
+    private static Mission addTask(Task tmp) {
         
-        temp.setId(tmp.getId());
-        temp.setDateCreation(tmp.getDateCreation());
+        Mission temp = new Mission();
+        
         temp.setIndex(tmp.getIndex());
         temp.setTitle(tmp.getTitle());
         temp.setAssignType(AssignmentType.TASK);
@@ -80,12 +96,10 @@ public class ModifyOutput {
         return temp;
     }
     
-    private static Appointment addAssignment(Assignment tmp) {
+    private static Mission addAssignment(Assignment tmp) {
         
-        Appointment temp = new Appointment();
+        Mission temp = new Mission();
         
-        temp.setId(tmp.getId());
-        temp.setDateCreation(tmp.getDateCreation());
         temp.setIndex(tmp.getIndex());
         temp.setTitle(tmp.getTitle());
         temp.setAssignType(AssignmentType.ASGN);
@@ -100,9 +114,9 @@ public class ModifyOutput {
         return temp;
     }
     
-    private static LinkedList<Appointment> addTentativeSlots(Tentative tmp) {
+    private static LinkedList<Mission> addTentativeSlots(Tentative tmp) {
     	
-    	LinkedList<Appointment> tempStore = new LinkedList<Appointment>();
+    	LinkedList<Mission> tempStore = new LinkedList<Mission>();
     	
     	for(int slotsCount = 0; slotsCount < tmp.getStartDate().size(); slotsCount++) {
     		tempStore.add(addSlots(tmp, slotsCount));
@@ -110,16 +124,14 @@ public class ModifyOutput {
     	return tempStore;
     }
     
-    private static Appointment addSlots(Tentative tmp, int slotsCount) {
+    private static Mission addSlots(Tentative tmp, int slotsCount) {
     	
-    	Appointment temp = new Appointment();
+    	Mission temp = new Mission();
     	String startDate = tmp.getStartDate().get(slotsCount);
     	String startTime = tmp.getStartTime().get(slotsCount);
     	String endDate = tmp.getEndDate().get(slotsCount);
     	String endTime = tmp.getEndTime().get(slotsCount);
     	
-    	temp.setId(tmp.getId());
-        temp.setDateCreation(tmp.getDateCreation());
         temp.setIndex(tmp.getIndex());
     	temp.setTitle(tmp.getTitle());
     	temp.setAssignType(AssignmentType.TNTV);

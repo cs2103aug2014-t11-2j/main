@@ -5,8 +5,6 @@ public class Assignment {
 	/************** Data members **********************/
 
 	private String title;
-	private String id; 
-	private String dateCreation;
 	private int index;
 	private boolean isDone;
 	private boolean isOnTime;
@@ -32,16 +30,14 @@ public class Assignment {
 	/************** Constructors **********************/
 
 	public Assignment() {
-		this(DEFAULT, DEFAULT_STRING, false, false, PRIORITY_NONE,
+		this(1, DEFAULT_STRING, false, false, PRIORITY_NONE,
 				AssignmentType.ASGN);
 	}
 
-	public Assignment(String id, String title, boolean isDone,
+	public Assignment(int index, String title, boolean isDone,
 			boolean isOnTime, String priority, AssignmentType atype) {
 
-		setId(id);
-		setDateCreation(id.substring(0, 8));
-		setIndex(Integer.parseInt(Id.removeFrontZero(id.substring(8))));
+		setIndex(index);
 		setTitle(title);
 		setIsDone(isDone);
 		setIsOnTime(isOnTime);
@@ -53,10 +49,6 @@ public class Assignment {
 
 	public String getTitle() {
 		return this.title;
-	}
-
-	public String getId() {
-		return this.id;
 	}
 
 	public boolean getIsDone() {
@@ -71,10 +63,6 @@ public class Assignment {
 		return this.priority;
 	}
 
-	public String getDateCreation() {
-		return this.dateCreation;
-	}
-
 	public int getIndex() {
 		return this.index;
 	}
@@ -87,10 +75,6 @@ public class Assignment {
 
 	public void setTitle(String newTitle) {
 		this.title = newTitle;
-	}
-
-	public void setId(String newId) {
-		this.id = newId;
 	}
 
 	public void setAssignType(AssignmentType atype) {
@@ -109,10 +93,6 @@ public class Assignment {
 		this.priority = newPriority;
 	}
 
-	public void setDateCreation(String date) {
-		this.dateCreation = date;
-	}
-
 	public void setIndex(int newIndex) {
 		this.index = newIndex;
 	}
@@ -120,7 +100,7 @@ public class Assignment {
 	/**************** Overriding ************************/
 
 	public String toString() {
-		return getDateCreation() + "~" + getIndex() + "~" + getAssignType() + "~" + getTitle() + "~"
+		return getIndex() + "~" + getAssignType() + "~" + getTitle() + "~"
 				+ getIsDone() + "~" + getIsOnTime() + "~" + getPriority();
 	}
 }

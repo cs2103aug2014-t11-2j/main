@@ -10,9 +10,9 @@ public class Add {
 	 * @param refinedUserInput
 	 * @return new assignment
 	 */
-	protected static String addSomething(RefinedUserInput userInput) {
+	protected static int addSomething(RefinedUserInput userInput) {
 
-		String id = Id.serialNumGen();
+		int id = Id.serialNumGen();
 
 		if (userInput.getAssignmentType().equals(AssignmentType.APPT)) {
 
@@ -33,15 +33,12 @@ public class Add {
 		return id;
 	}
 
-	private static void addAssignment(String id, String title,
+	private static void addAssignment(int id, String title,
 			boolean isDone, String priority) {
 
 		Assignment newAssignment = new Assignment();
 
-		newAssignment.setId(id);
-		newAssignment.setDateCreation(DateLocal.dateString());
-		newAssignment.setIndex(Integer.parseInt(Id.removeFrontZero(id
-				.substring(8))));
+		newAssignment.setIndex(id);
 		newAssignment.setTitle(title);
 		newAssignment.setIsDone(isDone);
 		newAssignment.setPriority(priority);
@@ -53,13 +50,11 @@ public class Add {
 	protected static void addAssignmentToBuffer(Assignment newAssignment) {
 
 		int count = 0;
-//		Assignment assignment;
 		
 		if(InternalStorage.getLineCount() == 0) {
 			InternalStorage.addBuffer(newAssignment);
 		} else {
 			int size = InternalStorage.getLineCount();
-		//	ListIterator<Assignment> listIterate = InternalStorage.getBuffer().listIterator();
 			
 			for(int i = 0; i < size; i++) {
 				if(!InternalStorage.getBuffer().get(i).getIsDone()) {
@@ -73,16 +68,13 @@ public class Add {
 		}
 	}
 
-	private static String addAppointment(String id, String title,
+	private static String addAppointment(int id, String title,
 			String startDate, String startTime, String endDate, String endTime,
 			boolean isDone, String priority) {
 
 		Appointment newAppointment = new Appointment();
 
-		newAppointment.setId(id);
-		newAppointment.setDateCreation(DateLocal.dateString());
-		newAppointment.setIndex(Integer.parseInt(Id.removeFrontZero(id
-				.substring(8))));
+		newAppointment.setIndex(id);
 		newAppointment.setTitle(title);
 		newAppointment.setStartDate(startDate);
 		newAppointment.setStartTime(startTime);
@@ -110,14 +102,12 @@ public class Add {
 		}
 	}
 
-	private static String addTask(String id, String title, String endDate,
+	private static String addTask(int id, String title, String endDate,
 			String endTime, boolean isDone, String priority) {
 
 		Task newTask = new Task();
 
-		newTask.setId(id);
-		newTask.setDateCreation(DateLocal.dateString());
-		newTask.setIndex(Integer.parseInt(Id.removeFrontZero(id.substring(8))));
+		newTask.setIndex(id);
 		newTask.setTitle(title);
 		newTask.setEndDate(endDate);
 		newTask.setEndTime(endTime);

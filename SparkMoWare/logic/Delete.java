@@ -36,10 +36,10 @@ public class Delete {
 		return deleted;
 	}
 	
-	protected static void delete(String id) {
+	protected static void delete(int id) {
 		 
 		LinkedList<Assignment> idFound = new LinkedList<Assignment>();
-		idFound = SearchAll.searchAll(InternalStorage.getBuffer(), id);
+		idFound = SearchAll.searchAll(InternalStorage.getBuffer(), String.valueOf(id));
 		
 		if(idFound.size() > 0) {
 			int bufferPosition = InternalStorage.getBufferPosition(id);
@@ -67,7 +67,7 @@ public class Delete {
 		toDelete = SearchAll.searchByDeadline(InternalStorage.getBuffer(), deleteOnDate);
 
 		for (int toDeleteCount = 0; toDeleteCount < toDelete.size(); toDeleteCount++) {
-			delete(toDelete.get(toDeleteCount).getId());
+			delete(toDelete.get(toDeleteCount).getIndex());
 		}
 		return toDelete;
 	}

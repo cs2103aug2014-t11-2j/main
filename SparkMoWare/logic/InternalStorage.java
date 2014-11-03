@@ -9,9 +9,6 @@ public class InternalStorage {
 	private static LinkedList<Assignment> buffer = new LinkedList<Assignment>();
 	private static String filePath = "Storage.txt";
 
-	private static int counter = 0;
-	private static int size = 0;
-
 	private static Stack<FutureHistory> actionHistory = new Stack<FutureHistory>();
 	private static Stack<FutureHistory> actionFuture = new Stack<FutureHistory>();
 
@@ -21,11 +18,11 @@ public class InternalStorage {
 		return scanner;
 	}
 
-	public static int getBufferPosition(String id) {
-		counter = 0;
-		size = buffer.size();
+	public static int getBufferPosition(int id) {
+		int counter = 0;
+		int size = buffer.size();
 
-		while(counter < size && !buffer.get(counter).getId().contentEquals(id)){
+		while(counter < size && !(buffer.get(counter).getIndex() == id)) {
 			counter++;
 		}	
 		return counter;

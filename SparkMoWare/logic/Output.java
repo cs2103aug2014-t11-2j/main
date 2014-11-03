@@ -6,7 +6,7 @@ public class Output {
 	
 	/************** Data members **********************/
 	
-	private LinkedList<Appointment> returnBuffer;
+	private LinkedList<Mission> returnBuffer;
 	private String feedback;
 	private boolean isStats;
 	private int totalAssignment;
@@ -16,7 +16,7 @@ public class Output {
 	
 	/************** Constants **********************/
 	
-	private static final LinkedList<Appointment> DEFAULT_LINKEDLIST = new LinkedList<Appointment>();
+	private static final LinkedList<Mission> DEFAULT_LINKEDLIST = new LinkedList<Mission>();
 	private static final String DEFAULT_FEEDBACK = "NONE";
 	private static final int DEFAULT_INTEGER = 0;
 	
@@ -25,7 +25,7 @@ public class Output {
 		this(DEFAULT_LINKEDLIST, DEFAULT_FEEDBACK, false, DEFAULT_INTEGER, DEFAULT_INTEGER, DEFAULT_INTEGER, false);
 	}
 	
-	public Output(LinkedList<Appointment> returnBuffer, String feedback, 
+	public Output(LinkedList<Mission> returnBuffer, String feedback, 
 			boolean isStats, int totalAssignment, int totalCompleted, int totalOnTime, boolean isInvalid) {
 		
 		setReturnBuffer(returnBuffer);
@@ -39,7 +39,7 @@ public class Output {
 	
 	/**************** Accessors ***********************/
 	
-	public LinkedList<Appointment> getReturnBuffer() {
+	public LinkedList<Mission> getReturnBuffer() {
 		return this.returnBuffer;
 	}
 	
@@ -69,7 +69,7 @@ public class Output {
 	
 	/**************** Mutators ************************/
 	
-	public void setReturnBuffer(LinkedList<Appointment> returnBuffer) {
+	public void setReturnBuffer(LinkedList<Mission> returnBuffer) {
 		this.returnBuffer = returnBuffer;
 	}
 	

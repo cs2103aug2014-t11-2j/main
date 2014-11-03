@@ -23,9 +23,9 @@ public class Print {
 		}	
 	}
 
-	public static void printList(LinkedList<Appointment> list) {
+	public static void printList(LinkedList<Mission> list) {
 
-		ListIterator<Appointment> listIterate = list.listIterator();
+		ListIterator<Mission> listIterate = list.listIterator();
 
 		while(listIterate.hasNext()) {
 			System.out.println(listIterate.next().toString());

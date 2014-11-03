@@ -20,7 +20,7 @@ public class FutureHistory {
 	
 	private RefinedUserInput userInput = new RefinedUserInput();
 	
-	private String serial = "311220130001";
+	private int serial = 0;
 	
 	public CommandType getCommand() {
 		return this.command;
@@ -30,7 +30,7 @@ public class FutureHistory {
 		return this.clearedHistory;
 	}
 	
-	public String getSerial() {
+	public int getSerial() {
 		return this.serial;
 	}
 	
@@ -73,7 +73,7 @@ public class FutureHistory {
 		this.clearedHistory.addAll(history);
 	}
 	
-	public void setSerial(String serialNumber) {
+	public void setSerial(int serialNumber) {
 		this.serial = serialNumber;
 	}
 	

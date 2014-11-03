@@ -11,14 +11,14 @@ public class SparkMoVare {
 	protected static final int SYSTEM_EXIT_NO_ERROR = 0;
 	protected static final int SYSTEM_EXIT_ERROR = -1;
 	protected static final boolean IS_NOT_STATS_OR_INVALID = false;
-/*
+
 	public static void main(String[] args) {
 	
 		Print.printToUser(Message.WELCOME);
-			Storage.openFile(InternalStorage.getFilePath(),Id.getLatestSerialNumber(), InternalStorage.getBuffer());
+			Storage.openFile(InternalStorage.getFilePath(), InternalStorage.getBuffer());
 			toDoManager();
 	}
-*/
+
 	public static void toDoManager() {
 
 		Output returnOutput = new Output();
@@ -37,7 +37,7 @@ public class SparkMoVare {
 	} 
 
 	public static Output storageSetup() {
-		Storage.openFile(InternalStorage.getFilePath(),Id.getLatestSerialNumber(), InternalStorage.getBuffer());
+		Storage.openFile(InternalStorage.getFilePath(), InternalStorage.getBuffer());
 		
 		return executeCommand("Display");
 	}
@@ -47,7 +47,7 @@ public class SparkMoVare {
 		FutureHistory futureHistory = new FutureHistory();
 		Output returnOutput = new Output();
 		RefinedUserInput userInput = new RefinedUserInput();
-		String id;
+		int id;
 		int position;
 
 		userInput = Interpreter.reader(userStringInput);
@@ -75,9 +75,9 @@ public class SparkMoVare {
 			break;
 
 		case EDIT:
-			position = InternalStorage.getBufferPosition(userInput.getId());
+			position = InternalStorage.getBufferPosition(userInput.getIndex());
 	
-			futureHistory = RedoUndoUpdate.updateEdit(userInput.getId(), position);
+			futureHistory = RedoUndoUpdate.updateEdit(userInput.getIndex(), position);
 
 			InternalStorage.pushHistory(futureHistory);
 
@@ -90,13 +90,13 @@ public class SparkMoVare {
 			break;
 
 		case DELETE:
-			position = InternalStorage.getBufferPosition(userInput.getId());
+			position = InternalStorage.getBufferPosition(userInput.getIndex());
 
 			futureHistory = RedoUndoUpdate.updateDelete(position);
 
 			InternalStorage.pushHistory(futureHistory);
 
-			Delete.delete(userInput.getId());
+			Delete.delete(userInput.getIndex());
 
 			returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
 					Message.DELETED, InternalStorage.getLineCount(), Statistic.getCompleted(), 
@@ -118,11 +118,11 @@ public class SparkMoVare {
 			break;
 
 		case CONFIRM:
-			position = InternalStorage.getBufferPosition(userInput.getId());
+			position = InternalStorage.getBufferPosition(userInput.getIndex());
 
 			Tentative tentative = ((Tentative) InternalStorage.getBuffer().get(position)); 
 
-			id = ConfirmTentative.confirmTentative(userInput.getId(), userInput.getStartDate(),
+			id = ConfirmTentative.confirmTentative(userInput.getIndex(), userInput.getStartDate(),
 					userInput.getStartTime(), userInput.getEndDate(), userInput.getEndTime());
 
 			futureHistory = RedoUndoUpdate.updateConfirm(tentative, id);
@@ -179,7 +179,7 @@ public class SparkMoVare {
 			break;
 
 		case DONE:
-			id = userInput.getId();
+			id = userInput.getIndex();
 
 			position = Edit.completeAssignment(id);
 

@@ -37,7 +37,7 @@ public class UndoTask {
 		}
 	}
 	
-	private static void undoAdd(String id) {
+	private static void undoAdd(int id) {
 	
 		FutureHistory historyFuture = new FutureHistory();
 		position = InternalStorage.getBufferPosition(id);
@@ -47,7 +47,7 @@ public class UndoTask {
 		Delete.delete(id);
 	}
 	
-	private static void undoTentative(String id) {
+	private static void undoTentative(int id) {
 		
 		FutureHistory historyFuture = new FutureHistory();
 		position = InternalStorage.getBufferPosition(id);
@@ -57,7 +57,7 @@ public class UndoTask {
 		Delete.delete(id);
 	}
 	
-	private static void undoDone(String id, int position) {
+	private static void undoDone(int id, int position) {
 		
 		FutureHistory historyFuture = new FutureHistory();
 		int newPosition = InternalStorage.getBufferPosition(id);
@@ -96,23 +96,23 @@ public class UndoTask {
 		
 		FutureHistory historyFuture = new FutureHistory();
 		position = InternalStorage.getBufferPosition(futureHistory.getSerial());
-		String id;
+		int id;
 		
 		if(futureHistory.getAssignType().equals(AssignmentType.ASGN)) {
 			Add.addAssignmentToBuffer(futureHistory.getAssignment());
-			id = futureHistory.getAssignment().getId();
+			id = futureHistory.getAssignment().getIndex();
 			
 		} else if(futureHistory.getAssignType().equals(AssignmentType.APPT)) {
 			Add.addAppointmentToBuffer(futureHistory.getAppointment());
-			id = futureHistory.getAppointment().getId();
+			id = futureHistory.getAppointment().getIndex();
 			
 		} else if(futureHistory.getAssignType().equals(AssignmentType.TASK)) {
 			Add.addTaskToBuffer(futureHistory.getTask());
-			id = futureHistory.getTask().getId();
+			id = futureHistory.getTask().getIndex();
 			
 		} else {
 			SetTentative.addTentativeToBuffer(futureHistory.getTentative());
-			id = futureHistory.getTentative().getId();
+			id = futureHistory.getTentative().getIndex();
 		}
 		historyFuture = RedoUndoUpdate.updateAdd(id);
 		
@@ -136,7 +136,7 @@ public class UndoTask {
 		
 		FutureHistory historyFuture = new FutureHistory();
 		Appointment appointment = ((Appointment) InternalStorage.getBuffer().get(position));
-		historyFuture = RedoUndoUpdate.updateConfirmBack(appointment, tentative.getId());
+		historyFuture = RedoUndoUpdate.updateConfirmBack(appointment, tentative.getIndex());
 		
 		InternalStorage.getBuffer().remove(position);
 		SetTentative.addTentativeToBuffer(tentative);

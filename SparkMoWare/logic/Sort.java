@@ -37,6 +37,7 @@ public class Sort {
 
 		} else if(sortType.equalsIgnoreCase("SIN")) {
 			sortedList = insertionSortId(buffer);
+			
 		} else if(sortType.equalsIgnoreCase("important")){
 			sortedList = insertionSortPriority(buffer);
 		}
@@ -90,8 +91,8 @@ public class Sort {
 
 		for(sortedListCount = 0; sortedListCount < idListSorted.size(); sortedListCount++) {
 
-			if(Comparator.serialNumberComparator(idListSorted.get(sortedListCount).getId(), 
-					buffer.get(listCount).getId())) {
+			if(Comparator.serialNumberComparator(idListSorted.get(sortedListCount).getIndex(), 
+					buffer.get(listCount).getIndex())) {
 
 				idListSorted.add(sortedListCount, buffer.get(listCount));
 				break;
@@ -118,11 +119,5 @@ public class Sort {
 			}
 		}
 		return titleListSorted;
-	}
-
-	protected static LinkedList<Assignment> insertionSortDeadline(LinkedList<Assignment> buffer) {
-		LinkedList<Assignment> UndoListSort = new LinkedList<Assignment>();
-
-		return UndoListSort;
 	}
 }

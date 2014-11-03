@@ -35,7 +35,7 @@ public class Filter {
 		
 		LinkedList<Assignment> filterList = new LinkedList<Assignment>();
 		
-		if(type.matches("[0-9]+")) {
+		if(type.contains("/")) {
 			
 			if(type.length() == FORMAT_DEADLINE) {
 				filterList = SearchAll.searchByDeadline(buffer, type);

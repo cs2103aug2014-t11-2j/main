@@ -10,7 +10,7 @@ public class RefinedUserInput {
 	/************** Data members **********************/
 	
 	private CommandType command;
-	private String id;
+	private int index;
 	private String title;
 	private String startDate;
 	private String startTime;
@@ -28,22 +28,23 @@ public class RefinedUserInput {
 	private Vector<String> tentativeDates;
 	private Vector<String> tentativeTimes;
 	
+	private static final String DEFAULT_CONTENT = "default";
+	private static final String DEFAULT_PRIORITY = "NIMPT";
 	/************** Constructors **********************/
 	
 	public RefinedUserInput() {
-		final String defaultContent  = "default";
-		final String defaultPriority = "NIMPT";
+		
 		setCommandType(EnumGroup.CommandType.DEFAULT);
-		setId(defaultContent);
-		setTitle(defaultContent);
-		setStartDate(defaultContent);
-		setStartTime(defaultContent);
-		setEndDate(defaultContent);
-		setEndTime(defaultContent);
+		setIndex(0);
+		setTitle(DEFAULT_CONTENT);
+		setStartDate(DEFAULT_CONTENT);
+		setStartTime(DEFAULT_CONTENT);
+		setEndDate(DEFAULT_CONTENT);
+		setEndTime(DEFAULT_CONTENT);
 		setAssignmentType(AssignmentType.DEFAULT);
-		setPriority(defaultPriority);
+		setPriority(DEFAULT_PRIORITY);
 		setIsNewTentative(false);
-		setSpecialContent(defaultContent);
+		setSpecialContent(DEFAULT_CONTENT);
 	}
 	
 /**************** Accessors ***********************/
@@ -52,8 +53,8 @@ public class RefinedUserInput {
 		return this.command;
 	}
 	
-	public String getId() {
-		return this.id;
+	public int getIndex() {
+		return this.index;
 	}
 	
 	public String getTitle() {
@@ -106,8 +107,8 @@ public class RefinedUserInput {
 		this.command = command;
 	}
 	
-	protected void setId(String id) {
-		this.id = id;
+	protected void setIndex(int index) {
+		this.index = index;
 	}
 	
 	protected void setTitle(String title) {
@@ -157,7 +158,7 @@ public class RefinedUserInput {
 	/**************** Overriding ************************/
 	
 	public String toString() {
-		return getCommandType() + "~" + getId() + "~" + getTitle() + "~" + getStartDate() + "~" + getStartTime() + "~"
+		return getCommandType() + "~" + getIndex() + "~" + getTitle() + "~" + getStartDate() + "~" + getStartTime() + "~"
 				+ getEndDate() + "~" + getEndTime() + "~" + getAssignmentType() + "~" + getPriority( )+ "~"
 				+ getIsNewTentative() + "~" + getSpecialContent() + "~" + getTentativeDates() + "~" + getTentativeTimes();
 	}

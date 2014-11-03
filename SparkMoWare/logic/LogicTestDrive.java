@@ -11,7 +11,7 @@ public class LogicTestDrive {
 		return addSomething(userInput);
 	}
 
-	public static boolean serialNumberComparator(String idA, String idB){
+	public static boolean serialNumberComparator(int idA, int idB){
 		return Comparator.serialNumberComparator(idA, idB);
 	}
 
@@ -39,7 +39,7 @@ public class LogicTestDrive {
 		Delete.deleteAll(duration, startDate, endDate);
 	}
 
-	public static void delete(String id){
+	public static void delete(int id){
 		Delete.delete(id);
 	}
 
@@ -48,7 +48,7 @@ public class LogicTestDrive {
 	}
 
 	public static String removeFrontZero(String input) {
-		return Id.removeFrontZero(input);
+		return Comparator.removeFrontZero(input);
 	}
 
 	public static Output returnModification(LinkedList<Assignment> buffer,

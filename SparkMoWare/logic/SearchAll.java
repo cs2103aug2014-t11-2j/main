@@ -5,7 +5,6 @@ import logic.Assignment.AssignmentType;
 
 public class SearchAll {
 
-	private static final int ID_FORMAT_LENGTH = 12;
 	private static final int TIME_FORMAT_LENGTH = 4;
 	private static final int DATE_FORMAT_LENGTH = 8;
 
@@ -24,8 +23,8 @@ public class SearchAll {
 
 		LinkedList<Assignment> stringsFound = new LinkedList<Assignment>();
 
-		if(userInput.length() == ID_FORMAT_LENGTH) {
-			stringsFound = searchById(buffer, userInput);
+		if(userInput.matches("\\d+")) {
+			stringsFound = searchById(buffer, Integer.parseInt(userInput));
 
 		} else if(userInput.equalsIgnoreCase("important")) {
 			stringsFound = searchByPriority(buffer);
@@ -45,7 +44,7 @@ public class SearchAll {
 		} else if(userInput.length() == TIME_FORMAT_LENGTH && userInput.matches("\\d+")) {
 			stringsFound = searchByTime(buffer, userInput);
 
-		} else if(userInput.length() == DATE_FORMAT_LENGTH && userInput.matches("\\d+")) {
+		} else if(userInput.length() == DATE_FORMAT_LENGTH && userInput.contains("/")) {
 			stringsFound = searchByDate(buffer, userInput);
 
 		} else if(userInput.length() == IS_COMPLETED && userInput.equalsIgnoreCase("completed")) {
@@ -60,7 +59,6 @@ public class SearchAll {
 		} else {
 			stringsFound = searchByWords(buffer, userInput);
 		}
-
 		if(stringsFound.isEmpty()) {
 			return stringsFound;
 		} else {
@@ -172,13 +170,13 @@ public class SearchAll {
 		return tentativeFound;
 	}
 
-	private static LinkedList<Assignment> searchById(LinkedList<Assignment> buffer, String searchId) {
+	private static LinkedList<Assignment> searchById(LinkedList<Assignment> buffer, int searchId) {
 
 		LinkedList<Assignment> idFound = new LinkedList<Assignment>();
 
 		for(listCount = 0; listCount < buffer.size(); listCount++) {
 
-			if(buffer.get(listCount).getId().equals(searchId)) {
+			if(buffer.get(listCount).getIndex() == searchId) {
 				idFound.add(buffer.get(listCount));
 			}
 		}

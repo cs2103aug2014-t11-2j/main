@@ -6,7 +6,6 @@ public class Appointment extends Task {
 	
 	private String startDate;
 	private String startTime;
-	private int numAppointment = 0;
 	
 	/************** Constants **********************/
 	
@@ -25,7 +24,6 @@ public class Appointment extends Task {
 		setStartDate(startDate);
 		setStartTime(startTime);
 		setAssignType(AssignmentType.APPT);
-		numAppointment++;
 	}
 
 	/**************** Accessors ***********************/
@@ -38,10 +36,6 @@ public class Appointment extends Task {
 		return this.startTime;
 	}
 	
-	public int getNumAppointment() {
-		return this.numAppointment;
-	}
-	
 	/**************** Mutators ************************/
 	
 	public void setStartDate(String newStartDate) {
@@ -51,15 +45,11 @@ public class Appointment extends Task {
 	public void setStartTime(String newStartTime) {
 		this.startTime = newStartTime;
 	}
-	
-	public void setNumAppointment(int numAppointment) {
-		this.numAppointment = numAppointment;
-	}
 
 	/**************** Overriding ************************/
 	
 	public String toString() {
-		return getDateCreation() + "~" + getIndex() + "~" + getAssignType() + "~" + getTitle() + "~" 
+		return getIndex() + "~" + getAssignType() + "~" + getTitle() + "~" 
 				+ getStartDate() + "~" + getStartTime() + "~" + getEndDate() + "~" + getEndTime() + "~" 
 				+ getIsDone() +	"~" + getIsOnTime() + "~" + getPriority();
 	}

@@ -6,15 +6,13 @@ import logic.Assignment.AssignmentType;
 
 public class SetTentative {
 
-	public static String addTentative(String title, Vector<String> dates, Vector<String> times) {
+	public static int addTentative(String title, Vector<String> dates, Vector<String> times) {
 
 		Tentative newTentative = new Tentative();
 
-		String tentativeIdGenerated = Id.serialNumGen();
+		int tentativeIdGen = Id.serialNumGen();
 
-		newTentative.setId(tentativeIdGenerated);
-		newTentative.setDateCreation(tentativeIdGenerated.substring(0, 8));
-		newTentative.setIndex(8);
+		newTentative.setIndex(tentativeIdGen);
 		newTentative.setTitle(title);
 		newTentative.setPriority(Assignment.PRIORITY_NONE);
 		
@@ -29,14 +27,14 @@ public class SetTentative {
 		}
 		InternalStorage.addBuffer(newTentative);
 		
-		return tentativeIdGenerated;
+		return tentativeIdGen;
 	}
 	
 	protected static void setToTentative(Appointment newAppointment) {
 
 		Tentative newTentative = new Tentative();
 
-		newTentative.setId(newAppointment.getId());
+		newTentative.setIndex(newAppointment.getIndex());
 		newTentative.setTitle(newAppointment.getTitle());
 		newTentative.addStartDate(newAppointment.getStartDate());
 		newTentative.addStartTime(newAppointment.getStartTime());
