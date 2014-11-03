@@ -10,7 +10,7 @@ public class HotkeyHintManager {
 		Text text = new Text(shell, SWT.CENTER);
 		text.setEditable(false);
 		text.setEnabled(false);
-		text.setBounds(0, 615, 1008, 21);
+		text.setBounds(0, 615, 808, 21);
 		//formToolkit.adapt(text, true, true);
 		text.setText("F1: Help | F5: Refresh Interface | F6: Play/Stop Music | UP/DOWN Arrow: Command History");
 		

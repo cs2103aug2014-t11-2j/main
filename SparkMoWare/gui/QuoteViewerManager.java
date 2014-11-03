@@ -11,7 +11,7 @@ public class QuoteViewerManager {
 		quoteViewer.setFont(SWTResourceManager.getFont("Segoe UI", 11, SWT.NORMAL));
 		quoteViewer.setEnabled(false);
 		quoteViewer.setEditable(false);
-		quoteViewer.setBounds(43, 569, 921, 35);
+		quoteViewer.setBounds(43, 569, 765, 35);
 		
 		return quoteViewer;
 	}

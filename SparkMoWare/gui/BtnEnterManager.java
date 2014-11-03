@@ -8,7 +8,7 @@ public class BtnEnterManager {
 	
 	protected static Button butEnterSetup(Shell shell) {
 		Button btnEnter = new Button(shell, SWT.NONE);
-		btnEnter.setBounds(868, 527, 96, 26);
+		btnEnter.setBounds(700, 527, 96, 26);
 		btnEnter.setText("Enter");
 		return btnEnter;
 	}

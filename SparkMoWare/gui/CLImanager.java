@@ -8,7 +8,7 @@ public class CLImanager {
 	
 	protected static Text cliSetup(Shell shell) {
 		Text cli = new Text(shell, SWT.NONE);
-		cli.setBounds(53, 527, 809, 26);
+		cli.setBounds(53, 527, 610, 23);
 		return cli;
 	}
 

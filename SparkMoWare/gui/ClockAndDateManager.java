@@ -9,11 +9,11 @@ public class ClockAndDateManager {
 	protected static Text clockDisplaySetup(Shell shell) {
 		Text clockDisplay = new Text(shell, SWT.BORDER | SWT.CENTER);
 		clockDisplay.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
-		clockDisplay.setFont(SWTResourceManager.getFont("Segoe UI", 16, SWT.NORMAL));
+		clockDisplay.setFont(SWTResourceManager.getFont("Segoe UI", 13, SWT.NORMAL));
 		clockDisplay.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		clockDisplay.setEnabled(false);
 		clockDisplay.setEditable(false);
-		clockDisplay.setBounds(344, 38, 310, 52);
+		clockDisplay.setBounds(280, 30, 310, 52);
 		return clockDisplay;
 	}
 	

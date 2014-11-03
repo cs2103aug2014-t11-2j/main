@@ -45,8 +45,8 @@ public class MainController {
 
 	public static final String SONGNAME = "soundtrack.mp3";
 
-	private static DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
-	private static DateFormat dateFormat = new SimpleDateFormat("E, d MMM yyyy");
+	private static DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss ");
+	private static DateFormat dateFormat = new SimpleDateFormat("EEEE, d MMM yyyy");
 	private static Date date = new Date();
 	private static Shell shell;
 	static Timer clockUpdater = new Timer("clockUpdater", true);
@@ -82,7 +82,7 @@ public class MainController {
 	public MainController(Display display) {
 
 		shell = new Shell(display);
-		shell.setSize(1025, 681);
+		shell.setSize(808, 681);
 		Image background = SWTResourceManager.getImage(MainController.class, "/resource/image/wallpaper1.jpg");
 		shell.setBackgroundImage(background);
 		shell.setText("SparkMoVare");
@@ -95,14 +95,14 @@ public class MainController {
 		quoteViewer = QuoteViewerManager.quoteViewerSetup(shell);
 		feedback = FeedbackManager.feedbackSetup(shell);
 		clockDisplay = ClockAndDateManager.clockDisplaySetup(shell);
-		dateDisplay = ClockAndDateManager.dateDisplaySetup(shell);	
+		//dateDisplay = ClockAndDateManager.dateDisplaySetup(shell);	
 		tray = TrayIconManager.trayIconSetup(shell, display);
 
 		//initial loading
 		TablerLoader.populateTable(table,SparkMoVare.storageSetup().getReturnBuffer());
 		quoteViewer.setText(QuoteLib.getQuote());
 		clockDisplay.setText(timeFormat.format(date));
-		dateDisplay.setText(dateFormat.format(date));
+		//dateDisplay.setText(dateFormat.format(date));
 
 		// detecting MP3 and update option
 		try {
@@ -123,7 +123,7 @@ public class MainController {
 		shell.addControlListener(new ControlAdapter() {
 			@Override
 			public void controlResized(ControlEvent e) {
-				shell.setSize(1025, 681);	// force aspect so user cannot resize	
+				shell.setSize(870, 681);	// force aspect so user cannot resize	
 			}
 		});
 
@@ -221,8 +221,8 @@ public class MainController {
 				public void run()
 				{	
 					date=new Date();
-					clockDisplay.setText(timeFormat.format(date).toString());
-					dateDisplay.setText(dateFormat.format(date).toString());
+					clockDisplay.setText(dateFormat.format(date).toString()+", "+ timeFormat.format(date).toString());
+					//dateDisplay.setText(dateFormat.format(date).toString());
 				}
 			});  
 		}

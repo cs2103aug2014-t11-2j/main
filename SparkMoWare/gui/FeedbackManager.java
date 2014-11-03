@@ -10,7 +10,7 @@ public class FeedbackManager {
 		Text feedback = new Text(shell, SWT.BORDER | SWT.CENTER);
 		feedback.setEnabled(false);
 		feedback.setEditable(false);
-		feedback.setBounds(344, 96, 310, 26);
+		feedback.setBounds(280, 96, 310, 26);
 		return feedback;
 	}
 
