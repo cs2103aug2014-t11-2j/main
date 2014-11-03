@@ -49,7 +49,7 @@ public class StatsPopup {
 		progressBar.setBounds(86, 83, 202, 21);
 		progressBar.setMinimum(0);
 		progressBar.setMaximum(100);
-		progressBar.setSelection((int)(((float)onTimeTask/totalTask)*100));
+		progressBar.setSelection(percentageOntime);
 		
 		table = new Table(popup, SWT.BORDER | SWT.FULL_SELECTION);
 		table.setBounds(55, 110, 329, 79);
@@ -66,7 +66,7 @@ public class StatsPopup {
 		Percentage.setBounds(294, 83, 52, 21);
 		Percentage.setText(Integer.toString(percentageOntime)+"%");
 		
-		txtUserStatistics = new Text(popup, SWT.BORDER | SWT.READ_ONLY);
+		txtUserStatistics = new Text(popup, SWT.BORDER | SWT.READ_ONLY| SWT.CENTER);
 		txtUserStatistics.setFont(SWTResourceManager.getFont("Showcard Gothic", 16, SWT.BOLD));
 		txtUserStatistics.setText("User Statistics");
 		txtUserStatistics.setBounds(86, 32, 251, 33);
