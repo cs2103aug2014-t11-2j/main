@@ -124,7 +124,7 @@ public class ParserAllTest {
 		assertEquals("add  0900  0800 work", ParserTestDriver.testReplaceAllDate("add 09/08/1223 0900 2/3/2345 0800 work"));
 		
 		//replaceAllDate negative test 1
-		//assertEquals("add 0900 0800", ParserTestDriver.testReplaceAllDate("add 0900 0800"));
+		assertEquals("add 0900 0800", ParserTestDriver.testReplaceAllDate("add 0900 0800"));
 		
 		/**************************/
 		

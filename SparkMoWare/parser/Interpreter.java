@@ -65,7 +65,9 @@ public class Interpreter {
 			
 		case DONE:
 			return RefineInputWithId.inputIsFinish(userInput);
-			
+		/*
+		 * potential exception catching for invalid case
+		 */
 		case INVALID:
 			return new RefinedUserInput();
 

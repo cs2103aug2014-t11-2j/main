@@ -56,7 +56,7 @@ public class Determine {
 		} else if (finishMatcher.find()) {
 			return EnumGroup.CommandType.DONE;
 		} else {
-			return EnumGroup.CommandType.INVALID;
+			return EnumGroup.CommandType.INVALID; //exception handling for invalid case
 		}		
 	}
 	

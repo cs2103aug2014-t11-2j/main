@@ -79,11 +79,12 @@ public class ParserDateLocal {
 		}
 		
 		if(n > 1) {
+			assert(n==2);
 			return true;
 		} else {
 			return false;
-			}
 		}
+	}
 	
 	protected static String extractStartDate(String userInput) {
 		userInput = ParserIdLocal.removeId(userInput);
