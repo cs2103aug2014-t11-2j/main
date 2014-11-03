@@ -464,7 +464,7 @@ public class Comparator {
 							checkAppointment.getEndDate()) == SAME &&
 							Comparator.dateComparator(newAppointment.getStartDate(), 
 									checkAppointment.getStartDate()) == SAME) {
-
+						
 						isClashing = isClashingTime(newAppointment, checkAppointment);
 					} else {
 						isClashing = isClashingDate(newAppointment, checkAppointment);
@@ -484,16 +484,19 @@ public class Comparator {
 
 		if(dateComparator(checkAppointment.getStartDate(), newAppointment.getStartDate()) == LARGER &&
 				dateComparator(checkAppointment.getStartDate(), newAppointment.getEndDate()) == SAME) {
-			isClashing = false;
+			isClashing = isClashingTime2(newAppointment, checkAppointment);
+			
 		} else if(dateComparator(checkAppointment.getStartDate(), newAppointment.getStartDate()) == LARGER &&
 				dateComparator(checkAppointment.getStartDate(), newAppointment.getEndDate()) == LARGER) {
 			isClashing = false;
+			
 		} else if(dateComparator(checkAppointment.getEndDate(), newAppointment.getEndDate()) == SMALLER &&
 				dateComparator(checkAppointment.getEndDate(), newAppointment.getStartDate()) == SMALLER) {
 			isClashing = false;
+			
 		} else if(dateComparator(checkAppointment.getEndDate(), newAppointment.getEndDate()) == SMALLER &&
 				dateComparator(checkAppointment.getEndDate(), newAppointment.getStartDate()) == SAME) {
-			isClashing = false;
+			isClashing = isClashingTime2(checkAppointment, newAppointment);
 		} 
 		return isClashing;
 	}
@@ -505,7 +508,7 @@ public class Comparator {
 		if(timeComparator(checkAppointment.getStartTime(), newAppointment.getStartTime()) == LARGER &&
 				timeComparator(checkAppointment.getStartTime(), newAppointment.getEndTime()) == SAME) {
 			isClashing = false;
-		} else if(timeComparator(checkAppointment.getStartTime(), newAppointment.getStartTime()) == LARGER ||
+		} else if(timeComparator(checkAppointment.getStartTime(), newAppointment.getStartTime()) == LARGER &&
 				timeComparator(checkAppointment.getStartTime(), newAppointment.getEndTime()) == LARGER) {
 			isClashing = false;
 		} else if(timeComparator(checkAppointment.getEndTime(), newAppointment.getEndTime()) == SMALLER &&
@@ -515,6 +518,17 @@ public class Comparator {
 				timeComparator(checkAppointment.getEndTime(), newAppointment.getStartTime()) == SAME) {
 			isClashing = false;
 		} 
+		return isClashing;
+	}
+	
+	private static boolean isClashingTime2(Appointment newAppointment, Appointment checkAppointment) {
+		
+		boolean isClashing = true;
+		
+		if(timeComparator(checkAppointment.getStartTime(), newAppointment.getEndTime()) == SAME ||
+				timeComparator(checkAppointment.getStartTime(), newAppointment.getEndTime()) == LARGER) {
+			isClashing = false;
+		}
 		return isClashing;
 	}
 }

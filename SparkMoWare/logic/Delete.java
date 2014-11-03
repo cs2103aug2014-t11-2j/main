@@ -42,9 +42,8 @@ public class Delete {
 		idFound = SearchAll.searchAll(InternalStorage.getBuffer(), id);
 		
 		if(idFound.size() > 0) {
-			
 			int bufferPosition = InternalStorage.getBufferPosition(id);
-						
+			
 			InternalStorage.getBuffer().remove(bufferPosition);
 		}
 	}

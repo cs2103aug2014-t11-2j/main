@@ -1,6 +1,5 @@
 /gui/
 /junit/
-/logic/
-/Logger/
-/storage/
 /parser/
+/storage/
+/logic/

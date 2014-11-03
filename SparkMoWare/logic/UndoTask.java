@@ -12,12 +12,12 @@ public class UndoTask {
 		
 		FutureHistory futureHistory = InternalStorage.popHistory();
 		
-		if(futureHistory.getCommand().equals(CommandType.ADD) ||
-				futureHistory.getCommand().equals(CommandType.TENTATIVE)) {
+		if(futureHistory.getCommand().equals(CommandType.ADD)) {
 			undoAdd(futureHistory.getSerial());
 			
 		} else if(futureHistory.getCommand().equals(CommandType.DONE)) {
-			undoDone(futureHistory.getSerial());
+			position = futureHistory.getPosition();
+			undoDone(futureHistory.getSerial(), position);
 			
 		} else if(futureHistory.getCommand().equals(CommandType.EDIT)) {
 			undoEdit(futureHistory);
@@ -29,7 +29,9 @@ public class UndoTask {
 			LinkedList<Assignment> buffer = futureHistory.getClearedHistory();
 			undoClear(buffer);
 			
-		} else {
+		} else if(futureHistory.getCommand().equals(CommandType.TENTATIVE)) {
+			undoTentative(futureHistory.getSerial());
+		}else {
 			position = InternalStorage.getBufferPosition(futureHistory.getSerial());
 			undoConfirm(position, futureHistory.getTentative());
 		}
@@ -45,14 +47,25 @@ public class UndoTask {
 		Delete.delete(id);
 	}
 	
-	private static void undoDone(String id) {
+	private static void undoTentative(String id) {
 		
 		FutureHistory historyFuture = new FutureHistory();
 		position = InternalStorage.getBufferPosition(id);
 		
-		InternalStorage.getBuffer().get(position).setIsDone(false);
+		historyFuture = RedoUndoUpdate.updateDeleteTentative(position);
+		InternalStorage.pushFuture(historyFuture);
+		Delete.delete(id);
+	}
+	
+	private static void undoDone(String id, int position) {
 		
-		historyFuture = RedoUndoUpdate.updateDone(id);
+		FutureHistory historyFuture = new FutureHistory();
+		int newPosition = InternalStorage.getBufferPosition(id);
+		
+		InternalStorage.getBuffer().get(newPosition).setIsDone(false);
+		InternalStorage.addBuffer(position, InternalStorage.getBuffer().remove(newPosition));
+		historyFuture = RedoUndoUpdate.updateDone(id, 0);
+		
 		InternalStorage.pushFuture(historyFuture);
 	}
 	

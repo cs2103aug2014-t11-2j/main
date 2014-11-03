@@ -34,21 +34,29 @@ public class RedoUndoUpdate {
 		return futureHistory;
 	}
 	
+	protected static FutureHistory updateDeleteTentative(int position) {
+		
+		updateAssignment(position);
+		futureHistory.setCommand(CommandType.TENTATIVE);
+		
+		return futureHistory;
+	}
+	
 	private static void updateAssignment(int position) {
 		
 		if(InternalStorage.getBuffer().get(position).getAssignType().equals(AssignmentType.ASGN)) {
 			futureHistory.setAssignment(InternalStorage.getBuffer().get(position));
 			futureHistory.setAssignType(AssignmentType.ASGN);
 			
-		} else if(InternalStorage.getBuffer().get(position).getAssignType().equals(AssignmentType.APPT)) {
-			Appointment appointment = (Appointment) InternalStorage.getBuffer().get(position);
-			futureHistory.setAppointment(appointment);
-			futureHistory.setAssignType(AssignmentType.APPT);
-			
 		} else if(InternalStorage.getBuffer().get(position).getAssignType().equals(AssignmentType.TASK)) {
 			Task task = (Task) InternalStorage.getBuffer().get(position);
 			futureHistory.setTask(task);
 			futureHistory.setAssignType(AssignmentType.TASK);
+			
+		} else if(InternalStorage.getBuffer().get(position).getAssignType().equals(AssignmentType.APPT)) {
+			Appointment appointment = (Appointment) InternalStorage.getBuffer().get(position);
+			futureHistory.setAppointment(appointment);
+			futureHistory.setAssignType(AssignmentType.APPT);
 			
 		} else {
 			Tentative tentative = (Tentative) InternalStorage.getBuffer().get(position);
@@ -91,9 +99,10 @@ public class RedoUndoUpdate {
 		return futureHistory;
 	}
 	
-	protected static FutureHistory updateDone(String id) {
+	protected static FutureHistory updateDone(String id, int position) {
 		
 		futureHistory.setCommand(CommandType.DONE);
+		futureHistory.setPosition(position);
 		futureHistory.setSerial(id);
 
 		return futureHistory;

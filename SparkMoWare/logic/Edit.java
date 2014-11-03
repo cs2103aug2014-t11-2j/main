@@ -284,7 +284,7 @@ public class Edit {
 		}
 	}
 	
-	protected static void completeAssignment(String id) {
+	protected static int completeAssignment(String id) {
 		
 		int bufferPosition;
 		
@@ -294,5 +294,7 @@ public class Edit {
 		
 		InternalStorage.addBufferFirst(InternalStorage.getBuffer().get(bufferPosition));
 		InternalStorage.getBuffer().remove(bufferPosition + 1);
+		
+		return bufferPosition;
 	}
 }
