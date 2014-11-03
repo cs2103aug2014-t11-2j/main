@@ -34,7 +34,7 @@ public class RedoTask {
 
 		} else {
 			position = InternalStorage.getBufferPosition(futureHistory.getSerial());
-			redoConfirm(position, futureHistory.getTentative());
+			redoConfirm(position, futureHistory.getAppointment());
 		}
 	}
 	
@@ -136,14 +136,14 @@ public class RedoTask {
 		InternalStorage.pushHistory(historyFuture);
 	}
 
-	private static void redoConfirm(int position, Tentative tentative) {
+	private static void redoConfirm(int position, Appointment appointment) {
 
 		FutureHistory historyFuture = new FutureHistory();
-		Appointment appointment = ((Appointment) InternalStorage.getBuffer().get(position));
-		historyFuture = RedoUndoUpdate.updateConfirmBack(appointment, tentative.getId());
+		
+		historyFuture = RedoUndoUpdate.updateConfirmBack(appointment, appointment.getId());
 
 		InternalStorage.getBuffer().remove(position);
-		SetTentative.addTentativeToBuffer(tentative);
+		Add.addAppointmentToBuffer(appointment);
 
 		InternalStorage.pushHistory(historyFuture);
 	}
