@@ -93,16 +93,18 @@ public class ParserDateLocal {
 		Matcher dateMatcher = ParserPatternLocal.datePattern.matcher(userInput);
 		String startDate = new String();
 		String temp = new String();
+		String group2 = dateMatcher.group(2);
+		String group3 = dateMatcher.group(3);
 		
 		if(dateMatcher.find()) {
 			
-				if(dateMatcher.group(2).length() !=2) {
+				if(group2.length() !=2) {
 				startDate = "0".concat(dateMatcher.group(2));
 			} else {
 				startDate = dateMatcher.group(2);
 			}
 			
-			if(dateMatcher.group(3).length() !=2) {
+			if(group3.length() !=2) {
 				temp = "0".concat(dateMatcher.group(3));
 				startDate = startDate.concat(temp);
 			} else {

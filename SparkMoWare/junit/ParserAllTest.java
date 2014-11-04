@@ -4,6 +4,9 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import parser.Determine;
+import parser.InputIsEdit;
+import parser.EnumGroup;
 import parser.ParserDateLocal;
 import parser.ParserTestDriver;
 
@@ -675,5 +678,11 @@ public class ParserAllTest {
 		assertEquals("DEFAULT~0~default~default~default"
 				+ "~default~default~DEFAULT~NIMPT"
 				+ "~false~default~null~null", ParserTestDriver.testReader("play"));
+		
+		/**************Exceptions testing***********/
+/*		assertEquals(EnumGroup.CommandType.INVALID, Determine.getCommandType("askjbd"));
+		assertEquals(EnumGroup.EditType.INVALID, Determine.getEditType("askjbd"));
+		assertEquals(EnumGroup.CommandType.INVALID, InputIsEdit.refineInput("edit -1"));
+*/
 	}
 }
