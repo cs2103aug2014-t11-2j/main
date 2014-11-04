@@ -30,12 +30,13 @@ public class RefinedUserInput {
 	
 	private static final String DEFAULT_CONTENT = "default";
 	private static final String DEFAULT_PRIORITY = "NIMPT";
+	private static final int DEFAULT_INDEX = 0;
 	/************** Constructors **********************/
 	
 	public RefinedUserInput() {
 		
 		setCommandType(EnumGroup.CommandType.DEFAULT);
-		setIndex(0);
+		setIndex(DEFAULT_INDEX);
 		setTitle(DEFAULT_CONTENT);
 		setStartDate(DEFAULT_CONTENT);
 		setStartTime(DEFAULT_CONTENT);

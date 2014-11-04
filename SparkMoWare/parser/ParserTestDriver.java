@@ -128,7 +128,7 @@ public class ParserTestDriver {
 	
 	/************ParserIdLocal Component**************/
 
-	public static String testExtractId(String testInput) {
+	public static int testExtractId(String testInput) {
 		return ParserIdLocal.extractId(testInput);
 	}
 

@@ -16,8 +16,8 @@ public class ParserDateLocal {
 	// -1 (A < B), 0 (A = B), 1 (A > B) 
 	protected static int dateComparator(String dateA, String dateB) {
 
-		String yearA = dateA.trim().substring(4, 8);
-		String yearB = dateB.trim().substring(4, 8);
+		String yearA = dateA.trim().substring(4, 6);
+		String yearB = dateB.trim().substring(4, 6);
 
 		String monthA = dateA.trim().substring(2, 4);
 		String monthB = dateB.trim().substring(2, 4);
@@ -74,7 +74,11 @@ public class ParserDateLocal {
 		
 		while(dateMatcher.find()) {
 			input = dateMatcher.replaceFirst("");
+			
+			Matcher timeMatcher = ParserPatternLocal.timePattern.matcher(input);
+			input = timeMatcher.replaceFirst("");
 			dateMatcher = ParserPatternLocal.datePattern.matcher(input);
+			
 			n++;
 		}
 		
@@ -121,7 +125,7 @@ public class ParserDateLocal {
 	public static boolean dateFormatValid(String date) {
 		boolean validDateFormat = true;
 
-		if(date.length() != 8) {
+		if(date.length() != 6) {
 			validDateFormat = false;
 		} else if(!date.matches("[0-9]+")) {
 			validDateFormat = false;
@@ -135,9 +139,9 @@ public class ParserDateLocal {
 		boolean leapYear = false;
 		boolean dateExist = false;
 		
-		int day = date / 1000000;
-		int month = (date / 10000) % 100;
-		int year = date % 10000;
+		int day = date / 10000;
+		int month = (date / 100) % 100;
+		int year = date % 100;
 
 		if(year % 4 == 0) {
 			leapYear = true;
@@ -158,7 +162,7 @@ public class ParserDateLocal {
 	}
 
 	public static String dateString(){
-		DateFormat dateFormat = new SimpleDateFormat("ddMMyyyy");
+		DateFormat dateFormat = new SimpleDateFormat("ddMMyy");
 		Date todayDate = new Date();
 		
 		return dateFormat.format(todayDate);

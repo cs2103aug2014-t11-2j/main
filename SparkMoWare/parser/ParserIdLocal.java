@@ -3,11 +3,11 @@ package parser;
 import java.util.regex.Matcher;
 
 public class ParserIdLocal {
-	protected static String extractId(String userInput) {
+	protected static int extractId(String userInput) {
 		Matcher idMatcher = ParserPatternLocal.idPattern.matcher(userInput);
-		String id = new String();
+		int id = -1;
 		String datePortion = new String();
-;		String index = new String();
+		String index = new String();
 		
 		if(idMatcher.find()) {
 			String checker = idMatcher.group(0);
@@ -25,7 +25,7 @@ public class ParserIdLocal {
 		}
 		
 		if(ParserDateLocal.dateFormatValid(datePortion)) {
-			id = refineId(datePortion, index);
+			id = Integer.parseInt(refineId(datePortion, index));
 		}
 		
 		return id;
