@@ -6,15 +6,17 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.Random;
 import java.util.Vector;
 
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
@@ -32,7 +34,11 @@ public class HelplistPopup {
 	private static int count = 0;
 	private static boolean isLoaded = false;
 	private static int current;
-	private static String[] temp = {"",""};
+	
+	private static Device device = Display.getCurrent ();
+	private static Color Pink = new Color (device, 255, 182, 193);
+	private static Color Orange = new Color (device, 205, 201, 201);
+	private static Color LightBlue = new Color (device, 173, 216, 230);
 
 
 	/**
@@ -40,43 +46,58 @@ public class HelplistPopup {
 	 * @wbp.parser.entryPoint
 	 */
 	protected static void helplistPopup() {
+		count=0;
 		Shell helpList = new Shell();
-		helpList.setSize(700, 407);
+		helpList.setSize(940, 681);
 		helpList.setText("Help List");
 		Image trayicon = SWTResourceManager.getImage(MainController.class, "/resource/image/SparkMoVareTrayIcon.png");
 		helpList.setImage(trayicon);
 
-		Font font = new Font(helpList.getDisplay(), "Courier New", 15, SWT.BOLD);
+		Font font = new Font(helpList.getDisplay(), "Papyrus", 30, SWT.BOLD );
+		Font title = new Font(helpList.getDisplay(), "Lucida Blackletter", 40, SWT.BOLD );
 
+		
 		helpList.addControlListener(new ControlAdapter() {
 			@Override
 			public void controlResized(ControlEvent e) {
-				helpList.setSize(700, 407);	// force aspect so user cannot resize	
+				helpList.setSize(940, 681);	// force aspect so user cannot resize	
 			}
 		});
 
 		TableViewer tableViewer = new TableViewer(helpList, SWT.BORDER | SWT.FULL_SELECTION);
 		table = tableViewer.getTable();
-		table.setEnabled(false);
-		table.setBounds(0, 0, 684, 369);
+		table.setBounds(0, 0, 924, 643);
 		TableColumn tc = new TableColumn(table, SWT.CENTER);
 		tc.setResizable(false);
+		TableColumn tc1 = new TableColumn(table, SWT.LEFT);
+		tc1.setResizable(false);
 		tc.setWidth(0);
+		tc1.setWidth(958);
 		openFile();
 		Iterator<String> tableLoaderIterator = helplistBuffer.iterator();
 		while (tableLoaderIterator.hasNext()) {
 			String textToDisplay = tableLoaderIterator.next();
 			TableItem item = new TableItem(table,SWT.LEFT);
-			if (textToDisplay.contains("%")) {
-				item.setImage(getImage());
-				System.out.println("load image");
+			if (textToDisplay.contains("~")) {
+					item.setImage(1,(getImage()));
+								
 			}
 			else {
-				temp[1] = textToDisplay;
-				item.setText(temp);
-				if (textToDisplay.contains(":")) {
-					item.setFont(font);
+				if (textToDisplay.contains("#")) {
+					item.setFont(title);
+					textToDisplay=textToDisplay.substring(1);
+					item.setBackground(1, LightBlue);
 				}
+				else if (textToDisplay.contains(":")|textToDisplay.contains("?")) {
+					item.setFont(font);
+					item.setBackground(1, Orange);
+
+				}
+				else {
+					textToDisplay = "-" + textToDisplay; 
+				}
+				item.setText(1,textToDisplay);
+
 			}
 		}
 		helplistBuffer.clear();
@@ -102,7 +123,6 @@ public class HelplistPopup {
 	}
 
 	protected static void loadimage() {
-		helpImage.add(SWTResourceManager.getImage(MainController.class, "/resource/image/help/GUI.jpg"));
 		helpImage.add(SWTResourceManager.getImage(MainController.class, "/resource/image/help/addASGN.png"));
 		helpImage.add(SWTResourceManager.getImage(MainController.class, "/resource/image/help/addTASK.png"));
 		helpImage.add(SWTResourceManager.getImage(MainController.class, "/resource/image/help/edit.png"));
@@ -142,7 +162,7 @@ public class HelplistPopup {
 		}
 		else {
 			current = 0;
-			if (count<(helpImage.size()-1)) {
+			if (count<(helpImage.size())) {
 				current = count++ ;
 			}
 
