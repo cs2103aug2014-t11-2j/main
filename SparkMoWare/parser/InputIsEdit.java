@@ -5,14 +5,11 @@ import java.util.regex.Matcher;
 public class InputIsEdit {
 
 	protected static RefinedUserInput refineInput(String userInput) {
-		
-		int id = -1;
-		
 		RefinedUserInput inputEdit = new RefinedUserInput();
-		id = ParserIdLocal.extractId(userInput);
+		 int index = ParserIndexLocal.extractIndex(userInput, "edit");
 		
 		
-		if(id == -1) {
+		if(index == -1) {
 			inputEdit.setCommandType(EnumGroup.CommandType.INVALID_FORMAT);
 			return inputEdit;
 		}
@@ -100,7 +97,7 @@ public class InputIsEdit {
 		}
 		
 		inputEdit.setCommandType(EnumGroup.CommandType.EDIT);
-		inputEdit.setIndex(id);
+		inputEdit.setIndex(index);
 		
 		return inputEdit;
 	}

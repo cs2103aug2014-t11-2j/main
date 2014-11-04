@@ -27,11 +27,11 @@ public class ParserTestDriver {
 	/***********RefineInputWithId Component***************/
 	
 	public static String testInputIsDelete(String testInput) {
-		return RefineInputWithId.inputIsDelete(testInput).toString();
+		return RefineInputWithIndex.inputIsDelete(testInput).toString();
 	}
 	
 	public static String testInputIsFinish(String testInput) {
-		return RefineInputWithId.inputIsFinish(testInput).toString();
+		return RefineInputWithIndex.inputIsFinish(testInput).toString();
 	}
 	
 	/***********RefineInputWithSpecial Component***************/
@@ -127,21 +127,17 @@ public class ParserTestDriver {
 	}
 	
 	/************ParserIdLocal Component**************/
-
-	public static int testExtractId(String testInput) {
-		return ParserIdLocal.extractId(testInput);
-	}
-
-	public static String testRefineId(String testInputdate, String testInputIndex) {
-		return ParserIdLocal.refineId(testInputdate, testInputIndex);
-	}
-
-	public static String testRemoveId(String testInput) {
-		return ParserIdLocal.removeId(testInput);
+	
+	public static boolean testIndexExists(String testInput) {
+		return ParserIndexLocal.indexExists(testInput);
 	}
 	
-	public static String testRemoveFrontZero(String testInput) {
-		return ParserIdLocal.removeFrontZero(testInput);
+	public static int testExtractIndex(String testInput, String command) {
+		return ParserIndexLocal.extractIndex(testInput, command);
+	}
+
+	public static String testRemoveIndex(String testInput) {
+		return ParserIndexLocal.removeIndex(testInput);
 	}
 
 	/************Misc Component**************/
@@ -173,7 +169,11 @@ public class ParserTestDriver {
 	public static String testRemovePriority(String testInput) {
 		return Misc.removePriority(testInput);
 	}
-
+	
+	public static String testRemoveFrontZero(String testInput) {
+		return Misc.removeFrontZero(testInput);
+	}
+	
 	/************InvalidSpecialContent Component**************/
 	
 	public static boolean testContentForClear(String testInput) {
@@ -207,4 +207,6 @@ public class ParserTestDriver {
 	public static String testReader(String testInput) {
 		return Interpreter.reader(testInput).toString();
 	}
+
+
 }

@@ -13,7 +13,7 @@ public class Interpreter {
 			return InputIsEdit.refineInput(userInput);
 
 		case DELETE:
-			return RefineInputWithId.inputIsDelete(userInput);
+			return RefineInputWithIndex.inputIsDelete(userInput);
 
 		case TENTATIVE:
 			return InputIsTentative.refineInput(userInput);
@@ -64,7 +64,7 @@ public class Interpreter {
 			return inputHelp;
 			
 		case DONE:
-			return RefineInputWithId.inputIsFinish(userInput);
+			return RefineInputWithIndex.inputIsFinish(userInput);
 		/*
 		 * potential exception catching for invalid case
 		 */

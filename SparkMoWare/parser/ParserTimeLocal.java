@@ -29,8 +29,8 @@ public class ParserTimeLocal {
 				} else if(!minA.equals("00") && minB.equals("00")) {
 					return LARGER;
 				} else if(!minA.equals("00") && !minB.equals("00")) {
-					minA = ParserIdLocal.removeFrontZero(minA);
-					minB = ParserIdLocal.removeFrontZero(minB);
+					minA = Misc.removeFrontZero(minA);
+					minB = Misc.removeFrontZero(minB);
 
 					if(Integer.parseInt(minA) > Integer.parseInt(minB)) {
 						return LARGER;
@@ -46,8 +46,8 @@ public class ParserTimeLocal {
 		} else if(!hourA.equals("00") && hourB.equals("00")) {
 			return LARGER;
 		} else if(!hourA.equals("00") && !hourB.equals("00")) {
-			hourA = ParserIdLocal.removeFrontZero(hourA);
-			hourB = ParserIdLocal.removeFrontZero(hourB);
+			hourA = Misc.removeFrontZero(hourA);
+			hourB = Misc.removeFrontZero(hourB);
 
 			if(Integer.parseInt(hourA) > Integer.parseInt(hourB)) {
 				return LARGER;
@@ -64,7 +64,7 @@ public class ParserTimeLocal {
 	 * Parser cannot distinguish between the two YET
 	 */
 	protected static String extractEndTime(String userInput) {
-		userInput = ParserIdLocal.removeId(userInput);
+		//userInput = ParserIdLocal.removeId(userInput);
 		userInput = ParserDateLocal.replaceAllDate(userInput);
 		Matcher timeMatcher = ParserPatternLocal.timePattern.matcher(userInput);
 		String endTime = new String();
@@ -102,7 +102,7 @@ public class ParserTimeLocal {
 	}
 
 	protected static String extractStartTime(String userInput) {
-		userInput = ParserIdLocal.removeId(userInput);
+		//userInput = ParserIdLocal.removeId(userInput);
 		userInput = ParserDateLocal.replaceAllDate(userInput);
 		Matcher timeMatcher = ParserPatternLocal.timePattern.matcher(userInput);
 		String startTime = new String();

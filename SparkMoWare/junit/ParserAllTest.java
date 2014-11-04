@@ -65,9 +65,6 @@ public class ParserAllTest {
 		//case of inputs around date
 		assertFalse(ParserTestDriver.testHasTwoDateInputs("add assignment due 09/09/34 IMPT"));
 		
-		//hasTwoDateInputsTest negative test 1
-		assertTrue(ParserTestDriver.testHasTwoDateInputs("add assignment 12345678 due 09/09/34 IMPT"));
-		
 		/**************************/
 		
 		//Test extractStartdate
@@ -121,10 +118,6 @@ public class ParserAllTest {
 
 		//confirm method replaces date input according to actual ideal user add appointment input
 		assertEquals("add  0900  0800 work", ParserTestDriver.testReplaceAllDate("add 09/08/23 0900 2/3/45 0800 work"));
-		
-		//replaceAllDate negative test 1
-		//detects the following input as a date
-		//assertEquals("add 0900 0800", ParserTestDriver.testReplaceAllDate("add 0900 0800"));
 		
 		/**************************/
 		
@@ -250,75 +243,51 @@ public class ParserAllTest {
 		//two tentatives
 		assertEquals("[0900, 0800]", ParserTestDriver.testExtractTentativeTimes("tentative 09/08/1234 0900 02/03/1234 0800"));
 		
-		/*************ParserIdLocal Tests*************/
-			
-		//Test refineId
-		//no need to check if date portion is correct. In the ParserIdLocal class, date validity
-		//is checked before this method is carried out 
+		/*************ParserIndexLocal Tests*************/
+		
+		//Test extractIndex
 
 		//generalised test case
-		assertEquals("0908141000", ParserTestDriver.testRefineId("090814", "1000"));
+		assertEquals(1, ParserTestDriver.testExtractIndex("delete 1", "delete"));
+		assertEquals(-1, ParserTestDriver.testExtractIndex("delete", "delete"));
 
-		//test if index is  3 digits long
-		assertEquals("0908140100", ParserTestDriver.testRefineId("090814", "100"));
-
-		//test if index is  2 digits long
-		assertEquals("0908140010", ParserTestDriver.testRefineId("090814", "10"));
-
-		//test if index is  1 digit long
-		assertEquals("0908140001", ParserTestDriver.testRefineId("090814", "1"));
-
-		//test if no index
-		assertEquals("", ParserTestDriver.testRefineId("090814", ""));
+		//test done/finish command
+		assertEquals(12, ParserTestDriver.testExtractIndex("done 12", "finish"));
 		
-		//test if index is greater than 4 digits
-		assertEquals("", ParserTestDriver.testRefineId("090814", "10000"));
-
-		/**************************/
+		//test front zeroes
+		assertEquals(20, ParserTestDriver.testExtractIndex("delete 020", "delete"));
 		
-		//Test extractId
-
-		//generalised test case
-		assertEquals("0908140001", ParserTestDriver.testExtractId("delete 090814.0001"));
-
-		//test decreasing number of digits and differing symbols
-		assertEquals("0908140200", ParserTestDriver.testExtractId("delete 090814/200"));
-		assertEquals("0908140020", ParserTestDriver.testExtractId("delete 090814-20"));
-		assertEquals("0908140002", ParserTestDriver.testExtractId("delete 090814_2"));
-
-		//test without seperator
-		//extractId negative test 1
-		//cannot interpret digits only
-		//assertEquals("090820140001", ParserTestDriver.testExtractId("delete 090820140001"));
+		//test shows ability to deal with typos for index
+		assertEquals(2, ParserTestDriver.testExtractIndex("delete A2", "delete"));
 		
-		//test rejection of just numbers input for id
-		assertEquals("", ParserTestDriver.testExtractId("delete 0908140001"));
-		assertEquals("", ParserTestDriver.testExtractId("delete 090814001"));
+		//test for full confirm
 		
 		/**************************/
 		
-		//Test removeId
+		//Test indexExists
+		
+		//generalised test case
+		assertTrue(ParserTestDriver.testIndexExists("delete 1"));
+		
+		/**************************/
+		
+		//Test removeIndex
 
 		//generalised test case
-		assertEquals("delete", ParserTestDriver.testRemoveId("delete 090814.0001"));
+		assertEquals("delete", ParserTestDriver.testRemoveIndex("delete 1"));
 
-		//test decreasing number of digits and differing symbols
-		assertEquals("delete", ParserTestDriver.testRemoveId("delete 090814/200"));
-		assertEquals("delete", ParserTestDriver.testRemoveId("delete 090814-20"));
-		assertEquals("delete", ParserTestDriver.testRemoveId("delete 090814_2"));
+		//test front zero and done
+		assertEquals("done", ParserTestDriver.testRemoveIndex("done 01"));
+		
+		//test longer than 1 digit
+		assertEquals("delete", ParserTestDriver.testRemoveIndex("delete 20"));
+		
+		//remove index negative test 1
+		//cannot have index greater than 999
+		//assertEquals("delete", ParserTestDriver.testRemoveIndex("delete 2000"));
 		
 		//test for edit input
-		assertEquals("edit  start date 09/08/14", ParserTestDriver.testRemoveId("edit 090814.0001 start date 09/08/14"));
-		
-		/**************************/
-		
-		//Test removeFrontZero
-		
-		//generalised test case
-		assertEquals("1", ParserTestDriver.testRemoveFrontZero("000001"));
-		
-		//ensure method doesn't remove other zeroes
-		assertEquals("1030", ParserTestDriver.testRemoveFrontZero("000001030"));
+		assertEquals("edit  start date 09/08/14", ParserTestDriver.testRemoveIndex("edit 1 start date 09/08/14"));
 		
 		/*************Misc Tests*************/
 		
@@ -483,7 +452,7 @@ public class ParserAllTest {
 				ParserTestDriver.testInputIsAdd("Add buy fish 31/10/14 2359"));
 
 		//ZY 2
-		assertEquals("ADD~0~buy fish~31102014~2359"
+		assertEquals("ADD~0~buy fish~311014~2359"
 				+ "~011015~2359~APPT~NIMPT"
 				+ "~false~default~null~null",
 				ParserTestDriver.testInputIsAdd("Add buy fish 31/10/14 2359 01/10/15 2359"));
@@ -557,9 +526,9 @@ public class ParserAllTest {
 				+ "~false~default~null~null", ParserTestDriver.testInputIsConfirm("confirm"));
 
 		//generalised test case
-		assertEquals("CONFIRM~0111140005~default~151014~1300"
+		assertEquals("CONFIRM~1~default~151014~1300"
 				+ "~151014~1500~DEFAULT~NIMPT"
-				+ "~false~default~null~null", ParserTestDriver.testInputIsConfirm("confirm 011114.0005 15/10/14 1300 15/10/14 1500"));
+				+ "~false~default~null~null", ParserTestDriver.testInputIsConfirm("confirm 1 15/10/14 1300 15/10/14 1500"));
 
 		/*************InputIsEdit Tests*************/
 
@@ -574,14 +543,14 @@ public class ParserAllTest {
 				+ "~false~default~null~null", ParserTestDriver.testInputIsEdit("edit title this is an appointment"));
 
 		//confirm method works for editing title
-		assertEquals("EDIT~0111140005~this is an appointment~default~default"
+		assertEquals("EDIT~2~this is an appointment~default~default"
 				+ "~default~default~DEFAULT~NIMPT"
-				+ "~false~title~null~null", ParserTestDriver.testInputIsEdit("edit 011114/0005 title this is an appointment"));
+				+ "~false~title~null~null", ParserTestDriver.testInputIsEdit("edit 2 title this is an appointment"));
 		
 		//confirm method works for editing title
-		assertEquals("EDIT~0211140001~tsk tsk~default~default"
+		assertEquals("EDIT~2~tsk tsk~default~default"
 				+ "~default~default~DEFAULT~NIMPT"
-				+ "~false~title~null~null", ParserTestDriver.testInputIsEdit("edit 021114(1) title tsk tsk"));
+				+ "~false~title~null~null", ParserTestDriver.testInputIsEdit("edit 2 title tsk tsk"));
 		
 		/*************InputIsTentative Tests*************/
 
@@ -635,9 +604,9 @@ public class ParserAllTest {
 				+ "~false~default~null~null", ParserTestDriver.testInputIsFinish("finish"));
 		
 		//generalised test case
-		assertEquals("DONE~0908340002~default~default~default"
+		assertEquals("DONE~2~default~default~default"
 				+ "~default~default~DEFAULT~NIMPT"
-				+ "~false~default~null~null", ParserTestDriver.testInputIsFinish("finish 090834.0002"));
+				+ "~false~default~null~null", ParserTestDriver.testInputIsFinish("finish 2"));
 
 		/*************RefineInputWithSpecial Tests*************/
 

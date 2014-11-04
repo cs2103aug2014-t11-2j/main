@@ -20,11 +20,11 @@ public class Misc {
     }
 	
 	protected static String extractTitle(String userInput, String command) {
-		userInput = ParserIdLocal.removeId(userInput);
 		userInput = ParserDateLocal.replaceAllDate(userInput);
 		userInput = ParserTimeLocal.replaceAllTime(userInput);
 		userInput = removeCommand(userInput, command);
 		userInput = removePriority(userInput);
+		userInput = ParserIndexLocal.removeIndex(userInput);
 		userInput.trim();
 		String[] temp = userInput.split(" ");
 		
@@ -72,6 +72,10 @@ public class Misc {
 			Matcher filterMatcher = ParserPatternLocal.filterPattern.matcher(input);
 			
 			return filterMatcher.replaceFirst("");
+		} else if(command.equals("finish")) {
+			Matcher finishMatcher = ParserPatternLocal.finishPattern.matcher(input);
+			
+			return finishMatcher.replaceFirst("");
 		}
 		return input;
 	}
@@ -138,5 +142,12 @@ public class Misc {
 		}
 		
 		return userInput;
+	}
+	
+	protected static String removeFrontZero(String input) {
+		while (input.length() > 0 && input.charAt(0) == '0') {
+			input = input.substring(1);
+		}
+		return input;
 	}
 }

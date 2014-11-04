@@ -25,14 +25,14 @@ public class ParserDateLocal {
 		String dayA = dateA.trim().substring(0, 2);
 		String dayB = dateB.trim().substring(0, 2);
 
-		yearA = ParserIdLocal.removeFrontZero(yearA);
-		yearB = ParserIdLocal.removeFrontZero(yearB);
+		yearA = Misc.removeFrontZero(yearA);
+		yearB = Misc.removeFrontZero(yearB);
 
-		monthA = ParserIdLocal.removeFrontZero(monthA);
-		monthB = ParserIdLocal.removeFrontZero(monthB);
+		monthA = Misc.removeFrontZero(monthA);
+		monthB = Misc.removeFrontZero(monthB);
 
-		dayA = ParserIdLocal.removeFrontZero(dayA);
-		dayB = ParserIdLocal.removeFrontZero(dayB);
+		dayA = Misc.removeFrontZero(dayA);
+		dayB = Misc.removeFrontZero(dayB);
 
 		if (dateA.equals(dateB)) {
 			return SAME;
@@ -51,7 +51,6 @@ public class ParserDateLocal {
 	}
 	
 	protected static String extractEndDate(String userInput) {
-		userInput = ParserIdLocal.removeId(userInput);
 		Matcher dateMatcher = ParserPatternLocal.datePattern.matcher(userInput);
 		
 		if(!dateMatcher.find()) {
@@ -91,7 +90,6 @@ public class ParserDateLocal {
 	}
 	
 	protected static String extractStartDate(String userInput) {
-		userInput = ParserIdLocal.removeId(userInput);
 		Matcher dateMatcher = ParserPatternLocal.datePattern.matcher(userInput);
 		String startDate = new String();
 		String temp = new String();

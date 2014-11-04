@@ -4,7 +4,7 @@ import java.util.regex.Matcher;
 
 public class InputIsClear {
 	
-	private static final String START_DATE = "01012014";
+	private static final String START_DATE = "010114";
 	
 	protected static RefinedUserInput refineInput(String userInput) {
 		RefinedUserInput inputClear = new RefinedUserInput();
