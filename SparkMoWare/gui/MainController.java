@@ -243,7 +243,13 @@ public class MainController {
 				RefinedUserInput input = SparkMoVare.parse(cli.getText());
 				if (input.getCommandType() != EnumGroup.CommandType.INVALID_FORMAT ) {
 					commandtype.setText(2,input.getCommandType().toString());
-					title.setText(2, input.getTitle());
+					// title
+					if (input.getTitle().equalsIgnoreCase("default")){
+						title.setText(2, "" );
+					}
+					else {
+						title.setText(2, input.getTitle());
+					}
 					//start date
 					if (input.getStartDate().equalsIgnoreCase("default")){
 						startDate.setText(2, "" );
@@ -273,7 +279,16 @@ public class MainController {
 						endTime.setText(2, input.getEndTime());
 					}
 					priority.setText(2, input.getPriority());
+				} else {
+					commandtype.setText(2,"");
+					title.setText(2, "");
+					startDate.setText(2, "");
+					startTime.setText(2, "");
+					endDate.setText(2, "");
+					endTime.setText(2, "");
+					priority.setText(2, "");
 				}
+				
 			}
 		});
 		cli.addKeyListener(new KeyListener() {
