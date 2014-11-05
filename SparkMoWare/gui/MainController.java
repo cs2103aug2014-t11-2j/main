@@ -99,7 +99,7 @@ public class MainController {
 		tray = TrayIconManager.trayIconSetup(shell, display);
 
 		//initial loading
-		//TablerLoader.populateTable(table,SparkMoVare.storageSetup().getReturnBuffer());
+		TablerLoader.populateTable(table,SparkMoVare.storageSetup().getReturnBuffer());
 		quoteViewer.setText(QuoteLib.getQuote());
 		clockDisplay.setText(timeFormat.format(date));
 		//dateDisplay.setText(dateFormat.format(date));
