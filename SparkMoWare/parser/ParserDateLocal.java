@@ -93,6 +93,7 @@ public class ParserDateLocal {
 		Matcher dateMatcher = ParserPatternLocal.datePattern.matcher(userInput);
 		String startDate = new String();
 		String temp = new String();
+		String newDateFormat = new String();
 
 
 		if(dateMatcher.find()) {
@@ -114,7 +115,10 @@ public class ParserDateLocal {
 			startDate = startDate.concat(dateMatcher.group(4));
 		}
 		String date = determineDateValidity(startDate);
-		String newDateFormat = date.substring(0, 2) + "/" + date.substring(2, 4) + "/" + date.substring(4, 6);
+		
+		if(!date.isEmpty()) {
+			newDateFormat = date.substring(0, 2) + "/" + date.substring(2, 4) + "/" + date.substring(4, 6);	
+		}
 		
 		return newDateFormat;
 	}	
