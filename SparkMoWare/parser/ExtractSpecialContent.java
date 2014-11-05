@@ -29,6 +29,7 @@ public class ExtractSpecialContent {
 		}
 	}
 	
+	//untested method
 	protected static String forSort(String input) {
 		Matcher sortMatcher = ParserPatternLocal.sortPattern.matcher(input);
 

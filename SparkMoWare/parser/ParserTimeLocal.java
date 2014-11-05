@@ -3,60 +3,14 @@ package parser;
 import java.util.Vector;
 import java.util.regex.Matcher;
 
+/*
+ * This is to check time format and its validity
+ * Prompt the user until the user input the correct format <hhmm>
+ */
 public class ParserTimeLocal {
 	
-	private static final int SMALLER = -1;
-	private static final int SAME = 0;
-	private static final int LARGER = 1;
 	protected static String defaultEndTime = "2359";
 	protected static String defaultStartTime = "0000";
-	
-	// Comparison for Time.
-	// -1 (A < B), 0 (A = B), 1 (A > B)
-	protected static int timeComparator(String timeA, String timeB) {
-
-		String hourA = timeA.trim().substring(0, 2);
-		String hourB = timeB.trim().substring(0, 2);
-
-		String minA = timeA.trim().substring(2, 4);
-		String minB = timeB.trim().substring(2, 4);
-
-		if(hourA.equals(hourB)) {
-			if(!minA.equals(minB)) {
-
-				if(minA.equals("00") && !minB.equals("00")) {
-					return SMALLER;
-				} else if(!minA.equals("00") && minB.equals("00")) {
-					return LARGER;
-				} else if(!minA.equals("00") && !minB.equals("00")) {
-					minA = Misc.removeFrontZero(minA);
-					minB = Misc.removeFrontZero(minB);
-
-					if(Integer.parseInt(minA) > Integer.parseInt(minB)) {
-						return LARGER;
-					} else {
-						return SMALLER;
-					}
-				}
-			} else {
-				return SAME;
-			}
-		} else if(hourA.equals("00") && !hourB.equals("00")) {
-			return SMALLER;
-		} else if(!hourA.equals("00") && hourB.equals("00")) {
-			return LARGER;
-		} else if(!hourA.equals("00") && !hourB.equals("00")) {
-			hourA = Misc.removeFrontZero(hourA);
-			hourB = Misc.removeFrontZero(hourB);
-
-			if(Integer.parseInt(hourA) > Integer.parseInt(hourB)) {
-				return LARGER;
-			} else {
-				return SMALLER;
-			}
-		}
-		return SAME;
-	}
 	
 	/* Still haven't dealt with following inputs: 
 	 * [add] [start date] [start time] [end date]
@@ -64,7 +18,6 @@ public class ParserTimeLocal {
 	 * Parser cannot distinguish between the two YET
 	 */
 	protected static String extractEndTime(String userInput) {
-		//userInput = ParserIdLocal.removeId(userInput);
 		userInput = ParserDateLocal.replaceAllDate(userInput);
 		Matcher timeMatcher = ParserPatternLocal.timePattern.matcher(userInput);
 		String endTime = new String();
@@ -102,7 +55,6 @@ public class ParserTimeLocal {
 	}
 
 	protected static String extractStartTime(String userInput) {
-		//userInput = ParserIdLocal.removeId(userInput);
 		userInput = ParserDateLocal.replaceAllDate(userInput);
 		Matcher timeMatcher = ParserPatternLocal.timePattern.matcher(userInput);
 		String startTime = new String();
@@ -117,7 +69,7 @@ public class ParserTimeLocal {
 	}
 
 	public static String determineTimeValidity(String inputTime) {
-        if(!timeFormatValid(inputTime)) {
+        if(!timeFormatValid(inputTime) && !inputTime.equalsIgnoreCase("default")) {
         	return "";
 		}
 		return inputTime;
@@ -153,8 +105,9 @@ public class ParserTimeLocal {
 	protected static String replaceAllTime(String input) {
 		Matcher timeMatcher = ParserPatternLocal.timePattern.matcher(input);
 		
+		//if(timeMatcher.requireEnd()) {
 			input = timeMatcher.replaceAll("");
-			
+		//}
 		return input;
 	}
 
@@ -179,7 +132,5 @@ public class ParserTimeLocal {
 		
 		return tentativeTimes;
 	}
-	
-	
 }
 

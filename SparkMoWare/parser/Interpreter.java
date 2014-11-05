@@ -13,10 +13,10 @@ public class Interpreter {
 			return InputIsEdit.refineInput(userInput);
 
 		case DELETE:
-			return RefineInputWithIndex.inputIsDelete(userInput);
+			return RefineInputWithId.inputIsDelete(userInput);
 
 		case TENTATIVE:
-			return InputIsTentative.refineInput(userInput);
+			//return InputIsTentative.refineInput(userInput);
 
 		case CONFIRM:
 			return InputIsConfirm.refineInput(userInput);
@@ -64,15 +64,12 @@ public class Interpreter {
 			return inputHelp;
 			
 		case DONE:
-			return RefineInputWithIndex.inputIsFinish(userInput);
-		/*
-		 * potential exception catching for invalid case
-		 */
-		case INVALID:
-			return new RefinedUserInput();
+			return RefineInputWithId.inputIsFinish(userInput);
 
 		default:
-			return new RefinedUserInput();
+			RefinedUserInput invalidFormat = new RefinedUserInput();
+			invalidFormat.setCommandType(EnumGroup.CommandType.INVALID_FORMAT);
+			return invalidFormat;
 		}
 	}
 }

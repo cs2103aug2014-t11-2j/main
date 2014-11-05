@@ -36,7 +36,7 @@ public class CommandHandler {
 		if(output.getIsStats()) {
 			StatsPopup.statsAppear(output.getTotalAssignment(), output.getTotalCompleted(), output.getTotalOnTime());
 		} else {
-			TablerLoader.populateTable(table, output.getReturnBuffer());
+			//TablerLoader.populateTable(table, output.getReturnBuffer());
 			System.out.println(output.getReturnBuffer());
 		}
 	}

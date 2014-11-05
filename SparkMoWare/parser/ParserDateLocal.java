@@ -6,49 +6,14 @@ import java.util.Date;
 import java.util.Vector;
 import java.util.regex.Matcher;
 
+/*
+ * Prompt the user for a valid date
+ * Check for date validity with the format <ddmmyyyy>
+ * and
+ * Check if the given date exists
+ */
+
 public class ParserDateLocal {
-	
-	private static final int SMALLER = -1;
-	private static final int SAME = 0;
-	private static final int LARGER = 1;
-	
-	// Comparison for Date.
-	// -1 (A < B), 0 (A = B), 1 (A > B) 
-	protected static int dateComparator(String dateA, String dateB) {
-
-		String yearA = dateA.trim().substring(4, 6);
-		String yearB = dateB.trim().substring(4, 6);
-
-		String monthA = dateA.trim().substring(2, 4);
-		String monthB = dateB.trim().substring(2, 4);
-
-		String dayA = dateA.trim().substring(0, 2);
-		String dayB = dateB.trim().substring(0, 2);
-
-		yearA = Misc.removeFrontZero(yearA);
-		yearB = Misc.removeFrontZero(yearB);
-
-		monthA = Misc.removeFrontZero(monthA);
-		monthB = Misc.removeFrontZero(monthB);
-
-		dayA = Misc.removeFrontZero(dayA);
-		dayB = Misc.removeFrontZero(dayB);
-
-		if (dateA.equals(dateB)) {
-			return SAME;
-		} else if (Integer.parseInt(yearA) > Integer.parseInt(yearB)) {
-			return LARGER;
-		} else if (Integer.parseInt(yearA) < Integer.parseInt(yearB)) {
-			return SMALLER;
-		} else if (Integer.parseInt(monthA) > Integer.parseInt(monthB)) {
-			return LARGER;
-		} else if (Integer.parseInt(monthA) < Integer.parseInt(monthB)) {
-			return SMALLER;
-		} else if (Integer.parseInt(dayA) > Integer.parseInt(dayB)) {
-			return LARGER;
-		}
-		return SMALLER;
-	}
 	
 	protected static String extractEndDate(String userInput) {
 		Matcher dateMatcher = ParserPatternLocal.datePattern.matcher(userInput);
@@ -73,39 +38,32 @@ public class ParserDateLocal {
 		
 		while(dateMatcher.find()) {
 			input = dateMatcher.replaceFirst("");
-			
-			Matcher timeMatcher = ParserPatternLocal.timePattern.matcher(input);
-			input = timeMatcher.replaceFirst("");
 			dateMatcher = ParserPatternLocal.datePattern.matcher(input);
-			
 			n++;
 		}
 		
 		if(n > 1) {
-			assert(n==2);
 			return true;
 		} else {
 			return false;
+			}
 		}
-	}
 	
+	//ASSUMPTION: in appointment case, input format is start date followed by end date
 	protected static String extractStartDate(String userInput) {
 		Matcher dateMatcher = ParserPatternLocal.datePattern.matcher(userInput);
 		String startDate = new String();
 		String temp = new String();
 		
-		
 		if(dateMatcher.find()) {
-		String group2 = dateMatcher.group(2);
-		String group3 = dateMatcher.group(3);
-		
-				if(group2.length() !=2) {
+			
+				if(dateMatcher.group(2).length() !=2) {
 				startDate = "0".concat(dateMatcher.group(2));
 			} else {
 				startDate = dateMatcher.group(2);
 			}
 			
-			if(group3.length() !=2) {
+			if(dateMatcher.group(3).length() !=2) {
 				temp = "0".concat(dateMatcher.group(3));
 				startDate = startDate.concat(temp);
 			} else {
@@ -117,7 +75,7 @@ public class ParserDateLocal {
 	}	
 	
 	public static String determineDateValidity(String inputDate) { 
-        if(!dateFormatValid(inputDate)) {
+        if(!dateFormatValid(inputDate) && !inputDate.equalsIgnoreCase("default")) {
 				return "";
 			}
 		return inputDate;
@@ -126,7 +84,7 @@ public class ParserDateLocal {
 	public static boolean dateFormatValid(String date) {
 		boolean validDateFormat = true;
 
-		if(date.length() != 6) {
+		if(date.length() != 8) {
 			validDateFormat = false;
 		} else if(!date.matches("[0-9]+")) {
 			validDateFormat = false;
@@ -140,9 +98,9 @@ public class ParserDateLocal {
 		boolean leapYear = false;
 		boolean dateExist = false;
 		
-		int day = date / 10000;
-		int month = (date / 100) % 100;
-		int year = date % 100;
+		int day = date / 1000000;
+		int month = (date / 10000) % 100;
+		int year = date % 10000;
 
 		if(year % 4 == 0) {
 			leapYear = true;
@@ -163,7 +121,7 @@ public class ParserDateLocal {
 	}
 
 	public static String dateString(){
-		DateFormat dateFormat = new SimpleDateFormat("ddMMyy");
+		DateFormat dateFormat = new SimpleDateFormat("ddMMyyyy");
 		Date todayDate = new Date();
 		
 		return dateFormat.format(todayDate);
@@ -172,8 +130,9 @@ public class ParserDateLocal {
 	protected static String replaceAllDate(String input) {
 		Matcher dateMatcher = ParserPatternLocal.datePattern.matcher(input);
 		
+		//if(dateMatcher.requireEnd()) {
 			input = dateMatcher.replaceAll("");
-			
+		//}
 		return input;
 	}
 	
@@ -196,10 +155,6 @@ public class ParserDateLocal {
 		return tentativeDates;
 	}
 
-	
-
-
-	
 	// unused methods in parser?
 	// decrementing date
 	protected static String updateDate(String date) {

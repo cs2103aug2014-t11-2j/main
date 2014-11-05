@@ -2,7 +2,7 @@ package parser;
 
 import java.util.Vector;
 
-import logic.Assignment.AssignmentType;
+import parser.EnumGroup.AssignmentType;
 import parser.EnumGroup.CommandType;
 
 public class RefinedUserInput {
@@ -10,7 +10,7 @@ public class RefinedUserInput {
 	/************** Data members **********************/
 	
 	private CommandType command;
-	private int index;
+	private String id;
 	private String title;
 	private String startDate;
 	private String startTime;
@@ -28,24 +28,22 @@ public class RefinedUserInput {
 	private Vector<String> tentativeDates;
 	private Vector<String> tentativeTimes;
 	
-	private static final String DEFAULT_CONTENT = "default";
-	private static final String DEFAULT_PRIORITY = "NIMPT";
-	private static final int DEFAULT_INDEX = 0;
 	/************** Constructors **********************/
 	
 	public RefinedUserInput() {
-		
+		final String defaultContent  = "default";
+		final String defaultPriority = "NIMPT";
 		setCommandType(EnumGroup.CommandType.DEFAULT);
-		setIndex(DEFAULT_INDEX);
-		setTitle(DEFAULT_CONTENT);
-		setStartDate(DEFAULT_CONTENT);
-		setStartTime(DEFAULT_CONTENT);
-		setEndDate(DEFAULT_CONTENT);
-		setEndTime(DEFAULT_CONTENT);
-		setAssignmentType(AssignmentType.DEFAULT);
-		setPriority(DEFAULT_PRIORITY);
+		setId(defaultContent);
+		setTitle(defaultContent);
+		setStartDate(defaultContent);
+		setStartTime(defaultContent);
+		setEndDate(defaultContent);
+		setEndTime(defaultContent);
+		setAssignmentType(EnumGroup.AssignmentType.DEFAULT);
+		setPriority(defaultPriority);
 		setIsNewTentative(false);
-		setSpecialContent(DEFAULT_CONTENT);
+		setSpecialContent(defaultContent);
 	}
 	
 /**************** Accessors ***********************/
@@ -54,8 +52,8 @@ public class RefinedUserInput {
 		return this.command;
 	}
 	
-	public int getIndex() {
-		return this.index;
+	public String getId() {
+		return this.id;
 	}
 	
 	public String getTitle() {
@@ -108,8 +106,8 @@ public class RefinedUserInput {
 		this.command = command;
 	}
 	
-	protected void setIndex(int index) {
-		this.index = index;
+	protected void setId(String id) {
+		this.id = id;
 	}
 	
 	protected void setTitle(String title) {
@@ -159,7 +157,7 @@ public class RefinedUserInput {
 	/**************** Overriding ************************/
 	
 	public String toString() {
-		return getCommandType() + "~" + getIndex() + "~" + getTitle() + "~" + getStartDate() + "~" + getStartTime() + "~"
+		return getCommandType() + "~" + getId() + "~" + getTitle() + "~" + getStartDate() + "~" + getStartTime() + "~"
 				+ getEndDate() + "~" + getEndTime() + "~" + getAssignmentType() + "~" + getPriority( )+ "~"
 				+ getIsNewTentative() + "~" + getSpecialContent() + "~" + getTentativeDates() + "~" + getTentativeTimes();
 	}

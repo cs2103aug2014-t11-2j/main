@@ -21,6 +21,9 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Link;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.List;
 
 /**
  * Utility class to display helplist
@@ -41,17 +44,15 @@ public class HelpListNew {
 		helpList.setText("Help List");
 		Image trayicon = SWTResourceManager.getImage(MainController.class, "/resource/image/SparkMoVareTrayIcon.png");
 		helpList.setImage(trayicon);
-
-		final TabFolder tabFolder = new TabFolder(helpList, SWT.BORDER);
-		tabFolder.setSize(682, 360);
-		Text text = new Text(tabFolder, SWT.BORDER);
-		text.setEditable(false);
-		tabFolder.setLocation(0, 0);
-		//overview
-		TabItem overview = new TabItem(tabFolder, SWT.NULL);
-		overview.setText("Overview");
-		text.setText("This is page " + 1);
-		overview.setControl(text);
+		
+		ScrolledComposite scrolledComposite = new ScrolledComposite(helpList, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+		scrolledComposite.setBounds(0, 0, 684, 369);
+		scrolledComposite.setExpandHorizontal(true);
+		scrolledComposite.setExpandVertical(true);
+		
+		List list = new List(scrolledComposite, SWT.BORDER);
+		scrolledComposite.setContent(list);
+		scrolledComposite.setMinSize(list.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 
 		helpList.addControlListener(new ControlAdapter() {
 			@Override

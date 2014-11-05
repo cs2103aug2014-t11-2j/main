@@ -4,42 +4,40 @@ import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import logic.Appointment;
-import logic.Id;
-import logic.InternalStorage;
 import logic.Message;
 import logic.SparkMoVare;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ControlAdapter;
-import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tray;
-import org.eclipse.swt.widgets.TrayItem;
-import org.eclipse.ui.forms.widgets.FormToolkit;
 
-import storage.Storage;
+import parser.EnumGroup;
+import parser.RefinedUserInput;
 
 public class MainController {
 
@@ -61,7 +59,10 @@ public class MainController {
 	private Tray tray;
 	private boolean isPlaying = false;
 	private boolean isReady = false;
+	private boolean isExpose = true;
 	private static MediaPlayer mediaPlayer;
+	private Table table_1;
+	private Table table_2;
 
 	public static void main(String[] args) {
 
@@ -81,11 +82,85 @@ public class MainController {
 	 */
 	public MainController(Display display) {
 
-		shell = new Shell(display);
-		shell.setSize(808, 681);
+		shell = new Shell(display, SWT.CLOSE);
+		shell.setSize(1100, 686);
 		Image background = SWTResourceManager.getImage(MainController.class, "/resource/image/wallpaper1.jpg");
 		shell.setBackgroundImage(background);
 		shell.setText("SparkMoVare");
+
+		//tet
+		Composite composite = new Composite(shell, SWT.NONE);
+		composite.setBounds(855, 0, 244, 658);
+		composite.setLayout(new GridLayout(1, false));
+
+		DateTime calendar = new DateTime (composite, SWT.CALENDAR | SWT.BORDER);
+
+		table_2 = new Table(composite, SWT.BORDER | SWT.FULL_SELECTION);
+		GridData gd_table_2 = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
+		gd_table_2.heightHint = 115;
+		table_2.setLayoutData(gd_table_2);
+		table_2.setHeaderVisible(false);
+		table_2.setLinesVisible(true);
+		TableColumn dummy = new TableColumn(table_2, SWT.CENTER);
+		dummy.setResizable(false);
+		TableColumn tc = new TableColumn(table_2, SWT.CENTER);
+		tc.setResizable(false);
+		TableColumn tc1 = new TableColumn(table_2, SWT.CENTER);
+		tc1.setResizable(false);
+		dummy.setWidth(0);
+		tc.setWidth(118);
+		tc1.setWidth(117);
+		TableItem commandtype = new TableItem(table_2,SWT.CENTER);
+		TableItem title = new TableItem(table_2,SWT.CENTER);
+		TableItem startDate = new TableItem(table_2,SWT.CENTER);
+		TableItem startTime = new TableItem(table_2,SWT.CENTER);
+		TableItem endDate = new TableItem(table_2,SWT.CENTER);
+		TableItem endTime = new TableItem(table_2,SWT.CENTER);
+		TableItem priority = new TableItem(table_2,SWT.CENTER);
+		commandtype.setText(1,"Command Type");
+		title.setText(1, "Title");
+		startDate.setText(1, "Start Date");
+		startTime.setText(1, "Start Time");
+		endDate.setText(1, "End Date");
+		endTime.setText(1, "End Time");
+		priority.setText(1,"Prority");
+
+		table_1 = new Table(composite, SWT.BORDER | SWT.FULL_SELECTION);
+		GridData gd_table_1 = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
+		gd_table_1.widthHint = 80;
+		gd_table_1.heightHint = 335;
+		table_1.setLayoutData(gd_table_1);
+		table_1.setHeaderVisible(true);
+		table_1.setLinesVisible(false);
+
+		TableColumn dummy1 = new TableColumn(table_1, SWT.CENTER);
+		dummy1.setResizable(false);
+		TableColumn id = new TableColumn(table_1, SWT.CENTER);
+		id.setResizable(false);
+		id.setText("Serial");
+		TableColumn title1 = new TableColumn(table_1, SWT.CENTER);
+		title1.setResizable(false);
+		dummy1.setWidth(0);
+		id.setWidth(50);
+		title1.setWidth(179);
+		title1.setText("Title");
+
+		//	        GridLayout gridLayout = new GridLayout();
+		//	        gridLayout.numColumns = 1;
+		//	        parent.setLayout(gridLayout);
+		//	        DateTime calendar = new DateTime(parent, SWT.CALENDAR);
+		//	        DateTime date = new DateTime(parent, SWT.DATE);
+		//	        DateTime time = new DateTime(parent, SWT.TIME);
+		//	        // Date Selection as a drop-down
+		//	        DateTime dateD = new DateTime(parent, SWT.DATE | SWT.DROP_DOWN);
+		//
+		//	        shell.pack();
+		//	        shell.open();
+		//	        while (!shell.isDisposed()) {
+		//	            if (!display.readAndDispatch())
+		//	                display.sleep();
+		//	        }
+
 
 		//Setting up the various components of GUI
 		hotkeyGuide = HotkeyHintManager.hotkeySetup(shell);
@@ -98,8 +173,9 @@ public class MainController {
 		//dateDisplay = ClockAndDateManager.dateDisplaySetup(shell);	
 		tray = TrayIconManager.trayIconSetup(shell, display);
 
+
 		//initial loading
-		TablerLoader.populateTable(table,SparkMoVare.storageSetup().getReturnBuffer());
+		//TablerLoader.populateTable(table,SparkMoVare.storageSetup().getReturnBuffer());
 		quoteViewer.setText(QuoteLib.getQuote());
 		clockDisplay.setText(timeFormat.format(date));
 		//dateDisplay.setText(dateFormat.format(date));
@@ -118,14 +194,6 @@ public class MainController {
 
 		// activate thread to run clock
 		clockUpdater.schedule(new UpdateTimerTask(), 1000, 1000);
-
-		// set listeners for resizing and stop them
-		shell.addControlListener(new ControlAdapter() {
-			@Override
-			public void controlResized(ControlEvent e) {
-				shell.setSize(870, 681);	// force aspect so user cannot resize	
-			}
-		});
 
 		// set listeners for hotkeys
 		shell.getDisplay().addFilter(SWT.KeyUp, new Listener()
@@ -156,11 +224,34 @@ public class MainController {
 						feedback.setText("Music Stopped!");
 					}
 
+				} else if (e.keyCode == SWT.F12) {
+					if (!isExpose) {
+						shell.setSize(1100, 681);
+						isExpose = true;
+					}
+					else {
+						shell.setSize(855, 681);
+						isExpose = false;
+					}
 				}
 			}
 		});
 
 		// set cli listener
+		cli.addModifyListener(new ModifyListener(){
+			public void modifyText(ModifyEvent event) {
+				RefinedUserInput input = SparkMoVare.parse(cli.getText());
+				if (input.getCommandType() != EnumGroup.CommandType.INVALID_FORMAT ) {
+					commandtype.setText(2,input.getCommandType().toString());
+					title.setText(2, input.getTitle());
+					startDate.setText(2, input.getStartDate());
+					startTime.setText(2, input.getStartTime());
+					endDate.setText(2, input.getEndDate());
+					endTime.setText(2, input.getEndTime());
+					priority.setText(2, input.getPriority());
+				}
+			}
+		});
 		cli.addKeyListener(new KeyListener() {
 			public void keyReleased(KeyEvent e) {
 				if (e.keyCode == SWT.CR || e.keyCode == SWT.LF) {
@@ -176,15 +267,11 @@ public class MainController {
 					if (!commandCheck.equals("")) {
 						cli.setText(commandCheck);
 					}
-				}else if (e.keyCode == SWT.F12 && cli.getText().equals("di")) {
-					table.removeAll();
-					TextToAppointment.loadDI(table);
-					feedback.setText("DI TEST MODE!");
 				}else if (e.keyCode == SWT.F12 && cli.getText().equals("testing")) {
 					StatsPopup.statsAppear(12, 10, 2);
 					//easter egg
 					feedback.setText("TEST MODE!");
-					quoteViewer.setText("Whenever you are asked if you can do a job, tell 'em, 'Certainly I can!' Then get busy and find out how to do it. ~ Theodore Roosevelt");
+					quoteViewer.setText("It’s not enough to be busy, so are the ants. The question is, what are we busy about? ~ Henry David Thoreau");
 				}
 			}
 			public void keyPressed(KeyEvent e) {
@@ -198,7 +285,7 @@ public class MainController {
 				CommandHandler.commandHandle(cli, feedback, table);
 			}
 		});
-
+		composite.pack();
 		shell.open();
 
 		while (!shell.isDisposed()) {

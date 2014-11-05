@@ -41,6 +41,10 @@ public class SparkMoVare {
 		
 		return executeCommand("Display");
 	}
+	
+	public static RefinedUserInput parse (String userStringInput) {
+		return Interpreter.reader(userStringInput);
+	}
 
 	public static Output executeCommand(String userStringInput) {
 
