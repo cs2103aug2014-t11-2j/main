@@ -13,7 +13,7 @@ public class ClockAndDateManager {
 		clockDisplay.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		clockDisplay.setEnabled(false);
 		clockDisplay.setEditable(false);
-		clockDisplay.setBounds(280, 30, 310, 52);
+		clockDisplay.setBounds(295, 30, 280, 52);
 		return clockDisplay;
 	}
 	
