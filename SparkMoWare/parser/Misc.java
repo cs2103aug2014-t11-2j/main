@@ -24,7 +24,9 @@ public class Misc {
 		userInput = ParserTimeLocal.replaceAllTime(userInput);
 		userInput = removeCommand(userInput, command);
 		userInput = removePriority(userInput);
-		userInput = ParserIndexLocal.removeIndex(userInput);
+		
+		//userInput = ParserIndexLocal.removeIndex(userInput);
+		
 		userInput.trim();
 		String[] temp = userInput.split(" ");
 		

@@ -4,9 +4,6 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import parser.Determine;
-import parser.InputIsEdit;
-import parser.EnumGroup;
 import parser.ParserDateLocal;
 import parser.ParserTestDriver;
 
@@ -494,6 +491,12 @@ public class ParserAllTest {
 				+ "~311014~2359~APPT~NIMPT"
 				+ "~false~default~null~null",
 				ParserTestDriver.testInputIsAdd("Add buy fish 31/10/14 2359 31/10/14 2300"));
+		
+		//test correct output if times are in the wrong order
+				assertEquals("ADD~0~buy fish~311014~2300"
+						+ "~311014~2359~APPT~NIMPT"
+						+ "~false~default~null~null",
+						ParserTestDriver.testInputIsAdd("Add 1 more function 15/10/14 1400"));
 		
 		/*************InputIsClear Tests*************/
 
