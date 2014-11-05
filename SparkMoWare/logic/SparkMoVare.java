@@ -1,6 +1,7 @@
 package logic;
 
 import java.util.LinkedList;
+
 import parser.EnumGroup.CommandType;
 import parser.Interpreter;
 import parser.RefinedUserInput;
@@ -41,11 +42,11 @@ public class SparkMoVare {
 		
 		return executeCommand("Display");
 	}
-	
+
 	public static RefinedUserInput parse (String userStringInput) {
 		return Interpreter.reader(userStringInput);
 	}
-
+	
 	public static Output executeCommand(String userStringInput) {
 
 		FutureHistory futureHistory = new FutureHistory();
@@ -237,7 +238,6 @@ public class SparkMoVare {
 					Message.DISPLAY, InternalStorage.getLineCount(), Statistic.getCompleted(), 
 					Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
 			Print.display();
-
 			break;
 
 		case FILTER:
@@ -249,7 +249,6 @@ public class SparkMoVare {
 			returnOutput = ModifyOutput.returnModification(filteredBuffer,
 					Message.FILTER, InternalStorage.getLineCount(), Statistic.getCompleted(), 
 					Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
-
 			break;
 			
 		case EXIT:

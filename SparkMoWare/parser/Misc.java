@@ -20,11 +20,13 @@ public class Misc {
     }
 	
 	protected static String extractTitle(String userInput, String command) {
-		
 		userInput = ParserDateLocal.replaceAllDate(userInput);
 		userInput = ParserTimeLocal.replaceAllTime(userInput);
 		userInput = removeCommand(userInput, command);
 		userInput = removePriority(userInput);
+		
+		//userInput = ParserIndexLocal.removeIndex(userInput);
+		
 		userInput.trim();
 		String[] temp = userInput.split(" ");
 		
@@ -72,6 +74,10 @@ public class Misc {
 			Matcher filterMatcher = ParserPatternLocal.filterPattern.matcher(input);
 			
 			return filterMatcher.replaceFirst("");
+		} else if(command.equals("finish")) {
+			Matcher finishMatcher = ParserPatternLocal.finishPattern.matcher(input);
+			
+			return finishMatcher.replaceFirst("");
 		}
 		return input;
 	}
@@ -84,15 +90,6 @@ public class Misc {
 			input = notImportantMatcher.replaceAll("");
 		} else if(importantMatcher.find()) {
 			input = importantMatcher.replaceAll("");
-		}
-		return input.trim();
-	}
-	
-	protected static String removeId(String input) {
-		Matcher idMatcher = ParserPatternLocal.idPattern.matcher(input);
-		
-		if(idMatcher.find()) {
-			input = idMatcher.replaceFirst("");
 		}
 		return input.trim();
 	}
@@ -112,32 +109,6 @@ public class Misc {
 		return refinedString.trim();
 	}
 	
-
-	protected static String extractId(String userInput) {
-		Matcher idMatcher = ParserPatternLocal.idPattern.matcher(userInput);
-		String id = new String();
-		
-		if(idMatcher.find()) {
-			id = idMatcher.group();
-		}
-		
-		return determineIdValidity(id);
-	}
-	
-	protected static String determineIdValidity(String id) {
-		
-		if(id.length() != 12 || id.isEmpty()) {
-			return "";
-		}
-		
-		String datePortion = id.substring(0, 8);
-
-		if(!ParserDateLocal.dateFormatValid(datePortion)) {
-			return "";
-		}
-		return id;
-	}
-
 	protected static String extractPriority(String userInput) {
 		Matcher notimportantMatcher = ParserPatternLocal.notImportantPattern.matcher(userInput);
 		Matcher importantMatcher = ParserPatternLocal.importantPattern.matcher(userInput);
@@ -163,5 +134,21 @@ public class Misc {
 		} else {
 			return true;
 		}
+	}
+
+	protected static String removeEditTitle(String userInput) {
+		Matcher titleMatcher = ParserPatternLocal.titlePattern.matcher(userInput);
+		
+		if(titleMatcher.find()) {
+			userInput = titleMatcher.replaceFirst("");
+		}
+		return userInput;
+	}
+	
+	protected static String removeFrontZero(String input) {
+		while (input.length() > 0 && input.charAt(0) == '0') {
+			input = input.substring(1);
+		}
+		return input;
 	}
 }

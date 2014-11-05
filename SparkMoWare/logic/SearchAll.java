@@ -23,9 +23,9 @@ public class SearchAll {
 
 		LinkedList<Assignment> stringsFound = new LinkedList<Assignment>();
 
-		if(userInput.matches("\\d+")) {
-			stringsFound = searchById(buffer, Integer.parseInt(userInput));
-
+		if(userInput.length() == TIME_FORMAT_LENGTH && userInput.matches("\\d+")) {
+			stringsFound = searchByTime(buffer, userInput);
+			
 		} else if(userInput.equalsIgnoreCase("important")) {
 			stringsFound = searchByPriority(buffer);
 
@@ -41,8 +41,8 @@ public class SearchAll {
 		} else if (userInput.equalsIgnoreCase(TYPE_ASSIGNMENT)) {
 			stringsFound = searchByAssignment(buffer);
 			
-		} else if(userInput.length() == TIME_FORMAT_LENGTH && userInput.matches("\\d+")) {
-			stringsFound = searchByTime(buffer, userInput);
+		} else if(userInput.matches("\\d+")) {
+			stringsFound = searchById(buffer, Integer.parseInt(userInput));
 
 		} else if(userInput.length() == DATE_FORMAT_LENGTH && userInput.contains("/")) {
 			stringsFound = searchByDate(buffer, userInput);
@@ -55,7 +55,10 @@ public class SearchAll {
 
 		} else if(userInput.equalsIgnoreCase("NIMPT")) {
 			stringsFound = searchByNonPriority(buffer);
-
+			
+		} else if(userInput.equalsIgnoreCase("IMPT")) {
+			stringsFound = searchByPriority(buffer);
+			
 		} else {
 			stringsFound = searchByWords(buffer, userInput);
 		}

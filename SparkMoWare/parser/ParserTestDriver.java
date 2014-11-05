@@ -27,11 +27,11 @@ public class ParserTestDriver {
 	/***********RefineInputWithId Component***************/
 	
 	public static String testInputIsDelete(String testInput) {
-		return RefineInputWithId.inputIsDelete(testInput).toString();
+		return RefineInputWithIndex.inputIsDelete(testInput).toString();
 	}
 	
 	public static String testInputIsFinish(String testInput) {
-		return RefineInputWithId.inputIsFinish(testInput).toString();
+		return RefineInputWithIndex.inputIsFinish(testInput).toString();
 	}
 	
 	/***********RefineInputWithSpecial Component***************/
@@ -49,6 +49,11 @@ public class ParserTestDriver {
 	}
 	
 	/************ParserDateLocal Component**************/
+
+	public static int testDateComparator(String testInput1, String testInput2) {
+		return ParserDateLocal.dateComparator(testInput1, testInput2);
+	}
+
 	public static Boolean testHasTwoDateInputs(String testInput) {
 		return ParserDateLocal.hasTwoDateInputs(testInput);
 	}
@@ -84,6 +89,11 @@ public class ParserTestDriver {
 	
 	/************ParserTimeLocal Component**************/
 	
+
+	public static int testTimeComparator(String testInput1, String testInput2) {
+		return ParserTimeLocal.timeComparator(testInput1, testInput2);
+	}
+	
 	public static String testExtractStartTime(String testInput) {
 		return ParserTimeLocal.extractStartTime(testInput);
 	}
@@ -115,6 +125,21 @@ public class ParserTestDriver {
 	public static String testExtractTentativeTimes(String testInput) {
 		return ParserTimeLocal.extractTentativeTimes(testInput).toString();
 	}
+	
+	/************ParserIdLocal Component**************/
+	
+	public static boolean testIndexExists(String testInput) {
+		return ParserIndexLocal.indexExists(testInput);
+	}
+	
+	public static int testExtractIndex(String testInput, String command) {
+		return ParserIndexLocal.extractIndex(testInput, command);
+	}
+
+	public static String testRemoveIndex(String testInput) {
+		return ParserIndexLocal.removeIndex(testInput);
+	}
+
 	/************Misc Component**************/
 
 	public static String testRefineString(String[] testInput) {
@@ -137,14 +162,6 @@ public class ParserTestDriver {
 		return Misc.removeCommand(testInput, command);
 	}
 	
-	public static String testExtractId(String testInput) {
-		return Misc.extractId(testInput);
-	}
-	
-	public static String testDetermineIdValidity(String testInput) {
-		return Misc.determineIdValidity(testInput);
-	}
-	
 	public static boolean testDeterminePriorityValidity(String testInput) {
 		return Misc.determinePriorityValidity(testInput);
 	}
@@ -152,7 +169,11 @@ public class ParserTestDriver {
 	public static String testRemovePriority(String testInput) {
 		return Misc.removePriority(testInput);
 	}
-
+	
+	public static String testRemoveFrontZero(String testInput) {
+		return Misc.removeFrontZero(testInput);
+	}
+	
 	/************InvalidSpecialContent Component**************/
 	
 	public static boolean testContentForClear(String testInput) {
@@ -180,4 +201,12 @@ public class ParserTestDriver {
 	public static String testforFilter(String testInput) {
 		return ExtractSpecialContent.forFilter(testInput);
 	}
+
+	/************Interpreter Component**************/
+	
+	public static String testReader(String testInput) {
+		return Interpreter.reader(testInput).toString();
+	}
+
+
 }

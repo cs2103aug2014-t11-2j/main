@@ -5,7 +5,10 @@ public class Id {
 	protected static int latestSerialNumber = 0;
 
 	public static void setLatestSerialNumber(int newSn) {
-		latestSerialNumber = newSn;
+		
+		if(newSn > latestSerialNumber) {
+			latestSerialNumber = newSn;
+		}
 	}
 
 	public static int getLatestSerialNumber(){

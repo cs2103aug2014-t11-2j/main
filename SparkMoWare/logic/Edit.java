@@ -20,13 +20,11 @@ public class Edit {
 	public static String editAssignment(RefinedUserInput userInput) {
 
 		LinkedList<Assignment> idFound = new LinkedList<Assignment>();
-		idFound = SearchAll.searchAll(InternalStorage.getBuffer(), userInput.getId());
+		idFound = SearchAll.searchAll(InternalStorage.getBuffer(), Integer.toString(userInput.getIndex()));
 
 		if(idFound.size() == 0) {
 
-			String toUser = String.format(Message.DOES_NOT_EXISTS, "Serial Number " + userInput.getId());
-
-			Print.printToUser(toUser);
+			String toUser = String.format(Message.DOES_NOT_EXISTS, "Serial Number " + userInput.getIndex());
 
 			return toUser;
 		} else {

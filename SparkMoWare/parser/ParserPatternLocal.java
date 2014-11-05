@@ -38,24 +38,16 @@ public class ParserPatternLocal {
 	
 	protected static Pattern helpPattern = Pattern.compile("help|Help");
 	
-	protected static Pattern finishPattern = Pattern.compile("finish|fin|Finish|Fin");
+	protected static Pattern finishPattern = Pattern.compile("finish|fin|Finish|Fin|"
+														   + "done|Done");
 	
 	protected static Pattern timePattern = Pattern.compile("([0-9]{4})");
 	
-	protected static Pattern idPattern = Pattern.compile("([0-2][0-9][0-1][0-9]{9})");
-	
-	protected static Pattern datePattern = Pattern.compile("(([0-9]?[0-9])/([0-9]?[0-9])/([0-9]{4}))|"
-														 + "(([0-9]?[0-9])-([0-9]?[0-9])-([0-9]{4}))|"
-														 + "(([0-9]?[0-9]).([0-9]?[0-9]).([0-9]{4}))");
-														// + "(([0-9]?[0-9]) ([0-9]?[0-9]) ([0-9]{4}))|"
-														// + "([0-9])([0-9])([0-9])([0-9])([0-9])([0-9])([0-9])([0-9])");
-	
-	/* private Pattern TimePattern = Pattern.compile("[0-2][0-3][0-5][0-9]{4}"); //no 2400	
-	 * private Pattern datePattern = Pattern.compile("[0-2]?[0-9]/[0-1]?[0-9]/[0-9]{4}");
-	 *
-	 * Decided against using the above. Checking date and time validity should be handled elsewhere
-	 * if user types date incorrectly, Parser will interpret as no date and fill it in itself or assume no input, which is incorrect in some cases
-	 */
+	protected static Pattern datePattern = Pattern.compile("(([0-9]?[0-9])/([0-9]?[0-9])/([0-9]{2}))|"
+														 + "(([0-9]?[0-9])_([0-9]?[0-9])_([0-9]{2}))|"
+														 + "(([0-9]?[0-9])-([0-9]?[0-9])-([0-9]{2}))");
+														// + "(([0-9]?[0-9]) ([0-9]?[0-9]) ([0-9]{2}))|"
+														// + "([0-9])([0-9])([0-9])([0-9])([0-9])([0-9]))"
 	
 	protected static Pattern onPattern = Pattern.compile("on|On");
 	
@@ -63,6 +55,7 @@ public class ParserPatternLocal {
 	
 	protected static Pattern betweenPattern = Pattern.compile("between|Between");
 	
+	//unused pattern
 	protected static Pattern rejectPattern = Pattern.compile("no|reject|No|Reject");
 	
 	protected static Pattern todayPattern = Pattern.compile("today|Today");
@@ -99,4 +92,8 @@ public class ParserPatternLocal {
     protected static Pattern titlePattern = Pattern.compile("title|name|Title|Name");
     
     protected static Pattern priorityPattern = Pattern.compile("priority|Priority|-pri|-Pri");
+    
+    
+    private static String symbols = Pattern.quote(")");
+    protected static Pattern symbolsPattern = Pattern.compile(symbols);
 }

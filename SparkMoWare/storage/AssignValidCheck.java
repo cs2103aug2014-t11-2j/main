@@ -5,7 +5,7 @@ public class AssignValidCheck {
 	
 	private static boolean checkValid = false;
 	private static boolean checkType = false;
-	private static boolean checkId = false;
+	private static boolean checkIndex = false;
 	private static boolean checkPriority = false;
 	private static boolean checkEndDate = false;
 	private static boolean checkEndTime = false;
@@ -14,11 +14,11 @@ public class AssignValidCheck {
 	
 	protected static boolean checkAssignment(String[] line) {
 
-		checkId = ValidityCheck._IDFormatValid(line[0]);
-		checkType = ValidityCheck.validType(line[2]);
+		checkIndex = ValidityCheck.indexFormat(line[0]);
+		checkType = ValidityCheck.validType(line[1]);
 		checkPriority = ValidityCheck.priorityChecker(line[5]);
 
-		if(checkType && checkId && checkPriority) {
+		if(checkType && checkIndex && checkPriority) {
 			checkValid = true;
 		}
 		return checkValid;
@@ -26,13 +26,13 @@ public class AssignValidCheck {
 
 	protected static boolean checkTask(String[] line){
 		
-		checkId = ValidityCheck._IDFormatValid(line[0]);
-		checkType = ValidityCheck.validType(line[2]);
-		checkPriority = ValidityCheck.priorityChecker(line[7]);
+		checkIndex = ValidityCheck.indexFormat(line[0]);
+		checkType = ValidityCheck.validType(line[1]);
 		checkEndDate = ValidityCheck.dateFormatValid(line[3]);
 		checkEndTime = ValidityCheck.timeFormatValid(line[4]);
+		checkPriority = ValidityCheck.priorityChecker(line[7]);
 		
-		if(checkType && checkId && checkPriority && checkEndDate &&
+		if(checkType && checkIndex && checkPriority && checkEndDate &&
 				checkEndTime) {
 			checkValid = true;
 		}
@@ -41,16 +41,33 @@ public class AssignValidCheck {
 
 	protected static boolean checkAppointment(String[] line) {
 		
-		checkId = ValidityCheck._IDFormatValid(line[0]);
-		checkType = ValidityCheck.validType(line[2]);
-		checkPriority = ValidityCheck.priorityChecker(line[9]);
+		checkIndex = ValidityCheck.indexFormat(line[0]);
+		checkType = ValidityCheck.validType(line[1]);
 		checkEndDate = ValidityCheck.dateFormatValid(line[5]);
 		checkEndTime = ValidityCheck.timeFormatValid(line[6]);
 		checkStartDate = ValidityCheck.dateFormatValid(line[3]);
 		checkStartTime = ValidityCheck.timeFormatValid(line[4]);
+		checkPriority = ValidityCheck.priorityChecker(line[9]);
 		
-		if(checkType && checkId && checkPriority && checkEndDate &&
-				checkEndTime && checkStartDate && checkStartTime) {
+		if(checkType && checkIndex && checkPriority
+				&& checkEndDate && checkEndTime && checkStartDate && checkStartTime) {
+			checkValid = true;
+		}
+		return checkValid;
+	}
+	
+	protected static boolean checkTentative(String[] line) {
+		
+		checkIndex = ValidityCheck.indexFormat(line[0]);
+		checkType = ValidityCheck.validType(line[1]);
+		checkPriority = ValidityCheck.priorityChecker(line[9]);
+		checkStartDate = ValidityCheck.checkDates(line[3]);
+		checkStartTime = ValidityCheck.checkTimes(line[4]);
+		checkEndDate = ValidityCheck.checkDates(line[5]);
+		checkEndTime = ValidityCheck.checkTimes(line[6]);
+		
+		if(checkType && checkIndex && checkPriority	&& checkEndDate && checkEndTime
+				&& checkStartDate && checkStartTime) {
 			checkValid = true;
 		}
 		return checkValid;

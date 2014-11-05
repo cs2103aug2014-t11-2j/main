@@ -25,7 +25,7 @@ public class SetTentative {
 				newTentative.addEndTime(times.get(vectorCount));
 			}
 		}
-		InternalStorage.addBuffer(newTentative);
+		addTentativeToBuffer(newTentative);
 		
 		return tentativeIdGen;
 	}

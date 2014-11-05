@@ -13,12 +13,10 @@ public class Truncation {
 			String endDate) {
 
 		LinkedList<Assignment> limitRemoved = new LinkedList<Assignment>();
-		if(startDate != null) {
-			limitRemoved = removeLowerLimit(truncatedList, startDate);
-		} 
-		if(endDate != null) {
-			limitRemoved = removeUpperLimit(truncatedList, endDate);
-		}
+
+		limitRemoved = removeLowerLimit(truncatedList, startDate); 
+		limitRemoved = removeUpperLimit(truncatedList, endDate);
+
 		return limitRemoved;
 	}
 

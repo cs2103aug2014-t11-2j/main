@@ -1,20 +1,41 @@
 package parser;
 
+import java.util.regex.Matcher;
 
 public class RefineInputWithSpecial {
 	
+	private static final String START_DATE = "01/01/01";
+	private static final String END_DATE = "31/12/90";
 	//incomplete. Refer to project manual
 	protected static RefinedUserInput inputIsFilter(String userInput) {
+		Matcher dateMatcher = ParserPatternLocal.datePattern.matcher(userInput);
 		RefinedUserInput inputFilter = new RefinedUserInput(); 
 		String specialContent  = ExtractSpecialContent.forFilter(userInput);
 
-		if(specialContent.isEmpty()) {
+		//there might be redundancy at this step.
+		if(!dateMatcher.find() && specialContent.isEmpty()) {
 			inputFilter.setCommandType(EnumGroup.CommandType.INVALID_FORMAT);
 			return inputFilter;
+		} else if(dateMatcher.find() && specialContent.isEmpty()) {
+			String deadline = ParserDateLocal.extractEndDate(userInput);
+			
+			inputFilter.setCommandType(EnumGroup.CommandType.FILTER);
+			inputFilter.setStartDate(START_DATE);
+			inputFilter.setEndDate(deadline);
+		} else if(!dateMatcher.find() && !specialContent.isEmpty()) {
+			
+			inputFilter.setCommandType(EnumGroup.CommandType.FILTER);
+			inputFilter.setStartDate(START_DATE);
+			inputFilter.setEndDate(END_DATE);
+			inputFilter.setSpecialContent(specialContent);
+		} else if(dateMatcher.find() && !specialContent.isEmpty()){
+			String deadline = ParserDateLocal.extractEndDate(userInput);
+			
+			inputFilter.setCommandType(EnumGroup.CommandType.FILTER);
+			inputFilter.setStartDate(START_DATE);
+			inputFilter.setEndDate(deadline);
+			inputFilter.setSpecialContent(specialContent);
 		}
-		
-		inputFilter.setCommandType(EnumGroup.CommandType.FILTER);
-		inputFilter.setSpecialContent(specialContent);
 		
 		return inputFilter;
 	}
@@ -22,10 +43,15 @@ public class RefineInputWithSpecial {
 	protected static RefinedUserInput inputIsSearch(String userInput) {
 		RefinedUserInput inputSearch = new RefinedUserInput(); 
 		String specialContent  = ExtractSpecialContent.forSearch(userInput);
+		Matcher dateMatcher = ParserPatternLocal.datePattern.matcher(specialContent);
 
 		if(specialContent.isEmpty()) {
 			inputSearch.setCommandType(EnumGroup.CommandType.INVALID_FORMAT);
 			return inputSearch;
+		}
+		
+		if(dateMatcher.find()) {
+			specialContent = ParserDateLocal.extractEndDate(specialContent);
 		}
 		
 		inputSearch.setCommandType(EnumGroup.CommandType.SEARCH);
@@ -45,6 +71,8 @@ public class RefineInputWithSpecial {
 		}
 		
 		inputSort.setCommandType(EnumGroup.CommandType.SORT);
+		inputSort.setStartDate(START_DATE);
+		inputSort.setEndDate(END_DATE);
 		inputSort.setSpecialContent(specialContent);
 		
 		return inputSort;

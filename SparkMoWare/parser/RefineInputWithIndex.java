@@ -1,34 +1,36 @@
 package parser;
 
-public class RefineInputWithId {
-	
+public class RefineInputWithIndex {
+
 	protected static RefinedUserInput inputIsDelete(String userInput) {
-		String id = Misc.extractId(userInput);
+		int index = ParserIndexLocal.extractIndex(userInput, "delete");
 		RefinedUserInput inputDelete = new RefinedUserInput();
-		
-		if(id.isEmpty()) {
+
+		if(index == -1) {
 			inputDelete.setCommandType(EnumGroup.CommandType.INVALID_FORMAT);
 			return inputDelete;
+		} else {
+
+			inputDelete.setCommandType(EnumGroup.CommandType.DELETE);
+			inputDelete.setIndex(index);
+
+			return inputDelete;
 		}
-		
-		inputDelete.setCommandType(EnumGroup.CommandType.DELETE);
-		inputDelete.setId(id);
-		
-		return inputDelete;
 	}
 
 	protected static RefinedUserInput inputIsFinish(String userInput) {
 		RefinedUserInput inputFinish = new RefinedUserInput();
-		String id = Misc.extractId(userInput);		
-		
-		if(id.isEmpty()) {
+		int index = ParserIndexLocal.extractIndex(userInput, "finish");		
+
+		if(index == -1) {
 			inputFinish.setCommandType(EnumGroup.CommandType.INVALID_FORMAT);
 			return inputFinish;
+		} else {
+
+			inputFinish.setCommandType(EnumGroup.CommandType.DONE);
+			inputFinish.setIndex(index);
+
+			return inputFinish;
 		}
-		
-		inputFinish.setCommandType(EnumGroup.CommandType.DONE);
-		inputFinish.setId(id);
-		
-		return inputFinish;
 	}
 }
