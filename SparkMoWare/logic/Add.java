@@ -59,6 +59,7 @@ public class Add {
 			for(int i = 0; i < size; i++) {
 				if(!InternalStorage.getBuffer().get(i).getIsDone()) {
 					InternalStorage.addBuffer(i, newAssignment);
+					break;
 				} else if(i == size - 1) {
 					count = i;
 					InternalStorage.addBuffer(count + 1, newAssignment);

@@ -10,9 +10,9 @@ public class Sort {
 
 	protected static LinkedList<Assignment> multipleSortRequired(LinkedList<Assignment> sortBuffer,
 			String sortType, String startDate, String endDate) {
-
-		if(sortType.contains(";")) {
-			String[] multipleSortInput = sortType.split(";");
+		
+		if(sortType.contains(" ")) {
+			String[] multipleSortInput = sortType.split(" ");
 
 			for(int sortCount = 0; sortCount < multipleSortInput.length; sortCount++) {
 				sortBuffer = sortRequired(sortBuffer, multipleSortInput[sortCount]);

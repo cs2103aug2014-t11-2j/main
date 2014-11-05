@@ -235,12 +235,14 @@ public class Edit {
 	
 	private static void setIsOnTime(int bufferPosition) {
 
-		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyyhhmm");
+		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yy HHmm");
 		Date todayDate = new Date();
-
-		String currentDate = dateFormat.format(todayDate).substring(0, 10);
-		String currentTime = dateFormat.format(todayDate).substring(10);
+		System.out.println(dateFormat.format(todayDate));
+		String currentDate = dateFormat.format(todayDate);
 		
-		Comparator.checkOnTime(currentDate, currentTime, bufferPosition);
+		String[] dateTime = currentDate.split(" ");
+		
+		
+		Comparator.checkOnTime(dateTime[0], dateTime[1], bufferPosition);
 	}
 }
