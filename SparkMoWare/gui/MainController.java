@@ -244,10 +244,34 @@ public class MainController {
 				if (input.getCommandType() != EnumGroup.CommandType.INVALID_FORMAT ) {
 					commandtype.setText(2,input.getCommandType().toString());
 					title.setText(2, input.getTitle());
-					startDate.setText(2, input.getStartDate());
-					startTime.setText(2, input.getStartTime());
-					endDate.setText(2, input.getEndDate());
-					endTime.setText(2, input.getEndTime());
+					//start date
+					if (input.getStartDate().equalsIgnoreCase("default")){
+						startDate.setText(2, "" );
+					}
+					else {
+						startDate.setText(2, input.getStartDate());
+					}
+					//start time
+					if (input.getStartTime().equalsIgnoreCase("default")){
+						startTime.setText(2, "" );
+					}
+					else {
+						startTime.setText(2, input.getStartTime());
+					}
+					//end date
+					if (input.getEndDate().equalsIgnoreCase("default")){
+						endDate.setText(2, "" );
+					}
+					else {
+						endDate.setText(2, input.getEndDate());
+					}
+					//end tiem
+					if (input.getEndTime().equalsIgnoreCase("default")){
+						endTime.setText(2, "" );
+					}
+					else {
+						endTime.setText(2, input.getEndTime());
+					}
 					priority.setText(2, input.getPriority());
 				}
 			}
