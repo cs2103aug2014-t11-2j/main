@@ -69,10 +69,15 @@ public class Interpreter {
 		 * potential exception catching for invalid case
 		 */
 		case INVALID:
-			return new RefinedUserInput();
+			RefinedUserInput invalid = new RefinedUserInput();
+			invalid.setCommandType(EnumGroup.CommandType.INVALID_FORMAT);
+			return invalid;
 
 		default:
-			return new RefinedUserInput();
+			RefinedUserInput defaultCommand = new RefinedUserInput();
+			defaultCommand.setCommandType(EnumGroup.CommandType.INVALID_FORMAT);
+			return defaultCommand;
+			
 		}
 	}
 }
