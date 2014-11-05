@@ -12,7 +12,7 @@ public class HotkeyHintManager {
 		text.setEnabled(false);
 		text.setBounds(0, 615, 808, 21);
 		//formToolkit.adapt(text, true, true);
-		text.setText("F1: Help | F5: Refresh Interface | F6: Play/Stop Music | UP/DOWN Arrow: Command History");
+		text.setText("F1: Help  |  F5: Refresh Interface  |  F6: Play/Stop Music  |  F12: Expand/Hide Tab  |  UP/DOWN Arrow: Command History");
 		
 		return text;
 	}
