@@ -68,9 +68,6 @@ public class Interpreter {
 		/*
 		 * potential exception catching for invalid case
 		 */
-		case INVALID:
-			RefinedUserInput invalid = new RefinedUserInput();
-			return invalid;
 
 		default:
 			RefinedUserInput defaultCommand = new RefinedUserInput();
