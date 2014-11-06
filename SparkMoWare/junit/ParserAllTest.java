@@ -617,7 +617,7 @@ public class ParserAllTest {
 
 		//test inputIsFilter
 
-		/*
+		
 		
 		//confirm method returns invalid for single command
 		assertEquals("INVALID_FORMAT~0~default~default~default"
@@ -625,21 +625,21 @@ public class ParserAllTest {
 				+ "~false~default~null~null", ParserTestDriver.testInputIsFilter("filter"));
 		
 		//generalised test case
-		assertEquals("FILTER~0~default~01012000~default"
-				+ "~31122600~default~DEFAULT~NIMPT"
+		assertEquals("FILTER~0~default~01/01/01~default"
+				+ "~31/12/90~default~DEFAULT~NIMPT"
 				+ "~false~assignment~null~null", ParserTestDriver.testInputIsFilter("filter assignment"));
 		
 		//test for changing deadline
-				assertEquals("FILTER~0~default~01012000~default"
-						+ "~15102014~default~DEFAULT~NIMPT"
-						+ "~false~default~null~null", ParserTestDriver.testInputIsFilter("filter 15/10/2014"));
+				assertEquals("FILTER~0~default~01/01/01~default"
+						+ "~31/12/90~default~DEFAULT~NIMPT"
+						+ "~false~15/10/14~null~null", ParserTestDriver.testInputIsFilter("filter 15/10/14"));
 		
 		//test for multiple filter types
-		assertEquals("FILTER~0~default~01012000~default"
-				+ "~31122600~default~DEFAULT~NIMPT"
-				+ "~false~default~null~null", ParserTestDriver.testInputIsFilter("filter assignment "));
+		assertEquals("FILTER~0~default~01/01/01~default"
+				+ "~31/12/90~default~DEFAULT~NIMPT"
+				+ "~false~assignment~null~null", ParserTestDriver.testInputIsFilter("filter assignment "));
 		
-		*/
+		
 
 		/**************************/
 
