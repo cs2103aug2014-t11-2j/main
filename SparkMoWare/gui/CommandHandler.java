@@ -25,7 +25,7 @@ public class CommandHandler {
 	 * @param tableViewer
 	 * 				Display the table from logic to user in this tableviewer
 	 */
-	public static void commandHandle(Text cli, Text feedback, Table table) {
+	public static void commandHandle(Text cli, Text feedback, Table table, Table important) {
 
 		String userInput= cli.getText().toString();
 		System.out.println(userInput);
@@ -36,7 +36,7 @@ public class CommandHandler {
 		if(output.getIsStats()) {
 			StatsPopup.statsAppear(output.getTotalAssignment(), output.getTotalCompleted(), output.getTotalOnTime());
 		} else {
-			TablerLoader.populateTable(table, output.getReturnBuffer());
+			TablerLoader.populateTable(table,important, output.getReturnBuffer());
 			System.out.println(output.getReturnBuffer());
 		}
 	}

@@ -158,7 +158,7 @@ public class MainController {
 
 
 		//initial loading
-		TablerLoader.populateTable(table,SparkMoVare.storageSetup().getReturnBuffer());
+		TablerLoader.populateTable(table,imptDisplay,SparkMoVare.storageSetup().getReturnBuffer());
 		quoteViewer.setText(QuoteLib.getQuote());
 		clockDisplay.setText(timeFormat.format(date));
 
@@ -277,7 +277,7 @@ public class MainController {
 			public void keyReleased(KeyEvent e) {
 				if (e.keyCode == SWT.CR || e.keyCode == SWT.LF) {
 					CommandHistory.addCmd(cli.getText());
-					CommandHandler.commandHandle(cli, feedback, table);
+					CommandHandler.commandHandle(cli, feedback, table, imptDisplay);
 				}else if (e.keyCode == SWT.ARROW_UP) {
 					String commandCheck = CommandHistory.getPrevCmd();
 					if (!commandCheck.equals("")) {
@@ -298,7 +298,7 @@ public class MainController {
 		btnEnter.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				CommandHandler.commandHandle(cli, feedback, table);
+				CommandHandler.commandHandle(cli, feedback, table, imptDisplay);
 			}
 		});
 		composite.pack();

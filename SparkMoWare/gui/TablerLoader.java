@@ -3,8 +3,8 @@ package gui;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import logic.Appointment;
 import logic.Mission;
+import logic.SparkMoVare;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
@@ -20,7 +20,7 @@ import org.eclipse.swt.widgets.TableItem;
  */
 
 public class TablerLoader {
-	protected static void populateTable(Table table, LinkedList<Mission> tableBuffer) {
+	protected static void populateTable(Table table, Table important, LinkedList<Mission> tableBuffer) {
 		//Table table = tableViewer.getTable();
 		Device device = Display.getCurrent ();
 		Color Pink = new Color (device, 255, 182, 193);
@@ -54,9 +54,26 @@ public class TablerLoader {
 
 		TableItem item = new TableItem(table,SWT.NONE);
 		table.showItem(item);
+		updateImportant(important);
 
 	}
+	
+	protected static void updateImportant(Table important) {
+		Device device = Display.getCurrent ();
+		Color Pink = new Color (device, 255, 182, 193);
 
+		LinkedList<Mission> tableBuffer = SparkMoVare.updateImportant().getReturnBuffer();
+		important.removeAll();
+		Iterator<Mission> TableLoaderiterator = tableBuffer.iterator();
+		while (TableLoaderiterator.hasNext()) {
+			Mission appointmentToLoad = TableLoaderiterator.next();
+			String[] holding =(" ~" + appointmentToLoad.toString()).split("~");
+			TableItem item = new TableItem(important,SWT.NONE);
+			item.setBackground(Pink);
+			item.setText(holding);
+		}		
+	}
+	
 	protected static String convertDate(String date) {
 		String newDate = "";
 		newDate = date.substring(0, 2) + "/" + date.substring(2, 4)+ "/" + date.substring(4);

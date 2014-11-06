@@ -36,7 +36,7 @@ public class Filter {
 		return filteredList;
 	}
 
-	private static LinkedList<Assignment> filter(LinkedList<Assignment> buffer, String type) {
+	protected static LinkedList<Assignment> filter(LinkedList<Assignment> buffer, String type) {
 		
 		LinkedList<Assignment> filterList = new LinkedList<Assignment>();
 		
