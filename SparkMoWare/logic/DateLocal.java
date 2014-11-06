@@ -78,7 +78,7 @@ public class DateLocal {
 	
 	protected static String getStartDate() {
 		
-		String startDate = "31/12/13";
+		String startDate = "01/01/01";
 		
 		if(InternalStorage.getBuffer().getFirst().equals(AssignmentType.TASK)) {
 			Task firstTask = ((Task) InternalStorage.getBuffer().getFirst());

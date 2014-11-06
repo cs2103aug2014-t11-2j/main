@@ -5,6 +5,7 @@ import java.util.regex.Matcher;
 public class RefineInputWithSpecial {
 	
 	private static final String START_DATE = "010101";
+	private static final String START_DATE_FORMATTED = "01/01/01";
 	private static final String END_DATE = "31/12/99";
 	//incomplete. Refer to project manual
 	protected static RefinedUserInput inputIsFilter(String userInput) {
@@ -20,19 +21,19 @@ public class RefineInputWithSpecial {
 			String deadline = ParserDateLocal.extractEndDate(userInput);
 			
 			inputFilter.setCommandType(EnumGroup.CommandType.FILTER);
-			inputFilter.setStartDate(START_DATE);
+			inputFilter.setStartDate(START_DATE_FORMATTED);
 			inputFilter.setEndDate(deadline);
 		} else if(!dateMatcher.find() && !specialContent.isEmpty()) {
 			
 			inputFilter.setCommandType(EnumGroup.CommandType.FILTER);
-			inputFilter.setStartDate(START_DATE);
+			inputFilter.setStartDate(START_DATE_FORMATTED);
 			inputFilter.setEndDate(END_DATE);
 			inputFilter.setSpecialContent(specialContent);
 		} else if(dateMatcher.find() && !specialContent.isEmpty()){
 			String deadline = ParserDateLocal.extractEndDate(userInput);
 			
 			inputFilter.setCommandType(EnumGroup.CommandType.FILTER);
-			inputFilter.setStartDate(START_DATE);
+			inputFilter.setStartDate(START_DATE_FORMATTED);
 			inputFilter.setEndDate(deadline);
 			inputFilter.setSpecialContent(specialContent);
 		}
@@ -71,7 +72,7 @@ public class RefineInputWithSpecial {
 		}
 		
 		inputSort.setCommandType(EnumGroup.CommandType.SORT);
-		inputSort.setStartDate(START_DATE);
+		inputSort.setStartDate(START_DATE_FORMATTED);
 		inputSort.setEndDate(END_DATE);
 		inputSort.setSpecialContent(specialContent);
 		

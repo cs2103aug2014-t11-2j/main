@@ -16,6 +16,7 @@ import parser.RefinedUserInput;
 public class Edit {
 	
 	private static final String DEFAULT_TIME = "2359";
+	private static final String DEFAULT_START_TIME = "0000";
 	
 	public static String editAssignment(RefinedUserInput userInput) {
 
@@ -65,6 +66,7 @@ public class Edit {
 			default:
 				Print.printToUser(Message.INVALID_SEARCH_PARAMETER);
 			}
+			
 			return Message.EDITED; 
 		}
 	}
@@ -107,7 +109,7 @@ public class Edit {
 			appointmentInBuffer.setEndDate(appointmentTemp.getEndDate());
 			appointmentInBuffer.setEndTime(appointmentTemp.getEndTime());
 			appointmentInBuffer.setStartDate(date);
-			appointmentInBuffer.setStartTime(DEFAULT_TIME);
+			appointmentInBuffer.setStartTime(DEFAULT_START_TIME);
 			appointmentInBuffer.setIndex(appointmentTemp.getIndex());
 			appointmentInBuffer.setIsDone(appointmentTemp.getIsDone());
 			appointmentInBuffer.setIsOnTime(appointmentTemp.getIsOnTime());
@@ -123,7 +125,7 @@ public class Edit {
 			appointmentInBuffer.setEndDate(date);
 			appointmentInBuffer.setEndTime(DEFAULT_TIME);
 			appointmentInBuffer.setStartDate(date);
-			appointmentInBuffer.setStartTime(DEFAULT_TIME);
+			appointmentInBuffer.setStartTime(DEFAULT_START_TIME);
 			appointmentInBuffer.setIndex(appointmentTemp.getIndex());
 			appointmentInBuffer.setIsDone(appointmentTemp.getIsDone());
 			appointmentInBuffer.setIsOnTime(appointmentTemp.getIsOnTime());
@@ -147,7 +149,7 @@ public class Edit {
 
 			appointmentInBuffer.setEndDate(appointmentTemp.getEndDate());
 			appointmentInBuffer.setEndTime(appointmentTemp.getEndTime());
-			appointmentInBuffer.setStartDate(DateLocal.dateString());
+			appointmentInBuffer.setStartDate(appointmentTemp.getEndDate());
 			appointmentInBuffer.setStartTime(time);
 			appointmentInBuffer.setIndex(appointmentTemp.getIndex());
 			appointmentInBuffer.setIsDone(appointmentTemp.getIsDone());
@@ -229,7 +231,6 @@ public class Edit {
 		InternalStorage.addBufferFirst(InternalStorage.getBuffer().get(bufferPosition));
 		InternalStorage.getBuffer().remove(bufferPosition + 1);
 		
-		
 		return bufferPosition;
 	}
 	
@@ -241,7 +242,6 @@ public class Edit {
 		String currentDate = dateFormat.format(todayDate);
 		
 		String[] dateTime = currentDate.split(" ");
-		
 		
 		Comparator.checkOnTime(dateTime[0], dateTime[1], bufferPosition);
 	}

@@ -238,14 +238,14 @@ public class MainController {
 						startDate.setText(2, "" );
 					}
 					else {
-						startDate.setText(2, TablerLoader.convertDate(input.getStartDate()));
+						startDate.setText(2, input.getStartDate());
 					}
 					//start time
 					if (input.getStartTime().equalsIgnoreCase("default")){
 						startTime.setText(2, "" );
 					}
 					else {
-						startTime.setText(2, TablerLoader.convertDate(input.getStartTime()));
+						startTime.setText(2, input.getStartTime());
 					}
 					//end date
 					if (input.getEndDate().equalsIgnoreCase("default")){
