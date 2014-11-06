@@ -96,4 +96,6 @@ public class ParserPatternLocal {
     
     private static String symbols = Pattern.quote(")");
     protected static Pattern symbolsPattern = Pattern.compile(symbols);
+    
+    protected static Pattern separatorPattern = Pattern.compile("/");
 }

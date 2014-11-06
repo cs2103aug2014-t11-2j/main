@@ -15,7 +15,18 @@ public class ParserDateLocal {
 	// Comparison for Date.
 	// -1 (A < B), 0 (A = B), 1 (A > B) 
 	protected static int dateComparator(String dateA, String dateB) {
-
+		Matcher symbolMatcherA =  ParserPatternLocal.separatorPattern.matcher(dateA);
+		Matcher symbolMatcherB =  ParserPatternLocal.separatorPattern.matcher(dateB);
+		
+		if(symbolMatcherA.find()) {
+			dateA = symbolMatcherA.replaceAll("");
+		}
+		
+		if(symbolMatcherB.find()) {
+			dateB = symbolMatcherB.replaceAll("");
+		}
+		
+		
 		String yearA = dateA.trim().substring(4, 6);
 		String yearB = dateB.trim().substring(4, 6);
 
@@ -54,7 +65,9 @@ public class ParserDateLocal {
 		Matcher dateMatcher = ParserPatternLocal.datePattern.matcher(userInput);
 
 		if(!dateMatcher.find()) {
-			return ParserDateLocal.dateString();
+			String date = ParserDateLocal.dateString();
+			String newDateFormat = date.substring(0, 2) + "/" + date.substring(2, 4) + "/" + date.substring(4, 6);
+			return newDateFormat;
 		}
 
 		if(hasTwoDateInputs(userInput)) {
