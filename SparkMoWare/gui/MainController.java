@@ -96,6 +96,7 @@ public class MainController {
 		DateTime calendar = new DateTime (composite, SWT.CALENDAR | SWT.BORDER);
 
 		realTimeFeedBack = new Table(composite, SWT.BORDER | SWT.FULL_SELECTION);
+		realTimeFeedBack.setEnabled(false);
 		GridData gd_table_2 = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
 		gd_table_2.heightHint = 115;
 		realTimeFeedBack.setLayoutData(gd_table_2);

@@ -71,6 +71,7 @@ public class Interpreter {
 
 		default:
 			RefinedUserInput defaultCommand = new RefinedUserInput();
+			defaultCommand.setCommandType(EnumGroup.CommandType.INVALID_FORMAT);
 			return defaultCommand;
 			
 		}
