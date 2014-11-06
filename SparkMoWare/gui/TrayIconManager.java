@@ -11,6 +11,12 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tray;
 import org.eclipse.swt.widgets.TrayItem;
 
+/**
+ * 
+ * @author Zhengyang
+ *
+ */
+
 public class TrayIconManager {
 
 	protected static Tray trayIconSetup(Shell shell, Display display) {

@@ -13,6 +13,12 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 
+/**
+ * 
+ * @author Zhengyang
+ *
+ */
+
 public class TablerLoader {
 	protected static void populateTable(Table table, LinkedList<Mission> tableBuffer) {
 		//Table table = tableViewer.getTable();
@@ -24,34 +30,33 @@ public class TablerLoader {
 		Iterator<Mission> TableLoaderiterator = tableBuffer.iterator();
 		while (TableLoaderiterator.hasNext()) {
 			Mission appointmentToLoad = TableLoaderiterator.next();
-			if (!appointmentToLoad.getIsDone()){
-				String[] holding = appointmentToLoad.toString().split("~");
-				TableItem item = new TableItem(table,SWT.NONE);
-				String[] displayFormat = new String[5];
-				displayFormat[1] = Integer.toString(appointmentToLoad.getIndex());
-				displayFormat[2] = appointmentToLoad.getTitle();
-				if(!appointmentToLoad.getStartDate().equals("-"))	{
-					displayFormat[3] = appointmentToLoad.getStartDate()+", "+appointmentToLoad.getStartTime();
-				}
-				if(!appointmentToLoad.getEndDate().equals("-"))	{
-					displayFormat[4] = appointmentToLoad.getEndDate()+", "+appointmentToLoad.getEndTime();
-				}
-				item.setText(displayFormat);
-				if (appointmentToLoad.getPriority().toString().equals("IMPT")) {
-					//	item.setForeground(Red);
-					item.setBackground(Pink);
-				}
-				if (appointmentToLoad.getPriority().toString().equals("TNTV")) {
-					//	item.setForeground(Red);
-					item.setBackground(Orange);
-				}
+			String[] holding = appointmentToLoad.toString().split("~");
+			TableItem item = new TableItem(table,SWT.NONE);
+			String[] displayFormat = new String[5];
+			displayFormat[1] = Integer.toString(appointmentToLoad.getIndex());
+			displayFormat[2] = appointmentToLoad.getTitle();
+			if(!appointmentToLoad.getStartDate().equals("-"))	{
+				displayFormat[3] = appointmentToLoad.getStartDate()+", "+appointmentToLoad.getStartTime();
+			}
+			if(!appointmentToLoad.getEndDate().equals("-"))	{
+				displayFormat[4] = appointmentToLoad.getEndDate()+", "+appointmentToLoad.getEndTime();
+			}
+			item.setText(displayFormat);
+			if (appointmentToLoad.getPriority().toString().equals("IMPT")) {
+				//	item.setForeground(Red);
+				item.setBackground(Pink);
+			}
+			if (appointmentToLoad.getPriority().toString().equals("TNTV")) {
+				//	item.setForeground(Red);
+				item.setBackground(Orange);
 			}
 		}
+
 		TableItem item = new TableItem(table,SWT.NONE);
 		table.showItem(item);
 
 	}
-	
+
 	protected static String convertDate(String date) {
 		String newDate = "";
 		newDate = date.substring(0, 2) + "/" + date.substring(2, 4)+ "/" + date.substring(4);

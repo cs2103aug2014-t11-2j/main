@@ -13,6 +13,12 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
+/**
+ * Utility class to create a popup and display Statistics
+ * @author Zhengyang
+ */
+
+
 public class StatsPopup {
 	private static Table table;
 	private static Text Percentage;
@@ -20,7 +26,10 @@ public class StatsPopup {
 	private static Text QuoteFeedback;
 	
 	/**
-	 * @wbp.parser.entryPoint
+	 * statsAppear takes in the inputs and popup a summary of how the user has been performing
+	 * @param totalTask
+	 * @param completedTask
+	 * @param onTimeTask
 	 */
 	protected static void statsAppear(int totalTask, int completedTask, int onTimeTask){
 		
@@ -30,20 +39,13 @@ public class StatsPopup {
 	    assert (onTimeTask <= completedTask) : "Value of " + onTimeTask + " < " + completedTask + " is too large to add.";
 
 		int percentageOntime = (int)(((float)onTimeTask/completedTask)*100);
-		Shell popup = new Shell();
+		Shell popup = new Shell(SWT.CLOSE);
 		popup.setText("User Statistics");
 		Image background = SWTResourceManager.getImage(MainController.class, "/resource/image/wallpaper.jpg");
 		Image trayicon = SWTResourceManager.getImage(MainController.class, "/resource/image/SparkMoVareTrayIcon.png");
 		popup.setImage(trayicon);
 		popup.setBackgroundImage(background);
-		popup.setSize(484, 285);
-		
-		popup.addControlListener(new ControlAdapter() {
-			@Override
-			public void controlResized(ControlEvent e) {
-				popup.setSize(484, 285);	// force aspect so user cannot resize	
-			}
-		});
+		popup.setSize(GUISize.STAT_SHELL_WIDTH, GUISize.STAT_SHELL_HEIGHT);
 		
 		ProgressBar progressBar = new ProgressBar(popup, SWT.NONE);
 		progressBar.setBounds(86, 83, 202, 21);
@@ -52,18 +54,18 @@ public class StatsPopup {
 		progressBar.setSelection((int)(((float)onTimeTask/totalTask)*100));
 		
 		table = new Table(popup, SWT.BORDER | SWT.FULL_SELECTION);
-		table.setBounds(55, 110, 329, 79);
+		table.setBounds(GUISize.STAT_PROGRESS_XCOOD, GUISize.STAT_PROGRESS_YCOOD, GUISize.STAT_PROGRESS_WIDTH, GUISize.STAT_PROGRESS_HEIGHT);
 		TableColumn tc0 = new TableColumn(table, SWT.CENTER);
 		tc0.setResizable(false);
-		tc0.setWidth(220);
+		tc0.setWidth(GUISize.STAT_COL1);
 		TableColumn tc1 = new TableColumn(table, SWT.CENTER);
 		tc1.setResizable(false);
-		tc1.setWidth(100);
+		tc1.setWidth(GUISize.STAT_COL2);
 		table.setHeaderVisible(false);
 		table.setLinesVisible(true);
 		
 		Percentage = new Text(popup, SWT.BORDER | SWT.READ_ONLY | SWT.CENTER);
-		Percentage.setBounds(294, 83, 52, 21);
+		Percentage.setBounds(GUISize.STAT_PERCENT_XCOOD, GUISize.STAT_PERCENT_YCOOD, GUISize.STAT_PERCENT_WIDTH, GUISize.STAT_PERCENT_HEIGHT);
 		Percentage.setText(Integer.toString(percentageOntime)+"%");
 		
 		txtUserStatistics = new Text(popup, SWT.BORDER | SWT.READ_ONLY);
