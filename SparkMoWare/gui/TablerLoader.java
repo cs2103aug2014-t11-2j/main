@@ -57,7 +57,7 @@ public class TablerLoader {
 		updateImportant(important);
 
 	}
-	
+
 	protected static void updateImportant(Table important) {
 		Device device = Display.getCurrent ();
 		Color Pink = new Color (device, 255, 182, 193);
@@ -67,18 +67,16 @@ public class TablerLoader {
 		Iterator<Mission> TableLoaderiterator = tableBuffer.iterator();
 		while (TableLoaderiterator.hasNext()) {
 			Mission appointmentToLoad = TableLoaderiterator.next();
-			String[] holding =(" ~" + appointmentToLoad.toString()).split("~");
-			TableItem item = new TableItem(important,SWT.NONE);
-			item.setBackground(Pink);
-			item.setText(holding);
+			if (!appointmentToLoad.getIsDone()) {
+				String[] holding =(" ~" + appointmentToLoad.toString()).split("~");
+				TableItem item = new TableItem(important,SWT.NONE);
+				item.setBackground(Pink);
+				item.setText(holding);
+			}
 		}		
-		System.out.println(tableBuffer);
 	}
-<<<<<<< HEAD
-=======
-	
+
 	protected static String convertDate (String date) {
 		return date.substring(0, 2) + "/" + date.substring(2, 4) + "/" + date.substring(4);
 	}
->>>>>>> origin/master
 }
