@@ -5,11 +5,14 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 
+/**
+ * 
+ * @author Zhengyang
+ *
+ */
+
 public class TableManager {
 	
-	/**
-	 * @wbp.parser.entryPoint
-	 */
 	protected static Table setupTable(Shell shell) {
 		/**
 		 * TableViewer

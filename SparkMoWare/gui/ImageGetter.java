@@ -5,6 +5,11 @@ import java.util.Vector;
 
 import org.eclipse.swt.graphics.Image;
 
+/**
+ * Utility class to load image files from resourcepath
+ * 
+ * @author Zhengyang
+ */
 public class ImageGetter {
 	private static Vector<Image> imageRepo = new Vector<Image>(); 
 	private static boolean isLoaded = false;
@@ -23,8 +28,8 @@ public class ImageGetter {
 	}
 	
 	/**
-	 * imageGen returns a random image generated from
-	 * @return
+	 * imageGen returns a random image generated from imageRepo in ImagaGetter
+	 * @return Image
 	 */
 	protected static Image imageGen() {
 		if (!isLoaded) {

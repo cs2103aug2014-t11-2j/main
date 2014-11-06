@@ -42,6 +42,7 @@ import parser.RefinedUserInput;
 public class MainController {
 
 	public static final String SONGNAME = "soundtrack.mp3";
+	public static final int DELAY = 1000;
 
 	private static DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss ");
 	private static DateFormat dateFormat = new SimpleDateFormat("EEEE, d MMM yyyy");
@@ -61,8 +62,8 @@ public class MainController {
 	private boolean isReady = false;
 	private boolean isExpose = true;
 	private static MediaPlayer mediaPlayer;
-	private Table table_1;
-	private Table table_2;
+	private Table imptDisplay;
+	private Table realTimeFeedBack;
 
 	public static void main(String[] args) {
 
@@ -88,35 +89,34 @@ public class MainController {
 		shell.setBackgroundImage(background);
 		shell.setText("SparkMoVare");
 
-		//tet
 		Composite composite = new Composite(shell, SWT.NONE);
 		composite.setBounds(855, 0, 244, 658);
 		composite.setLayout(new GridLayout(1, false));
 
 		DateTime calendar = new DateTime (composite, SWT.CALENDAR | SWT.BORDER);
 
-		table_2 = new Table(composite, SWT.BORDER | SWT.FULL_SELECTION);
+		realTimeFeedBack = new Table(composite, SWT.BORDER | SWT.FULL_SELECTION);
 		GridData gd_table_2 = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
 		gd_table_2.heightHint = 115;
-		table_2.setLayoutData(gd_table_2);
-		table_2.setHeaderVisible(false);
-		table_2.setLinesVisible(true);
-		TableColumn dummy = new TableColumn(table_2, SWT.CENTER);
+		realTimeFeedBack.setLayoutData(gd_table_2);
+		realTimeFeedBack.setHeaderVisible(false);
+		realTimeFeedBack.setLinesVisible(true);
+		TableColumn dummy = new TableColumn(realTimeFeedBack, SWT.CENTER);
 		dummy.setResizable(false);
-		TableColumn tc = new TableColumn(table_2, SWT.CENTER);
+		TableColumn tc = new TableColumn(realTimeFeedBack, SWT.CENTER);
 		tc.setResizable(false);
-		TableColumn tc1 = new TableColumn(table_2, SWT.CENTER);
+		TableColumn tc1 = new TableColumn(realTimeFeedBack, SWT.CENTER);
 		tc1.setResizable(false);
 		dummy.setWidth(0);
 		tc.setWidth(118);
 		tc1.setWidth(117);
-		TableItem commandtype = new TableItem(table_2,SWT.CENTER);
-		TableItem title = new TableItem(table_2,SWT.CENTER);
-		TableItem startDate = new TableItem(table_2,SWT.CENTER);
-		TableItem startTime = new TableItem(table_2,SWT.CENTER);
-		TableItem endDate = new TableItem(table_2,SWT.CENTER);
-		TableItem endTime = new TableItem(table_2,SWT.CENTER);
-		TableItem priority = new TableItem(table_2,SWT.CENTER);
+		TableItem commandtype = new TableItem(realTimeFeedBack,SWT.CENTER);
+		TableItem title = new TableItem(realTimeFeedBack,SWT.CENTER);
+		TableItem startDate = new TableItem(realTimeFeedBack,SWT.CENTER);
+		TableItem startTime = new TableItem(realTimeFeedBack,SWT.CENTER);
+		TableItem endDate = new TableItem(realTimeFeedBack,SWT.CENTER);
+		TableItem endTime = new TableItem(realTimeFeedBack,SWT.CENTER);
+		TableItem priority = new TableItem(realTimeFeedBack,SWT.CENTER);
 		commandtype.setText(1,"Command Type");
 		title.setText(1, "Title");
 		startDate.setText(1, "Start Date");
@@ -125,42 +125,25 @@ public class MainController {
 		endTime.setText(1, "End Time");
 		priority.setText(1,"Prority");
 
-		table_1 = new Table(composite, SWT.BORDER | SWT.FULL_SELECTION);
+		imptDisplay = new Table(composite, SWT.BORDER | SWT.FULL_SELECTION);
 		GridData gd_table_1 = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
 		gd_table_1.widthHint = 80;
 		gd_table_1.heightHint = 335;
-		table_1.setLayoutData(gd_table_1);
-		table_1.setHeaderVisible(true);
-		table_1.setLinesVisible(false);
+		imptDisplay.setLayoutData(gd_table_1);
+		imptDisplay.setHeaderVisible(true);
+		imptDisplay.setLinesVisible(false);
 
-		TableColumn dummy1 = new TableColumn(table_1, SWT.CENTER);
+		TableColumn dummy1 = new TableColumn(imptDisplay, SWT.CENTER);
 		dummy1.setResizable(false);
-		TableColumn id = new TableColumn(table_1, SWT.CENTER);
+		TableColumn id = new TableColumn(imptDisplay, SWT.CENTER);
 		id.setResizable(false);
 		id.setText("Serial");
-		TableColumn title1 = new TableColumn(table_1, SWT.CENTER);
+		TableColumn title1 = new TableColumn(imptDisplay, SWT.CENTER);
 		title1.setResizable(false);
 		dummy1.setWidth(0);
 		id.setWidth(50);
 		title1.setWidth(179);
 		title1.setText("Title");
-
-		//	        GridLayout gridLayout = new GridLayout();
-		//	        gridLayout.numColumns = 1;
-		//	        parent.setLayout(gridLayout);
-		//	        DateTime calendar = new DateTime(parent, SWT.CALENDAR);
-		//	        DateTime date = new DateTime(parent, SWT.DATE);
-		//	        DateTime time = new DateTime(parent, SWT.TIME);
-		//	        // Date Selection as a drop-down
-		//	        DateTime dateD = new DateTime(parent, SWT.DATE | SWT.DROP_DOWN);
-		//
-		//	        shell.pack();
-		//	        shell.open();
-		//	        while (!shell.isDisposed()) {
-		//	            if (!display.readAndDispatch())
-		//	                display.sleep();
-		//	        }
-
 
 		//Setting up the various components of GUI
 		hotkeyGuide = HotkeyHintManager.hotkeySetup(shell);
@@ -175,10 +158,9 @@ public class MainController {
 
 
 		//initial loading
-		TablerLoader.populateTable(table,SparkMoVare.storageSetup().getReturnBuffer());
+		TablerLoader.populateTable(table,imptDisplay,SparkMoVare.storageSetup().getReturnBuffer());
 		quoteViewer.setText(QuoteLib.getQuote());
 		clockDisplay.setText(timeFormat.format(date));
-		//dateDisplay.setText(dateFormat.format(date));
 
 		// detecting MP3 and update option
 		try {
@@ -193,7 +175,7 @@ public class MainController {
 		}
 
 		// activate thread to run clock
-		clockUpdater.schedule(new UpdateTimerTask(), 1000, 1000);
+		clockUpdater.schedule(new UpdateTimerTask(), DELAY, DELAY);
 
 		// set listeners for hotkeys
 		shell.getDisplay().addFilter(SWT.KeyUp, new Listener()
@@ -295,7 +277,7 @@ public class MainController {
 			public void keyReleased(KeyEvent e) {
 				if (e.keyCode == SWT.CR || e.keyCode == SWT.LF) {
 					CommandHistory.addCmd(cli.getText());
-					CommandHandler.commandHandle(cli, feedback, table);
+					CommandHandler.commandHandle(cli, feedback, table, imptDisplay);
 				}else if (e.keyCode == SWT.ARROW_UP) {
 					String commandCheck = CommandHistory.getPrevCmd();
 					if (!commandCheck.equals("")) {
@@ -306,11 +288,6 @@ public class MainController {
 					if (!commandCheck.equals("")) {
 						cli.setText(commandCheck);
 					}
-				}else if (e.keyCode == SWT.F12 && cli.getText().equals("testing")) {
-					StatsPopup.statsAppear(12, 10, 2);
-					//easter egg
-					feedback.setText("TEST MODE!");
-					quoteViewer.setText("It’s not enough to be busy, so are the ants. The question is, what are we busy about? ~ Henry David Thoreau");
 				}
 			}
 			public void keyPressed(KeyEvent e) {
@@ -321,7 +298,7 @@ public class MainController {
 		btnEnter.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				CommandHandler.commandHandle(cli, feedback, table);
+				CommandHandler.commandHandle(cli, feedback, table, imptDisplay);
 			}
 		});
 		composite.pack();
@@ -346,9 +323,8 @@ public class MainController {
 				@Override
 				public void run()
 				{	
-					date=new Date();
+					date = new Date();
 					clockDisplay.setText(dateFormat.format(date).toString()+", "+ timeFormat.format(date).toString());
-					//dateDisplay.setText(dateFormat.format(date).toString());
 				}
 			});  
 		}

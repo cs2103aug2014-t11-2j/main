@@ -47,6 +47,17 @@ public class SparkMoVare {
 		return Interpreter.reader(userStringInput);
 	}
 	
+	public static Output updateImportant () {
+		LinkedList<Assignment> filteredBuffer = new LinkedList<Assignment>();
+
+		filteredBuffer = Filter.filter(InternalStorage.getBuffer(), "IMPT" );
+		
+		
+		return  ModifyOutput.returnModification(filteredBuffer,
+				Message.FILTER, InternalStorage.getLineCount(), Statistic.getCompleted(), 
+				Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
+	}
+	
 	public static Output executeCommand(String userStringInput) {
 
 		FutureHistory futureHistory = new FutureHistory();

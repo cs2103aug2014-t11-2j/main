@@ -7,11 +7,19 @@ import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.Random;
 
+/**
+ * Utility class to load motivational quotes from resourcepath
+ * 
+ * @author Zhengyang
+ */
+
 public class QuoteLib {
 	
 	private static LinkedList<String> buffer = new LinkedList<String>();
 	
-	
+	/**
+	 * openFile loads the help list from file
+	 */
 	protected static void openFile() {
 		try { 
 			InputStream in = QuoteLib.class.getResourceAsStream("/resource/text/quoteList.txt");
@@ -25,7 +33,10 @@ public class QuoteLib {
 			System.out.println("MESSAGE_FILE_INITIALISATION_ERROR");
 		}
 	}
-	
+	/**
+	 * getQuote returns a random quote loaded buy QuoteLib
+	 * @return String of random quote
+	 */
 	public static String getQuote() {
 		openFile();
 		Random gen = new Random();
