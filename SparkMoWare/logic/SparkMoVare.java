@@ -12,14 +12,14 @@ public class SparkMoVare {
 	protected static final int SYSTEM_EXIT_NO_ERROR = 0;
 	protected static final int SYSTEM_EXIT_ERROR = -1;
 	protected static final boolean IS_NOT_STATS_OR_INVALID = false;
-
+/*
 	public static void main(String[] args) {
 	
 		Print.printToUser(Message.WELCOME);
 			Storage.openFile(InternalStorage.getFilePath(), InternalStorage.getBuffer());
 			toDoManager();
 	}
-
+*/
 	public static void toDoManager() {
 
 		Output returnOutput = new Output();
@@ -50,8 +50,8 @@ public class SparkMoVare {
 	public static Output updateImportant () {
 		LinkedList<Assignment> filteredBuffer = new LinkedList<Assignment>();
 
-		filteredBuffer = Filter.filter(InternalStorage.getBuffer(), "IMPT" );
-		
+		filteredBuffer = Filter.filterMain(InternalStorage.getBuffer(), "important", 
+				"01/01/01", "31/12/99");
 		
 		return  ModifyOutput.returnModification(filteredBuffer,
 				Message.FILTER, InternalStorage.getLineCount(), Statistic.getCompleted(), 

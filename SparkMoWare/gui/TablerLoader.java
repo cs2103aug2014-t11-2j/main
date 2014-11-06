@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 import logic.Mission;
+import logic.Output;
 import logic.SparkMoVare;
 
 import org.eclipse.swt.SWT;
@@ -30,7 +31,6 @@ public class TablerLoader {
 		Iterator<Mission> TableLoaderiterator = tableBuffer.iterator();
 		while (TableLoaderiterator.hasNext()) {
 			Mission appointmentToLoad = TableLoaderiterator.next();
-			String[] holding = appointmentToLoad.toString().split("~");
 			TableItem item = new TableItem(table,SWT.NONE);
 			String[] displayFormat = new String[5];
 			displayFormat[1] = Integer.toString(appointmentToLoad.getIndex());
@@ -61,8 +61,8 @@ public class TablerLoader {
 	protected static void updateImportant(Table important) {
 		Device device = Display.getCurrent ();
 		Color Pink = new Color (device, 255, 182, 193);
-
-		LinkedList<Mission> tableBuffer = SparkMoVare.updateImportant().getReturnBuffer();
+		Output test = SparkMoVare.updateImportant();
+		LinkedList<Mission> tableBuffer = test.getReturnBuffer();
 		important.removeAll();
 		Iterator<Mission> TableLoaderiterator = tableBuffer.iterator();
 		while (TableLoaderiterator.hasNext()) {
@@ -72,6 +72,7 @@ public class TablerLoader {
 			item.setBackground(Pink);
 			item.setText(holding);
 		}		
+		System.out.println(tableBuffer);
 	}
 	
 	protected static String convertDate(String date) {

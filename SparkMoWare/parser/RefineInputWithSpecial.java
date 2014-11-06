@@ -4,8 +4,8 @@ import java.util.regex.Matcher;
 
 public class RefineInputWithSpecial {
 	
-	private static final String START_DATE = "01/01/01";
-	private static final String END_DATE = "31/12/90";
+	private static final String START_DATE = "010101";
+	private static final String END_DATE = "31/12/99";
 	//incomplete. Refer to project manual
 	protected static RefinedUserInput inputIsFilter(String userInput) {
 		Matcher dateMatcher = ParserPatternLocal.datePattern.matcher(userInput);
