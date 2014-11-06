@@ -90,7 +90,7 @@ public class MainController {
 		shell.setText("SparkMoVare");
 
 		Composite composite = new Composite(shell, SWT.NONE);
-		composite.setBounds(855, 0, 244, 658);
+		composite.setBounds(855, 10, 239, 651);
 		composite.setLayout(new GridLayout(1, false));
 
 		DateTime calendar = new DateTime (composite, SWT.CALENDAR | SWT.BORDER);
@@ -127,9 +127,9 @@ public class MainController {
 		priority.setText(1,"Prority");
 
 		imptDisplay = new Table(composite, SWT.BORDER | SWT.FULL_SELECTION);
-		GridData gd_table_1 = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
-		gd_table_1.widthHint = 80;
-		gd_table_1.heightHint = 335;
+		GridData gd_table_1 = new GridData(SWT.NONE, SWT.FILL, true, true, 1, 1);
+		gd_table_1.widthHint = 212;
+		gd_table_1.heightHint = 323;
 		imptDisplay.setLayoutData(gd_table_1);
 		imptDisplay.setHeaderVisible(true);
 		imptDisplay.setLinesVisible(false);
@@ -144,7 +144,7 @@ public class MainController {
 		dummy1.setWidth(0);
 		id.setWidth(50);
 		title1.setWidth(179);
-		title1.setText("Title");
+		title1.setText("Important Task");
 
 		//Setting up the various components of GUI
 		hotkeyGuide = HotkeyHintManager.hotkeySetup(shell);

@@ -46,7 +46,7 @@ public class TablerLoader {
 				//	item.setForeground(Red);
 				item.setBackground(Pink);
 			}
-			if (appointmentToLoad.getPriority().toString().equals("TNTV")) {
+			if (appointmentToLoad.getAssignType().toString().equals("TNTV")) {
 				//	item.setForeground(Red);
 				item.setBackground(Orange);
 			}
@@ -75,9 +75,7 @@ public class TablerLoader {
 		System.out.println(tableBuffer);
 	}
 	
-	protected static String convertDate(String date) {
-		String newDate = "";
-		newDate = date.substring(0, 2) + "/" + date.substring(2, 4)+ "/" + date.substring(4);
-		return newDate;
+	protected static String convertDate (String date) {
+		return date.substring(0, 2) + "/" + date.substring(2, 4) + "/" + date.substring(4);
 	}
 }

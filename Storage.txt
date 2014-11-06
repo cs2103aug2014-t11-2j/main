@@ -1,3 +1,0 @@
-3~ASGN~test~false~false~NIMPT
-2~ASGN~lalala~false~false~IMPT
-1~ASGN~test~false~false~IMPT
