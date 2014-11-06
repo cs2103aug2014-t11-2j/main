@@ -18,6 +18,7 @@ public class InputIsEdit {
 
 				case TITLE:
 					userInput = Misc.removeEditTitle(userInput);
+					userInput = ParserIndexLocal.removeIndex(userInput);
 					String title = Misc.extractTitle(userInput, "edit");
 
 					Matcher symbolMatcher = ParserPatternLocal.symbolsPattern

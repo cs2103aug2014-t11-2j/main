@@ -70,12 +70,10 @@ public class Interpreter {
 		 */
 		case INVALID:
 			RefinedUserInput invalid = new RefinedUserInput();
-			invalid.setCommandType(EnumGroup.CommandType.INVALID_FORMAT);
 			return invalid;
 
 		default:
 			RefinedUserInput defaultCommand = new RefinedUserInput();
-			defaultCommand.setCommandType(EnumGroup.CommandType.INVALID_FORMAT);
 			return defaultCommand;
 			
 		}
