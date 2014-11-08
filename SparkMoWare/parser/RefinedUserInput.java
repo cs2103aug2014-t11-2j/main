@@ -5,6 +5,11 @@ import java.util.Vector;
 import logic.Assignment.AssignmentType;
 import parser.EnumGroup.CommandType;
 
+/**
+ * 
+ * @author Matthew Song
+ *
+ */
 public class RefinedUserInput {
 	
 	/************** Data members **********************/
@@ -32,6 +37,10 @@ public class RefinedUserInput {
 	private static final String DEFAULT_PRIORITY = "NIMPT";
 	private static final int DEFAULT_INDEX = 0;
 	/************** Constructors **********************/
+	
+	/**
+	 * The Default constructor for the RefinedUserInput object.
+	 */
 	
 	public RefinedUserInput() {
 		

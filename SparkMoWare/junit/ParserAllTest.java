@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import parser.ParserDateLocal;
 import parser.ParserTestDriver;
 
 public class ParserAllTest {
@@ -626,17 +625,17 @@ public class ParserAllTest {
 		
 		//generalised test case
 		assertEquals("FILTER~0~default~01/01/01~default"
-				+ "~31/12/90~default~DEFAULT~NIMPT"
+				+ "~31/12/99~default~DEFAULT~NIMPT"
 				+ "~false~assignment~null~null", ParserTestDriver.testInputIsFilter("filter assignment"));
 		
 		//test for changing deadline
 				assertEquals("FILTER~0~default~01/01/01~default"
-						+ "~31/12/90~default~DEFAULT~NIMPT"
+						+ "~31/12/99~default~DEFAULT~NIMPT"
 						+ "~false~15/10/14~null~null", ParserTestDriver.testInputIsFilter("filter 15/10/14"));
 		
 		//test for multiple filter types
 		assertEquals("FILTER~0~default~01/01/01~default"
-				+ "~31/12/90~default~DEFAULT~NIMPT"
+				+ "~31/12/99~default~DEFAULT~NIMPT"
 				+ "~false~assignment~null~null", ParserTestDriver.testInputIsFilter("filter assignment "));
 		
 		
@@ -671,7 +670,7 @@ public class ParserAllTest {
 		
 		//generalised test case
 		assertEquals("SORT~0~default~01/01/01~default"
-				+ "~31/12/90~default~DEFAULT~NIMPT"
+				+ "~31/12/99~default~DEFAULT~NIMPT"
 				+ "~false~id~null~null", ParserTestDriver.testInputIsSort("sort id"));
 		
 		/***********Interpreter***************/
