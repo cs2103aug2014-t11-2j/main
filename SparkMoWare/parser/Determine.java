@@ -2,20 +2,9 @@ package parser;
 
 import java.util.regex.Matcher;
 
-	/**
-	 * 
-	 * @author Matthew Song
-	 *
-	 */
-
 public class Determine {
 	
-	/**
-	 * Method to distinguish which command has been entered.
-	 * 
-	 * @param command
-	 * @return CommandType Enum
-	 */
+	//requires change to use pattern
 	protected static EnumGroup.CommandType getCommandType(String command) {
 		Matcher addMatcher = ParserPatternLocal.addPattern.matcher(command);
 		Matcher tentativeMatcher = ParserPatternLocal.tentativePattern.matcher(command);
