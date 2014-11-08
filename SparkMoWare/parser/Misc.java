@@ -2,15 +2,22 @@ package parser;
 
 import java.util.regex.Matcher;
 
-/* For now, this class contains miscellaneous methods that will either
- * be moved into other classes, have its name changed, or even stay
- * as it is.
+/**
+ * Collection of miscellaneous methods used by the Parser.
+ * @author Matthew Song
+ *
  */
 public class Misc {
 	
-    protected static Boolean isFloatingAssignment(String userInput) {
-        Matcher dateMatcher = ParserPatternLocal.datePattern.matcher(userInput);
-        Matcher timeMatcher = ParserPatternLocal.timePattern.matcher(userInput);
+	/**
+	 * Method checks if input contains any date or time.
+	 * 
+	 * @param input String to be checked.
+	 * @return true if no date or time inputs are detected.
+	 */
+    protected static Boolean isFloatingAssignment(String input) {
+        Matcher dateMatcher = ParserPatternLocal.datePattern.matcher(input);
+        Matcher timeMatcher = ParserPatternLocal.timePattern.matcher(input);
         
         if(!dateMatcher.find() && !timeMatcher.find()) {
             return true;
@@ -19,16 +26,22 @@ public class Misc {
         }
     }
 	
-	protected static String extractTitle(String userInput, String command) {
-		userInput = ParserDateLocal.replaceAllDate(userInput);
-		userInput = ParserTimeLocal.replaceAllTime(userInput);
-		userInput = removeCommand(userInput, command);
-		userInput = removePriority(userInput);
+    /**
+     * Method extracts title from input by removing unnecessary information. All dates and times,
+     * the String command in the input and the priority.
+     * 
+     * @param input String to have title extracted from.
+     * @param command String command to be removed.
+     * @return title String
+     */
+	protected static String extractTitle(String input, String command) {
+		input = ParserDateLocal.replaceAllDate(input);
+		input = ParserTimeLocal.replaceAllTime(input);
+		input = removeCommand(input, command);
+		input = removePriority(input);
 		
-		//userInput = ParserIndexLocal.removeIndex(userInput);
-		
-		userInput.trim();
-		String[] temp = userInput.split(" ");
+		input = input.trim();
+		String[] temp = input.split(" ");
 		
 		if(temp.length == 0) {
 			return "";
@@ -36,7 +49,15 @@ public class Misc {
 		
 		return refineString(temp);
 	}
-
+	
+	/**
+	 * Method removes the first instance of the String command matching the String input. If no
+	 * match is found, the same input is returned.
+	 * 
+	 * @param input String to be changed.
+	 * @param command String to be removed from input String.
+	 * @return String after the removal of the String command.
+	 */
 	protected static String removeCommand(String input, String command) {
 		if(command.equals("add")) {
 			Matcher addMatcher = ParserPatternLocal.addPattern.matcher(input);
@@ -82,6 +103,12 @@ public class Misc {
 		return input;
 	}
 	
+	/**
+	 * Method removes any matching instances of priority.
+	 * 
+	 * @param input String to be changed.
+	 * @return String after removal of priority.
+	 */
 	protected static String removePriority(String input) {
 		Matcher importantMatcher = ParserPatternLocal.importantPattern.matcher(input);
 		Matcher notImportantMatcher = ParserPatternLocal.notImportantPattern.matcher(input);
@@ -94,6 +121,12 @@ public class Misc {
 		return input.trim();
 	}
 	
+	/**
+	 * Method removes any extra whitepaces between words.
+	 * 
+	 * @param unrefinedString String Array to be combined.
+	 * @return String with only single whitespaces between the words.
+	 */
 	protected static String refineString(String [] unrefinedString) {
 		int length = unrefinedString.length;
 		String refinedString = new String();
@@ -109,9 +142,15 @@ public class Misc {
 		return refinedString.trim();
 	}
 	
-	protected static String extractPriority(String userInput) {
-		Matcher notimportantMatcher = ParserPatternLocal.notImportantPattern.matcher(userInput);
-		Matcher importantMatcher = ParserPatternLocal.importantPattern.matcher(userInput);
+	/**
+	 * Method to extract priority. If not matching priority is found, returns not important.
+	 * 
+	 * @param input String to have priority extracted from.
+	 * @return priority String
+	 */
+	protected static String extractPriority(String input) {
+		Matcher notimportantMatcher = ParserPatternLocal.notImportantPattern.matcher(input);
+		Matcher importantMatcher = ParserPatternLocal.importantPattern.matcher(input);
 		String notImportant = "NIMPT";
 		String important = "IMPT";
 		
@@ -124,27 +163,27 @@ public class Misc {
 		}
 	}
 
-	//This is a different determine validity method compared to the others
-	public static boolean determinePriorityValidity(String input) {
-		Matcher importantMatcher = ParserPatternLocal.importantPattern.matcher(input);
-		Matcher notImportantMatcher = ParserPatternLocal.notImportantPattern.matcher(input);
-		
-		if(!importantMatcher.matches() && !notImportantMatcher.matches()) {
-			return false;
-		} else {
-			return true;
-		}
-	}
-
-	protected static String removeEditTitle(String userInput) {
-		Matcher titleMatcher = ParserPatternLocal.titlePattern.matcher(userInput);
+	/**
+	 * Method removes the first instance of title from the String input.
+	 * 
+	 * @param input String to be changed.
+	 * @return String after removal of the String title from input.
+	 */
+	protected static String removeEditTitle(String input) {
+		Matcher titleMatcher = ParserPatternLocal.titlePattern.matcher(input);
 		
 		if(titleMatcher.find()) {
-			userInput = titleMatcher.replaceFirst("");
+			input = titleMatcher.replaceFirst("");
 		}
-		return userInput;
+		return input;
 	}
 	
+	/**
+	 * Method removes zeroes until input is empty or encounters a non-zero character.
+	 * 
+	 * @param input String to be changed
+	 * @return String with leading zeroes removed.
+	 */
 	protected static String removeFrontZero(String input) {
 		while (input.length() > 0 && input.charAt(0) == '0') {
 			input = input.substring(1);

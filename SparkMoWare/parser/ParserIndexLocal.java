@@ -1,7 +1,21 @@
 package parser;
 
+/**
+ * Class containing all relevant methods involving the index.
+ * 
+ * @author Matthew Song
+ *
+ */
 public class ParserIndexLocal {
 	
+	/**
+	 * Method extracts index from String input. If no index is found, -1 is returned to
+	 * indicate no index found.
+	 * 
+	 * @param input String to have index extracted from.
+	 * @param command String to be removed.
+	 * @return index int.
+	 */
 	protected static int extractIndex(String input, String command) {
 		int index = -1;
 		
@@ -12,11 +26,17 @@ public class ParserIndexLocal {
 		input = input.replaceAll("[a-zA-Z]+", "").trim();
 		
 		if(input.matches("[0-9]+")) {
-			index =  Integer.parseInt(input);
+			index = Integer.parseInt(input);
 		}
 		return index;
 	}
 		
+	/**
+	 * Method to remove index from input String.
+	 * 
+	 * @param input String to be changed.
+	 * @return String with index removed.
+	 */
 	protected static String removeIndex(String input) {
 		
 		if(indexExists(input)) {
@@ -41,6 +61,12 @@ public class ParserIndexLocal {
 		return input.trim();
 	}
 	
+	/**
+	 * Method determines if index exists.
+	 * 
+	 * @param input String to be checked.
+	 * @return true if index exists.
+	 */
 	protected static boolean indexExists(String input) {
 		input = ParserDateLocal.replaceAllDate(input);
 		input = ParserTimeLocal.replaceAllTime(input);

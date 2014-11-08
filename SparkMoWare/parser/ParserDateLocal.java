@@ -6,14 +6,32 @@ import java.util.Date;
 import java.util.Vector;
 import java.util.regex.Matcher;
 
+/**
+ * Class containing all relevant methods involving dates.
+ * 
+ * @author Matthew Song
+ *
+ */
 public class ParserDateLocal {
 
 	private static final int SMALLER = -1;
 	private static final int SAME = 0;
 	private static final int LARGER = 1;
 
-	// Comparison for Date.
-	// -1 (A < B), 0 (A = B), 1 (A > B) 
+	/**
+	 * Method compares the two date inputs to determine if they are equal, larger or smaller.
+	 * The case are as follows:
+	 * <br><br>
+	 * -1 id dateA < dateB
+	 * <br><br>
+	 * 0 if dateA = dateB
+	 * <br><br>
+	 * 1 if dateA > dateB
+	 * 
+	 * @param dateA first date input to be compared.
+	 * @param dateB second date input to be compared.
+	 * @return int value representing result -1 id dateA < dateB, 0 if dateA = dateB and 1 if dateA > dateB
+	 */
 	protected static int dateComparator(String dateA, String dateB) {
 		Matcher symbolMatcherA =  ParserPatternLocal.separatorPattern.matcher(dateA);
 		Matcher symbolMatcherB =  ParserPatternLocal.separatorPattern.matcher(dateB);
@@ -61,8 +79,15 @@ public class ParserDateLocal {
 		return SMALLER;
 	}
 
-	protected static String extractEndDate(String userInput) {
-		Matcher dateMatcher = ParserPatternLocal.datePattern.matcher(userInput);
+	/**
+	 * Method extracts the end date from the String input. If no date is detected, the system's current date is returned.
+	 * If more than one date is found, the first date input is replaced, and the second is extracted.
+	 * 
+	 * @param input String to have the end date extracted from.
+	 * @return end date String
+	 */
+	protected static String extractEndDate(String input) {
+		Matcher dateMatcher = ParserPatternLocal.datePattern.matcher(input);
 
 		if(!dateMatcher.find()) {
 			String date = ParserDateLocal.dateString();
@@ -70,16 +95,21 @@ public class ParserDateLocal {
 			return newDateFormat;
 		}
 
-		if(hasTwoDateInputs(userInput)) {
-			userInput = dateMatcher.replaceFirst("");
+		if(hasTwoDateInputs(input)) {
+			input = dateMatcher.replaceFirst("");
 		}
 
-		String endDate = extractStartDate(userInput);
+		String endDate = extractStartDate(input);
 
 		return endDate;
 	}
 
-	//Checks if there are 2 date inputs
+	/**
+	 * Method determines if input String has 2, and only 2, dates. Returns false otherwise.
+	 * 
+	 * @param input String to be checked.
+	 * @return true if there are two date within the input.
+	 */
 	protected static boolean hasTwoDateInputs(String input) {		
 		Matcher dateMatcher = ParserPatternLocal.datePattern.matcher(input);
 		int n = 0;
@@ -102,8 +132,15 @@ public class ParserDateLocal {
 		}
 	}
 
-	protected static String extractStartDate(String userInput) {
-		Matcher dateMatcher = ParserPatternLocal.datePattern.matcher(userInput);
+	/**
+	 * Method extracts the start date from the String input. Method converts date input into the following format:
+	 * DD/MM/YY. If date extracted from input is in an invalid format, an empty String is returned.
+	 * 
+	 * @param input String to have the start date extracted from.
+	 * @return start date String.
+	 */
+	protected static String extractStartDate(String input) {
+		Matcher dateMatcher = ParserPatternLocal.datePattern.matcher(input);
 		String startDate = new String();
 		String temp = new String();
 		String newDateFormat = new String();
@@ -138,6 +175,12 @@ public class ParserDateLocal {
 		return newDateFormat;
 	}	
 
+	/**
+	 * Method returns the inputDate String if format is valid, empty String otherwise.
+	 * 
+	 * @param inputDate String to be checked.
+	 * @return the inputDate String if format is valid, empty String otherwise.
+	 */
 	public static String determineDateValidity(String inputDate) { 
 		if(!dateFormatValid(inputDate)) {
 			return "";
@@ -145,6 +188,12 @@ public class ParserDateLocal {
 		return inputDate;
 	}
 
+/**
+ * Method checks if the date format is valid and returns true if so.
+ * 
+ * @param date String to be checked.
+ * @return true if date format is valid.
+ */
 	public static boolean dateFormatValid(String date) {
 		boolean validDateFormat = true;
 
@@ -158,6 +207,12 @@ public class ParserDateLocal {
 		return validDateFormat;
 	}
 
+	/**
+	 * Method checks if date exists.
+	 * 
+	 * @param date String to be checked.
+	 * @return true if date exists.
+	 */
 	protected static boolean dateExists(int date) {
 		boolean leapYear = false;
 		boolean dateExist = false;
@@ -166,7 +221,7 @@ public class ParserDateLocal {
 		int month = (date / 100) % 100;
 		int year = date % 100;
 
-		if(year % 4 == 0) {
+		if(year % 4 == 0 && year % 100 != 0) {
 			leapYear = true;
 		}
 		if(month > 12 || month < 1) {
@@ -181,9 +236,14 @@ public class ParserDateLocal {
 		} else if(day <= 31 && month != 2  && month != 4 && month != 6 && month != 9 && month != 11) {
 			dateExist = true;
 		}
-		return dateExist;	
+		return dateExist;
 	}
 
+	/**
+	 * Method returns system's current date.
+	 * 
+	 * @return system's current date String
+	 */
 	public static String dateString(){
 		DateFormat dateFormat = new SimpleDateFormat("ddMMyy");
 		Date todayDate = new Date();
@@ -191,6 +251,12 @@ public class ParserDateLocal {
 		return dateFormat.format(todayDate);
 	}
 
+	/**
+	 * Method replaces all dates found.  
+	 * 
+	 * @param input String to be changed
+	 * @return input String with dates removed
+	 */
 	protected static String replaceAllDate(String input) {
 		Matcher dateMatcher = ParserPatternLocal.datePattern.matcher(input);
 
@@ -199,13 +265,18 @@ public class ParserDateLocal {
 		return input;
 	}
 
+	/**
+	 * Method to extract tentative dates.
+	 * 
+	 * @param input String to have tentative dates extracted from.
+	 * @return tentative dates Vector.
+	 */
 	protected static Vector<String> extractTentativeDates(String input) {
 		Vector<String> tentativeDates = new Vector<String> ();
 		Matcher dateMatcher = ParserPatternLocal.datePattern.matcher(input);
 		String temp = new String();
 
 		while(dateMatcher.find()) {
-			//temp = extractEndDate(dateMatcher.group());
 			tentativeDates.add(extractEndDate(dateMatcher.group()));
 			input = dateMatcher.replaceFirst("");
 

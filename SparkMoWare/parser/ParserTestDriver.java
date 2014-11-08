@@ -1,5 +1,11 @@
 package parser;
 
+/**
+ * Class to allow testing of any method in the Parser Package.
+ * 
+ * @author Matthew Song
+ *
+ */
 public class ParserTestDriver {
 
 	/***********Major Component***************/
@@ -24,6 +30,18 @@ public class ParserTestDriver {
 		return InputIsEdit.refineInput(testInput).toString();
 	}
 	
+	public static String testInputIsFilter(String testInput) {
+		return InputIsFilter.refineInput(testInput).toString();
+	}
+	
+	public static String testInputIsSearch(String testInput) {
+		return InputIsSearch.refineInput(testInput).toString();
+	}
+	
+	public static String testInputIsSort(String testInput) {
+		return InputIsSort.refineInput(testInput).toString();
+	}
+	
 	/***********RefineInputWithId Component***************/
 	
 	public static String testInputIsDelete(String testInput) {
@@ -32,20 +50,6 @@ public class ParserTestDriver {
 	
 	public static String testInputIsFinish(String testInput) {
 		return RefineInputWithIndex.inputIsFinish(testInput).toString();
-	}
-	
-	/***********RefineInputWithSpecial Component***************/
-	
-	public static String testInputIsFilter(String testInput) {
-		return RefineInputWithSpecial.inputIsFilter(testInput).toString();
-	}
-	
-	public static String testInputIsSearch(String testInput) {
-		return RefineInputWithSpecial.inputIsSearch(testInput).toString();
-	}
-	
-	public static String testInputIsSort(String testInput) {
-		return RefineInputWithSpecial.inputIsSort(testInput).toString();
 	}
 	
 	/************ParserDateLocal Component**************/
@@ -160,10 +164,6 @@ public class ParserTestDriver {
 	
 	public static String testRemoveCommand(String testInput, String command) {
 		return Misc.removeCommand(testInput, command);
-	}
-	
-	public static boolean testDeterminePriorityValidity(String testInput) {
-		return Misc.determinePriorityValidity(testInput);
 	}
 	
 	public static String testRemovePriority(String testInput) {

@@ -29,7 +29,6 @@ public class ParserAllTest {
         assertEquals(0, ParserTestDriver.testDateComparator("090814", "090814"));
 
         /**************************/
-        
 
 		//Test extractEndDate()
 
@@ -357,14 +356,6 @@ public class ParserAllTest {
         assertEquals("IMPT", ParserTestDriver.testExtractPriority("add buy eggs 0900 210714 Important"));
         assertEquals("NIMPT", ParserTestDriver.testExtractPriority("add buy eggs 0900 210714 Nimportant"));
 		
-		/**************************/
-		
-		//Test determinePriorityValidty
-		
-		//generalised test cases
-		assertTrue(ParserTestDriver.testDeterminePriorityValidity("important"));
-		assertTrue(ParserTestDriver.testDeterminePriorityValidity("nimportant"));
-		
 		/*************InvalidSpecialContent Tests*************/
 		
 		//Test contentForClear
@@ -381,20 +372,6 @@ public class ParserAllTest {
 		assertFalse(ParserTestDriver.testContentForClear("ion"));
 		assertFalse(ParserTestDriver.testContentForClear("beforetime"));
 		assertFalse(ParserTestDriver.testContentForClear("isbetween"));	
-		
-		/**************************/
-
-		//Test forSort
-		
-		//stub
-		
-		
-		/**************************/
-		
-		//Test forFilter
-		
-		//stub
-		
 		
 		/***********ExtractSpecialContent Tests***************/
 		
@@ -478,7 +455,7 @@ public class ParserAllTest {
         /*assertEquals("ADD~0~go 2103T lecture~311014~1400"
                 + "~311014~1600~APPT~NMPT"
                 + "~false~default",
-                ParserTestDriver.testInputIsAdd("Add go 2103T lecture 31/10/14 1400 31/10/14 1600")); /*
+                ParserTestDriver.testInputIsAdd("Add go 2103T lecture 31/10/14 1400 31/10/14 1600"));*/
          
 		//Design flaw: returns <go T lecture> instead of <go 2103T lecture>
 		//The replace time method replaces the any 4 number pattern
@@ -495,12 +472,6 @@ public class ParserAllTest {
                 + "~false~default~null~null",
                 ParserTestDriver.testInputIsAdd("Add buy fish 31/10/14 2359 31/10/14 2300"));
         
-        //test correct output if times are in the wrong order
-                assertEquals("ADD~0~buy fish~31/10/14~2300"
-                        + "~31/10/14~2359~APPT~NIMPT"
-                        + "~false~default~null~null",
-                        ParserTestDriver.testInputIsAdd("Add 1 more function 15/10/14 1400"));
-        
         /*************InputIsClear Tests*************/
 
         //confirm method works for clear, aka clear all
@@ -513,8 +484,6 @@ public class ParserAllTest {
                 + "~03/09/14~default~DEFAULT~NIMPT"
                 + "~false~between~null~null",
                 ParserTestDriver.testInputIsClear("clear between 29/08/14 3/9/14"));
-        
-        
         
         //confirm method works for before a date
         assertEquals("CLEAR~0~default~01/01/01~default"
@@ -591,6 +560,57 @@ public class ParserAllTest {
 		assertEquals("INVALID_FORMAT~0~default~default~default"
 				+ "~default~default~DEFAULT~NIMPT"
 				+ "~false~default~null~null", ParserTestDriver.testInputIsTentative("Tentative 12/8/14 0900 1/09/14 1000 1/9/14 1100"));
+
+		/*************InputIsFilter Tests*************/
+		
+		//confirm method returns invalid for single command
+		assertEquals("INVALID_FORMAT~0~default~default~default"
+				+ "~default~default~DEFAULT~NIMPT"
+				+ "~false~default~null~null", ParserTestDriver.testInputIsFilter("filter"));
+		
+		//generalised test case
+		assertEquals("FILTER~0~default~01/01/01~default"
+				+ "~31/12/99~default~DEFAULT~NIMPT"
+				+ "~false~assignment~null~null", ParserTestDriver.testInputIsFilter("filter assignment"));
+		
+		//test for changing deadline
+				assertEquals("FILTER~0~default~01/01/01~default"
+						+ "~31/12/99~default~DEFAULT~NIMPT"
+						+ "~false~15/10/14~null~null", ParserTestDriver.testInputIsFilter("filter 15/10/14"));
+		
+		//test for multiple filter types
+		assertEquals("FILTER~0~default~01/01/01~default"
+				+ "~31/12/99~default~DEFAULT~NIMPT"
+				+ "~false~assignment~null~null", ParserTestDriver.testInputIsFilter("filter assignment "));
+
+		/*************InputIsSearch Tests*************/
+
+		//confirm method returns invalid for single command
+		assertEquals("INVALID_FORMAT~0~default~default~default"
+				+ "~default~default~DEFAULT~NIMPT"
+				+ "~false~default~null~null", ParserTestDriver.testInputIsSearch("search"));
+		
+		//generalised test case
+		assertEquals("SEARCH~0~default~default~default"
+				+ "~default~default~DEFAULT~NIMPT"
+				+ "~false~assignment~null~null", ParserTestDriver.testInputIsSearch("search assignment"));
+		
+		//test input date is converted into a string consisting only of digits
+		assertEquals("SEARCH~0~default~default~default"
+				+ "~default~default~DEFAULT~NIMPT"
+				+ "~false~10/08/14~null~null", ParserTestDriver.testInputIsSearch("search 10/8/14"));
+		
+		/*************InputIsSort Tests*************/
+
+		//confirm method returns invalid for single command
+		assertEquals("INVALID_FORMAT~0~default~default~default"
+				+ "~default~default~DEFAULT~NIMPT"
+				+ "~false~default~null~null", ParserTestDriver.testInputIsSort("sort"));
+		
+		//generalised test case
+		assertEquals("SORT~0~default~01/01/01~default"
+				+ "~31/12/99~default~DEFAULT~NIMPT"
+				+ "~false~id~null~null", ParserTestDriver.testInputIsSort("sort id"));
 		
 		/*************RefineInputWithId Tests*************/
 
@@ -619,67 +639,6 @@ public class ParserAllTest {
 		assertEquals("DONE~2~default~default~default"
 				+ "~default~default~DEFAULT~NIMPT"
 				+ "~false~default~null~null", ParserTestDriver.testInputIsFinish("finish 2"));
-
-		/*************RefineInputWithSpecial Tests*************/
-
-		//test inputIsFilter
-
-		
-		
-		//confirm method returns invalid for single command
-		assertEquals("INVALID_FORMAT~0~default~default~default"
-				+ "~default~default~DEFAULT~NIMPT"
-				+ "~false~default~null~null", ParserTestDriver.testInputIsFilter("filter"));
-		
-		//generalised test case
-		assertEquals("FILTER~0~default~01/01/01~default"
-				+ "~31/12/99~default~DEFAULT~NIMPT"
-				+ "~false~assignment~null~null", ParserTestDriver.testInputIsFilter("filter assignment"));
-		
-		//test for changing deadline
-				assertEquals("FILTER~0~default~01/01/01~default"
-						+ "~31/12/99~default~DEFAULT~NIMPT"
-						+ "~false~15/10/14~null~null", ParserTestDriver.testInputIsFilter("filter 15/10/14"));
-		
-		//test for multiple filter types
-		assertEquals("FILTER~0~default~01/01/01~default"
-				+ "~31/12/99~default~DEFAULT~NIMPT"
-				+ "~false~assignment~null~null", ParserTestDriver.testInputIsFilter("filter assignment "));
-		
-		
-
-		/**************************/
-
-		//test inputIsSearch
-
-		//confirm method returns invalid for single command
-		assertEquals("INVALID_FORMAT~0~default~default~default"
-				+ "~default~default~DEFAULT~NIMPT"
-				+ "~false~default~null~null", ParserTestDriver.testInputIsSearch("search"));
-		
-		//generalised test case
-		assertEquals("SEARCH~0~default~default~default"
-				+ "~default~default~DEFAULT~NIMPT"
-				+ "~false~assignment~null~null", ParserTestDriver.testInputIsSearch("search assignment"));
-		
-		//test input date is converted into a string consisting only of digits
-		assertEquals("SEARCH~0~default~default~default"
-				+ "~default~default~DEFAULT~NIMPT"
-				+ "~false~10/08/14~null~null", ParserTestDriver.testInputIsSearch("search 10/8/14"));
-		
-		/**************************/
-
-		//test inputIsSort
-
-		//confirm method returns invalid for single command
-		assertEquals("INVALID_FORMAT~0~default~default~default"
-				+ "~default~default~DEFAULT~NIMPT"
-				+ "~false~default~null~null", ParserTestDriver.testInputIsSort("sort"));
-		
-		//generalised test case
-		assertEquals("SORT~0~default~01/01/01~default"
-				+ "~31/12/99~default~DEFAULT~NIMPT"
-				+ "~false~id~null~null", ParserTestDriver.testInputIsSort("sort id"));
 		
 		/***********Interpreter***************/
 		

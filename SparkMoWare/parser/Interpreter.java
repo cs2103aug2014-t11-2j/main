@@ -1,8 +1,18 @@
 package parser;
 
+/**
+ * 
+ * @author Matthew Song
+ *
+ */
 public class Interpreter {
 
-	//Method that will be called by the Logic
+	/**
+	 * Method determines which is the command to be executed. If no match is found, a default is returned
+	 * 
+	 * @param userInput the String with all the relevant information to be extracted.
+	 * @return a RefinedUserInput object.
+	 */
 	public static RefinedUserInput reader(String userInput) {
 		
 		switch (Determine.getCommandType(userInput)) {
@@ -25,10 +35,10 @@ public class Interpreter {
 			return InputIsClear.refineInput(userInput);
 
 		case SORT:
-			return RefineInputWithSpecial.inputIsSort(userInput);
+			return InputIsSort.refineInput(userInput);
 
 		case SEARCH:
-			return RefineInputWithSpecial.inputIsSearch(userInput);
+			return InputIsSearch.refineInput(userInput);
 
 		case STATISTIC:
 			RefinedUserInput inputStatistic = new RefinedUserInput();
@@ -51,7 +61,7 @@ public class Interpreter {
 			return inputDisplay;
 		
 		case FILTER:
-			return RefineInputWithSpecial.inputIsFilter(userInput);
+			return InputIsFilter.refineInput(userInput);
 		
 		case EXIT:
 			RefinedUserInput inputExit = new RefinedUserInput();
@@ -65,13 +75,9 @@ public class Interpreter {
 			
 		case DONE:
 			return RefineInputWithIndex.inputIsFinish(userInput);
-		/*
-		 * potential exception catching for invalid case
-		 */
 
 		default:
-			RefinedUserInput defaultCommand = new RefinedUserInput();
-			return defaultCommand;
+			return new RefinedUserInput();
 			
 		}
 	}

@@ -3,6 +3,12 @@ package parser;
 import java.util.Vector;
 import java.util.regex.Matcher;
 
+/**
+ * Class containing all relevant methods involving time.
+ * 
+ * @author Matthew Song
+ *
+ */
 public class ParserTimeLocal {
 	
 	private static final int SMALLER = -1;
@@ -11,8 +17,20 @@ public class ParserTimeLocal {
 	protected static String defaultEndTime = "2359";
 	protected static String defaultStartTime = "0000";
 	
-	// Comparison for Time.
-	// -1 (A < B), 0 (A = B), 1 (A > B)
+	/**
+	 * Method compares the two time inputs to determine if they are equal, larger or smaller.
+	 * The case are as follows:
+	 * <br><br>
+	 * -1 id timeA < timeB
+	 * <br><br>
+	 * 0 if timeA = timeB
+	 * <br><br>
+	 * 1 if timeA > timeB
+	 *  
+	 * @param timeA first time input to be compared.
+	 * @param timeB second time input to be compared.
+	 * @return int value representing result -1 id timeA < timeB, 0 if timeA = timeB and 1 if timeA > timeB
+	 */
 	protected static int timeComparator(String timeA, String timeB) {
 
 		String hourA = timeA.trim().substring(0, 2);
@@ -57,25 +75,25 @@ public class ParserTimeLocal {
 		}
 		return SAME;
 	}
-	
-	/* Still haven't dealt with following inputs: 
-	 * [add] [start date] [start time] [end date]
-	 * [add] [start date] [end date] [end time]
-	 * Parser cannot distinguish between the two YET
+
+	/**
+	 * Method extracts the end time from the String input. If no time is detected, the default end
+	 * time 2359 is entered. If more than one time is found, the first time input is replaced and
+	 * the second is extracted.
+	 * 
+	 * @param input String to have the end time extracted from.
+	 * @return end time String.
 	 */
-	protected static String extractEndTime(String userInput) {
-		//userInput = ParserIdLocal.removeId(userInput);
-		userInput = ParserDateLocal.replaceAllDate(userInput);
-		Matcher timeMatcher = ParserPatternLocal.timePattern.matcher(userInput);
+	protected static String extractEndTime(String input) {
+		input = ParserDateLocal.replaceAllDate(input);
+		Matcher timeMatcher = ParserPatternLocal.timePattern.matcher(input);
 		String endTime = new String();
 
-		//this is assuming for appointment creation, user either has two time inputs
-		//or no time inputs
-		if(hasTwoTimeInputs(userInput)) {
-			userInput = timeMatcher.replaceFirst("");
+		if(hasTwoTimeInputs(input)) {
+			input = timeMatcher.replaceFirst("");
 		}
 
-		endTime = extractStartTime(userInput);
+		endTime = extractStartTime(input);
 
 		if(!timeMatcher.find()) {
 			endTime = ParserTimeLocal.defaultEndTime;
@@ -84,6 +102,12 @@ public class ParserTimeLocal {
 		return endTime;
 	}
 
+	/**
+	 * Method determines if input String has 2 time. Returns false otherwise.
+	 * 
+	 * @param input String to be checked.
+	 * @return true if there are two time with the input.
+	 */
 	protected static boolean hasTwoTimeInputs(String input) {
 		Matcher timeMatcher = ParserPatternLocal.timePattern.matcher(input);
 		int n = 0;
@@ -101,10 +125,16 @@ public class ParserTimeLocal {
 		}
 	}
 
-	protected static String extractStartTime(String userInput) {
-		//userInput = ParserIdLocal.removeId(userInput);
-		userInput = ParserDateLocal.replaceAllDate(userInput);
-		Matcher timeMatcher = ParserPatternLocal.timePattern.matcher(userInput);
+	/**
+	 * Method extracts the start time from the String input. If time extracted from input is in an invalid format,
+	 * an empty String is returned.
+	 * 
+	 * @param input String to have start time extracted from.
+	 * @return start time String.
+	 */
+	protected static String extractStartTime(String input) {
+		input = ParserDateLocal.replaceAllDate(input);
+		Matcher timeMatcher = ParserPatternLocal.timePattern.matcher(input);
 		String startTime = new String();
 
 		if(timeMatcher.find()) {
@@ -116,6 +146,12 @@ public class ParserTimeLocal {
 		return determineTimeValidity(startTime);
 	}
 
+	/**
+	 * Method returns the inputTime String if format is valid, empty String otherwise.
+	 * 
+	 * @param inputTime String to be checked.
+	 * @return the inputTime String if format is valid, empty String otherwise.
+	 */
 	public static String determineTimeValidity(String inputTime) {
         if(!timeFormatValid(inputTime)) {
         	return "";
@@ -123,6 +159,12 @@ public class ParserTimeLocal {
 		return inputTime;
 	}
 
+	/**
+	 * Method checks if time format is valid and returns true if so.
+	 * 
+	 * @param time String to be checked.
+	 * @return true if time is valid.
+	 */
 	public static boolean timeFormatValid(String time) {
 		boolean timeValidity = true;
 
@@ -136,6 +178,12 @@ public class ParserTimeLocal {
 		return timeValidity;
 	}
 
+	/**
+	 * Method to check if time exists.
+	 * 
+	 * @param time String to be checked.
+	 * @return true if time exists.
+	 */
 	public static boolean timeExists(int time) {
 		boolean timeExist = false;
 
@@ -150,6 +198,14 @@ public class ParserTimeLocal {
 
 	//DESIGN FLAW: method will replace any and all 4 number input
 	//for eg. the year part of date or even in a long sequence of numbers
+	/**
+	 * Method replaces all time found.  
+	 * <br><br>
+	 * Flaw: Method replaces any and all numerical String portions found to have 4 digits.
+	 * 
+	 * @param input String to be changed.
+	 * @return input String with time removed.
+	 */
 	protected static String replaceAllTime(String input) {
 		Matcher timeMatcher = ParserPatternLocal.timePattern.matcher(input);
 		
@@ -158,6 +214,12 @@ public class ParserTimeLocal {
 		return input;
 	}
 
+	/**
+	 * Method to extract tentative time.
+	 * 
+	 * @param input String to have tentative time extracted from.
+	 * @return tentative time Vector.
+	 */
 	public static Vector<String> extractTentativeTimes(String input) {
 		Vector<String> tentativeTimes = new Vector<String> ();
 		Matcher dateMatcher = ParserPatternLocal.datePattern.matcher(input);
@@ -179,7 +241,5 @@ public class ParserTimeLocal {
 		
 		return tentativeTimes;
 	}
-	
-	
 }
 

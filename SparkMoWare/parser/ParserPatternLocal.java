@@ -2,9 +2,15 @@ package parser;
 
 import java.util.regex.Pattern;
 
+/**
+ * Class contains all relevant pattern for Parser package.
+ * 
+ * @author Matthew Song
+ *
+ */
 public class ParserPatternLocal {
 
-	protected static Pattern addPattern = Pattern.compile("add|Add");
+	protected static Pattern addPattern = Pattern.compile("add|Add|Create|create");
 	
 	protected static Pattern editPattern = Pattern.compile("edit|Edit");
 	
@@ -53,7 +59,8 @@ public class ParserPatternLocal {
 	
 	protected static Pattern todayPattern = Pattern.compile("today|Today");
 	
-	protected static Pattern importantPattern = Pattern.compile("important|IMPT|Impt|impt|Important");
+	protected static Pattern importantPattern = Pattern.compile("important|IMPT|Impt|impt|Important|"
+															  + "urgent|Urgent");
 
     protected static Pattern notImportantPattern = Pattern.compile("NIMPT|nIMPT|Nimportant|nimportant|"
     															 + "nimpt|NIMPORTANT");
