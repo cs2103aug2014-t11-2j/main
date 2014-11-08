@@ -2,8 +2,28 @@ package parser;
 
 import logic.Assignment.AssignmentType;
 
+/**
+ * 
+ * @author Matthew Song
+ *
+ */
 public class InputIsAdd {
 
+	/**
+	 * Method creates a RefinedUserInput for the add command. The cases are as follow:
+	 * <br><br>
+	 * 1. Floating Assignment: no date and time are detected in the input. If the title is empty, an Invalid
+	 * Format CommandType is returned. 
+	 * <br><br>
+	 * 2. Assignment: A single date and/or time input is detected in the input. If the input date and/or time
+	 * is in an invalid format, an Invalid Format CommandType is returned.
+	 * <br><br>
+	 * 3. Appointment: Two date inputs are detected in the input. If any of the input dates and/or times are
+	 * in an invalid format, an Invalid Format CommandType is returned. 
+	 * 
+	 * @param userInput the String with all the relevant information to be extracted.
+	 * @return a RefinedUserInput object for the add command.
+	 */
 	protected static RefinedUserInput refineInput(String userInput) {
 		RefinedUserInput inputAdd = new RefinedUserInput();
 		String title = Misc.extractTitle(userInput, "add");

@@ -2,13 +2,31 @@ package parser;
 
 import java.util.regex.Matcher;
 
+/**
+ * The ExtractSpecial Content class is used for the following methods: Clear, Search, Sort and Filter.
+ * @author Matthew Song
+ *
+ */
 public class ExtractSpecialContent {
 
-	//This method may require refinement if the 3 clear patterns
-	// (on, between, before) have more than one word
+	/**
+	 * Method extracts a String from the input and checks its validity for the clear command.
+	 * If content is invalid or empty, an empty String is returned.
+	 * @param input the String to be checked for special content.
+	 * @return the special content extracted from the given input.
+	 */
 	protected static String forClear(String input) {
+		Matcher clearMatcher = ParserPatternLocal.clearPattern.matcher(input);
+		
 		input = ParserDateLocal.replaceAllDate(input);
-		input = Misc.removeCommand(input, "clear");
+		
+		if(clearMatcher.find()) {
+			input = Misc.removeCommand(input, "clear");
+
+			input = input.trim();
+		} else {
+			return "";
+		}
 
 		if(!InvalidSpecialContent.contentForClear(input)) {
 			return "";
@@ -17,6 +35,11 @@ public class ExtractSpecialContent {
 		return input.trim();
 	}
 
+	/**
+	 * Method extracts a String from the input for search command. 
+	 * @param input the String to be checked for special content.
+	 * @return the special content extracted from the given input.
+	 */
 	protected static String forSearch(String input) {
 		Matcher searchMatcher = ParserPatternLocal.searchPattern.matcher(input);
 
@@ -29,6 +52,11 @@ public class ExtractSpecialContent {
 		}
 	}
 	
+	/**
+	 * Method extracts a String from the input for sort command. 
+	 * @param input the String to be checked for special content.
+	 * @return the special content extracted from the given input.
+	 */
 	protected static String forSort(String input) {
 		Matcher sortMatcher = ParserPatternLocal.sortPattern.matcher(input);
 
@@ -41,6 +69,11 @@ public class ExtractSpecialContent {
 		}
 	}
 
+	/**
+	 * Method extracts a String from the input for filter command. 
+	 * @param input the String to be checked for special content.
+	 * @return the special content extracted from the given input.
+	 */
 	protected static String forFilter(String input) {
 		Matcher filterMatcher = ParserPatternLocal.filterPattern.matcher(input);
 		

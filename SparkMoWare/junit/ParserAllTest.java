@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import parser.ParserDateLocal;
 import parser.ParserTestDriver;
 
 public class ParserAllTest {
@@ -515,18 +514,26 @@ public class ParserAllTest {
                 + "~false~between~null~null",
                 ParserTestDriver.testInputIsClear("clear between 29/08/14 3/9/14"));
         
+        
+        
         //confirm method works for before a date
-        assertEquals("CLEAR~0~default~01/01/14~default"
+        assertEquals("CLEAR~0~default~01/01/01~default"
                 + "~03/09/14~default~DEFAULT~NIMPT"
                 + "~false~before~null~null",
                 ParserTestDriver.testInputIsClear("clear before 3/9/14"));
 
         //confirm method works for on a date
         //clear issue 1
-        assertEquals("CLEAR~0~default~01/01/14~default"
+        assertEquals("CLEAR~0~default~01/01/01~default"
                 + "~03/09/14~default~DEFAULT~NIMPT"
                 + "~false~on~null~null",
                 ParserTestDriver.testInputIsClear("clear on 3/9/14"));
+        
+        //confirm method returns invalid for between case if only a single date is detected
+        assertEquals("INVALID_FORMAT~0~default~default~default"
+                + "~default~default~DEFAULT~NIMPT"
+                + "~false~default~null~null",
+                ParserTestDriver.testInputIsClear("clear between 3/9/14"));
 
 		/*************InputIsConfirm Tests*************/
 		
@@ -626,17 +633,17 @@ public class ParserAllTest {
 		
 		//generalised test case
 		assertEquals("FILTER~0~default~01/01/01~default"
-				+ "~31/12/90~default~DEFAULT~NIMPT"
+				+ "~31/12/99~default~DEFAULT~NIMPT"
 				+ "~false~assignment~null~null", ParserTestDriver.testInputIsFilter("filter assignment"));
 		
 		//test for changing deadline
 				assertEquals("FILTER~0~default~01/01/01~default"
-						+ "~31/12/90~default~DEFAULT~NIMPT"
+						+ "~31/12/99~default~DEFAULT~NIMPT"
 						+ "~false~15/10/14~null~null", ParserTestDriver.testInputIsFilter("filter 15/10/14"));
 		
 		//test for multiple filter types
 		assertEquals("FILTER~0~default~01/01/01~default"
-				+ "~31/12/90~default~DEFAULT~NIMPT"
+				+ "~31/12/99~default~DEFAULT~NIMPT"
 				+ "~false~assignment~null~null", ParserTestDriver.testInputIsFilter("filter assignment "));
 		
 		
@@ -671,7 +678,7 @@ public class ParserAllTest {
 		
 		//generalised test case
 		assertEquals("SORT~0~default~01/01/01~default"
-				+ "~31/12/90~default~DEFAULT~NIMPT"
+				+ "~31/12/99~default~DEFAULT~NIMPT"
 				+ "~false~id~null~null", ParserTestDriver.testInputIsSort("sort id"));
 		
 		/***********Interpreter***************/

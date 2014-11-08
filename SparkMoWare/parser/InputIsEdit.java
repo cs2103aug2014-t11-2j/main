@@ -2,8 +2,22 @@ package parser;
 
 import java.util.regex.Matcher;
 
+/**
+ * 
+ * @author Matthew Song
+ *
+ */
 public class InputIsEdit {
 
+	/**
+	 * Method creates a RefinedUserInput for the edit command. After extracting the target id to be modified,
+	 * the EditType will be extracted to determine which attribute is to be modified. A switch case is used to
+	 * determine the EditType. If no index is detected, an invalid or empty EditType is detected, or the new
+	 * replacement is in an invalid format, an Invalid Format CommandType is returned.
+	 * 
+	 * @param userInput the String with all the relevant information to be extracted.
+	 * @return a RefinedUserInput object for the edit command.
+	 */
 	protected static RefinedUserInput refineInput(String userInput) {
 		RefinedUserInput inputEdit = new RefinedUserInput();
 		int index = ParserIndexLocal.extractIndex(userInput, "edit");

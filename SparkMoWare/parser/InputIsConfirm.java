@@ -1,7 +1,20 @@
 package parser;
 
+/**
+ * 
+ * @author Matthew Song
+ *
+ */
 public class InputIsConfirm {
 	
+	/**
+	 * Method creates a RefinedUserInput for the confirm command. If the input does not contain an index
+	 * start date, start time, end date and end time, or any are in the incorrect format, an Invalid
+	 * Format CommandType is returned.
+	 * 
+	 * @param userInput the String with all the relevant information to be extracted.
+	 * @return a RefinedUserInput object for the confirm command.
+	 */
 	protected static RefinedUserInput refineInput(String userInput) {
 		
 		RefinedUserInput inputConfirm = new RefinedUserInput();

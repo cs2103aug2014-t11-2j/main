@@ -2,9 +2,20 @@ package parser;
 
 import java.util.regex.Matcher;
 
+/**
+ * 
+ * @author Matthew Song
+ *
+ */
+
 public class Determine {
 	
-	//requires change to use pattern
+	/**
+	 * Method checks to see if input String matches any of the available CommandType patterns, and returns the relevant CommandType.
+	 * If a match is not found, an invalid CommandType is thrown.
+	 * @param command The String to be checked.
+	 * @return the CommandType that matches the pattern of the input command.
+	 */
 	protected static EnumGroup.CommandType getCommandType(String command) {
 		Matcher addMatcher = ParserPatternLocal.addPattern.matcher(command);
 		Matcher tentativeMatcher = ParserPatternLocal.tentativePattern.matcher(command);
@@ -65,6 +76,12 @@ public class Determine {
 		}
 	}
 	
+	/**
+	 * Method checks to see if input String matches any of the available EditType patterns, and returns the relevant EditType.
+	 * If a match is not found, invalid EditType is thrown. 
+	 * @param input The String to be checked
+	 * @return the EditType that matches the pattern of the input
+	 */
 	protected static EnumGroup.EditType getEditType(String input) {
 		Matcher titleMatcher = ParserPatternLocal.titlePattern.matcher(input);
 		Matcher startDateMatcher = ParserPatternLocal.startDatePattern.matcher(input);

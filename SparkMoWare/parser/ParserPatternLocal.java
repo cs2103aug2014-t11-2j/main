@@ -1,6 +1,3 @@
-//For now, this class contains all the patterns of the various user inputs.
-//For now, only one word for each user input
-
 package parser;
 
 import java.util.regex.Pattern;
@@ -46,8 +43,6 @@ public class ParserPatternLocal {
 	protected static Pattern datePattern = Pattern.compile("(([0-9]?[0-9])/([0-9]?[0-9])/([0-9]{2}))|"
 														 + "(([0-9]?[0-9])_([0-9]?[0-9])_([0-9]{2}))|"
 														 + "(([0-9]?[0-9])-([0-9]?[0-9])-([0-9]{2}))");
-														// + "(([0-9]?[0-9]) ([0-9]?[0-9]) ([0-9]{2}))|"
-														// + "([0-9])([0-9])([0-9])([0-9])([0-9])([0-9]))"
 	
 	protected static Pattern onPattern = Pattern.compile("on|On");
 	
@@ -55,8 +50,6 @@ public class ParserPatternLocal {
 	
 	protected static Pattern betweenPattern = Pattern.compile("between|Between");
 	
-	//unused pattern
-	protected static Pattern rejectPattern = Pattern.compile("no|reject|No|Reject");
 	
 	protected static Pattern todayPattern = Pattern.compile("today|Today");
 	
