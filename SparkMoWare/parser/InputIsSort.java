@@ -31,6 +31,13 @@ public class InputIsSort {
 				return inputSort;
 			}
 
+			if (ParserDateLocal.dateComparator(startDate, endDate) == 1) {
+				String temp = "";
+				temp = startDate;
+				startDate = endDate;
+				endDate = temp;
+			}
+			
 			inputSort.setCommandType(EnumGroup.CommandType.SORT);
 			inputSort.setStartDate(startDate);
 			inputSort.setEndDate(endDate);
