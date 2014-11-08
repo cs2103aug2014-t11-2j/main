@@ -32,7 +32,7 @@ public class TableManager {
 		tc3.setResizable(false);
 		TableColumn tc4 = new TableColumn(table, SWT.CENTER);
 		tc4.setResizable(false);
-		tc1.setText("Index");
+		tc1.setText("SIN");
 		tc2.setText("Title");
 		tc3.setText("Start");
 		tc4.setText("End");

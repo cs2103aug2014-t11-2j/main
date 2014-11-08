@@ -49,14 +49,15 @@ public class MainController {
 	private static Date date = new Date();
 	private static Shell shell;
 	static Timer clockUpdater = new Timer("clockUpdater", true);
-	private Text dateDisplay;
 	private Text clockDisplay;
 	private Text cli;
 	private Text quoteViewer;
 	private Text feedback;
+	@SuppressWarnings("unused")
 	private Text hotkeyGuide;
 	private Button btnEnter;
 	private Table table;
+	@SuppressWarnings("unused")
 	private Tray tray;
 	private boolean isPlaying = false;
 	private boolean isReady = false;
@@ -93,7 +94,7 @@ public class MainController {
 		composite.setBounds(855, 10, 239, 651);
 		composite.setLayout(new GridLayout(1, false));
 
-		DateTime calendar = new DateTime (composite, SWT.CALENDAR | SWT.BORDER);
+		new DateTime (composite, SWT.CALENDAR | SWT.BORDER);
 
 		realTimeFeedBack = new Table(composite, SWT.BORDER | SWT.FULL_SELECTION);
 		realTimeFeedBack.setEnabled(false);
