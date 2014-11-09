@@ -68,12 +68,11 @@ public class Edit {
 			default:
 				Print.printToUser(Message.INVALID_SEARCH_PARAMETER);
 			}
-			//InternalStorage.setBuffer(Sort.sortDeadline(InternalStorage.getBuffer()));
+
 			return Message.EDITED; 
 		}
 	}
 
-	// ASSUMPTION: user input attribute to change as a single word eg startdate
 	private static EditType getEditType(String attributeName) { 
 
 		if (attributeName.length() < 1) {
@@ -105,36 +104,13 @@ public class Edit {
 			appointmentInBuffer.setStartDate(date);
 			
 		} else if(InternalStorage.getBuffer().get(bufferPosition).getAssignType().equals(AssignmentType.TASK)) {
-			
 			Task appointmentTemp = ((Task) InternalStorage.getBuffer().remove(bufferPosition));
-			
-			appointmentInBuffer.setEndDate(appointmentTemp.getEndDate());
-			appointmentInBuffer.setEndTime(appointmentTemp.getEndTime());
-			appointmentInBuffer.setStartDate(date);
-			appointmentInBuffer.setStartTime(DEFAULT_START_TIME);
-			appointmentInBuffer.setIndex(appointmentTemp.getIndex());
-			appointmentInBuffer.setIsDone(appointmentTemp.getIsDone());
-			appointmentInBuffer.setIsOnTime(appointmentTemp.getIsOnTime());
-			appointmentInBuffer.setPriority(appointmentTemp.getPriority());
-			appointmentInBuffer.setTitle(appointmentTemp.getTitle());
-			
-			Add.addAppointmentToBuffer(appointmentInBuffer);
+			setNewAppointment(date, DEFAULT_START_TIME, appointmentTemp.getEndDate(), appointmentTemp.getEndTime(), 
+					appointmentTemp);
 			
 		} else if(InternalStorage.getBuffer().get(bufferPosition).getAssignType().equals(AssignmentType.ASGN)) {
-			
 			Assignment appointmentTemp = InternalStorage.getBuffer().remove(bufferPosition);
-
-			appointmentInBuffer.setEndDate(date);
-			appointmentInBuffer.setEndTime(DEFAULT_TIME);
-			appointmentInBuffer.setStartDate(date);
-			appointmentInBuffer.setStartTime(DEFAULT_START_TIME);
-			appointmentInBuffer.setIndex(appointmentTemp.getIndex());
-			appointmentInBuffer.setIsDone(appointmentTemp.getIsDone());
-			appointmentInBuffer.setIsOnTime(appointmentTemp.getIsOnTime());
-			appointmentInBuffer.setPriority(appointmentTemp.getPriority());
-			appointmentInBuffer.setTitle(appointmentTemp.getTitle());
-			
-			Add.addAppointmentToBuffer(appointmentInBuffer);
+			setNewAppointment(date, DEFAULT_START_TIME, date, DEFAULT_TIME, appointmentTemp);
 		}
 	}
 
@@ -148,21 +124,29 @@ public class Edit {
 			
 		} else if(InternalStorage.getBuffer().get(bufferPosition).getAssignType().equals(AssignmentType.TASK)) {
 			Task appointmentTemp = ((Task) InternalStorage.getBuffer().remove(bufferPosition));
-
-			appointmentInBuffer.setEndDate(appointmentTemp.getEndDate());
-			appointmentInBuffer.setEndTime(appointmentTemp.getEndTime());
-			appointmentInBuffer.setStartDate(appointmentTemp.getEndDate());
-			appointmentInBuffer.setStartTime(time);
-			appointmentInBuffer.setIndex(appointmentTemp.getIndex());
-			appointmentInBuffer.setIsDone(appointmentTemp.getIsDone());
-			appointmentInBuffer.setIsOnTime(appointmentTemp.getIsOnTime());
-			appointmentInBuffer.setPriority(appointmentTemp.getPriority());
-			appointmentInBuffer.setTitle(appointmentTemp.getTitle());
-			
-			Add.addAppointmentToBuffer(appointmentInBuffer);	
+			setNewAppointment(appointmentTemp.getEndDate(), time, appointmentTemp.getEndDate(),
+					appointmentTemp.getEndTime(), appointmentTemp);
 		}
 	}
-
+	
+	private static void setNewAppointment(String startDate, String startTime, String endDate, String endTime,
+			Assignment appointmentTemp) {
+		
+		Appointment appointmentInBuffer = new Appointment();
+		
+		appointmentInBuffer.setEndDate(endDate);
+		appointmentInBuffer.setEndTime(endTime);
+		appointmentInBuffer.setStartDate(startDate);
+		appointmentInBuffer.setStartTime(startTime);
+		appointmentInBuffer.setIndex(appointmentTemp.getIndex());
+		appointmentInBuffer.setIsDone(appointmentTemp.getIsDone());
+		appointmentInBuffer.setIsOnTime(appointmentTemp.getIsOnTime());
+		appointmentInBuffer.setPriority(appointmentTemp.getPriority());
+		appointmentInBuffer.setTitle(appointmentTemp.getTitle());
+		
+		Add.addAppointmentToBuffer(appointmentInBuffer);	
+	}
+	
 	private static void editEndDate(int bufferPosition, String date) {
 
 		Appointment appointmentInBuffer = new Appointment();
@@ -181,18 +165,8 @@ public class Edit {
 			Add.addTaskToBuffer(taskInBuffer);
 			
 		}else if(InternalStorage.getBuffer().get(bufferPosition).getAssignType().equals(AssignmentType.ASGN)){
-			
-			Assignment appointmentTemp = (Assignment) InternalStorage.getBuffer().remove(bufferPosition);
-
-			taskInBuffer.setEndDate(date);
-			taskInBuffer.setEndTime(DEFAULT_TIME);
-			taskInBuffer.setIndex(appointmentTemp.getIndex());
-			taskInBuffer.setIsDone(appointmentTemp.getIsDone());
-			taskInBuffer.setIsOnTime(appointmentTemp.getIsOnTime());
-			taskInBuffer.setPriority(appointmentTemp.getPriority());
-			taskInBuffer.setTitle(appointmentTemp.getTitle());
-			
-			Add.addTaskToBuffer(taskInBuffer);
+			Assignment assignmentTemp = (Assignment) InternalStorage.getBuffer().remove(bufferPosition);
+			setNewTask(DateLocal.dateString(), DEFAULT_TIME, assignmentTemp);
 		}
 	}
 
@@ -214,19 +188,25 @@ public class Edit {
 			Add.addTaskToBuffer(taskInBuffer);
 			
 		}else if(InternalStorage.getBuffer().get(bufferPosition).getAssignType().equals(AssignmentType.ASGN)){
-			
-			Assignment appointmentTemp = (Assignment) InternalStorage.getBuffer().remove(bufferPosition);
-
-			taskInBuffer.setEndDate(DateLocal.dateString());
-			taskInBuffer.setEndTime(time);
-			taskInBuffer.setIndex(appointmentTemp.getIndex());
-			taskInBuffer.setIsDone(appointmentTemp.getIsDone());
-			taskInBuffer.setIsOnTime(appointmentTemp.getIsOnTime());
-			taskInBuffer.setPriority(appointmentTemp.getPriority());
-			taskInBuffer.setTitle(appointmentTemp.getTitle());
-			
-			Add.addTaskToBuffer(taskInBuffer);
+			Assignment assignmentTemp = (Assignment) InternalStorage.getBuffer().remove(bufferPosition);
+			setNewTask(DateLocal.dateString(), time, assignmentTemp);
 		}
+	}
+	
+	private static void setNewTask(String endDate, String endTime,
+			Assignment assignmentTemp) {
+		
+		Task taskInBuffer = new Task();
+		
+		taskInBuffer.setEndDate(endDate);
+		taskInBuffer.setEndTime(endTime);
+		taskInBuffer.setIndex(assignmentTemp.getIndex());
+		taskInBuffer.setIsDone(assignmentTemp.getIsDone());
+		taskInBuffer.setIsOnTime(assignmentTemp.getIsOnTime());
+		taskInBuffer.setPriority(assignmentTemp.getPriority());
+		taskInBuffer.setTitle(assignmentTemp.getTitle());
+		
+		Add.addTaskToBuffer(taskInBuffer);
 	}
 	
 	protected static int completeAssignment(int index) {
