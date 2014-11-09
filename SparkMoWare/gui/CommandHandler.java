@@ -37,7 +37,6 @@ public class CommandHandler {
 			StatsPopup.statsAppear(output.getTotalAssignment(), output.getTotalCompleted(), output.getTotalOnTime());
 		} else {
 			TablerLoader.populateTable(table,important, output.getReturnBuffer());
-			System.out.println(output.getReturnBuffer());
 		}
 	}
 }

@@ -21,7 +21,6 @@ import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -31,13 +30,17 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tray;
 
 import parser.EnumGroup;
 import parser.RefinedUserInput;
+
+/**
+ * Controller for GUI
+ * @author Zhengyang
+ */
 
 public class MainController {
 
@@ -57,15 +60,17 @@ public class MainController {
 	private Text hotkeyGuide;
 	private Button btnEnter;
 	private Table table;
+	private Table imptDisplay;
+	@SuppressWarnings("unused")
+	private Table  realTimeFeedback;
 	@SuppressWarnings("unused")
 	private Tray tray;
 	private boolean isPlaying = false;
 	private boolean isReady = false;
 	private boolean isExpose = true;
 	private static MediaPlayer mediaPlayer;
-	private Table imptDisplay;
-	private Table realTimeFeedBack;
 
+	
 	public static void main(String[] args) {
 
 		System.out.println(Message.WELCOME);
@@ -85,67 +90,28 @@ public class MainController {
 	public MainController(Display display) {
 
 		shell = new Shell(display, SWT.CLOSE);
-		shell.setSize(1100, 686);
+		shell.setSize(GUISize.MAIN_EXTENDED_WIDTH, GUISize.MAIN_HEIGHT);
 		Image background = SWTResourceManager.getImage(MainController.class, "/resource/image/wallpaper1.jpg");
 		shell.setBackgroundImage(background);
 		shell.setText("SparkMoVare");
 
 		Composite composite = new Composite(shell, SWT.NONE);
-		composite.setBounds(855, 10, 239, 651);
+		composite.setBounds(GUISize.COMPOSITE_XCOOD ,GUISize.COMPOSITE_YCOOD ,GUISize.COMPOSITE_WIDTH ,GUISize.COMPOSITE_HEIGHT);
 		composite.setLayout(new GridLayout(1, false));
 
 		new DateTime (composite, SWT.CALENDAR | SWT.BORDER);
 
-		realTimeFeedBack = new Table(composite, SWT.BORDER | SWT.FULL_SELECTION);
-		realTimeFeedBack.setEnabled(false);
-		GridData gd_table_2 = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
-		gd_table_2.heightHint = 115;
-		realTimeFeedBack.setLayoutData(gd_table_2);
-		realTimeFeedBack.setHeaderVisible(false);
-		realTimeFeedBack.setLinesVisible(true);
-		TableColumn dummy = new TableColumn(realTimeFeedBack, SWT.CENTER);
-		dummy.setResizable(false);
-		TableColumn tc = new TableColumn(realTimeFeedBack, SWT.CENTER);
-		tc.setResizable(false);
-		TableColumn tc1 = new TableColumn(realTimeFeedBack, SWT.CENTER);
-		tc1.setResizable(false);
-		dummy.setWidth(0);
-		tc.setWidth(118);
-		tc1.setWidth(117);
-		TableItem commandtype = new TableItem(realTimeFeedBack,SWT.CENTER);
-		TableItem title = new TableItem(realTimeFeedBack,SWT.CENTER);
-		TableItem startDate = new TableItem(realTimeFeedBack,SWT.CENTER);
-		TableItem startTime = new TableItem(realTimeFeedBack,SWT.CENTER);
-		TableItem endDate = new TableItem(realTimeFeedBack,SWT.CENTER);
-		TableItem endTime = new TableItem(realTimeFeedBack,SWT.CENTER);
-		TableItem priority = new TableItem(realTimeFeedBack,SWT.CENTER);
-		commandtype.setText(1,"Command Type");
-		title.setText(1, "Title");
-		startDate.setText(1, "Start Date");
-		startTime.setText(1, "Start Time");
-		endDate.setText(1, "End Date");
-		endTime.setText(1, "End Time");
-		priority.setText(1,"Prority");
+		realTimeFeedback = RealTimeFeedbackManager.RealTimeFeedbackSetup(composite);
+		TableItem r_commandtype = RealTimeFeedbackManager.getCommandtype();
+		TableItem r_title =  RealTimeFeedbackManager.getTitle();
+		TableItem r_startDate =  RealTimeFeedbackManager.getStartDate();
+		TableItem r_startTime =  RealTimeFeedbackManager.getStartTime();
+		TableItem r_endDate =  RealTimeFeedbackManager.getEndDate();
+		TableItem r_endTime =  RealTimeFeedbackManager.getEndTime();
+		TableItem r_priority =  RealTimeFeedbackManager.getPriority();
 
-		imptDisplay = new Table(composite, SWT.BORDER | SWT.FULL_SELECTION);
-		GridData gd_table_1 = new GridData(SWT.NONE, SWT.FILL, true, true, 1, 1);
-		gd_table_1.widthHint = 212;
-		gd_table_1.heightHint = 323;
-		imptDisplay.setLayoutData(gd_table_1);
-		imptDisplay.setHeaderVisible(true);
-		imptDisplay.setLinesVisible(false);
 
-		TableColumn dummy1 = new TableColumn(imptDisplay, SWT.CENTER);
-		dummy1.setResizable(false);
-		TableColumn id = new TableColumn(imptDisplay, SWT.CENTER);
-		id.setResizable(false);
-		id.setText("Serial");
-		TableColumn title1 = new TableColumn(imptDisplay, SWT.CENTER);
-		title1.setResizable(false);
-		dummy1.setWidth(0);
-		id.setWidth(50);
-		title1.setWidth(179);
-		title1.setText("Important Task");
+		imptDisplay = ImportantManager.imptDisplaySetup(composite);
 
 		//Setting up the various components of GUI
 		hotkeyGuide = HotkeyHintManager.hotkeySetup(shell);
@@ -210,11 +176,11 @@ public class MainController {
 
 				} else if (e.keyCode == SWT.F12) {
 					if (!isExpose) {
-						shell.setSize(1100, 681);
+						shell.setSize(GUISize.MAIN_EXTENDED_WIDTH, GUISize.MAIN_HEIGHT);
 						isExpose = true;
 					}
 					else {
-						shell.setSize(855, 681);
+						shell.setSize(GUISize.MAIN_WIDTH , GUISize.MAIN_HEIGHT);
 						isExpose = false;
 					}
 				}
@@ -226,53 +192,53 @@ public class MainController {
 			public void modifyText(ModifyEvent event) {
 				RefinedUserInput input = SparkMoVare.parse(cli.getText());
 				if (input.getCommandType() != EnumGroup.CommandType.INVALID_FORMAT ) {
-					commandtype.setText(2,input.getCommandType().toString());
+					r_commandtype.setText(2,input.getCommandType().toString());
 					// title
 					if (input.getTitle().equalsIgnoreCase("default")){
-						title.setText(2, "" );
+						r_title.setText(2, "" );
 					}
 					else {
-						title.setText(2, input.getTitle());
+						r_title.setText(2, input.getTitle());
 					}
 					//start date
 					if (input.getStartDate().equalsIgnoreCase("default")){
-						startDate.setText(2, "" );
+						r_startDate.setText(2, "" );
 					}
 					else {
-						startDate.setText(2, input.getStartDate());
+						r_startDate.setText(2, input.getStartDate());
 					}
 					//start time
 					if (input.getStartTime().equalsIgnoreCase("default")){
-						startTime.setText(2, "" );
+						r_startTime.setText(2, "" );
 					}
 					else {
-						startTime.setText(2, input.getStartTime());
+						r_startTime.setText(2, input.getStartTime());
 					}
 					//end date
 					if (input.getEndDate().equalsIgnoreCase("default")){
-						endDate.setText(2, "" );
+						r_endDate.setText(2, "" );
 					}
 					else {
-						endDate.setText(2, input.getEndDate());
+						r_endDate.setText(2, input.getEndDate());
 					}
 					//end time
 					if (input.getEndTime().equalsIgnoreCase("default")){
-						endTime.setText(2, "" );
+						r_endTime.setText(2, "" );
 					}
 					else {
-						endTime.setText(2, input.getEndTime());
+						r_endTime.setText(2, input.getEndTime());
 					}
-					priority.setText(2, input.getPriority());
+					r_priority.setText(2, input.getPriority());
 				} else {
-					commandtype.setText(2,"");
-					title.setText(2, "");
-					startDate.setText(2, "");
-					startTime.setText(2, "");
-					endDate.setText(2, "");
-					endTime.setText(2, "");
-					priority.setText(2, "");
+					r_commandtype.setText(2,"");
+					r_title.setText(2, "");
+					r_startDate.setText(2, "");
+					r_startTime.setText(2, "");
+					r_endDate.setText(2, "");
+					r_endTime.setText(2, "");
+					r_priority.setText(2, "");
 				}
-				
+
 			}
 		});
 		cli.addKeyListener(new KeyListener() {
@@ -312,7 +278,12 @@ public class MainController {
 			}
 		}        
 	}
-
+	
+	/**
+	 * enables async threading for update of time and date
+	 * @author Zhengyang
+	 *
+	 */
 	private class UpdateTimerTask extends TimerTask
 	{
 		@Override

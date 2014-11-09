@@ -70,6 +70,11 @@ public class GUISize {
 	protected static int STAT_PROGRESS_WIDTH = 320;
 	protected static int STAT_PROGRESS_HEIGHT = 67;
 	
+	protected static int STAT_BAR_XCOOD = 86;
+	protected static int STAT_BAR_YCOOD = 83;
+	protected static int STAT_BAR_WIDTH = 202;
+	protected static int STAT_BAR_HEIGHT = 21;
+	
 	protected static int STAT_COL1 = 219;
 	protected static int STAT_COL2 = 94;
 	
@@ -77,5 +82,25 @@ public class GUISize {
 	protected static int STAT_PERCENT_YCOOD = 83;
 	protected static int STAT_PERCENT_WIDTH = 52;
 	protected static int STAT_PERCENT_HEIGHT = 21;
+	
+	//important table
+	protected static int IMPT_WIDTHHINT = 212;
+	protected static int IMPT_HEIGHTHINT = 323;
+	
+	//main controller
+	protected static int MAIN_EXTENDED_WIDTH = 1100;
+	protected static int MAIN_WIDTH = 855;
+	protected static int MAIN_HEIGHT = 686;
+	
+	protected static int COMPOSITE_XCOOD = 855;
+	protected static int COMPOSITE_YCOOD = 10;
+	protected static int COMPOSITE_WIDTH = 239;
+	protected static int COMPOSITE_HEIGHT = 651;
+	
+	//main table
+	protected static int MAIN_TABLE_XCOOD = 43;
+	protected static int MAIN_TABLE_YCOOD = 140;
+	protected static int MAIN_TABLE_WIDTH = 765;
+	protected static int MAIN_TABLE_HEIGHT = 371;
 	
 }

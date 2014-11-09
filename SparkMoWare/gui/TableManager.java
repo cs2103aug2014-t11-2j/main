@@ -6,20 +6,22 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 
 /**
- * 
+ * Component class to setup main display table for gui
  * @author Zhengyang
  *
  */
 
 public class TableManager {
 	
+	/**
+	 * Setup main table for GUI
+	 * @param shell
+	 * @return table table
+	 */
 	protected static Table setupTable(Shell shell) {
-		/**
-		 * TableViewer
-		 */
 		Table table = new Table(shell, SWT.BORDER | SWT.FULL_SELECTION);
 		//table = tableViewer.getTable();
-		table.setBounds(43, 140, 765, 371);
+		table.setBounds(GUISize.MAIN_TABLE_XCOOD, GUISize.MAIN_TABLE_YCOOD, GUISize.MAIN_TABLE_WIDTH, GUISize.MAIN_TABLE_HEIGHT);
 		table.setLinesVisible(true);
 		//formToolkit.paintBordersFor(table);
 		TableColumn tc = new TableColumn(table, SWT.CENTER);

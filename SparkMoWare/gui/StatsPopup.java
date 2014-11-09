@@ -46,7 +46,7 @@ public class StatsPopup {
 		popup.setSize(GUISize.STAT_SHELL_WIDTH, GUISize.STAT_SHELL_HEIGHT);
 		
 		ProgressBar progressBar = new ProgressBar(popup, SWT.NONE);
-		progressBar.setBounds(86, 83, 202, 21);
+		progressBar.setBounds(GUISize.STAT_BAR_XCOOD, GUISize.STAT_BAR_YCOOD, GUISize.STAT_BAR_WIDTH, GUISize.STAT_BAR_HEIGHT);
 		progressBar.setMinimum(0);
 		progressBar.setMaximum(100);
 		progressBar.setSelection((int)(((float)onTimeTask/totalTask)*100));

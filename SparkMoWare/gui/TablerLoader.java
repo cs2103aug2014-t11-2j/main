@@ -15,12 +15,17 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 
 /**
+ * Utility class to content returned from logic
  * 
  * @author Zhengyang
- *
  */
-
 public class TablerLoader {
+	/**
+	 * Populate the table based on tableBuffer and updates important table
+	 * @param table
+	 * @param important
+	 * @param tableBuffer
+	 */
 	protected static void populateTable(Table table, Table important, LinkedList<Mission> tableBuffer) {
 		//Table table = tableViewer.getTable();
 		Device device = Display.getCurrent ();
@@ -57,7 +62,11 @@ public class TablerLoader {
 		updateImportant(important);
 
 	}
-
+	
+	/**
+	 * updates important table
+	 * @param important
+	 */
 	protected static void updateImportant(Table important) {
 		Device device = Display.getCurrent ();
 		Color Pink = new Color (device, 255, 182, 193);

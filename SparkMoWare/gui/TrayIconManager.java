@@ -12,13 +12,18 @@ import org.eclipse.swt.widgets.Tray;
 import org.eclipse.swt.widgets.TrayItem;
 
 /**
- * 
+ * Component class to setup the trayicon for gui
  * @author Zhengyang
- *
  */
 
 public class TrayIconManager {
 
+	/**
+	 * Setup trayicon for GUI
+	 * @param shell
+	 * @param display
+	 * @return Tray tray
+	 */
 	protected static Tray trayIconSetup(Shell shell, Display display) {
 		
 		Tray tray = display.getSystemTray();
