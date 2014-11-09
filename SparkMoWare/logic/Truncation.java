@@ -4,6 +4,11 @@ import logic.Assignment;
 import logic.Assignment.AssignmentType;
 import java.util.LinkedList;
 
+/**
+ * Logic: Truncation component is to filter out all other days that do not fall within the time period.
+ * @author Varunica
+ */
+
 public class Truncation {
 
 	private static Appointment appointmentInList = new Appointment();

@@ -4,6 +4,12 @@ import java.util.ListIterator;
 
 import logic.Assignment.AssignmentType;
 
+/**
+ * Logic: Comparator component to compare dates, times, on time,
+ * 		  whether the appointment has clash time slot, and compare deadline 
+ * @author Teck Zhi
+ */
+
 public class Comparator {
 
 	private static final int SMALLER = -1;
@@ -22,23 +28,15 @@ public class Comparator {
 
 	protected static int dateComparator(String dateA, String dateB) {
 
-		String yearA = dateA.trim().substring(6, 8);
-		String yearB = dateB.trim().substring(6, 8);
+		String yearA = retrieveYear(dateA);
+		String yearB = retrieveYear(dateB);
 
-		String monthA = dateA.trim().substring(3, 5);
-		String monthB = dateB.trim().substring(3, 5);
+		String monthA = retrieveMonth(dateA);
+		String monthB = retrieveMonth(dateB);
 
-		String dayA = dateA.trim().substring(0, 2);
-		String dayB = dateB.trim().substring(0, 2);
+		String dayA = retrieveDay(dateA);
+		String dayB = retrieveDay(dateB);
 
-		yearA = removeFrontZero(yearA);
-		yearB = removeFrontZero(yearB);
-
-		monthA = removeFrontZero(monthA);
-		monthB = removeFrontZero(monthB);
-
-		dayA = removeFrontZero(dayA);
-		dayB = removeFrontZero(dayB);
 
 		if (dateA.equals(dateB)) {
 			return SAME;
@@ -56,17 +54,53 @@ public class Comparator {
 		return SMALLER;
 	}
 
+	private static String retrieveYear(String date) {
+
+		String year = date.trim().substring(6, 8);
+		year = removeFrontZero(year);
+
+		return year;
+	}
+
+	private static String retrieveMonth(String date) {
+
+		String month = date.trim().substring(3, 5);
+		month = removeFrontZero(month);
+
+		return month;
+	}
+
+	private static String retrieveDay(String date) {
+
+		String day = date.trim().substring(0, 2);
+		day = removeFrontZero(day);
+
+		return day;
+	}
+
 	protected static int timeComparator(String timeA, String timeB) {
 
-		String hourA = timeA.trim().substring(0, 2);
-		String hourB = timeB.trim().substring(0, 2);
+		String hourA = retrieveHour(timeA);
+		String hourB = retrieveHour(timeB);
 
-		String minA = timeA.trim().substring(2, 4);
-		String minB = timeB.trim().substring(2, 4);
+		String minA = retrieveMin(timeA);
+		String minB = retrieveMin(timeB);
 
 		int compareResult = compareHour(hourA, hourB, minA, minB);
 
 		return compareResult;
+	}
+
+	private static String retrieveHour(String time) {
+
+		String hour = time.trim().substring(0, 2);
+		return hour;
+	}
+
+	private static String retrieveMin(String time) {
+
+		String min = time.trim().substring(2, 4);
+		return min;
 	}
 
 	private static int compareHour(String hourA, String hourB, String minA, String minB) {
@@ -124,43 +158,61 @@ public class Comparator {
 
 	protected static int addToBigBuffer(Appointment newAppointment) {
 
-		Appointment nextAppointmentInBuffer = new Appointment();
-		Task nextTaskInBuffer = new Task();
+
 		int count = 0;
 
 		ListIterator<Assignment> bufferList = InternalStorage.getBuffer().listIterator();
 
 		while(bufferList.hasNext()) {
 			Assignment assignment = bufferList.next();
-
-			if(assignment.getAssignType().equals(AssignmentType.TASK)) {
-				nextTaskInBuffer = ((Task) assignment);
-
-				if(Comparator.dateComparator(newAppointment.getEndDate(), nextTaskInBuffer.getEndDate()) == 0) {
-					break;
-				} else if(Comparator.dateComparator(newAppointment.getEndDate(), nextTaskInBuffer.getEndDate()) == -1) {
-					break;
-				}
-			} else if(assignment.getAssignType().equals(AssignmentType.APPT)) {
-				nextAppointmentInBuffer = ((Appointment) assignment);
-
-				if(Comparator.dateComparator(newAppointment.getEndDate(), nextAppointmentInBuffer.getEndDate()) == -1) {
-					break;
-				} else if(Comparator.dateComparator(newAppointment.getEndDate(), nextAppointmentInBuffer.getEndDate()) == 0) {
-					if(Comparator.timeComparator(newAppointment.getEndTime(), nextAppointmentInBuffer.getEndTime()) == -1) {
-						break;
-					}
-				}
+			if(checkFittingTimeSlot(assignment, newAppointment)) {
+				break;
 			}
 			count++;
 		}
 		return count;
 	}
 
-	protected static int addTaskToBigBuffer(Task newTask) {
+	private static boolean checkFittingTimeSlot(Assignment assignment, Appointment newAppointment) {
 
 		Appointment nextAppointmentInBuffer = new Appointment();
 		Task nextTaskInBuffer = new Task();
+
+		if(assignment.getAssignType().equals(AssignmentType.TASK)) {
+			nextTaskInBuffer = ((Task) assignment);
+			return compareWithTask(newAppointment, nextTaskInBuffer);
+
+		} else if(assignment.getAssignType().equals(AssignmentType.APPT)) {
+			nextAppointmentInBuffer = ((Appointment) assignment);
+			return compareWithAppointment(newAppointment, nextAppointmentInBuffer);
+		}
+		return false;
+	}
+
+	private static boolean compareWithTask(Appointment newAppointment, Task nextTaskInBuffer) {
+
+		if(Comparator.dateComparator(newAppointment.getEndDate(), nextTaskInBuffer.getEndDate()) == 0) {
+			return true;
+		} else if(Comparator.dateComparator(newAppointment.getEndDate(), nextTaskInBuffer.getEndDate()) == -1) {
+			return true;
+		}
+		return false;
+	}
+
+	private static boolean compareWithAppointment(Appointment newAppointment, Appointment nextAppointmentInBuffer) {
+
+		if(Comparator.dateComparator(newAppointment.getEndDate(), nextAppointmentInBuffer.getEndDate()) == -1) {
+			return true;
+		} else if(Comparator.dateComparator(newAppointment.getEndDate(), nextAppointmentInBuffer.getEndDate()) == 0) {
+			if(Comparator.timeComparator(newAppointment.getEndTime(), nextAppointmentInBuffer.getEndTime()) == -1) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	protected static int addTaskToBigBuffer(Task newTask) {
+
 		int count = 0;
 
 		ListIterator<Assignment> bufferList = InternalStorage.getBuffer().listIterator();
@@ -168,53 +220,114 @@ public class Comparator {
 		while(bufferList.hasNext()) {
 			Assignment assignment = bufferList.next();
 
-			if(assignment.getAssignType().equals(AssignmentType.TASK)) {
-				nextTaskInBuffer = ((Task) assignment);
-
-				if(Comparator.dateComparator(newTask.getEndDate(), nextTaskInBuffer.getEndDate()) == 0) {
-					break;
-				} else if(Comparator.dateComparator(newTask.getEndDate(), nextTaskInBuffer.getEndDate()) == -1) {
-					break;
-				}
-			} else if(assignment.getAssignType().equals(AssignmentType.APPT)) {
-				nextAppointmentInBuffer = ((Appointment) assignment);
-
-				if(Comparator.dateComparator(newTask.getEndDate(), nextAppointmentInBuffer.getEndDate()) == -1) {
-					break;
-				} else if(Comparator.dateComparator(newTask.getEndDate(), nextAppointmentInBuffer.getEndDate()) == 0) {
-					count += 1;
-					break;
-				}
+			if(checkFittingTimeSlot2(assignment, newTask) == 1){
+				break;
+			} else if(checkFittingTimeSlot2(assignment, newTask) == 2) {
+				count++;
+				break;
 			}
 			count++;
 		}
 		return count;
+	}
+
+	private static int checkFittingTimeSlot2(Assignment assignment, Task newTask) {
+
+		Appointment nextAppointmentInBuffer = new Appointment();
+		Task nextTaskInBuffer = new Task();
+
+		if(assignment.getAssignType().equals(AssignmentType.TASK)) {
+			nextTaskInBuffer = ((Task) assignment);
+			return compareWithTask2(newTask, nextTaskInBuffer);
+
+		} else if(assignment.getAssignType().equals(AssignmentType.APPT)) {
+			nextAppointmentInBuffer = ((Appointment) assignment);
+			return compareWithAppointment2(newTask, nextAppointmentInBuffer);
+		}
+		return -1;
+	}
+
+	private static int compareWithTask2(Task newTask, Task nextTaskInBuffer) {
+
+		if(Comparator.dateComparator(newTask.getEndDate(), nextTaskInBuffer.getEndDate()) == 0) {
+			return 1;
+		} else if(Comparator.dateComparator(newTask.getEndDate(), nextTaskInBuffer.getEndDate()) == -1) {
+			return 1;
+		}
+		return -1;
+	}
+
+	private static int compareWithAppointment2(Task newTask, Appointment nextAppointmentInBuffer) {
+
+		if(Comparator.dateComparator(newTask.getEndDate(), nextAppointmentInBuffer.getEndDate()) == -1) {
+			return 1;
+		} else if(Comparator.dateComparator(newTask.getEndDate(), nextAppointmentInBuffer.getEndDate()) == 0) {
+			return 2;
+		}
+		return -1;
+	}
+
+	protected static int addTentativeToBigBuffer(Tentative newTentative) {
+
+		int bufferPosition = 0;
+		ListIterator<Assignment> buffer = InternalStorage.getBuffer().listIterator();
+
+		while(buffer.hasNext()) {
+			Assignment assignment = buffer.next();
+
+			if(checkFittingTentativeTimeSlot(assignment, bufferPosition)) {
+				break;
+			}
+			bufferPosition++;
+		}
+		return bufferPosition;
+	}
+
+	private static boolean checkFittingTentativeTimeSlot(Assignment assignment, int bufferPosition) {
+
+		if((assignment.getAssignType().equals(AssignmentType.APPT) ||
+				assignment.getAssignType().equals(AssignmentType.TASK)) && 
+				assignment.getIsDone() == false) {
+			return true;
+		} else if(bufferPosition == InternalStorage.getLineCount() - 1) {
+			return true;
+		}
+		return false;
 	}
 
 	protected static boolean isClashing(Appointment newAppointment) {
 
 		boolean isClashing = false;
 		ListIterator<Assignment> buffer = InternalStorage.getBuffer().listIterator();
-		Appointment checkAppointment = new Appointment();
 
 		while(buffer.hasNext()) {
 			Assignment assignment = buffer.next();
-			if(!assignment.getIsDone()) {
-				if(assignment.getAssignType().equals(AssignmentType.APPT)) {
-					checkAppointment = ((Appointment) assignment); 
+			isClashing = checkClashing(assignment, newAppointment);
+			
+			if(isClashing) {
+				break;
+			}
+		}
+		return isClashing;
+	}
 
-					if(dateComparator(newAppointment.getEndDate(), 
-							checkAppointment.getEndDate()) == SAME &&
-							Comparator.dateComparator(newAppointment.getStartDate(), 
-									checkAppointment.getStartDate()) == SAME) {
+	private static boolean checkClashing(Assignment assignment, Appointment newAppointment) {
 
-						isClashing = isClashingTime(newAppointment, checkAppointment);
-					} else {
-						isClashing = isClashingDate(newAppointment, checkAppointment);
-					}
-					if(isClashing) {
-						break;
-					}
+		boolean isClashing = false;
+		Appointment checkAppointment = new Appointment();
+
+		if(!assignment.getIsDone()) {
+			if(assignment.getAssignType().equals(AssignmentType.APPT)) {
+				checkAppointment = ((Appointment) assignment); 
+
+				if(dateComparator(newAppointment.getEndDate(), 
+						checkAppointment.getEndDate()) == SAME &&
+						Comparator.dateComparator(newAppointment.getStartDate(), 
+								checkAppointment.getStartDate()) == SAME) {
+
+					isClashing = isClashingTime(newAppointment, checkAppointment);
+				} else {
+					isClashing = isClashingDate(newAppointment, checkAppointment);
 				}
 			}
 		}
@@ -277,33 +390,30 @@ public class Comparator {
 
 	protected static void checkOnTime(String currentDate, String currentTime, int bufferPosition) {
 
-		Appointment appointmentInBuffer = new Appointment();
 		Task taskInBuffer = new Task();
 
 		if(InternalStorage.getBuffer().get(bufferPosition).getAssignType().equals(AssignmentType.TASK)) {
 			taskInBuffer = ((Task) InternalStorage.getBuffer().get(bufferPosition)); 
-
-			if (Comparator.dateComparator(currentDate, taskInBuffer.getEndDate()) == SMALLER) {
-				InternalStorage.getBuffer().get(bufferPosition).setIsOnTime(true);
-
-			} else if (Comparator.dateComparator(currentDate, taskInBuffer.getEndDate()) == SAME) {
-				if (Comparator.timeComparator(currentTime, taskInBuffer.getEndTime()) == SMALLER) {
-					InternalStorage.getBuffer().get(bufferPosition).setIsOnTime(true);
-				}
-			}
+			checkOnTime2(currentDate, currentTime, taskInBuffer, bufferPosition);
+			
 		} else if(InternalStorage.getBuffer().get(bufferPosition).getAssignType().equals(AssignmentType.APPT)) {
-			appointmentInBuffer = ((Appointment) InternalStorage.getBuffer().get(bufferPosition)); 
-
-			if (Comparator.dateComparator(currentDate, appointmentInBuffer.getEndDate()) == SMALLER) {
-				InternalStorage.getBuffer().get(bufferPosition).setIsOnTime(true);
-
-			} else if (Comparator.dateComparator(currentDate, appointmentInBuffer.getEndDate()) == SAME) {
-				if (Comparator.timeComparator(currentTime, appointmentInBuffer.getEndTime()) == SMALLER) {
-					InternalStorage.getBuffer().get(bufferPosition).setIsOnTime(true);
-				}
-			}
+			taskInBuffer = ((Task) InternalStorage.getBuffer().get(bufferPosition)); 
+			checkOnTime2(currentDate, currentTime, taskInBuffer, bufferPosition);
+			
 		} else {
 			InternalStorage.getBuffer().get(bufferPosition).setIsOnTime(false);
 		}
 	}
+	
+	private static void checkOnTime2(String currentDate, String currentTime, Task taskInBuffer, int bufferPosition) {
+		
+		if (Comparator.dateComparator(currentDate, taskInBuffer.getEndDate()) == SMALLER) {
+			InternalStorage.getBuffer().get(bufferPosition).setIsOnTime(true);
+
+		} else if (Comparator.dateComparator(currentDate, taskInBuffer.getEndDate()) == SAME) {
+			if (Comparator.timeComparator(currentTime, taskInBuffer.getEndTime()) == SMALLER) {
+				InternalStorage.getBuffer().get(bufferPosition).setIsOnTime(true);
+			}
+		}
+	}	
 }

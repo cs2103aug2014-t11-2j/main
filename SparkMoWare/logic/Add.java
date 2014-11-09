@@ -3,11 +3,17 @@ package logic;
 import logic.Assignment.AssignmentType;
 import parser.RefinedUserInput;
 
-public class Add {
+/**
+ * Logic: Add component to add Assignment, Appointment and Task
+ * 		  to the internal storage buffer.
+ * @author Teck Zhi
+ */
 
+public class Add {
+	
 	/**
-	 * 
-	 * @param refinedUserInput
+	 * add methods for logic
+	 * @param userinput
 	 * @return new assignment
 	 */
 	protected static int addSomething(RefinedUserInput userInput) {
@@ -49,26 +55,30 @@ public class Add {
 
 	protected static void addAssignmentToBuffer(Assignment newAssignment) {
 
-		int count = 0;
-		
 		if(InternalStorage.getLineCount() == 0) {
 			InternalStorage.addBuffer(newAssignment);
 		} else {
-			int size = InternalStorage.getLineCount();
-			
-			for(int i = 0; i < size; i++) {
-				if(!InternalStorage.getBuffer().get(i).getIsDone()) {
-					InternalStorage.addBuffer(i, newAssignment);
-					break;
-				} else if(i == size - 1) {
-					count = i;
-					InternalStorage.addBuffer(count + 1, newAssignment);
-					break;
-				}
+			addAssignmentToBuffer2(newAssignment);
+		}
+	}
+	
+	private static void addAssignmentToBuffer2(Assignment newAssignment) {
+		
+		int count = 0;
+		int size = InternalStorage.getLineCount();
+		
+		for(int i = 0; i < size; i++) {
+			if(!InternalStorage.getBuffer().get(i).getIsDone()) {
+				InternalStorage.addBuffer(i, newAssignment);
+				break;
+			} else if(i == size - 1) {
+				count = i;
+				InternalStorage.addBuffer(count + 1, newAssignment);
+				break;
 			}
 		}
 	}
-
+	
 	private static String addAppointment(int id, String title,
 			String startDate, String startTime, String endDate, String endTime,
 			boolean isDone, String priority) {

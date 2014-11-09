@@ -2,6 +2,11 @@ package logic;
 
 import java.util.LinkedList;
 
+/**
+ * Logic: Delete component to remove required jobs from the list.
+ * @author Varunica
+ */
+
 public class Delete {
 	
 	enum DeleteAllType {

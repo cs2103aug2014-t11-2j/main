@@ -3,34 +3,36 @@ package logic;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.ListIterator;
 
 import logic.Assignment.AssignmentType;
 
+/**
+ * Logic: Date component to retrieve the current date,
+ * 		  get the earliest date in the list,
+ * 		  update the date for clear purpose,
+ * 		  and check for date exist. 
+ * @author Teck Zhi
+ */
+
 public class DateLocal {
-	
+
 	protected static String dateString(){
-		
+
 		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yy");
 		Date todayDate = new Date();
-		
+
 		return dateFormat.format(todayDate);
 	}
-	
+
 	protected static String updateDate(String date) {
 
-		String[] endDate = new String[3];
+		String[] endDate = date.split("/");
 
-		endDate[0] = date.substring(0, 2);
-		endDate[1] = date.substring(3, 5);
-		endDate[2] = date.substring(6, 8);
-		
 		int[] intEndDate = new int[3];
-		String updatedDate = "";
+
+		intEndDate = dateConversionToInt(endDate);
 		
-		for(int dateCharCount = 0; dateCharCount < endDate.length; dateCharCount++) {
-			endDate[dateCharCount] = Comparator.removeFrontZero(endDate[dateCharCount]);
-			intEndDate[dateCharCount] = Integer.parseInt(endDate[dateCharCount]); 
-		}
 		if ((intEndDate[0] - 1) == 0) {
 			if ((intEndDate[1] - 1) == 0) {
 				intEndDate[2]--;
@@ -44,16 +46,33 @@ public class DateLocal {
 		} else { 
 			intEndDate[0]--;
 		}
+		return convertDateBack(intEndDate);
+	}
+	
+	private static int[] dateConversionToInt(String[] endDate) {
+		int[] intEndDate = new int[3];
+		
+		for(int dateCharCount = 0; dateCharCount < endDate.length; dateCharCount++) {
+			endDate[dateCharCount] = Comparator.removeFrontZero(endDate[dateCharCount]);
+			intEndDate[dateCharCount] = Integer.parseInt(endDate[dateCharCount]); 
+		}
+		return intEndDate;
+	}
+	
+	private static String convertDateBack(int[] intEndDate) {
+		
+		String updatedDate = "";
+		
 		for(int dateIntCount = 0; dateIntCount < intEndDate.length; dateIntCount++) {
-			
+
 			String newDate;
-			
+
 			if(intEndDate[dateIntCount] < 10) {
 				newDate = "0" + Integer.toString(intEndDate[dateIntCount]);
 			} else {
 				newDate = Integer.toString(intEndDate[dateIntCount]);
 			}
-			
+
 			if(!(dateIntCount == intEndDate.length - 1)) {
 				newDate += "/";
 			}
@@ -61,7 +80,7 @@ public class DateLocal {
 		}
 		return updatedDate;
 	}
-
+	
 	private static int updateByMonth(int intEndMonth, int intEndYear) {
 
 		if(intEndMonth == 2){			
@@ -75,22 +94,36 @@ public class DateLocal {
 		} 
 		return 31;	
 	}
-	
+
 	protected static String getStartDate() {
-		
+
 		String startDate = "01/01/01";
-		
-		if(InternalStorage.getBuffer().getFirst().equals(AssignmentType.TASK)) {
-			Task firstTask = ((Task) InternalStorage.getBuffer().getFirst());
-			startDate = firstTask.getEndDate();
-		} else if(InternalStorage.getBuffer().getFirst().equals(AssignmentType.APPT)) {
-			
-			Appointment firstAppointment = ((Appointment) InternalStorage.getBuffer().getFirst());
-			startDate = firstAppointment.getStartDate();
+
+		ListIterator<Assignment> listIterate = InternalStorage.getBuffer().listIterator();
+
+		while(listIterate.hasNext()) {
+			Assignment assignment = listIterate.next();
+
+			startDate = firstDate(assignment);
 		}
 		return startDate;
 	}
 	
+	private static String firstDate(Assignment assignment) {
+		
+		String startDate = "01/01/01";
+		
+		if(assignment.equals(AssignmentType.TASK)) {
+			Task firstTask = ((Task) assignment);
+			startDate = firstTask.getEndDate();
+			
+		} else if(assignment.equals(AssignmentType.APPT)) {
+			Appointment firstAppointment = ((Appointment) assignment);
+			startDate = firstAppointment.getStartDate();
+		}
+		return startDate;
+	}
+
 	protected static boolean dateFormatValid(String date) {
 
 		boolean validDateFormat = true;
@@ -107,22 +140,32 @@ public class DateLocal {
 
 	private static boolean dateExists(String date) {
 
+		int day = dateConversion(date, 0, 2);
+		int month = dateConversion(date, 3, 5);
+		int year = dateConversion(date, 6, 8);
+
+		return checkDateExist(day, month, year);
+	}
+
+	private static int dateConversion(String date, int lower, int higher) {
+		int number;
+
+		String dateString = date.substring(lower, higher);
+		number = Integer.parseInt(dateString);
+
+		return number;
+	}
+
+	private static boolean checkDateExist(int day, int month, int year) {
+
 		boolean leapYear = false;
 		boolean dateExist = false;
 
-		String dayString = date.substring(0, 2);
-		String monthString = date.substring(3, 5);
-		String yearString = date.substring(6, 8);
-
-		int day = Integer.parseInt(dayString);
-		int month = Integer.parseInt(monthString);
-		int year = Integer.parseInt(yearString);
-		
 		if (year % 4 == 0) {
 			leapYear = true;
 		}
 		if (month > 12 || month < 1) {
-			return false;
+			dateExist = false;
 		}
 		if (day < 29) {
 			dateExist = true;

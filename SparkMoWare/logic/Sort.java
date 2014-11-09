@@ -1,34 +1,24 @@
 package logic;
 
 import logic.Assignment;
+import logic.Assignment.AssignmentType;
+
 import java.util.LinkedList;
+
+/**
+ * Logic: Sort component to sort the list according to title,
+ * 		  index(SIN) and the priority level.
+ * 		  In addition, it also has a sort deadline for undo edit purpose.
+ * @author Teck Zhi
+ */
 
 public class Sort {
 
 	private static int listCount;
 	private static int sortedListCount;
 
-	protected static LinkedList<Assignment> multipleSortRequired(LinkedList<Assignment> sortBuffer,
-			String sortType, String startDate, String endDate) {
-		
-		if(sortType.contains(" ")) {
-			String[] multipleSortInput = sortType.split(" ");
-
-			for(int sortCount = 0; sortCount < multipleSortInput.length; sortCount++) {
-				sortBuffer = sortRequired(sortBuffer, multipleSortInput[sortCount]);
-			}
-		} else {
-			sortBuffer = sortRequired(sortBuffer, sortType);
-		}
-		Print.printAssignmentList(sortBuffer);
-		if(startDate != null && endDate != null) {
-			sortBuffer = Truncation.truncateList(sortBuffer, startDate, endDate);
-		}
-		return sortBuffer;
-	}
-
-	private static LinkedList<Assignment> sortRequired(LinkedList<Assignment> buffer,
-			String sortType){
+	protected static LinkedList<Assignment> sortRequired(LinkedList<Assignment> buffer,
+			String sortType, String startDate, String endDate){
 
 		LinkedList<Assignment> sortedList = new LinkedList<Assignment>();
 
@@ -37,9 +27,12 @@ public class Sort {
 
 		} else if(sortType.equalsIgnoreCase("SIN")) {
 			sortedList = insertionSortId(buffer);
-			
+
 		} else if(sortType.equalsIgnoreCase("important")){
 			sortedList = insertionSortPriority(buffer);
+		}
+		if(startDate != null && endDate != null) {
+			sortedList = Truncation.truncateList(sortedList, startDate, endDate);
 		}
 		return sortedList;
 	}
@@ -51,31 +44,14 @@ public class Sort {
 		prioritySortList.addAll(SearchAll.searchAll(buffer, "IMPT"));
 
 		prioritySortList.addAll(SearchAll.searchAll(buffer, "NIMPT"));
-		
+
 		return prioritySortList;
-	}
-
-	private static LinkedList<Assignment> insertionSortTitle(LinkedList<Assignment> buffer) {
-
-		LinkedList<Assignment> titleListSorted = new LinkedList<Assignment>();
-
-		for(listCount = 0; listCount < buffer.size(); listCount++) {
-			if(titleListSorted.size() == 0) {
-				titleListSorted.add(buffer.get(listCount));
-			}
-			else if(titleListSorted.size() >= 1) {
-				titleListSorted = insertionSortTitle2(buffer,titleListSorted);
-			}
-		}
-		return titleListSorted;
 	}
 
 	private static LinkedList<Assignment> insertionSortId(LinkedList<Assignment> buffer) {
 
 		LinkedList<Assignment> idListSorted = new LinkedList<Assignment>();
-
 		for(listCount = 0; listCount < buffer.size(); listCount++) {
-
 			if(idListSorted.size() == 0) {
 				idListSorted.add(buffer.get(listCount));
 
@@ -93,15 +69,30 @@ public class Sort {
 
 			if(Comparator.serialNumberComparator(idListSorted.get(sortedListCount).getIndex(), 
 					buffer.get(listCount).getIndex())) {
-
 				idListSorted.add(sortedListCount, buffer.get(listCount));
 				break;
+
 			} else if(sortedListCount == idListSorted.size() - 1) {
 				idListSorted.add(buffer.get(listCount));
 				break;
 			}
 		}
 		return idListSorted;
+	}
+
+	private static LinkedList<Assignment> insertionSortTitle(LinkedList<Assignment> buffer) {
+
+		LinkedList<Assignment> titleListSorted = new LinkedList<Assignment>();
+
+		for(listCount = 0; listCount < buffer.size(); listCount++) {
+			if(titleListSorted.size() == 0) {
+				titleListSorted.add(buffer.get(listCount));
+
+			} else if(titleListSorted.size() >= 1) {
+				titleListSorted = insertionSortTitle2(buffer,titleListSorted);
+			}
+		}
+		return titleListSorted;
 	}
 
 	private static LinkedList<Assignment> insertionSortTitle2(LinkedList<Assignment> buffer, 
@@ -119,5 +110,72 @@ public class Sort {
 			}
 		}
 		return titleListSorted;
+	}
+
+	protected static LinkedList<Assignment> insertionSortDeadline(LinkedList<Assignment> buffer) {
+
+		LinkedList<Assignment> deadlineSorted = new LinkedList<Assignment>();
+
+		for(listCount = 0; listCount < buffer.size(); listCount++) {
+			if(deadlineSorted.size() == 0) {
+				deadlineSorted.add(buffer.get(listCount));
+			} else if(listCount == listCount - 1) {
+				deadlineSorted.addLast(buffer.get(listCount));
+			} else if (deadlineSorted.size() >= 1) {
+			
+				deadlineSorted = insertionSortDeadline2(buffer, deadlineSorted);
+			} 
+		}
+		return deadlineSorted;
+	}
+
+	private static LinkedList<Assignment> insertionSortDeadline2(LinkedList<Assignment> buffer, 
+			LinkedList<Assignment> deadlineSorted) {
+
+		int position;
+
+		if(buffer.get(listCount).getIsDone() == true) {
+			deadlineSorted.addFirst(buffer.get(listCount));
+
+		} else if(buffer.get(listCount).getAssignType().equals(AssignmentType.APPT)) {
+			Appointment appointment = (Appointment) buffer.get(listCount);
+			position = Comparator.addToBigBuffer(appointment);
+			deadlineSorted.add(position, appointment);
+
+		} else if(buffer.get(listCount).getAssignType().equals(AssignmentType.TASK)) {
+			Task task = (Task) buffer.get(listCount);
+			position = Comparator.addTaskToBigBuffer(task);
+			deadlineSorted.add(position, task);
+			
+		} else if(buffer.get(listCount).getAssignType().equals(AssignmentType.ASGN)) {
+			Assignment assignment = buffer.get(listCount);
+			deadlineSorted = insertionSortDeadline3(assignment, deadlineSorted);
+			
+		} else if(buffer.get(listCount).getAssignType().equals(AssignmentType.TNTV)) {
+			Tentative tentative = (Tentative) buffer.get(listCount);
+			position = Comparator.addTentativeToBigBuffer(tentative);
+			deadlineSorted.add(position, tentative);
+		}
+		return deadlineSorted;
+	}
+	
+	private static LinkedList<Assignment> insertionSortDeadline3(Assignment assignment,
+			LinkedList<Assignment> deadlineSorted) {
+		
+		int position;
+		int size = InternalStorage.getLineCount();
+		
+		for(int i = 0; i < size; i++) {
+			if(!deadlineSorted.get(i).getIsDone()) {
+				deadlineSorted.add(i, assignment);
+				break;
+				
+			} else if(i == size - 1) {
+				position = i;
+				deadlineSorted.add(position + 1, assignment);
+				break;
+			}
+		}
+		return deadlineSorted;
 	}
 }

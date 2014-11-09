@@ -5,11 +5,16 @@ import java.util.LinkedList;
 import logic.Assignment.AssignmentType;
 import parser.EnumGroup.CommandType;
 
+/**
+ * Logic: RedoTask component to redo all adjustment to the main list.
+ * @author Teck Zhi
+ */
+
 public class RedoTask {
 
 	private static int position;
 
-	public static void redo() {
+	protected static void redo() {
 
 		FutureHistory futureHistory = InternalStorage.popFuture();
 
@@ -78,8 +83,15 @@ public class RedoTask {
 		FutureHistory historyFuture = new FutureHistory();
 		position = InternalStorage.getBufferPosition(futureHistory.getSerial());
 
-		historyFuture = RedoUndoUpdate.updateEdit(futureHistory.getSerial(), position);
+		historyFuture = RedoUndoUpdate.updateEdit(futureHistory.getSerial());
 
+		redoEdit2(futureHistory);
+		
+		InternalStorage.pushHistory(historyFuture);
+	}
+	
+	private static void redoEdit2(FutureHistory futureHistory) {
+		
 		if(futureHistory.getAssignType().equals(AssignmentType.ASGN)) {
 			InternalStorage.getBuffer().remove(position);
 			Add.addAssignmentToBuffer(futureHistory.getAssignment());				
@@ -93,7 +105,6 @@ public class RedoTask {
 			InternalStorage.getBuffer().remove(position);
 			SetTentative.addTentativeToBuffer(futureHistory.getTentative());
 		}
-		InternalStorage.pushHistory(historyFuture);
 	}
 
 	private static void redoDelete(FutureHistory futureHistory) {
@@ -102,6 +113,16 @@ public class RedoTask {
 		position = InternalStorage.getBufferPosition(futureHistory.getSerial());
 		int id;
 
+		id = redoDelete2(futureHistory);
+		historyFuture = RedoUndoUpdate.updateAdd(id);
+
+		InternalStorage.pushHistory(historyFuture);
+	}
+	
+	private static int redoDelete2(FutureHistory futureHistory) {
+		
+		int id;
+		
 		if(futureHistory.getAssignType().equals(AssignmentType.ASGN)) {
 			Add.addAssignmentToBuffer(futureHistory.getAssignment());
 			id = futureHistory.getAssignment().getIndex();
@@ -118,22 +139,19 @@ public class RedoTask {
 			SetTentative.addTentativeToBuffer(futureHistory.getTentative());
 			id = futureHistory.getTentative().getIndex();
 		}
-		historyFuture = RedoUndoUpdate.updateAdd(id);
-
-		InternalStorage.pushHistory(historyFuture);
+		return id;
 	}
-
+	
 	private static void redoClear(LinkedList<Assignment> buffer) {
 
-		FutureHistory historyFuture = new FutureHistory();
+		FutureHistory futureHistory = new FutureHistory();
 
-		historyFuture = RedoUndoUpdate.updateClear(buffer);
+		futureHistory = RedoUndoUpdate.updateClear(buffer);
 
-		buffer.addAll(InternalStorage.getBuffer());
-		Sort.insertionSortDeadline(buffer);
-		InternalStorage.setBuffer(buffer);
-
-		InternalStorage.pushHistory(historyFuture);
+		for(int i = 0; i < buffer.size(); i++) {
+			Delete.delete(buffer.get(i).getIndex());
+		}
+		InternalStorage.pushHistory(futureHistory);
 	}
 
 	private static void redoConfirm(int position, Appointment appointment) {

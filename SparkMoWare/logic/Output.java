@@ -2,6 +2,11 @@ package logic;
 
 import java.util.LinkedList;
 
+/**
+ * Logic: Output class to return everything that GUI wants.
+ * @author Teck Zhi
+ */
+
 public class Output {
 	
 	/************** Data members **********************/

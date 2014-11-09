@@ -4,6 +4,11 @@ import java.util.LinkedList;
 import logic.Assignment.AssignmentType;
 import parser.EnumGroup.CommandType;
 
+/**
+ * Logic: Undo component to undo all necessary adjustment to the main list.
+ * @author Teck Zhi
+ */
+
 public class UndoTask {
 	
 	private static int position;
@@ -26,7 +31,8 @@ public class UndoTask {
 			undoDelete(futureHistory);
 			
 		} else if(futureHistory.getCommand().equals(CommandType.CLEAR)) {
-			LinkedList<Assignment> buffer = futureHistory.getClearedHistory();
+			LinkedList<Assignment> buffer = new LinkedList<Assignment>(); 
+			buffer = futureHistory.getClearedHistory();
 			undoClear(buffer);
 			
 		} else if(futureHistory.getCommand().equals(CommandType.TENTATIVE)) {
@@ -74,28 +80,56 @@ public class UndoTask {
 		FutureHistory historyFuture = new FutureHistory();
 		position = InternalStorage.getBufferPosition(futureHistory.getSerial());
 		
-		historyFuture = RedoUndoUpdate.updateEdit(futureHistory.getSerial(), position);
+		historyFuture = undoEdit2(futureHistory);
+		InternalStorage.pushFuture(historyFuture);
+	}
+	
+	private static FutureHistory undoEdit2(FutureHistory futureHistory) {
+		
+		FutureHistory historyFuture = new FutureHistory();
 		
 		if(futureHistory.getAssignType().equals(AssignmentType.ASGN)) {
+			Assignment assignment = InternalStorage.getBuffer().get(position);
 			InternalStorage.getBuffer().remove(position);
-			Add.addAssignmentToBuffer(futureHistory.getAssignment());				
+			Add.addAssignmentToBuffer(futureHistory.getAssignment());
+			historyFuture = RedoUndoUpdate.updateEditOver(assignment);
+			
 		} else if(futureHistory.getAssignType().equals(AssignmentType.APPT)) {
+			Appointment appointment = (Appointment) InternalStorage.getBuffer().get(position);
 			InternalStorage.getBuffer().remove(position);
 			Add.addAppointmentToBuffer(futureHistory.getAppointment());
+			historyFuture = RedoUndoUpdate.updateEditOver(appointment);
+			
 		} else if(futureHistory.getAssignType().equals(AssignmentType.TASK)) {
+			Task task = (Task) InternalStorage.getBuffer().get(position);
 			InternalStorage.getBuffer().remove(position);
 			Add.addTaskToBuffer(futureHistory.getTask());
+			historyFuture = RedoUndoUpdate.updateEditOver(task);
+			
 		} else {
+			Tentative tentative = (Tentative) InternalStorage.getBuffer().get(position);
 			InternalStorage.getBuffer().remove(position);
 			SetTentative.addTentativeToBuffer(futureHistory.getTentative());
+			historyFuture = RedoUndoUpdate.updateEditOver(tentative);
 		}
-		InternalStorage.pushFuture(historyFuture);
+		return historyFuture;
 	}
 	
 	private static void undoDelete(FutureHistory futureHistory) {
 		
 		FutureHistory historyFuture = new FutureHistory();
 		position = InternalStorage.getBufferPosition(futureHistory.getSerial());
+		int id;
+		
+		id = undoDelete2(futureHistory);
+		
+		historyFuture = RedoUndoUpdate.updateAdd(id);
+		
+		InternalStorage.pushFuture(historyFuture);
+	}
+	
+	private static int undoDelete2(FutureHistory futureHistory) {
+		
 		int id;
 		
 		if(futureHistory.getAssignType().equals(AssignmentType.ASGN)) {
@@ -114,19 +148,16 @@ public class UndoTask {
 			SetTentative.addTentativeToBuffer(futureHistory.getTentative());
 			id = futureHistory.getTentative().getIndex();
 		}
-		historyFuture = RedoUndoUpdate.updateAdd(id);
-		
-		InternalStorage.pushFuture(historyFuture);
+		return id;
 	}
-	
 	private static void undoClear(LinkedList<Assignment> buffer) {
 		
 		FutureHistory historyFuture = new FutureHistory();
 		
-		historyFuture = RedoUndoUpdate.updateClear(buffer);
+		historyFuture = RedoUndoUpdate.updateAddBack();
+		InternalStorage.getBuffer().addAll(buffer);
 		
-		buffer.addAll(InternalStorage.getBuffer());
-		Sort.insertionSortDeadline(buffer);
+		buffer = Sort.insertionSortDeadline(InternalStorage.getBuffer());
 		InternalStorage.setBuffer(buffer);
 		
 		InternalStorage.pushFuture(historyFuture);

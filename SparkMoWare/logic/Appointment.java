@@ -1,5 +1,10 @@
 package logic;
 
+/**
+ * Logic: Appointment class extended from Task class
+ * @author Teck Zhi
+ */
+
 public class Appointment extends Task {
 
 	/************** Data members **********************/

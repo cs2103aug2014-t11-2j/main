@@ -1,5 +1,9 @@
 package storage;
 
+/**
+ * Storage: ValidityCheck component to check each attributes whether they are in the correct format.
+ * @author Teck Zhi
+ */
 
 public class ValidityCheck {
 
@@ -49,22 +53,32 @@ public class ValidityCheck {
 
 	private static boolean dateExists(String date) {
 
+		int day = dateConversion(date, 0, 2);
+		int month = dateConversion(date, 3, 5);
+		int year = dateConversion(date, 6, 8);
+
+		return checkDateExist(day, month, year);
+	}
+
+	private static int dateConversion(String date, int lower, int higher) {
+		int number;
+
+		String dateString = date.substring(lower, higher);
+		number = Integer.parseInt(dateString);
+
+		return number;
+	}
+
+	private static boolean checkDateExist(int day, int month, int year) {
+
 		boolean leapYear = false;
 		boolean dateExist = false;
-
-		String dayString = date.substring(0, 2);
-		String monthString = date.substring(3, 5);
-		String yearString = date.substring(6, 8);
-
-		int day = Integer.parseInt(dayString);
-		int month = Integer.parseInt(monthString);
-		int year = Integer.parseInt(yearString);
 
 		if (year % 4 == 0) {
 			leapYear = true;
 		}
 		if (month > 12 || month < 1) {
-			return false;
+			dateExist = false;
 		}
 		if (day < 29) {
 			dateExist = true;
@@ -126,55 +140,83 @@ public class ValidityCheck {
 			return checkDates;
 			
 		} else {
-			String[] datesSlot = dates.split(",");
-			int count = 0;
-
-			for(int i = 0; i < datesSlot.length; i++) {
-				datesSlot[i].trim();
-			}
-			if(datesSlot.length > 1) {
-				datesSlot[0] = datesSlot[0].substring(1, 9);
-				datesSlot[datesSlot.length - 1] = datesSlot[datesSlot.length - 1].substring(1, 9);
-
-				while(checkDates && count < datesSlot.length) {
-					checkDates = dateFormatValid(datesSlot[count]);
-					count++;
-				}
-			} else {
-				datesSlot[0] = datesSlot[0].substring(1,9);
-				checkDates = dateFormatValid(datesSlot[0]);
-			}
-			return checkDates;
+			return checkDates2(dates);
 		}
 	}
+	
+	private static boolean checkDates2(String dates) {
+		
+		boolean checkDates = false;
+		String[] datesSlot = dates.split(",");
 
+
+		for(int i = 0; i < datesSlot.length; i++) {
+			datesSlot[i].trim();
+		}
+		if(datesSlot.length > 1) {
+			checkDates = checkDates3(datesSlot);
+		} else {
+			datesSlot[0] = datesSlot[0].substring(1,9);
+			checkDates = dateFormatValid(datesSlot[0]);
+		}
+		return checkDates;
+	}
+	
+	private static boolean checkDates3(String[] datesSlot) {
+		
+		int count = 0;
+		boolean checkDates = false;
+		
+		datesSlot[0] = datesSlot[0].substring(1, 9);
+		datesSlot[datesSlot.length - 1] = datesSlot[datesSlot.length - 1].substring(1, 9);
+
+		while(checkDates && count < datesSlot.length) {
+			checkDates = dateFormatValid(datesSlot[count]);
+			count++;
+		}
+		return checkDates;
+	}
+	
 	protected static boolean checkTimes(String times) {
 
 		boolean checkTimes = false;
 		
 		if(!times.contains("[") && !times.contains("]")) {
 			return checkTimes;
-			
 		} else {
-			String[] timesSlot = times.split(",");
-			int count = 0;
-
-			for(int i = 0; i < timesSlot.length; i++) {
-				timesSlot[i].trim();
-			}
-			if(timesSlot.length > 1) {
-				timesSlot[0] = timesSlot[0].substring(1, 5);
-				timesSlot[timesSlot.length - 1] = timesSlot[timesSlot.length - 1].substring(1, 5);
-
-				while( checkTimes && count < timesSlot.length){
-					checkTimes = timeFormatValid(timesSlot[count]);
-					count++;
-				}
-			} else {
-				timesSlot[0] = timesSlot[0].substring(1, 5);
-				checkTimes = timeFormatValid(timesSlot[0]);
-			}
-			return checkTimes;
+			return checkTimes2(times);
 		}
+	}
+	
+	private static boolean checkTimes2(String times) {
+		
+		boolean checkTimes = false;
+		String[] timesSlot = times.split(",");
+
+		for(int i = 0; i < timesSlot.length; i++) {
+			timesSlot[i].trim();
+		}
+		if(timesSlot.length > 1) {
+			checkTimes = checkTimes3(timesSlot);
+		} else {
+			timesSlot[0] = timesSlot[0].substring(1, 5);
+			checkTimes = timeFormatValid(timesSlot[0]);
+		}
+		return checkTimes;
+	}
+	
+	private static boolean checkTimes3(String[] timesSlot) {
+		
+		boolean checkTimes = false;
+		int count = 0;
+		
+		timesSlot[0] = timesSlot[0].substring(1, 5);
+		timesSlot[timesSlot.length - 1] = timesSlot[timesSlot.length - 1].substring(1, 5);
+
+		while(checkTimes && count < timesSlot.length){
+			checkTimes = timeFormatValid(timesSlot[count]);
+			count++;
+		}
+		return checkTimes;
 	}
 }

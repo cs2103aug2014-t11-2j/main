@@ -9,23 +9,25 @@ import logic.Assignment.AssignmentType;
 import parser.EnumGroup.EditType;
 import parser.RefinedUserInput;
 
-/*
- * This edit method will edit any part of the assignment requested by the user
- * It will return to the user whether if the assignment has been edited
+/**
+ * Logic: Add component to add Assignment, Appointment and Task
+ * 		  to the internal storage buffer.
+ * @author Teck Zhi
  */
+
 public class Edit {
 	
 	private static final String DEFAULT_TIME = "2359";
 	private static final String DEFAULT_START_TIME = "0000";
 	
-	public static String editAssignment(RefinedUserInput userInput) {
+	protected static String editAssignment(RefinedUserInput userInput) {
 
 		LinkedList<Assignment> idFound = new LinkedList<Assignment>();
 		idFound = SearchAll.searchAll(InternalStorage.getBuffer(), Integer.toString(userInput.getIndex()));
 
 		if(idFound.size() == 0) {
-
-			String toUser = String.format(Message.DOES_NOT_EXISTS, "Serial Number " + userInput.getIndex());
+			
+			String toUser = "";
 
 			return toUser;
 		} else {
@@ -66,13 +68,13 @@ public class Edit {
 			default:
 				Print.printToUser(Message.INVALID_SEARCH_PARAMETER);
 			}
-			
+			//InternalStorage.setBuffer(Sort.sortDeadline(InternalStorage.getBuffer()));
 			return Message.EDITED; 
 		}
 	}
 
 	// ASSUMPTION: user input attribute to change as a single word eg startdate
-	protected static EditType getEditType(String attributeName) { 
+	private static EditType getEditType(String attributeName) { 
 
 		if (attributeName.length() < 1) {
 			return EditType.INVALID;
@@ -169,10 +171,14 @@ public class Edit {
 		if(InternalStorage.getBuffer().get(bufferPosition).getAssignType().equals(AssignmentType.APPT)) {
 			appointmentInBuffer = ((Appointment) InternalStorage.getBuffer().get(bufferPosition));
 			appointmentInBuffer.setEndDate(date);
+			InternalStorage.getBuffer().remove(bufferPosition);
+			Add.addAppointmentToBuffer(appointmentInBuffer);
 			
 		} else if(InternalStorage.getBuffer().get(bufferPosition).getAssignType().equals(AssignmentType.TASK)) {
 			taskInBuffer = ((Task) InternalStorage.getBuffer().get(bufferPosition));
 			taskInBuffer.setEndDate(date);
+			InternalStorage.getBuffer().remove(bufferPosition);
+			Add.addTaskToBuffer(taskInBuffer);
 			
 		}else if(InternalStorage.getBuffer().get(bufferPosition).getAssignType().equals(AssignmentType.ASGN)){
 			
@@ -198,10 +204,14 @@ public class Edit {
 		if(InternalStorage.getBuffer().get(bufferPosition).getAssignType().equals(AssignmentType.APPT)) {
 			appointmentInBuffer = ((Appointment) InternalStorage.getBuffer().get(bufferPosition));
 			appointmentInBuffer.setEndTime(time);
+			InternalStorage.getBuffer().remove(bufferPosition);
+			Add.addAppointmentToBuffer(appointmentInBuffer);
 			
 		} else if(InternalStorage.getBuffer().get(bufferPosition).getAssignType().equals(AssignmentType.TASK)) {
 			taskInBuffer = ((Task) InternalStorage.getBuffer().get(bufferPosition));
 			taskInBuffer.setEndTime(time);
+			InternalStorage.getBuffer().remove(bufferPosition);
+			Add.addTaskToBuffer(taskInBuffer);
 			
 		}else if(InternalStorage.getBuffer().get(bufferPosition).getAssignType().equals(AssignmentType.ASGN)){
 			

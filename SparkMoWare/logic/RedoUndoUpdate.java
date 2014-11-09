@@ -5,6 +5,11 @@ import java.util.LinkedList;
 import logic.Assignment.AssignmentType;
 import parser.EnumGroup.CommandType;
 
+/**
+ * Logic: RedoUndoUpdate component to store the necessary information for the actions done.
+ * @author Teck Zhi
+ */
+
 public class RedoUndoUpdate {
 	
 	private static FutureHistory futureHistory = new FutureHistory();
@@ -17,15 +22,37 @@ public class RedoUndoUpdate {
 		return futureHistory;
 	}
 	
-	protected static FutureHistory updateEdit(int id, int position) {
+	protected static FutureHistory updateEdit(int id) {
 		
 		futureHistory.setSerial(id);
+		int position = InternalStorage.getBufferPosition(id);
 		updateAssignment(position);
 		futureHistory.setCommand(CommandType.EDIT);
 		
 		return futureHistory;
 	}
 	
+	protected static FutureHistory updateEditOver(Assignment assignment) {
+		
+		if(assignment.getAssignType().equals(AssignmentType.APPT)) {
+			futureHistory.setAssignType(AssignmentType.APPT);
+			futureHistory.setAppointment((Appointment) assignment);
+
+		} else if(assignment.getAssignType().equals(AssignmentType.TASK)) {
+			futureHistory.setAssignType(AssignmentType.TASK);
+			futureHistory.setTask((Task) assignment);
+			
+		} else if(assignment.getAssignType().equals(AssignmentType.TNTV)) {
+			futureHistory.setAssignType(AssignmentType.TNTV);
+			futureHistory.setTentative((Tentative) assignment);
+		} else {
+			futureHistory.setAssignType(AssignmentType.ASGN);
+			futureHistory.setAssignment(assignment);
+		}
+		futureHistory.setCommand(CommandType.EDIT);
+		
+		return futureHistory;
+	}
 	protected static FutureHistory updateDelete(int position) {
 		
 		updateAssignment(position);
@@ -95,6 +122,13 @@ public class RedoUndoUpdate {
 		
 		futureHistory.setCommand(CommandType.CLEAR);
 		futureHistory.addClearedHistory(deleted);
+		
+		return futureHistory;
+	}
+	
+	protected static FutureHistory updateAddBack() {
+		
+		futureHistory.setCommand(CommandType.CLEAR);
 		
 		return futureHistory;
 	}

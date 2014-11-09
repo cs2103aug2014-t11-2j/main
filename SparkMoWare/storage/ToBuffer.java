@@ -8,6 +8,11 @@ import logic.Id;
 import logic.Task;
 import logic.Tentative;
 
+/**
+ * Storage: ToBuffer component to check and assign all correct format jobs into the internal storage list.
+ * @author Teck Zhi
+ */
+
 public class ToBuffer {
 
 	private static final int  ASSIGNMENT_LENGTH = 6;
@@ -16,50 +21,76 @@ public class ToBuffer {
 
 	protected static LinkedList<Assignment> addToBuffer(String[] lineArray) {
 
-		boolean check = false;
-		int serial = 0;
 		LinkedList<Assignment> buffer = new LinkedList<Assignment>();
 
 		if(lineArray.length == ASSIGNMENT_LENGTH) {
-
-			check = AssignValidCheck.checkAssignment(lineArray);
-
-			if(check) {
-				serial = Integer.parseInt(lineArray[0]);
-				Id.setLatestSerialNumber(serial);
-				buffer.add(toBufferAssignment(lineArray));
-			}
+			toBuffer(lineArray, buffer);
+			
 		} else if (lineArray.length == TASK_LENGTH) {
-
-			check = AssignValidCheck.checkTask(lineArray);
-
-			if(check) {
-				serial = Integer.parseInt(lineArray[0]);
-				Id.setLatestSerialNumber(serial);
-				buffer.add(toBufferTask(lineArray));
-			}
+			toBuffer2(lineArray, buffer);
+			
 		} else if(lineArray.length == APPOINTMENT_LENGTH && lineArray[4].contains("[")) {
-			check = AssignValidCheck.checkTentative(lineArray);
-
-			if(check) {
-				serial = Integer.parseInt(lineArray[0]);
-				Id.setLatestSerialNumber(serial);
-				buffer.add(toBufferTentative(lineArray));
-			}
+			toBuffer3(lineArray, buffer);
+			
 		} else if(lineArray.length == APPOINTMENT_LENGTH) {
-
-			check = AssignValidCheck.checkAppointment(lineArray);
-
-			if(check) {
-				serial = Integer.parseInt(lineArray[0]);
-				Id.setLatestSerialNumber(serial);
-				buffer.add(toBufferAppointment(lineArray));
-			}
+			toBuffer4(lineArray, buffer);
 		}
 		return buffer;
 	}
+	
+	private static void toBuffer(String[] lineArray, LinkedList<Assignment> buffer) {
+		
+		boolean check = false;
+		int serial = 0;
+		check = AssignValidCheck.checkAssignment(lineArray);
 
-	protected static Assignment toBufferAssignment(String[] lineArray) {
+		if(check) {
+			serial = Integer.parseInt(lineArray[0]);
+			Id.setLatestSerialNumber(serial);
+			buffer.add(toBufferAssignment(lineArray));
+		}
+	}
+	
+	private static void toBuffer2(String[] lineArray, LinkedList<Assignment> buffer) {
+		
+		boolean check = false;
+		int serial = 0;
+		check = AssignValidCheck.checkTask(lineArray);
+
+		if(check) {
+			serial = Integer.parseInt(lineArray[0]);
+			Id.setLatestSerialNumber(serial);
+			buffer.add(toBufferTask(lineArray));
+		}
+	}
+	
+	private static void toBuffer3(String[] lineArray, LinkedList<Assignment> buffer) {
+		
+		boolean check = false;
+		int serial = 0;
+		check = AssignValidCheck.checkTentative(lineArray);
+
+		if(check) {
+			serial = Integer.parseInt(lineArray[0]);
+			Id.setLatestSerialNumber(serial);
+			buffer.add(toBufferTentative(lineArray));
+		}
+	}
+	
+	private static void toBuffer4(String[] lineArray, LinkedList<Assignment> buffer) {
+
+		boolean check = false;
+		int serial = 0;
+		check = AssignValidCheck.checkAppointment(lineArray);
+
+		if(check) {
+			serial = Integer.parseInt(lineArray[0]);
+			Id.setLatestSerialNumber(serial);
+			buffer.add(toBufferAppointment(lineArray));
+		}
+	}
+	
+	private static Assignment toBufferAssignment(String[] lineArray) {
 
 		// adding as Assignment
 		Assignment temp = new Assignment();
@@ -73,7 +104,7 @@ public class ToBuffer {
 		return temp;
 	}
 
-	protected static Task toBufferTask(String[] lineArray) {
+	private static Task toBufferTask(String[] lineArray) {
 
 		// adding as Task
 		Task temp = new Task();
@@ -89,7 +120,7 @@ public class ToBuffer {
 		return temp;	
 	}
 
-	protected static Appointment toBufferAppointment(String[] lineArray) {
+	private static Appointment toBufferAppointment(String[] lineArray) {
 
 		// adding as Appointment
 		Appointment temp = new Appointment();
@@ -107,7 +138,7 @@ public class ToBuffer {
 		return temp;	
 	}
 
-	protected static Tentative toBufferTentative(String[] lineArray) {
+	private static Tentative toBufferTentative(String[] lineArray) {
 
 		Tentative temp = new Tentative();
 		

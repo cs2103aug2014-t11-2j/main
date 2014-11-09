@@ -6,6 +6,11 @@ import logic.Assignment.AssignmentType;
 import parser.EnumGroup.CommandType;
 import parser.RefinedUserInput;
 
+/**
+ * Logic: Action class for undo and redo methods.
+ * @author Teck Zhi
+ */
+
 public class FutureHistory {
 	
 	private CommandType command; 
@@ -70,7 +75,7 @@ public class FutureHistory {
 		this.command = commandIn;
 	}
 	public void addClearedHistory(LinkedList<Assignment> history) {
-		this.clearedHistory.addAll(history);
+		this.clearedHistory = history;
 	}
 	
 	public void setSerial(int serialNumber) {

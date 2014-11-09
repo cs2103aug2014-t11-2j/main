@@ -1,5 +1,10 @@
 package logic;
 
+/**
+ * Logic: Assignment class to store floating task
+ * @author Teck Zhi
+ */
+
 public class Assignment {
 
 	/************** Data members **********************/

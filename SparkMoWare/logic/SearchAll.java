@@ -3,6 +3,12 @@ package logic;
 import java.util.LinkedList;
 import logic.Assignment.AssignmentType;
 
+/**
+ * Logic: Search component to search for time, date, assignment type, completion
+ * 	      on time, keyword, priority.
+ * @author Teck Zhi
+ */
+
 public class SearchAll {
 
 	private static final int TIME_FORMAT_LENGTH = 4;
@@ -56,17 +62,10 @@ public class SearchAll {
 		} else if(userInput.equalsIgnoreCase("NIMPT")) {
 			stringsFound = searchByNonPriority(buffer);
 			
-		} else if(userInput.equalsIgnoreCase("IMPT")) {
-			stringsFound = searchByPriority(buffer);
-			
 		} else {
 			stringsFound = searchByWords(buffer, userInput);
 		}
-		if(stringsFound.isEmpty()) {
-			return stringsFound;
-		} else {
-			return stringsFound;
-		}
+		return stringsFound;
 	}
 
 	private static LinkedList<Assignment> searchByCompletion(LinkedList<Assignment> buffer) {
@@ -332,14 +331,22 @@ public class SearchAll {
 			if(checkText.equalsIgnoreCase(searchKeyWord)) {
 				found = true;
 			} else {
-				for(int textExtendCount = textCount + 1; textExtendCount < textArray.length; textExtendCount++) {
+				found = searchByKeyWord2(textCount, textArray, searchKeyWord, checkText);
+			}
+		}
+		return found;
+	}
+	
+	private static boolean searchByKeyWord2(int textCount, String[] textArray, String searchKeyWord, String checkText) {
+		
+		boolean found = false;
+		
+		for(int textExtendCount = textCount + 1; textExtendCount < textArray.length; textExtendCount++) {
 
-					checkText += " " + textArray[textExtendCount];
+			checkText += " " + textArray[textExtendCount];
 
-					if(checkText.equalsIgnoreCase(searchKeyWord)) {
-						found = true;
-					}
-				}
+			if(checkText.equalsIgnoreCase(searchKeyWord)) {
+				found = true;
 			}
 		}
 		return found;

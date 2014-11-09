@@ -1,5 +1,11 @@
 package logic;
 
+/**
+ * Logic: Mission class extended frm Assignment.
+ * 		  Return to GUI for proper format in the table.
+ * @author Teck Zhi
+ */
+
 public class Mission extends Assignment {
 	
 	/************** Data members **********************/

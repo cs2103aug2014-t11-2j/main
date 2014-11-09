@@ -2,6 +2,11 @@ package logic;
 
 import java.util.Vector;
 
+/**
+ * Logic: Tentative class extended from Assignment class
+ * @author Teck Zhi
+ */
+
 public class Tentative extends Assignment {
 	
 	/************** Data members **********************/

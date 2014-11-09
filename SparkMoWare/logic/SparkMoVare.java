@@ -7,6 +7,11 @@ import parser.Interpreter;
 import parser.RefinedUserInput;
 import storage.Storage;
 
+/**
+ * Logic: Main Component of the logic to connect between parser, GUI and storage together.
+ * @author Teck Zhi
+ */
+
 public class SparkMoVare {
 
 	protected static final int SYSTEM_EXIT_NO_ERROR = 0;
@@ -91,9 +96,7 @@ public class SparkMoVare {
 			break;
 
 		case EDIT:
-			position = InternalStorage.getBufferPosition(userInput.getIndex());
-	
-			futureHistory = RedoUndoUpdate.updateEdit(userInput.getIndex(), position);
+			futureHistory = RedoUndoUpdate.updateEdit(userInput.getIndex());
 
 			InternalStorage.pushHistory(futureHistory);
 
@@ -169,7 +172,7 @@ public class SparkMoVare {
 		case SORT:
 			LinkedList<Assignment> sortedBuffer = new LinkedList<Assignment>();
 
-			sortedBuffer = Sort.multipleSortRequired(InternalStorage.getBuffer(), userInput.getSpecialContent(),
+			sortedBuffer = Sort.sortRequired(InternalStorage.getBuffer(), userInput.getSpecialContent(),
 					userInput.getStartDate(), userInput.getEndDate());
 
 			returnOutput = ModifyOutput.returnModification(sortedBuffer,

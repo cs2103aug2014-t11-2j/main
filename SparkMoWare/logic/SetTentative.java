@@ -1,12 +1,16 @@
 package logic;
 
-import java.util.ListIterator;
 import java.util.Vector;
-import logic.Assignment.AssignmentType;
+
+/**
+ * Logic: Tentative component to set tentative appointments
+ * 		  Convert the appointment to tentative if there is clashing timeslot
+ * @author Teck Zhi
+ */
 
 public class SetTentative {
 
-	public static int addTentative(String title, Vector<String> dates, Vector<String> times) {
+	protected static int addTentative(String title, Vector<String> dates, Vector<String> times) {
 
 		Tentative newTentative = new Tentative();
 
@@ -15,6 +19,14 @@ public class SetTentative {
 		newTentative.setIndex(tentativeIdGen);
 		newTentative.setTitle(title);
 		newTentative.setPriority(Assignment.PRIORITY_NONE);
+		
+		setTimeSlot(newTentative, dates, times);
+		addTentativeToBuffer(newTentative);
+		
+		return tentativeIdGen;
+	}
+	
+	private static void setTimeSlot(Tentative newTentative, Vector<String> dates, Vector<String> times) {
 		
 		for(int vectorCount = 0; vectorCount < dates.size(); vectorCount++) {
 			if(vectorCount % 2 == 0) {
@@ -25,9 +37,6 @@ public class SetTentative {
 				newTentative.addEndTime(times.get(vectorCount));
 			}
 		}
-		addTentativeToBuffer(newTentative);
-		
-		return tentativeIdGen;
 	}
 	
 	protected static void setToTentative(Appointment newAppointment) {
@@ -46,24 +55,13 @@ public class SetTentative {
 
 	protected static void addTentativeToBuffer(Tentative newTentative) {
 
-		int bufferPosition = 0;
-
+		int position;
+		
 		if (InternalStorage.getLineCount() == 0) {
 			InternalStorage.addBuffer(newTentative);
 		} else {
-
-			ListIterator<Assignment> buffer = InternalStorage.getBuffer().listIterator();
-
-			while(buffer.hasNext()) {
-				Assignment assignment = buffer.next();
-				
-				if(assignment.getAssignType().equals(AssignmentType.APPT) ||
-						assignment.getAssignType().equals(AssignmentType.TASK)) {
-					InternalStorage.addBuffer(bufferPosition, newTentative);
-					break;
-				}
-				bufferPosition++;
-			}
+			position = Comparator.addTentativeToBigBuffer(newTentative);
+			InternalStorage.addBuffer(position, newTentative);
 		}
 	}
 }
