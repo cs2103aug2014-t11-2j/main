@@ -11,10 +11,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tray;
 import org.eclipse.swt.widgets.TrayItem;
 
-/**
- * Component class to setup the trayicon for gui
- * @author Zhengyang
- */
+//@author A0116263M
 
 public class TrayIconManager {
 

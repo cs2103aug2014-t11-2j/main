@@ -7,10 +7,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
-/**
- * Component class to setup the real time feedback
- * @author Zhengyang
- */
+//@author A0116263M
 
 public class RealTimeFeedbackManager {
 

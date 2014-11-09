@@ -7,11 +7,7 @@ import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.Random;
 
-/**
- * Utility class to load motivational quotes from resourcepath
- * 
- * @author Zhengyang
- */
+//@author A0116263M
 
 public class QuoteLib {
 	
@@ -40,7 +36,6 @@ public class QuoteLib {
 	public static String getQuote() {
 		openFile();
 		Random gen = new Random();
-		//System.out.println(buffer.get(gen.nextInt(buffer.size())));
 		return buffer.get(gen.nextInt(buffer.size()));
 	}
 

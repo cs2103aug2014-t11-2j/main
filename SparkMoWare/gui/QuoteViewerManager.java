@@ -4,10 +4,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-/**
- * Component class to setup the QuoteViewer for gui
- * @author Zhengyang
- */
+//@author A0116263M
 
 public class QuoteViewerManager {
 

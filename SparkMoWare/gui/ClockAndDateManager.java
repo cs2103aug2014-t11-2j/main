@@ -4,13 +4,10 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-/**
- * Component class to setup the date and time display for gui
- * @author Zhengyang
- */
+//@author A0116263M
 
 public class ClockAndDateManager {
-
+	
 	/**
 	 * Setup Clock and date for GUI
 	 * @param shell

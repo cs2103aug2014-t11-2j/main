@@ -5,11 +5,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 
-/**
- * Component class to setup main display table for gui
- * @author Zhengyang
- *
- */
+//@author A0116263M
 
 public class TableManager {
 	

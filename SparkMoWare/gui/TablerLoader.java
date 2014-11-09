@@ -14,11 +14,8 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 
-/**
- * Utility class to content returned from logic
- * 
- * @author Zhengyang
- */
+//@author A0116263M
+
 public class TablerLoader {
 	/**
 	 * Populate the table based on tableBuffer and updates important table

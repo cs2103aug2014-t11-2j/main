@@ -6,18 +6,17 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 
-/**
- * Component class to setup the enter butter for Important table
- * @author Zhengyang
- */
-
+//@author A0116263M
 
 public class ImportantManager {
-
+	
+	private static final String COL_ONE_TITLE = "SIN";
+	private static final String COL_TWO_TITLE = "Important Task";
+	
 	/**
 	 * Setup Important table for GUI
 	 * @param composite
-	 * @return Important tabl
+	 * @return Important table
 	 */
 	protected static Table imptDisplaySetup(Composite composite) {
 			
@@ -29,17 +28,18 @@ public class ImportantManager {
 		imptDisplay.setHeaderVisible(true);
 		imptDisplay.setLinesVisible(false);
 
+		//due to SWT limitation in Windows, first col cannot be center aligned
 		TableColumn dummy1 = new TableColumn(imptDisplay, SWT.CENTER);
 		dummy1.setResizable(false);
 		TableColumn id = new TableColumn(imptDisplay, SWT.CENTER);
 		id.setResizable(false);
-		id.setText("Serial");
+		id.setText(COL_ONE_TITLE);
 		TableColumn title1 = new TableColumn(imptDisplay, SWT.CENTER);
 		title1.setResizable(false);
 		dummy1.setWidth(0);
 		id.setWidth(50);
 		title1.setWidth(179);
-		title1.setText("Important Task");
+		title1.setText(COL_TWO_TITLE);
 		
 		return imptDisplay;
 	}

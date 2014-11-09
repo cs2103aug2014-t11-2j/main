@@ -4,10 +4,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-/**
- * Component class to setup the feedback for gui
- * @author Zhengyang
- */
+//@author A0116263M
 
 public class FeedbackManager {
 
@@ -23,5 +20,4 @@ public class FeedbackManager {
 		feedback.setBounds(GUISize.FB_XCOOD, GUISize.FB_YCOOD, GUISize.FB_WIDTH, GUISize.FB_HEIGHT);
 		return feedback;
 	}
-
 }

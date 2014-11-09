@@ -15,12 +15,10 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 
-/**
- * Utility class to create a popup and display helplist
- * @author Zhengyang
- */
+//@author A0116263M
 
 public class HelplistPopup {
+	
 	private static Table table;
 	private static LinkedList<String> helplistBuffer = new LinkedList<String>();
 
@@ -49,7 +47,6 @@ public class HelplistPopup {
 				item.setFont(title);
 			}
 			item.setText(textToDisplay);
-
 		}
 		helpList.open();
 	}

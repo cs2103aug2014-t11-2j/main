@@ -5,12 +5,10 @@ import java.util.Vector;
 
 import org.eclipse.swt.graphics.Image;
 
-/**
- * Utility class to load image files from resourcepath
- * 
- * @author Zhengyang
- */
+//@author A0116263M
+
 public class ImageGetter {
+	
 	private static Vector<Image> imageRepo = new Vector<Image>(); 
 	private static boolean isLoaded = false;
 

@@ -37,14 +37,12 @@ import org.eclipse.swt.widgets.Tray;
 import parser.EnumGroup;
 import parser.RefinedUserInput;
 
-/**
- * Controller for GUI
- * @author Zhengyang
- */
+//@author A0116263M
 
 public class MainController {
 
 	public static final String SONGNAME = "soundtrack.mp3";
+	public static final String ERROR_SOUNDNOTFOUND = "Song not found";
 	public static final int DELAY = 1000;
 
 	private static DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss ");
@@ -121,7 +119,6 @@ public class MainController {
 		quoteViewer = QuoteViewerManager.quoteViewerSetup(shell);
 		feedback = FeedbackManager.feedbackSetup(shell);
 		clockDisplay = ClockAndDateManager.clockDisplaySetup(shell);
-		//dateDisplay = ClockAndDateManager.dateDisplaySetup(shell);	
 		tray = TrayIconManager.trayIconSetup(shell, display);
 
 
@@ -139,7 +136,7 @@ public class MainController {
 			isReady=true;
 		} catch(Exception ex) {
 			ex.printStackTrace();
-			System.out.println("Song not found");
+			System.out.println(ERROR_SOUNDNOTFOUND);
 		}
 
 		// activate thread to run clock
@@ -279,11 +276,6 @@ public class MainController {
 		}        
 	}
 	
-	/**
-	 * enables async threading for update of time and date
-	 * @author Zhengyang
-	 *
-	 */
 	private class UpdateTimerTask extends TimerTask
 	{
 		@Override

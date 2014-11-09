@@ -28,6 +28,8 @@ import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Display;
 
+//@author A0116263M-reused
+
 /**
  * Utility class for managing OS resources associated with SWT controls such as colors, fonts, images, etc.
  * <p>

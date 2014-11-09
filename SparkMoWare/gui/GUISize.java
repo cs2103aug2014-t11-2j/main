@@ -1,9 +1,10 @@
 package gui;
 
+
+//@author A0116263M
+
 /**
  * Master List of all the size and cood for GUI
- * @author Zhengyang
- *
  */
 
 public class GUISize {
@@ -62,7 +63,7 @@ public class GUISize {
 	
 	
 	//Stats Viewer
-	protected static int STAT_SHELL_WIDTH = 484;
+	protected static int STAT_SHELL_WIDTH = 464;
 	protected static int STAT_SHELL_HEIGHT = 285;
 
 	protected static int STAT_PROGRESS_XCOOD = 55;
@@ -74,6 +75,16 @@ public class GUISize {
 	protected static int STAT_BAR_YCOOD = 83;
 	protected static int STAT_BAR_WIDTH = 202;
 	protected static int STAT_BAR_HEIGHT = 21;
+	
+	protected static int STAT_TITLE_XCOOD = 86;
+	protected static int STAT_TITLE_YCOOD = 32;
+	protected static int STAT_TITLE_WIDTH = 251;
+	protected static int STAT_TITLE_HEIGHT = 33;
+	
+	protected static int STAT_QUOTE_XCOOD = 10;
+	protected static int STAT_QUOTE_YCOOD = 205;
+	protected static int STAT_QUOTE_WIDTH = 438;
+	protected static int STAT_QUOTE_HEIGHT = 27;
 	
 	protected static int STAT_COL1 = 219;
 	protected static int STAT_COL2 = 94;

@@ -4,10 +4,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Shell;
 
-/**
- * Component class to setup the enter butter for gui
- * @author Zhengyang
- */
+//@author A0116263M
 
 public class BtnEnterManager {
 	
@@ -22,5 +19,4 @@ public class BtnEnterManager {
 		btnEnter.setText("Enter");
 		return btnEnter;
 	}
-
 }

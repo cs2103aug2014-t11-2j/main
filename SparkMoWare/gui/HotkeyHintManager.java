@@ -4,12 +4,11 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-/**
- * Component class to setup the Hotkey hint for gui
- * @author Zhengyang
- */
+//@author A0116263M
 
 public class HotkeyHintManager {
+	
+	private static final String HINTTEXT = "F1: Help  |  F5: Refresh Interface  |  F6: Play/Stop Music  |  F12: Expand/Hide Tab  |  UP/DOWN Arrow: Command History";
 	
 	/**
 	 * Setup Hotkey hint for GUI
@@ -22,9 +21,7 @@ public class HotkeyHintManager {
 		text.setEnabled(false);
 		text.setBounds(GUISize.HOTKEY_XCOOD, GUISize.HOTKEY_YCOOD, GUISize.HOTKEY_WIDTH, GUISize.HOTKEY_HEIGHT);
 		//formToolkit.adapt(text, true, true);
-		text.setText("F1: Help  |  F5: Refresh Interface  |  F6: Play/Stop Music  |  F12: Expand/Hide Tab  |  UP/DOWN Arrow: Command History");
-		
+		text.setText(HINTTEXT);
 		return text;
 	}
-
 }

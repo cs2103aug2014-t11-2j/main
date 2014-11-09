@@ -11,11 +11,7 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
-/**
- * Utility class to create a popup and display Statistics
- * @author Zhengyang
- */
-
+//@author A0116263M
 
 public class StatsPopup {
 	private static Table table;
@@ -36,7 +32,7 @@ public class StatsPopup {
 	    assert (totalTask >= onTimeTask) : "Value of " + totalTask + " < " + onTimeTask + " is too large to add.";
 	    assert (onTimeTask <= completedTask) : "Value of " + onTimeTask + " < " + completedTask + " is too large to add.";
 
-		int percentageOntime = (int)(((float)onTimeTask/completedTask)*100);
+		int percentageOntime = (int)(((float)completedTask/totalTask)*100);
 		Shell popup = new Shell(SWT.CLOSE);
 		popup.setText("User Statistics");
 		Image background = SWTResourceManager.getImage(MainController.class, "/resource/image/wallpaper.jpg");
@@ -45,11 +41,11 @@ public class StatsPopup {
 		popup.setBackgroundImage(background);
 		popup.setSize(GUISize.STAT_SHELL_WIDTH, GUISize.STAT_SHELL_HEIGHT);
 		
-		ProgressBar progressBar = new ProgressBar(popup, SWT.NONE);
+		ProgressBar progressBar = new ProgressBar(popup, SWT.CENTER);
 		progressBar.setBounds(GUISize.STAT_BAR_XCOOD, GUISize.STAT_BAR_YCOOD, GUISize.STAT_BAR_WIDTH, GUISize.STAT_BAR_HEIGHT);
 		progressBar.setMinimum(0);
 		progressBar.setMaximum(100);
-		progressBar.setSelection((int)(((float)onTimeTask/totalTask)*100));
+		progressBar.setSelection((int)(((float)completedTask/totalTask)*100));
 		
 		table = new Table(popup, SWT.BORDER | SWT.FULL_SELECTION);
 		table.setBounds(GUISize.STAT_PROGRESS_XCOOD, GUISize.STAT_PROGRESS_YCOOD, GUISize.STAT_PROGRESS_WIDTH, GUISize.STAT_PROGRESS_HEIGHT);
@@ -66,13 +62,13 @@ public class StatsPopup {
 		Percentage.setBounds(GUISize.STAT_PERCENT_XCOOD, GUISize.STAT_PERCENT_YCOOD, GUISize.STAT_PERCENT_WIDTH, GUISize.STAT_PERCENT_HEIGHT);
 		Percentage.setText(Integer.toString(percentageOntime)+"%");
 		
-		txtUserStatistics = new Text(popup, SWT.BORDER | SWT.READ_ONLY);
+		txtUserStatistics = new Text(popup, SWT.BORDER | SWT.READ_ONLY | SWT.CENTER);
 		txtUserStatistics.setFont(SWTResourceManager.getFont("Showcard Gothic", 16, SWT.BOLD));
 		txtUserStatistics.setText("User Statistics");
-		txtUserStatistics.setBounds(86, 32, 251, 33);
+		txtUserStatistics.setBounds(GUISize.STAT_TITLE_XCOOD , GUISize.STAT_TITLE_YCOOD , GUISize.STAT_TITLE_WIDTH , GUISize.STAT_TITLE_HEIGHT );
 		
 		QuoteFeedback = new Text(popup, SWT.BORDER | SWT.READ_ONLY | SWT.CENTER);
-		QuoteFeedback.setBounds(10, 205, 438, 27);
+		QuoteFeedback.setBounds(GUISize.STAT_QUOTE_XCOOD, GUISize.STAT_QUOTE_YCOOD, GUISize.STAT_QUOTE_WIDTH, GUISize.STAT_QUOTE_HEIGHT);
 	    if (totalTask==0) {
 			QuoteFeedback.setText("You have yet to set any item, start one today!");
 	    } else if (percentageOntime<33) {
