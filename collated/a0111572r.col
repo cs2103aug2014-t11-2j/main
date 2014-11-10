@@ -1,0 +1,3494 @@
+//@author: a0111572r
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\logic\Add.java
+	 */
+
+
+public class Add {
+	
+	/**
+	 * add methods for logic
+	 * @param userinput
+	 * @return new assignment
+	 */
+	protected static int addSomething(RefinedUserInput userInput) {
+
+		int id = Id.serialNumGen();
+
+		if (userInput.getAssignmentType().equals(AssignmentType.APPT)) {
+
+			addAppointment(id, userInput.getTitle(),
+					userInput.getStartDate(), userInput.getStartTime(),
+					userInput.getEndDate(), userInput.getEndTime(), false,
+					userInput.getPriority());
+
+		} else if (userInput.getAssignmentType().equals(AssignmentType.TASK)) {
+
+			addTask(id, userInput.getTitle(),
+					userInput.getEndDate(), userInput.getEndTime(), false,
+					userInput.getPriority());
+		} else {
+			addAssignment(id, userInput.getTitle(),
+					false, userInput.getPriority());
+		}
+		return id;
+	}
+
+	private static void addAssignment(int id, String title,
+			boolean isDone, String priority) {
+
+		Assignment newAssignment = new Assignment();
+
+		newAssignment.setIndex(id);
+		newAssignment.setTitle(title);
+		newAssignment.setIsDone(isDone);
+		newAssignment.setPriority(priority);
+
+		addAssignmentToBuffer(newAssignment);
+
+	}
+
+	protected static void addAssignmentToBuffer(Assignment newAssignment) {
+
+		if(InternalStorage.getLineCount() == 0) {
+			InternalStorage.addBuffer(newAssignment);
+		} else {
+			addAssignmentToBuffer2(newAssignment);
+		}
+	}
+	
+	private static void addAssignmentToBuffer2(Assignment newAssignment) {
+		
+		int count = 0;
+		int size = InternalStorage.getLineCount();
+		
+		for(int i = 0; i < size; i++) {
+			if(!InternalStorage.getBuffer().get(i).getIsDone()) {
+				InternalStorage.addBuffer(i, newAssignment);
+				break;
+			} else if(i == size - 1) {
+				count = i;
+				InternalStorage.addBuffer(count + 1, newAssignment);
+				break;
+			}
+		}
+	}
+	
+	private static String addAppointment(int id, String title,
+			String startDate, String startTime, String endDate, String endTime,
+			boolean isDone, String priority) {
+
+		Appointment newAppointment = new Appointment();
+
+		newAppointment.setIndex(id);
+		newAppointment.setTitle(title);
+		newAppointment.setStartDate(startDate);
+		newAppointment.setStartTime(startTime);
+		newAppointment.setEndDate(endDate);
+		newAppointment.setEndTime(endTime);
+		newAppointment.setIsDone(isDone);
+		newAppointment.setPriority(priority);
+
+		if(Comparator.isClashing(newAppointment)) {
+			SetTentative.setToTentative(newAppointment);
+		} else {
+			addAppointmentToBuffer(newAppointment);
+		}
+		return newAppointment.toString();
+	}
+
+	protected static void addAppointmentToBuffer(Appointment newAppointment) {
+
+		if (InternalStorage.getLineCount() == 0) {
+			InternalStorage.addBuffer(newAppointment);
+		} else {
+			int position = Comparator.addToBigBuffer(newAppointment);
+
+			InternalStorage.addBuffer(position, newAppointment);
+		}
+	}
+
+	private static String addTask(int id, String title, String endDate,
+			String endTime, boolean isDone, String priority) {
+
+		Task newTask = new Task();
+
+		newTask.setIndex(id);
+		newTask.setTitle(title);
+		newTask.setEndDate(endDate);
+		newTask.setEndTime(endTime);
+		newTask.setIsDone(isDone);
+		newTask.setPriority(priority);
+
+		addTaskToBuffer(newTask);
+
+		return newTask.toString();
+	}
+
+	protected static void addTaskToBuffer(Task newTask) {
+
+		if (InternalStorage.getLineCount() == 0) {
+			InternalStorage.addBuffer(newTask);
+		} else {
+
+			int position = Comparator.addTaskToBigBuffer(newTask);
+			InternalStorage.addBuffer(position, newTask);
+		}
+	}
+}
+	// End of segment: C:\Code\main\SparkMoWare\logic\Add.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\logic\Appointment.java
+	 */
+
+
+public class Appointment extends Task {
+
+	/************** Data members **********************/
+	
+	private String startDate;
+	private String startTime;
+	
+	/************** Constants **********************/
+	
+	private static final String DEFAULT_DATE = "01012014";
+	private static final String DEFAULT_TIME = "0000";
+	
+	/************** Constructors **********************/
+
+	public Appointment() {
+		this(DEFAULT_DATE, DEFAULT_TIME);
+	}
+	
+	public Appointment(String startDate, String startTime) {
+		
+		super();
+		setStartDate(startDate);
+		setStartTime(startTime);
+		setAssignType(AssignmentType.APPT);
+	}
+
+	/**************** Accessors ***********************/
+	
+	public String getStartDate() {
+		return this.startDate;
+	}
+	
+	public String getStartTime() {
+		return this.startTime;
+	}
+	
+	/**************** Mutators ************************/
+	
+	public void setStartDate(String newStartDate) {
+		this.startDate = newStartDate;
+	}
+	
+	public void setStartTime(String newStartTime) {
+		this.startTime = newStartTime;
+	}
+
+	/**************** Overriding ************************/
+	
+	public String toString() {
+		return getIndex() + "~" + getAssignType() + "~" + getTitle() + "~" 
+				+ getStartDate() + "~" + getStartTime() + "~" + getEndDate() + "~" + getEndTime() + "~" 
+				+ getIsDone() +	"~" + getIsOnTime() + "~" + getPriority();
+	}
+}
+	// End of segment: C:\Code\main\SparkMoWare\logic\Appointment.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\logic\Assignment.java
+	 */
+
+
+public class Assignment {
+
+	/************** Data members **********************/
+
+	private String title;
+	private int index;
+	private boolean isDone;
+	private boolean isOnTime;
+	private String priority; 
+	private AssignmentType assignType;
+
+	/************** Constants **********************/
+
+	public enum AssignmentType {
+		TASK, APPT, TNTV, ASGN, DEFAULT;
+	}
+
+	protected static final String DEFAULT_STRING = "DEFAULT";
+	protected static final String DEFAULT = "010120140001";
+
+	protected static final String TYPE_TASK = "TASK";
+	protected static final String TYPE_APPOINTMENT = "APPT";
+	protected static final String TYPE_TENTATIVE = "TNTV";
+
+	protected static final String PRIORITY_NONE = "NIMPT";
+	protected static final String PRIORITY_IMPT = "IMPT";
+
+	/************** Constructors **********************/
+
+	public Assignment() {
+		this(1, DEFAULT_STRING, false, false, PRIORITY_NONE,
+				AssignmentType.ASGN);
+	}
+
+	public Assignment(int index, String title, boolean isDone,
+			boolean isOnTime, String priority, AssignmentType atype) {
+
+		setIndex(index);
+		setTitle(title);
+		setIsDone(isDone);
+		setIsOnTime(isOnTime);
+		setPriority(priority);
+		setAssignType(atype);
+	}
+
+	/**************** Accessors ***********************/
+
+	public String getTitle() {
+		return this.title;
+	}
+
+	public boolean getIsDone() {
+		return this.isDone;
+	}
+
+	public boolean getIsOnTime() {
+		return this.isOnTime;
+	}
+
+	public String getPriority() {
+		return this.priority;
+	}
+
+	public int getIndex() {
+		return this.index;
+	}
+
+	public AssignmentType getAssignType() {
+		return this.assignType;
+	}
+
+	/**************** Mutators ************************/
+
+	public void setTitle(String newTitle) {
+		this.title = newTitle;
+	}
+
+	public void setAssignType(AssignmentType atype) {
+		this.assignType = atype;
+	}
+
+	public void setIsDone(boolean newIsDone) {
+		this.isDone = newIsDone;
+	}
+
+	public void setIsOnTime(boolean newIsOnTime) {
+		this.isOnTime = newIsOnTime;
+	}
+
+	public void setPriority(String newPriority) {
+		this.priority = newPriority;
+	}
+
+	public void setIndex(int newIndex) {
+		this.index = newIndex;
+	}
+
+	/**************** Overriding ************************/
+
+	public String toString() {
+		return getIndex() + "~" + getAssignType() + "~" + getTitle() + "~"
+				+ getIsDone() + "~" + getIsOnTime() + "~" + getPriority();
+	}
+}
+	// End of segment: C:\Code\main\SparkMoWare\logic\Assignment.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\logic\Comparator.java
+	 */
+
+
+public class Comparator {
+
+	private static final int SMALLER = -1;
+	private static final int SAME = 0;
+	private static final int LARGER = 1;
+
+	protected static boolean serialNumberComparator(int idA, int idB) {
+
+		boolean serialCheck = false;
+
+		if(idA > idB) {
+			serialCheck= true;
+		}
+		return serialCheck;
+	}
+
+	protected static int dateComparator(String dateA, String dateB) {
+
+		String yearA = retrieveYear(dateA);
+		String yearB = retrieveYear(dateB);
+
+		String monthA = retrieveMonth(dateA);
+		String monthB = retrieveMonth(dateB);
+
+		String dayA = retrieveDay(dateA);
+		String dayB = retrieveDay(dateB);
+
+
+		if (dateA.equals(dateB)) {
+			return SAME;
+		} else if (Integer.parseInt(yearA) > Integer.parseInt(yearB)) {
+			return LARGER;
+		} else if (Integer.parseInt(yearA) < Integer.parseInt(yearB)) {
+			return SMALLER;
+		} else if (Integer.parseInt(monthA) > Integer.parseInt(monthB)) {
+			return LARGER;
+		} else if (Integer.parseInt(monthA) < Integer.parseInt(monthB)) {
+			return SMALLER;
+		} else if (Integer.parseInt(dayA) > Integer.parseInt(dayB)) {
+			return LARGER;
+		}
+		return SMALLER;
+	}
+
+	private static String retrieveYear(String date) {
+
+		String year = date.trim().substring(6, 8);
+		year = removeFrontZero(year);
+
+		return year;
+	}
+
+	private static String retrieveMonth(String date) {
+
+		String month = date.trim().substring(3, 5);
+		month = removeFrontZero(month);
+
+		return month;
+	}
+
+	private static String retrieveDay(String date) {
+
+		String day = date.trim().substring(0, 2);
+		day = removeFrontZero(day);
+
+		return day;
+	}
+
+	protected static int timeComparator(String timeA, String timeB) {
+
+		String hourA = retrieveHour(timeA);
+		String hourB = retrieveHour(timeB);
+
+		String minA = retrieveMin(timeA);
+		String minB = retrieveMin(timeB);
+
+		int compareResult = compareHour(hourA, hourB, minA, minB);
+
+		return compareResult;
+	}
+
+	private static String retrieveHour(String time) {
+
+		String hour = time.trim().substring(0, 2);
+		return hour;
+	}
+
+	private static String retrieveMin(String time) {
+
+		String min = time.trim().substring(2, 4);
+		return min;
+	}
+
+	private static int compareHour(String hourA, String hourB, String minA, String minB) {
+
+		int compareResult = SAME;
+
+		if(hourA.equals(hourB)) {
+			compareResult = compareMin(minA, minB);
+		} else if(hourA.equals("00") && !hourB.equals("00")) {
+			compareResult = SMALLER;
+		} else if(!hourA.equals("00") && hourB.equals("00")) {
+			compareResult = LARGER;
+		} else if(!hourA.equals("00") && !hourB.equals("00")) {
+			hourA = removeFrontZero(hourA);
+			hourB = removeFrontZero(hourB);
+
+			if(Integer.parseInt(hourA) > Integer.parseInt(hourB)) {
+				compareResult = LARGER;
+			} else {
+				compareResult = SMALLER;
+			}
+		}
+		return compareResult;		
+	}
+
+	private static int compareMin(String minA, String minB) {
+
+		int compareResult = SAME;
+
+		if(!minA.equals(minB)) {
+			if(minA.equals("00") && !minB.equals("00")) {
+				compareResult = SMALLER;
+			} else if(!minA.equals("00") && minB.equals("00")) {
+				compareResult = LARGER;
+			} else if(!minA.equals("00") && !minB.equals("00")) {
+				minA = removeFrontZero(minA);
+				minB = removeFrontZero(minB);
+
+				if(Integer.parseInt(minA) > Integer.parseInt(minB)) {
+					compareResult = LARGER;
+				} else {
+					compareResult = SMALLER;
+				}
+			}
+		}
+		return compareResult;
+	}
+
+	protected static String removeFrontZero(String input) {
+		while (input.length() > 0 && input.charAt(0) == '0') {
+			input = input.substring(1);
+		}
+		return input;
+	}
+
+	protected static int addToBigBuffer(Appointment newAppointment) {
+
+		int count = 0;
+
+		ListIterator<Assignment> bufferList = InternalStorage.getBuffer().listIterator();
+
+		while(bufferList.hasNext()) {
+			Assignment assignment = bufferList.next();
+			if(checkFittingTimeSlot(assignment, newAppointment)) {
+				break;
+			}
+			count++;
+		}
+		return count;
+	}
+
+	private static boolean checkFittingTimeSlot(Assignment assignment, Appointment newAppointment) {
+
+		Appointment nextAppointmentInBuffer = new Appointment();
+		Task nextTaskInBuffer = new Task();
+
+		if(assignment.getAssignType().equals(AssignmentType.TASK)) {
+			nextTaskInBuffer = ((Task) assignment);
+			return compareWithTask(newAppointment, nextTaskInBuffer);
+
+		} else if(assignment.getAssignType().equals(AssignmentType.APPT)) {
+			nextAppointmentInBuffer = ((Appointment) assignment);
+			return compareWithAppointment(newAppointment, nextAppointmentInBuffer);
+		}
+		return false;
+	}
+
+	private static boolean compareWithTask(Appointment newAppointment, Task nextTaskInBuffer) {
+
+		if(Comparator.dateComparator(newAppointment.getEndDate(), nextTaskInBuffer.getEndDate()) == 0) {
+			return true;
+		} else if(Comparator.dateComparator(newAppointment.getEndDate(), nextTaskInBuffer.getEndDate()) == -1) {
+			return true;
+		}
+		return false;
+	}
+
+	private static boolean compareWithAppointment(Appointment newAppointment, Appointment nextAppointmentInBuffer) {
+
+		if(Comparator.dateComparator(newAppointment.getEndDate(), nextAppointmentInBuffer.getEndDate()) == -1) {
+			return true;
+		} else if(Comparator.dateComparator(newAppointment.getEndDate(), nextAppointmentInBuffer.getEndDate()) == 0) {
+			if(Comparator.timeComparator(newAppointment.getEndTime(), nextAppointmentInBuffer.getEndTime()) == -1) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	protected static int addTaskToBigBuffer(Task newTask) {
+
+		int count = 0;
+
+		ListIterator<Assignment> bufferList = InternalStorage.getBuffer().listIterator();
+
+		while(bufferList.hasNext()) {
+			Assignment assignment = bufferList.next();
+
+			if(checkFittingTimeSlot2(assignment, newTask) == 1){
+				break;
+			} else if(checkFittingTimeSlot2(assignment, newTask) == 2) {
+				count++;
+				break;
+			}
+			count++;
+		}
+		return count;
+	}
+
+	private static int checkFittingTimeSlot2(Assignment assignment, Task newTask) {
+
+		Appointment nextAppointmentInBuffer = new Appointment();
+		Task nextTaskInBuffer = new Task();
+
+		if(assignment.getAssignType().equals(AssignmentType.TASK)) {
+			nextTaskInBuffer = ((Task) assignment);
+			return compareWithTask2(newTask, nextTaskInBuffer);
+
+		} else if(assignment.getAssignType().equals(AssignmentType.APPT)) {
+			nextAppointmentInBuffer = ((Appointment) assignment);
+			return compareWithAppointment2(newTask, nextAppointmentInBuffer);
+		}
+		return -1;
+	}
+
+	private static int compareWithTask2(Task newTask, Task nextTaskInBuffer) {
+
+		if(Comparator.dateComparator(newTask.getEndDate(), nextTaskInBuffer.getEndDate()) == 0) {
+			return 1;
+		} else if(Comparator.dateComparator(newTask.getEndDate(), nextTaskInBuffer.getEndDate()) == -1) {
+			return 1;
+		}
+		return -1;
+	}
+
+	private static int compareWithAppointment2(Task newTask, Appointment nextAppointmentInBuffer) {
+
+		if(Comparator.dateComparator(newTask.getEndDate(), nextAppointmentInBuffer.getEndDate()) == -1) {
+			return 1;
+		} else if(Comparator.dateComparator(newTask.getEndDate(), nextAppointmentInBuffer.getEndDate()) == 0) {
+			return 2;
+		}
+		return -1;
+	}
+
+	protected static int addTentativeToBigBuffer(Tentative newTentative) {
+
+		int bufferPosition = 0;
+		ListIterator<Assignment> buffer = InternalStorage.getBuffer().listIterator();
+
+		while(buffer.hasNext()) {
+			Assignment assignment = buffer.next();
+
+			if(checkFittingTentativeTimeSlot(assignment, bufferPosition)) {
+				break;
+			}
+			bufferPosition++;
+		}
+		return bufferPosition;
+	}
+
+	private static boolean checkFittingTentativeTimeSlot(Assignment assignment, int bufferPosition) {
+
+		if((assignment.getAssignType().equals(AssignmentType.APPT) ||
+				assignment.getAssignType().equals(AssignmentType.TASK)) && 
+				assignment.getIsDone() == false) {
+			return true;
+		} else if(bufferPosition == InternalStorage.getLineCount() - 1) {
+			return true;
+		}
+		return false;
+	}
+
+	protected static boolean isClashing(Appointment newAppointment) {
+
+		boolean isClashing = false;
+		ListIterator<Assignment> buffer = InternalStorage.getBuffer().listIterator();
+
+		while(buffer.hasNext()) {
+			Assignment assignment = buffer.next();
+			isClashing = checkClashing(assignment, newAppointment);
+			
+			if(isClashing) {
+				break;
+			}
+		}
+		return isClashing;
+	}
+
+	private static boolean checkClashing(Assignment assignment, Appointment newAppointment) {
+
+		boolean isClashing = false;
+		Appointment checkAppointment = new Appointment();
+
+		if(!assignment.getIsDone()) {
+			if(assignment.getAssignType().equals(AssignmentType.APPT)) {
+				checkAppointment = ((Appointment) assignment); 
+
+				if(dateComparator(newAppointment.getEndDate(), 
+						checkAppointment.getEndDate()) == SAME &&
+						Comparator.dateComparator(newAppointment.getStartDate(), 
+								checkAppointment.getStartDate()) == SAME) {
+
+					isClashing = isClashingTime(newAppointment, checkAppointment);
+				} else {
+					isClashing = isClashingDate(newAppointment, checkAppointment);
+				}
+			}
+		}
+		return isClashing;
+	}
+
+	private static boolean isClashingDate(Appointment newAppointment, Appointment checkAppointment) {
+
+		boolean isClashing = true;
+
+		if(dateComparator(checkAppointment.getStartDate(), newAppointment.getStartDate()) == LARGER &&
+				dateComparator(checkAppointment.getStartDate(), newAppointment.getEndDate()) == SAME) {
+			isClashing = isClashingTime2(newAppointment, checkAppointment);
+
+		} else if(dateComparator(checkAppointment.getStartDate(), newAppointment.getStartDate()) == LARGER &&
+				dateComparator(checkAppointment.getStartDate(), newAppointment.getEndDate()) == LARGER) {
+			isClashing = false;
+
+		} else if(dateComparator(checkAppointment.getEndDate(), newAppointment.getEndDate()) == SMALLER &&
+				dateComparator(checkAppointment.getEndDate(), newAppointment.getStartDate()) == SMALLER) {
+			isClashing = false;
+
+		} else if(dateComparator(checkAppointment.getEndDate(), newAppointment.getEndDate()) == SMALLER &&
+				dateComparator(checkAppointment.getEndDate(), newAppointment.getStartDate()) == SAME) {
+			isClashing = isClashingTime2(checkAppointment, newAppointment);
+		} 
+		return isClashing;
+	}
+
+	private static boolean isClashingTime(Appointment newAppointment, Appointment checkAppointment) {
+
+		boolean isClashing = true;
+
+		if(timeComparator(checkAppointment.getStartTime(), newAppointment.getStartTime()) == LARGER &&
+				timeComparator(checkAppointment.getStartTime(), newAppointment.getEndTime()) == SAME) {
+			isClashing = false;
+		} else if(timeComparator(checkAppointment.getStartTime(), newAppointment.getStartTime()) == LARGER &&
+				timeComparator(checkAppointment.getStartTime(), newAppointment.getEndTime()) == LARGER) {
+			isClashing = false;
+		} else if(timeComparator(checkAppointment.getEndTime(), newAppointment.getEndTime()) == SMALLER &&
+				timeComparator(checkAppointment.getEndTime(), newAppointment.getStartTime()) == SMALLER) {
+			isClashing = false;
+		} else if(timeComparator(checkAppointment.getEndTime(), newAppointment.getEndTime()) == SMALLER &&
+				timeComparator(checkAppointment.getEndTime(), newAppointment.getStartTime()) == SAME) {
+			isClashing = false;
+		} 
+		return isClashing;
+	}
+
+	private static boolean isClashingTime2(Appointment newAppointment, Appointment checkAppointment) {
+
+		boolean isClashing = true;
+
+		if(timeComparator(checkAppointment.getStartTime(), newAppointment.getEndTime()) == SAME ||
+				timeComparator(checkAppointment.getStartTime(), newAppointment.getEndTime()) == LARGER) {
+			isClashing = false;
+		}
+		return isClashing;
+	}
+
+	protected static void checkOnTime(String currentDate, String currentTime, int bufferPosition) {
+
+		Task taskInBuffer = new Task();
+
+		if(InternalStorage.getBuffer().get(bufferPosition).getAssignType().equals(AssignmentType.TASK)) {
+			taskInBuffer = ((Task) InternalStorage.getBuffer().get(bufferPosition)); 
+			checkOnTime2(currentDate, currentTime, taskInBuffer, bufferPosition);
+			
+		} else if(InternalStorage.getBuffer().get(bufferPosition).getAssignType().equals(AssignmentType.APPT)) {
+			taskInBuffer = ((Task) InternalStorage.getBuffer().get(bufferPosition)); 
+			checkOnTime2(currentDate, currentTime, taskInBuffer, bufferPosition);
+			
+		} else {
+			InternalStorage.getBuffer().get(bufferPosition).setIsOnTime(false);
+		}
+	}
+	
+	private static void checkOnTime2(String currentDate, String currentTime, Task taskInBuffer, int bufferPosition) {
+		
+		if (Comparator.dateComparator(currentDate, taskInBuffer.getEndDate()) == SMALLER) {
+			InternalStorage.getBuffer().get(bufferPosition).setIsOnTime(true);
+
+		} else if (Comparator.dateComparator(currentDate, taskInBuffer.getEndDate()) == SAME) {
+			if (Comparator.timeComparator(currentTime, taskInBuffer.getEndTime()) == SMALLER) {
+				InternalStorage.getBuffer().get(bufferPosition).setIsOnTime(true);
+			}
+		}
+	}	
+}
+	// End of segment: C:\Code\main\SparkMoWare\logic\Comparator.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\logic\ConfirmTentative.java
+	 */
+
+
+public class ConfirmTentative {
+
+	private static Tentative tentativeNeeded = new Tentative();
+
+	protected static int confirmTentative(int serialId, String confirmStartDate, String confirmStartTime, 
+			String confirmEndDate, String confirmEndTime) {
+
+		Appointment confirmAppointment = new Appointment();
+		LinkedList<Assignment> tentatives = new LinkedList<Assignment> ();
+
+		tentatives = SearchAll.searchAll(InternalStorage.getBuffer(), Integer.toString(serialId));
+
+		if(tentatives.size() > 0) {
+		 
+			tentativeNeeded = ((Tentative) tentatives.get(0));
+
+			confirmAppointment = findConfirmTentative(confirmStartDate, confirmStartTime, confirmEndDate, confirmEndTime);
+			int id = Id.serialNumGen();
+			confirmAppointment.setIndex(id);
+			Delete.delete(tentativeNeeded.getIndex());
+			Add.addAppointmentToBuffer(confirmAppointment);
+		}
+		return confirmAppointment.getIndex();
+	}
+
+	private static Appointment findConfirmTentative(String confirmStartDate, String confirmStartTime, 
+			String confirmEndDate, String confirmEndTime){
+
+		Appointment newAppointment = new Appointment();
+		Vector<String> startDate = tentativeNeeded.getStartDate();
+		Vector<String> startTime = tentativeNeeded.getStartTime();
+		Vector<String> endDate = tentativeNeeded.getEndDate();
+		Vector<String> endTime = tentativeNeeded.getEndTime();
+
+		int size = startDate.size();
+
+		for(int dateFormatCount = 0; dateFormatCount < size; dateFormatCount++) {
+
+			if(startDate.get(dateFormatCount).equals(confirmStartDate) &&
+					startTime.get(dateFormatCount).equals(confirmStartTime) &&
+					endDate.get(dateFormatCount).equals(confirmEndDate) &&
+					endTime.get(dateFormatCount).equals(confirmEndTime)) {
+
+				newAppointment.setTitle(tentativeNeeded.getTitle());
+				newAppointment.setStartDate(startDate.get(dateFormatCount));
+				newAppointment.setStartTime(startTime.get(dateFormatCount));
+				newAppointment.setEndDate(endDate.get(dateFormatCount));
+				newAppointment.setEndTime(endTime.get(dateFormatCount));
+			}
+		}
+		return newAppointment;
+	}
+}
+	// End of segment: C:\Code\main\SparkMoWare\logic\ConfirmTentative.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\logic\Filter.java
+	 */
+
+>>>>>>> origin/master
+	// End of segment: C:\Code\main\SparkMoWare\logic\Filter.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\logic\FutureHistory.java
+	 */
+
+
+public class FutureHistory {
+	
+	private CommandType command; 
+	private LinkedList<Assignment> clearedHistory = new LinkedList<Assignment>();
+	
+	private AssignmentType assignType;
+	private Assignment assignment = new Assignment();
+	private Task task = new Task();
+	private Appointment appointment = new Appointment();
+	private Tentative tentative = new Tentative();
+	private int position;
+	
+	private RefinedUserInput userInput = new RefinedUserInput();
+	
+	private int serial = 0;
+	
+	public CommandType getCommand() {
+		return this.command;
+	}
+	
+	public LinkedList<Assignment> getClearedHistory() {
+		return this.clearedHistory;
+	}
+	
+	public int getSerial() {
+		return this.serial;
+	}
+	
+	public int getPosition() {
+		return this.position;
+	}
+	
+	public RefinedUserInput getUserInput() {
+		return this.userInput;
+	}
+	
+	public Task getTask() {
+		return this.task;
+	}
+	
+	public Assignment getAssignment() {
+		return this.assignment;
+	}
+	
+	public Appointment getAppointment() {
+		return this.appointment;
+	}
+	
+	public Tentative getTentative() {
+		return this.tentative;
+	}
+	
+	public AssignmentType getAssignType() {
+		return this.assignType;
+	}
+	
+	public void setAssignType(AssignmentType assignType) {
+		this.assignType = assignType;
+	}
+	
+	public void setCommand(CommandType commandIn) {
+		this.command = commandIn;
+	}
+	public void addClearedHistory(LinkedList<Assignment> history) {
+		this.clearedHistory = history;
+	}
+	
+	public void setSerial(int serialNumber) {
+		this.serial = serialNumber;
+	}
+	
+	public void setTask(Task task) {
+		this.task = task;
+	}
+	
+	public void setAppointment(Appointment appointmentIn) {
+		this.appointment = appointmentIn;
+	}
+	
+	public void setAssignment(Assignment assignment) {
+		this.assignment = assignment;
+	}
+	
+	public void setTentative(Tentative tentative) {
+		this.tentative = tentative;
+	}
+	
+	public void setUserInput(RefinedUserInput userInput) {
+		this.userInput = userInput;
+	}
+	
+	public void setPosition(int position) {
+		this.position = position;
+	}
+}
+	// End of segment: C:\Code\main\SparkMoWare\logic\FutureHistory.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\logic\Id.java
+	 */
+
+
+public class Id {
+
+	protected static int latestSerialNumber = 0;
+
+	public static void setLatestSerialNumber(int newSn) {
+		if(newSn > latestSerialNumber) {
+			latestSerialNumber = newSn;
+		}
+	}
+
+	public static int getLatestSerialNumber(){
+		return latestSerialNumber;
+	}
+
+	protected static int serialNumGen() {
+		latestSerialNumber += 1;
+		
+		return latestSerialNumber;
+	}
+}
+
+	// End of segment: C:\Code\main\SparkMoWare\logic\Id.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\logic\InternalStorage.java
+	 */
+
+
+public class InternalStorage {
+
+	private static LinkedList<Assignment> buffer = new LinkedList<Assignment>();
+	private static String filePath = "Storage.txt";
+
+	private static Stack<FutureHistory> actionHistory = new Stack<FutureHistory>();
+	private static Stack<FutureHistory> actionFuture = new Stack<FutureHistory>();
+
+	private static Scanner scanner = new Scanner(System.in);
+
+	public static Scanner getScanner() {
+		return scanner;
+	}
+
+	public static int getBufferPosition(int id) {
+		int counter = 0;
+		int size = buffer.size();
+
+		while(counter < size && !(buffer.get(counter).getIndex() == id)) {
+			counter++;
+		}	
+		return counter;
+	}
+	
+	public static void addBuffer(Assignment assignment) {
+		buffer.add(assignment);
+	}
+
+	public static void addBuffer(int position, Assignment assignment) {
+		buffer.add(position, assignment);
+	}
+
+	public static void addBufferFirst(Assignment assignment) {
+		buffer.addFirst(assignment);
+	}
+	
+	public static void setBuffer(LinkedList<Assignment> bufferIn) {
+		buffer = bufferIn;
+	}
+	
+	public static int getLineCount() {
+		return buffer.size();
+	}
+
+	public static String getFilePath(){
+		return filePath;
+	}
+	
+	public static LinkedList<Assignment> getBuffer() {
+		return buffer;
+	}
+
+	public static Stack<FutureHistory> getHistory() {
+		return actionHistory;
+	}
+
+	public static Stack<FutureHistory> getFuture() {
+		return actionFuture;
+	}
+
+	public static void pushHistory(FutureHistory history) {
+		actionHistory.push(history);
+	}
+
+	public static void pushFuture(FutureHistory future) {
+		actionFuture.push(future);
+	}
+
+	public static FutureHistory peekHistory() {
+		return actionHistory.peek();
+	}
+
+	public static FutureHistory peekFuture() {
+		return actionFuture.peek();
+	}
+
+	public static FutureHistory popHistory() {
+		return actionHistory.pop();
+	}
+
+	public static FutureHistory popFuture() {
+		return actionFuture.pop();
+	}
+}
+	// End of segment: C:\Code\main\SparkMoWare\logic\InternalStorage.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\logic\Mission.java
+	 */
+
+
+public class Mission extends Assignment {
+	
+	/************** Data members **********************/
+
+	private String startDate;
+	private String startTime;
+	private String endDate;
+	private String endTime;
+
+	/************** Constants **********************/
+
+	private static final String DEFAULT_DATE = "01012014";
+	private static final String DEFAULT_TIME = "0000";
+
+	/************** Constructors **********************/
+
+	public Mission() {
+		this(DEFAULT_DATE, DEFAULT_TIME, DEFAULT_DATE, DEFAULT_TIME);
+	}
+
+	public Mission(String startDate, String startTime, String endDate, String endTime) {
+
+		super();
+		setStartDate(startDate);
+		setStartTime(startTime);
+		setEndDate(endDate);
+		setEndTime(endTime);
+	}
+
+	/**************** Accessors ***********************/
+
+	public String getStartDate() {
+		return this.startDate;
+	}
+
+	public String getStartTime() {
+		return this.startTime;
+	}
+
+	public String getEndDate() {
+		return this.endDate;
+	}
+
+	public String getEndTime() {
+		return this.endTime;
+	}
+	
+	/**************** Mutators ************************/
+
+	public void setStartDate(String newStartDate) {
+		this.startDate = newStartDate;
+	}
+
+	public void setStartTime(String newStartTime) {
+		this.startTime = newStartTime;
+	}
+	
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
+	
+	public void setEndTime(String endTime) {
+		this.endTime = endTime;
+	}
+	
+	/**************** Overriding ************************/
+
+	public String toString() {
+		return getIndex() + "~" + getTitle() + "~" + getStartDate() + "~" + getStartTime() + "~" + getEndDate() + "~" + getEndTime();
+	}
+}
+
+	// End of segment: C:\Code\main\SparkMoWare\logic\Mission.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\logic\ModifyOutput.java
+	 */
+
+
+public class ModifyOutput {
+
+	private static Output returnOutput = new Output();
+
+	private static final String DEFAULT_NONE = "-";
+
+	protected static Output returnModification(LinkedList<Assignment> buffer,
+			String message, int totalAssignment, int totalCompleted, int totalOnTime,
+			boolean isStats, boolean isInvalid) {
+
+		LinkedList<Mission> returnBuffer = new LinkedList<Mission>();
+		
+		if(buffer.size() > 0) {
+			returnBuffer.addAll(modifyBuffer(buffer));
+		}
+		if(message.equals(Message.SEARCH)) {
+			if(buffer.size() > 0) {
+			returnBuffer.addAll(modifyBuffer2(buffer));
+			}
+		}
+		returnOutput.setReturnBuffer(returnBuffer);
+		returnOutput.setFeedback(message);
+		returnOutput.setTotalAssignment(totalAssignment);
+		returnOutput.setTotalCompleted(totalCompleted);
+		returnOutput.setTotalOnTime(totalOnTime);
+		returnOutput.setIsStats(isStats);
+		returnOutput.setIsInvalid(isInvalid);
+
+		return returnOutput;
+	}
+	
+	private static LinkedList<Mission> modifyBuffer2(LinkedList<Assignment> buffer) {
+		
+		LinkedList<Mission> modifiedBuffer = new LinkedList<Mission>();
+		Assignment tempOriginal = new Assignment();
+		ListIterator<Assignment> bufferIterator = buffer.listIterator();
+		
+		while(bufferIterator.hasNext()) {
+			tempOriginal = bufferIterator.next();
+			if(tempOriginal.getIsDone()) {
+				if(tempOriginal.getAssignType().equals(AssignmentType.APPT)) {
+					Appointment temp = ((Appointment) tempOriginal);
+					modifiedBuffer.addLast(addAppt(temp));
+
+				} else if(tempOriginal.getAssignType().equals(AssignmentType.TASK)) {
+					Task tmp = ((Task) tempOriginal);
+					modifiedBuffer.addLast(addTask(tmp));
+
+				} else if(tempOriginal.getAssignType().equals(AssignmentType.TNTV)) {
+					Tentative tmp = ((Tentative) tempOriginal);
+					modifiedBuffer.addAll(addTentativeSlots(tmp));
+				} else {
+					modifiedBuffer.add(addAssignment(tempOriginal));
+				}
+			}
+		}
+		return modifiedBuffer;
+	}
+	
+	private static LinkedList<Mission> modifyBuffer(LinkedList<Assignment> buffer) {
+
+		LinkedList<Mission> modifiedBuffer = new LinkedList<Mission>();
+		Assignment tempOriginal = new Assignment();
+		Appointment temp = new Appointment();
+		ListIterator<Assignment> bufferIterator = buffer.listIterator();
+
+		while(bufferIterator.hasNext()) {
+			tempOriginal= bufferIterator.next();
+			
+			if(!tempOriginal.getIsDone()) {
+				if(tempOriginal.getAssignType().equals(AssignmentType.APPT)) {
+					temp = ((Appointment) tempOriginal);
+					modifiedBuffer.addLast(addAppt(temp));
+
+				} else if(tempOriginal.getAssignType().equals(AssignmentType.TASK)) {
+					Task tmp = ((Task) tempOriginal);
+					modifiedBuffer.addLast(addTask(tmp));
+
+				} else if(tempOriginal.getAssignType().equals(AssignmentType.TNTV)) {
+					Tentative tmp = ((Tentative) tempOriginal);
+					modifiedBuffer.addAll(addTentativeSlots(tmp));
+				} else {
+					modifiedBuffer.add(addAssignment(tempOriginal));
+				}
+			}
+		}
+		return modifiedBuffer;
+	}
+	
+	private static Mission addAppt(Appointment tmp) {
+
+		Mission temp = new Mission();
+
+		temp.setIndex(tmp.getIndex());
+		temp.setTitle(tmp.getTitle());
+		temp.setAssignType(AssignmentType.TASK);
+		temp.setStartDate(tmp.getStartDate());
+		temp.setStartTime(tmp.getStartTime());
+		temp.setEndDate(tmp.getEndDate());
+		temp.setEndTime(tmp.getEndTime());
+		temp.setIsDone(tmp.getIsDone());
+		temp.setIsOnTime(tmp.getIsOnTime());
+		temp.setPriority(tmp.getPriority());
+
+		return temp;
+	}
+
+	private static Mission addTask(Task tmp) {
+
+		Mission temp = new Mission();
+
+		temp.setIndex(tmp.getIndex());
+		temp.setTitle(tmp.getTitle());
+		temp.setAssignType(AssignmentType.TASK);
+		temp.setStartDate(DEFAULT_NONE);
+		temp.setStartTime(DEFAULT_NONE);
+		temp.setEndDate(tmp.getEndDate());
+		temp.setEndTime(tmp.getEndTime());
+		temp.setIsDone(tmp.getIsDone());
+		temp.setIsOnTime(tmp.getIsOnTime());
+		temp.setPriority(tmp.getPriority());
+
+		return temp;
+	}
+
+	private static Mission addAssignment(Assignment tmp) {
+
+		Mission temp = new Mission();
+
+		temp.setIndex(tmp.getIndex());
+		temp.setTitle(tmp.getTitle());
+		temp.setAssignType(AssignmentType.ASGN);
+		temp.setStartDate(DEFAULT_NONE);
+		temp.setStartTime(DEFAULT_NONE);
+		temp.setEndDate(DEFAULT_NONE);
+		temp.setEndTime(DEFAULT_NONE);
+		temp.setIsDone(tmp.getIsDone());
+		temp.setIsOnTime(tmp.getIsOnTime());
+		temp.setPriority(tmp.getPriority());
+
+		return temp;
+	}
+
+	private static LinkedList<Mission> addTentativeSlots(Tentative tmp) {
+
+		LinkedList<Mission> tempStore = new LinkedList<Mission>();
+
+		for(int slotsCount = 0; slotsCount < tmp.getStartDate().size(); slotsCount++) {
+			tempStore.add(addSlots(tmp, slotsCount));
+		}
+		return tempStore;
+	}
+
+	private static Mission addSlots(Tentative tmp, int slotsCount) {
+
+		Mission temp = new Mission();
+		String startDate = tmp.getStartDate().get(slotsCount);
+		String startTime = tmp.getStartTime().get(slotsCount);
+		String endDate = tmp.getEndDate().get(slotsCount);
+		String endTime = tmp.getEndTime().get(slotsCount);
+
+		temp.setIndex(tmp.getIndex());
+		temp.setTitle(tmp.getTitle());
+		temp.setAssignType(AssignmentType.TNTV);
+		temp.setStartDate(startDate);
+		temp.setStartTime(startTime);
+		temp.setEndDate(endDate);
+		temp.setEndTime(endTime);
+		temp.setIsDone(tmp.getIsDone());
+		temp.setIsOnTime(tmp.getIsOnTime());
+		temp.setPriority(tmp.getPriority());
+
+		return temp;
+	}
+}
+	// End of segment: C:\Code\main\SparkMoWare\logic\ModifyOutput.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\logic\Output.java
+	 */
+
+
+public class Output {
+	
+	/************** Data members **********************/
+	
+	private LinkedList<Mission> returnBuffer;
+	private String feedback;
+	private boolean isStats;
+	private int totalAssignment;
+	private int totalCompleted;
+	private int totalOnTime;
+	private boolean isInvalid;
+	
+	/************** Constants **********************/
+	
+	private static final LinkedList<Mission> DEFAULT_LINKEDLIST = new LinkedList<Mission>();
+	private static final String DEFAULT_FEEDBACK = "NONE";
+	private static final int DEFAULT_INTEGER = 0;
+	
+	/************** Constructors **********************/
+	public Output() {
+		this(DEFAULT_LINKEDLIST, DEFAULT_FEEDBACK, false, DEFAULT_INTEGER, DEFAULT_INTEGER, DEFAULT_INTEGER, false);
+	}
+	
+	public Output(LinkedList<Mission> returnBuffer, String feedback, 
+			boolean isStats, int totalAssignment, int totalCompleted, int totalOnTime, boolean isInvalid) {
+		
+		setReturnBuffer(returnBuffer);
+		setFeedback(feedback);
+		setIsStats(isStats);
+		setTotalAssignment(totalAssignment);
+		setTotalCompleted(totalCompleted);
+		setTotalOnTime(totalOnTime);
+		setIsInvalid(isInvalid);
+	}
+	
+	/**************** Accessors ***********************/
+	
+	public LinkedList<Mission> getReturnBuffer() {
+		return this.returnBuffer;
+	}
+	
+	public String getFeedback() {
+		return this.feedback;
+	}
+	
+	public boolean getIsStats() {
+		return this.isStats;
+	}
+	
+	public int getTotalCompleted() {
+		return this.totalCompleted;
+	}
+	
+	public int getTotalAssignment() {
+		return this.totalAssignment;
+	}
+	
+	public int getTotalOnTime() {
+		return this.totalOnTime;
+	}
+	
+	public boolean getIsInvalid() {
+		return this.isInvalid;
+	}
+	
+	/**************** Mutators ************************/
+	
+	public void setReturnBuffer(LinkedList<Mission> returnBuffer) {
+		this.returnBuffer = returnBuffer;
+	}
+	
+	public void setFeedback(String feedback) {
+		this.feedback = feedback;
+	}
+	
+	public void setIsStats(boolean isStats) {
+		this.isStats = isStats;
+	}
+	
+	public void setTotalAssignment(int totalAssignment) {
+		this.totalAssignment = totalAssignment;
+	}
+	
+	public void setTotalCompleted(int totalCompleted) {
+		this.totalCompleted = totalCompleted;
+	}
+	
+	public void setTotalOnTime(int totalOnTime) {
+		this.totalOnTime = totalOnTime;
+	}
+	
+	public void setIsInvalid(boolean isInvalid) {
+		this.isInvalid = isInvalid;
+	}
+}
+	// End of segment: C:\Code\main\SparkMoWare\logic\Output.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\logic\RedoTask.java
+	 */
+
+
+public class RedoTask {
+
+	private static int position;
+
+	protected static void redo() {
+
+		FutureHistory futureHistory = InternalStorage.popFuture();
+
+		if(futureHistory.getCommand().equals(CommandType.ADD)) {
+			redoAdd(futureHistory.getSerial());
+
+		} else if(futureHistory.getCommand().equals(CommandType.DONE)) {
+			redoDone(futureHistory.getSerial());
+
+		} else if(futureHistory.getCommand().equals(CommandType.EDIT)) {
+			redoEdit(futureHistory);
+
+		} else if(futureHistory.getCommand().equals(CommandType.DELETE)) {
+			redoDelete(futureHistory);
+
+		} else if(futureHistory.getCommand().equals(CommandType.TENTATIVE)) {
+			redoTentative(futureHistory);
+
+		}else if(futureHistory.getCommand().equals(CommandType.CLEAR)) {
+			LinkedList<Assignment> buffer = futureHistory.getClearedHistory();
+			redoClear(buffer);
+
+		} else {
+			position = InternalStorage.getBufferPosition(futureHistory.getSerial());
+			redoConfirm(position, futureHistory.getAppointment());
+		}
+	}
+	
+	private static void redoAdd(int id) {
+
+		FutureHistory historyFuture = new FutureHistory();
+		position = InternalStorage.getBufferPosition(id);
+
+		historyFuture = RedoUndoUpdate.updateDelete(position);
+		InternalStorage.pushHistory(historyFuture);
+		Delete.delete(id);
+	}
+
+	private static void redoTentative(FutureHistory futureHistory) {
+
+		FutureHistory historyFuture = new FutureHistory();
+		int id;
+
+		SetTentative.addTentativeToBuffer(futureHistory.getTentative());
+		id = futureHistory.getTentative().getIndex();
+
+		historyFuture = RedoUndoUpdate.updateTentative(id);
+
+		InternalStorage.pushHistory(historyFuture);
+	}
+
+	private static void redoDone(int id) {
+
+		FutureHistory historyFuture = new FutureHistory();
+		position = InternalStorage.getBufferPosition(id);
+
+		InternalStorage.getBuffer().get(position).setIsDone(true);
+		InternalStorage.addBufferFirst(InternalStorage.getBuffer().remove(position));
+
+		historyFuture = RedoUndoUpdate.updateDone(id, position);
+		InternalStorage.pushHistory(historyFuture);
+	}
+
+	private static void redoEdit(FutureHistory futureHistory) {
+
+		FutureHistory historyFuture = new FutureHistory();
+		position = InternalStorage.getBufferPosition(futureHistory.getSerial());
+
+		historyFuture = RedoUndoUpdate.updateEdit(futureHistory.getSerial());
+
+		redoEdit2(futureHistory);
+		
+		InternalStorage.pushHistory(historyFuture);
+	}
+	
+	private static void redoEdit2(FutureHistory futureHistory) {
+		
+		if(futureHistory.getAssignType().equals(AssignmentType.ASGN)) {
+			InternalStorage.getBuffer().remove(position);
+			Add.addAssignmentToBuffer(futureHistory.getAssignment());				
+		} else if(futureHistory.getAssignType().equals(AssignmentType.APPT)) {
+			InternalStorage.getBuffer().remove(position);
+			Add.addAppointmentToBuffer(futureHistory.getAppointment());
+		} else if(futureHistory.getAssignType().equals(AssignmentType.TASK)) {
+			InternalStorage.getBuffer().remove(position);
+			Add.addTaskToBuffer(futureHistory.getTask());
+		} else {
+			InternalStorage.getBuffer().remove(position);
+			SetTentative.addTentativeToBuffer(futureHistory.getTentative());
+		}
+	}
+
+	private static void redoDelete(FutureHistory futureHistory) {
+
+		FutureHistory historyFuture = new FutureHistory();
+		position = InternalStorage.getBufferPosition(futureHistory.getSerial());
+		int id;
+
+		id = redoDelete2(futureHistory);
+		historyFuture = RedoUndoUpdate.updateAdd(id);
+
+		InternalStorage.pushHistory(historyFuture);
+	}
+	
+	private static int redoDelete2(FutureHistory futureHistory) {
+		
+		int id;
+		
+		if(futureHistory.getAssignType().equals(AssignmentType.ASGN)) {
+			Add.addAssignmentToBuffer(futureHistory.getAssignment());
+			id = futureHistory.getAssignment().getIndex();
+
+		} else if(futureHistory.getAssignType().equals(AssignmentType.APPT)) {
+			Add.addAppointmentToBuffer(futureHistory.getAppointment());
+			id = futureHistory.getAppointment().getIndex();
+
+		} else if(futureHistory.getAssignType().equals(AssignmentType.TASK)) {
+			Add.addTaskToBuffer(futureHistory.getTask());
+			id = futureHistory.getTask().getIndex();
+
+		} else {
+			SetTentative.addTentativeToBuffer(futureHistory.getTentative());
+			id = futureHistory.getTentative().getIndex();
+		}
+		return id;
+	}
+	
+	private static void redoClear(LinkedList<Assignment> buffer) {
+
+		FutureHistory futureHistory = new FutureHistory();
+
+		futureHistory = RedoUndoUpdate.updateClear(buffer);
+
+		for(int i = 0; i < buffer.size(); i++) {
+			Delete.delete(buffer.get(i).getIndex());
+		}
+		InternalStorage.pushHistory(futureHistory);
+	}
+
+	private static void redoConfirm(int position, Appointment appointment) {
+
+		FutureHistory historyFuture = new FutureHistory();
+		
+		historyFuture = RedoUndoUpdate.updateConfirmBack(appointment, appointment.getIndex());
+
+		InternalStorage.getBuffer().remove(position);
+		Add.addAppointmentToBuffer(appointment);
+
+		InternalStorage.pushHistory(historyFuture);
+	}
+}
+	// End of segment: C:\Code\main\SparkMoWare\logic\RedoTask.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\logic\RedoUndoUpdate.java
+	 */
+
+
+public class RedoUndoUpdate {
+	
+	private static FutureHistory futureHistory = new FutureHistory();
+	
+	protected static FutureHistory updateAdd(int id) {
+		
+		futureHistory.setCommand(CommandType.ADD);
+		futureHistory.setSerial(id);
+		
+		return futureHistory;
+	}
+	
+	protected static FutureHistory updateEdit(int id) {
+		
+		futureHistory.setSerial(id);
+		int position = InternalStorage.getBufferPosition(id);
+		updateAssignment(position);
+		futureHistory.setCommand(CommandType.EDIT);
+		
+		return futureHistory;
+	}
+	
+	protected static FutureHistory updateEditOver(Assignment assignment) {
+		
+		if(assignment.getAssignType().equals(AssignmentType.APPT)) {
+			futureHistory.setAssignType(AssignmentType.APPT);
+			futureHistory.setAppointment((Appointment) assignment);
+
+		} else if(assignment.getAssignType().equals(AssignmentType.TASK)) {
+			futureHistory.setAssignType(AssignmentType.TASK);
+			futureHistory.setTask((Task) assignment);
+			
+		} else if(assignment.getAssignType().equals(AssignmentType.TNTV)) {
+			futureHistory.setAssignType(AssignmentType.TNTV);
+			futureHistory.setTentative((Tentative) assignment);
+		} else {
+			futureHistory.setAssignType(AssignmentType.ASGN);
+			futureHistory.setAssignment(assignment);
+		}
+		futureHistory.setCommand(CommandType.EDIT);
+		
+		return futureHistory;
+	}
+	protected static FutureHistory updateDelete(int position) {
+		
+		updateAssignment(position);
+		futureHistory.setCommand(CommandType.DELETE);
+		
+		return futureHistory;
+	}
+	
+	protected static FutureHistory updateDeleteTentative(int position) {
+		
+		updateAssignment(position);
+		futureHistory.setCommand(CommandType.TENTATIVE);
+		
+		return futureHistory;
+	}
+	
+	private static void updateAssignment(int position) {
+		
+		if(InternalStorage.getBuffer().get(position).getAssignType().equals(AssignmentType.ASGN)) {
+			futureHistory.setAssignment(InternalStorage.getBuffer().get(position));
+			futureHistory.setAssignType(AssignmentType.ASGN);
+			
+		} else if(InternalStorage.getBuffer().get(position).getAssignType().equals(AssignmentType.TASK)) {
+			Task task = (Task) InternalStorage.getBuffer().get(position);
+			futureHistory.setTask(task);
+			futureHistory.setAssignType(AssignmentType.TASK);
+			
+		} else if(InternalStorage.getBuffer().get(position).getAssignType().equals(AssignmentType.APPT)) {
+			Appointment appointment = (Appointment) InternalStorage.getBuffer().get(position);
+			futureHistory.setAppointment(appointment);
+			futureHistory.setAssignType(AssignmentType.APPT);
+			
+		} else {
+			Tentative tentative = (Tentative) InternalStorage.getBuffer().get(position);
+			futureHistory.setTentative(tentative);
+			futureHistory.setAssignType(AssignmentType.TNTV);
+		}
+	}
+	
+	protected static FutureHistory updateTentative(int id) {
+		
+		futureHistory.setCommand(CommandType.TENTATIVE);
+		futureHistory.setSerial(id);
+
+		return futureHistory;
+	}
+	
+	protected static FutureHistory updateConfirm(Tentative tentative, int id) {
+		
+		futureHistory.setTentative(tentative);
+		futureHistory.setCommand(CommandType.CONFIRM);
+		futureHistory.setSerial(id);
+		
+		return futureHistory;
+	}
+	
+	protected static FutureHistory updateConfirmBack(Appointment appointment, int id) {
+		
+		futureHistory.setAppointment(appointment);
+		futureHistory.setCommand(CommandType.CONFIRM);
+		futureHistory.setSerial(id);
+		
+		return futureHistory;
+	}
+	
+	protected static FutureHistory updateClear(LinkedList<Assignment> deleted) {
+		
+		futureHistory.setCommand(CommandType.CLEAR);
+		futureHistory.addClearedHistory(deleted);
+		
+		return futureHistory;
+	}
+	
+	protected static FutureHistory updateAddBack() {
+		
+		futureHistory.setCommand(CommandType.CLEAR);
+		
+		return futureHistory;
+	}
+	
+	protected static FutureHistory updateDone(int id, int position) {
+		
+		futureHistory.setCommand(CommandType.DONE);
+		futureHistory.setPosition(position);
+		futureHistory.setSerial(id);
+
+		return futureHistory;
+	}
+}
+	// End of segment: C:\Code\main\SparkMoWare\logic\RedoUndoUpdate.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\logic\SearchAll.java
+	 */
+
+
+public class SearchAll {
+
+	private static final int TIME_FORMAT_LENGTH = 4;
+	private static final int DATE_FORMAT_LENGTH = 8;
+
+	private static int listCount;
+
+	private static final int IS_COMPLETED = 9;
+	private static final int IS_ON_TIME = 8;
+
+	private static final String TYPE_TASK = "task";
+	private static final String TYPE_APPOINTMENT = "appointment";
+	private static final String TYPE_TENTATIVE = "tentative";
+	private static final String TYPE_ASSIGNMENT = "assignment";
+	
+	protected static LinkedList<Assignment> searchAll(LinkedList<Assignment> buffer, 
+			String userInput){
+
+		LinkedList<Assignment> stringsFound = new LinkedList<Assignment>();
+
+		if(userInput.length() == TIME_FORMAT_LENGTH && userInput.matches("\\d+")) {
+			stringsFound = searchByTime(buffer, userInput);
+			
+		} else if(userInput.equalsIgnoreCase("important")) {
+			stringsFound = searchByPriority(buffer);
+
+		} else if(userInput.equalsIgnoreCase(TYPE_TASK)) {
+			stringsFound = searchByTask(buffer);
+			
+		} else if (userInput.equalsIgnoreCase(TYPE_APPOINTMENT)) {
+			stringsFound = searchByAppointment(buffer);
+			
+		} else if (userInput.equalsIgnoreCase(TYPE_TENTATIVE)) {
+			stringsFound = searchByTentative(buffer);
+			
+		} else if (userInput.equalsIgnoreCase(TYPE_ASSIGNMENT)) {
+			stringsFound = searchByAssignment(buffer);
+			
+		} else if(userInput.matches("\\d+")) {
+			stringsFound = searchById(buffer, Integer.parseInt(userInput));
+
+		} else if(userInput.length() == DATE_FORMAT_LENGTH && userInput.contains("/")) {
+			stringsFound = searchByDate(buffer, userInput);
+
+		} else if(userInput.length() == IS_COMPLETED && userInput.equalsIgnoreCase("completed")) {
+			stringsFound = searchByCompletion(buffer);
+
+		} else if(userInput.length() == IS_ON_TIME && userInput.equalsIgnoreCase("isontime")) {
+			stringsFound = searchByOnTime(buffer);
+
+		} else if(userInput.equalsIgnoreCase("NIMPT")) {
+			stringsFound = searchByNonPriority(buffer);
+			
+		} else {
+			stringsFound = searchByWords(buffer, userInput);
+		}
+		return stringsFound;
+	}
+
+	private static LinkedList<Assignment> searchByCompletion(LinkedList<Assignment> buffer) {
+
+		LinkedList<Assignment> completionFound = new LinkedList<Assignment>();
+
+		for(listCount = 0; listCount < buffer.size(); listCount++) {
+
+			if(buffer.get(listCount).getIsDone() == true) {
+				completionFound.add(buffer.get(listCount));
+			}
+		}
+		return completionFound;
+	}
+
+	private static LinkedList<Assignment> searchByOnTime(LinkedList<Assignment> buffer) {
+
+		LinkedList<Assignment> onTimeFound = new LinkedList<Assignment>();
+
+		for(listCount = 0; listCount < buffer.size(); listCount++) {
+
+			if(buffer.get(listCount).getIsOnTime() == true) {
+				onTimeFound.add(buffer.get(listCount));
+			}
+		}
+		return onTimeFound;
+	}
+
+	private static LinkedList<Assignment> searchByPriority(LinkedList<Assignment> buffer) {
+
+		LinkedList<Assignment> priorityFound = new LinkedList<Assignment>();
+
+		for(listCount = 0; listCount < buffer.size(); listCount++) {
+
+			if(buffer.get(listCount).getPriority().equals("IMPT")) {
+				priorityFound.add(buffer.get(listCount));
+			}
+		}
+		return priorityFound;
+	}
+
+	private static LinkedList<Assignment> searchByNonPriority(LinkedList<Assignment> buffer) {
+
+		LinkedList<Assignment> priorityFound = new LinkedList<Assignment>();
+
+		for(listCount = 0; listCount < buffer.size(); listCount++) {
+
+			if(buffer.get(listCount).getPriority().equals("NIMPT")) {
+				priorityFound.add(buffer.get(listCount));
+			}
+		}
+		return priorityFound;
+	}
+	
+	private static LinkedList<Assignment> searchByTask(LinkedList<Assignment> buffer) {
+
+		LinkedList<Assignment> taskFound = new LinkedList<Assignment> ();
+
+		for(listCount = 0; listCount < buffer.size(); listCount++) {
+
+			if(buffer.get(listCount).getAssignType().equals(AssignmentType.TASK)) {
+				taskFound.add(buffer.get(listCount));
+			}
+		}
+		return taskFound;
+	}
+
+	private static LinkedList<Assignment> searchByAssignment(LinkedList<Assignment> buffer) {
+
+		LinkedList<Assignment> assignmentFound = new LinkedList<Assignment> ();
+
+		for(listCount = 0; listCount < buffer.size(); listCount++) {
+
+			if(buffer.get(listCount).getAssignType().equals(AssignmentType.ASGN)) {
+				assignmentFound.add(buffer.get(listCount));
+			}
+		}
+		return assignmentFound;
+	}
+
+	private static LinkedList<Assignment> searchByAppointment(LinkedList<Assignment> buffer) {
+
+		LinkedList<Assignment> appointmentFound = new LinkedList<Assignment> ();
+
+		for(listCount = 0; listCount < buffer.size(); listCount++) {
+
+			if(buffer.get(listCount).getAssignType().equals(AssignmentType.APPT)) {
+				appointmentFound.add(buffer.get(listCount));
+			}
+		}
+		return appointmentFound;
+	}
+
+	private static LinkedList<Assignment> searchByTentative(LinkedList<Assignment> buffer) {
+
+		LinkedList<Assignment> tentativeFound = new LinkedList<Assignment> ();
+
+		for(listCount = 0; listCount < buffer.size(); listCount++) {
+
+			if(buffer.get(listCount).getAssignType().equals(AssignmentType.TNTV)) {
+				tentativeFound.add(buffer.get(listCount));
+			}
+		}
+		return tentativeFound;
+	}
+
+	private static LinkedList<Assignment> searchById(LinkedList<Assignment> buffer, int searchId) {
+
+		LinkedList<Assignment> idFound = new LinkedList<Assignment>();
+
+		for(listCount = 0; listCount < buffer.size(); listCount++) {
+
+			if(buffer.get(listCount).getIndex() == searchId) {
+				idFound.add(buffer.get(listCount));
+			}
+		}
+		return idFound;
+	}
+
+	private static LinkedList<Assignment> searchByTime(LinkedList<Assignment> buffer, String searchTime) {
+
+		LinkedList<Assignment> timeFound = new LinkedList<Assignment>();
+
+		timeFound.addAll(searchByStartTime(buffer, searchTime));
+		timeFound.addAll(searchByEndTime(buffer, searchTime));
+
+		return timeFound;
+	}
+
+	private static LinkedList<Assignment> searchByStartTime(LinkedList<Assignment> buffer, 
+			String searchStartTime) {
+
+		LinkedList<Assignment> startTimeFound = new LinkedList<Assignment>();
+		Appointment appointmentInBuffer = new Appointment();
+
+		for(listCount = 0; listCount < buffer.size(); listCount++) {
+			if(buffer.get(listCount).getAssignType().equals(AssignmentType.APPT)) {
+				appointmentInBuffer = ((Appointment) buffer.get(listCount)); 
+			}
+			if(appointmentInBuffer.getStartTime().equals(searchStartTime)) {
+				startTimeFound.add(appointmentInBuffer);
+			}
+		}
+		return startTimeFound;
+	}
+
+	private static LinkedList<Assignment> searchByEndTime(LinkedList<Assignment> buffer, 
+			String searchEndTime) {
+
+		LinkedList<Assignment> endTimeFound = new LinkedList<Assignment>();
+		Appointment appointmentInBuffer = new Appointment();
+		Task taskInBuffer = new Task();
+
+		for(listCount = 0; listCount < buffer.size(); listCount++) {
+
+			if(buffer.get(listCount).getAssignType().equals(AssignmentType.APPT)) {
+				appointmentInBuffer = ((Appointment) buffer.get(listCount)); 
+
+				if(appointmentInBuffer.getEndTime().equals(searchEndTime)) {
+					endTimeFound.add(appointmentInBuffer);
+				}
+			}
+			if(buffer.get(listCount).getAssignType().equals(AssignmentType.TASK)) {
+				taskInBuffer = ((Task) buffer.get(listCount)); 
+
+				if(taskInBuffer.getEndTime().equals(searchEndTime)) {
+					endTimeFound.add(taskInBuffer);
+				}
+			}
+		}
+		return endTimeFound;
+	}
+
+	private static LinkedList<Assignment> searchByDate(LinkedList<Assignment> buffer, 
+			String searchDate) {
+
+		LinkedList<Assignment> datesFound = new LinkedList<Assignment>();
+
+		datesFound.addAll(searchByStartDate(buffer, searchDate));
+		datesFound.addAll(searchByDeadline(buffer, searchDate));
+
+		return datesFound;
+	}
+
+	private static LinkedList<Assignment> searchByStartDate(LinkedList<Assignment> buffer, 
+			String searchStartDate) {
+
+		LinkedList<Assignment> startDateFound = new LinkedList<Assignment>();
+		Appointment appointmentInBuffer = new Appointment();
+
+		for(listCount = 0; listCount < buffer.size(); listCount++) {
+			if(buffer.get(listCount).getAssignType().equals(AssignmentType.APPT)) {
+				appointmentInBuffer = ((Appointment) buffer.get(listCount)); 
+			}
+			if(appointmentInBuffer.getStartTime().equals(searchStartDate)) {
+				startDateFound.add(appointmentInBuffer);
+			}
+		}
+		return startDateFound;
+	}
+
+	protected static LinkedList<Assignment> searchByDeadline(LinkedList<Assignment> buffer, 
+			String searchDeadline) {
+
+		LinkedList<Assignment> deadlineFound = new LinkedList<Assignment>();
+		Appointment appointmentInBuffer = new Appointment();
+		Task taskInBuffer = new Task();
+
+		for(listCount = 0; listCount < buffer.size(); listCount++) {
+
+			if(buffer.get(listCount).getAssignType().equals(AssignmentType.APPT)) {
+				appointmentInBuffer = ((Appointment) buffer.get(listCount)); 
+
+				if(appointmentInBuffer.getEndDate().equals(searchDeadline)) {
+					deadlineFound.add(appointmentInBuffer);
+				}
+			}
+			if(buffer.get(listCount).getAssignType().equals(AssignmentType.TASK)) {
+				taskInBuffer = ((Task) buffer.get(listCount)); 
+
+				if(taskInBuffer.getEndDate().equals(searchDeadline)) {
+					deadlineFound.add(taskInBuffer);
+				}
+			}
+		}
+		return deadlineFound;
+	}
+
+	private static LinkedList<Assignment> searchByWords(LinkedList<Assignment> buffer, 
+			String searchKeyWord) {
+
+		LinkedList<Assignment> keysFound = new LinkedList<Assignment> ();
+
+		for(listCount = 0; listCount < buffer.size(); listCount++) {
+			if(buffer.get(listCount).getTitle().contains(searchKeyWord)) {
+
+				if(buffer.get(listCount).getTitle().equalsIgnoreCase(searchKeyWord)) {
+					keysFound.add(buffer.get(listCount));
+
+				} else {
+					boolean assignmentFound;
+
+					assignmentFound = searchByKeyWord(buffer.get(listCount), searchKeyWord);
+
+					if(assignmentFound) {
+						keysFound.add(buffer.get(listCount));
+					}
+				}
+			}
+		}
+		return keysFound;
+	}
+
+	private static boolean searchByKeyWord(Assignment assignment, String searchKeyWord) {
+
+		boolean found = false;
+
+		String[] textArray = assignment.getTitle().split(" ");
+
+		for(int textCount = 0; textCount < textArray.length; textCount++) {
+			String checkText = textArray[textCount];
+
+			if(checkText.equalsIgnoreCase(searchKeyWord)) {
+				found = true;
+			} else {
+				found = searchByKeyWord2(textCount, textArray, searchKeyWord, checkText);
+			}
+		}
+		return found;
+	}
+	
+	private static boolean searchByKeyWord2(int textCount, String[] textArray, String searchKeyWord, String checkText) {
+		
+		boolean found = false;
+		
+		for(int textExtendCount = textCount + 1; textExtendCount < textArray.length; textExtendCount++) {
+
+			checkText += " " + textArray[textExtendCount];
+
+			if(checkText.equalsIgnoreCase(searchKeyWord)) {
+				found = true;
+			}
+		}
+		return found;
+	}
+}
+	// End of segment: C:\Code\main\SparkMoWare\logic\SearchAll.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\logic\SetTentative.java
+	 */
+
+
+public class SetTentative {
+
+	protected static int addTentative(String title, Vector<String> dates, Vector<String> times) {
+
+		Tentative newTentative = new Tentative();
+
+		int tentativeIdGen = Id.serialNumGen();
+
+		newTentative.setIndex(tentativeIdGen);
+		newTentative.setTitle(title);
+		newTentative.setPriority(Assignment.PRIORITY_NONE);
+		
+		setTimeSlot(newTentative, dates, times);
+		addTentativeToBuffer(newTentative);
+		
+		return tentativeIdGen;
+	}
+	
+	private static void setTimeSlot(Tentative newTentative, Vector<String> dates, Vector<String> times) {
+		
+		for(int vectorCount = 0; vectorCount < dates.size(); vectorCount++) {
+			if(vectorCount % 2 == 0) {
+				newTentative.addStartDate(dates.get(vectorCount));
+				newTentative.addStartTime(times.get(vectorCount));
+			} else {
+				newTentative.addEndDate(dates.get(vectorCount));
+				newTentative.addEndTime(times.get(vectorCount));
+			}
+		}
+	}
+	
+	protected static void setToTentative(Appointment newAppointment) {
+
+		Tentative newTentative = new Tentative();
+
+		newTentative.setIndex(newAppointment.getIndex());
+		newTentative.setTitle(newAppointment.getTitle());
+		newTentative.addStartDate(newAppointment.getStartDate());
+		newTentative.addStartTime(newAppointment.getStartTime());
+		newTentative.addEndDate(newAppointment.getEndDate());
+		newTentative.addEndTime(newAppointment.getEndTime());
+
+		addTentativeToBuffer(newTentative);
+	}
+
+	protected static void addTentativeToBuffer(Tentative newTentative) {
+
+		int position;
+		
+		if (InternalStorage.getLineCount() == 0) {
+			InternalStorage.addBuffer(newTentative);
+		} else {
+			position = Comparator.addTentativeToBigBuffer(newTentative);
+			InternalStorage.addBuffer(position, newTentative);
+		}
+	}
+}
+	// End of segment: C:\Code\main\SparkMoWare\logic\SetTentative.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\logic\Sort.java
+	 */
+
+
+public class Sort {
+
+	private static int listCount;
+	private static int sortedListCount;
+
+	protected static LinkedList<Assignment> sortRequired(LinkedList<Assignment> buffer,
+			String sortType, String startDate, String endDate){
+
+		LinkedList<Assignment> sortedList = new LinkedList<Assignment>();
+
+		if(sortType.equalsIgnoreCase("title")) {
+			sortedList = insertionSortTitle(buffer);
+
+		} else if(sortType.equalsIgnoreCase("SIN")) {
+			sortedList = insertionSortId(buffer);
+
+		} else if(sortType.equalsIgnoreCase("important")){
+			sortedList = insertionSortPriority(buffer);
+		}
+		
+		sortedList = Truncation.truncateList(sortedList, startDate, endDate);
+		
+		return sortedList;
+	}
+
+	private static LinkedList<Assignment> insertionSortPriority(LinkedList<Assignment> buffer) {
+
+		LinkedList<Assignment> prioritySortList = new LinkedList<Assignment>();
+
+		prioritySortList.addAll(SearchAll.searchAll(buffer, "important"));
+		prioritySortList.addAll(SearchAll.searchAll(buffer, "NIMPT"));
+
+		return prioritySortList;
+	}
+
+	private static LinkedList<Assignment> insertionSortId(LinkedList<Assignment> buffer) {
+
+		LinkedList<Assignment> idListSorted = new LinkedList<Assignment>();
+		for(listCount = 0; listCount < buffer.size(); listCount++) {
+			if(idListSorted.size() == 0) {
+				idListSorted.add(buffer.get(listCount));
+
+			} else if(idListSorted.size() >= 1) {
+				idListSorted = insertionSortId2(buffer, idListSorted);
+			}
+		}
+		return idListSorted;
+	}
+
+	private static LinkedList<Assignment> insertionSortId2(LinkedList<Assignment> buffer, 
+			LinkedList<Assignment> idListSorted) {
+
+		for(sortedListCount = 0; sortedListCount < idListSorted.size(); sortedListCount++) {
+
+			if(Comparator.serialNumberComparator(idListSorted.get(sortedListCount).getIndex(), 
+					buffer.get(listCount).getIndex())) {
+				idListSorted.add(sortedListCount, buffer.get(listCount));
+				break;
+
+			} else if(sortedListCount == idListSorted.size() - 1) {
+				idListSorted.add(buffer.get(listCount));
+				break;
+			}
+		}
+		return idListSorted;
+	}
+
+	private static LinkedList<Assignment> insertionSortTitle(LinkedList<Assignment> buffer) {
+
+		LinkedList<Assignment> titleListSorted = new LinkedList<Assignment>();
+
+		for(listCount = 0; listCount < buffer.size(); listCount++) {
+			if(titleListSorted.size() == 0) {
+				titleListSorted.add(buffer.get(listCount));
+
+			} else if(titleListSorted.size() >= 1) {
+				titleListSorted = insertionSortTitle2(buffer,titleListSorted);
+			}
+		}
+		return titleListSorted;
+	}
+
+	private static LinkedList<Assignment> insertionSortTitle2(LinkedList<Assignment> buffer, 
+			LinkedList<Assignment> titleListSorted) {
+
+		for(sortedListCount = 0; sortedListCount < titleListSorted.size(); sortedListCount++) {
+
+			if(titleListSorted.get(sortedListCount).getTitle().compareToIgnoreCase(buffer.get(listCount).getTitle()) >= 0) {
+				titleListSorted.add(sortedListCount, buffer.get(listCount));
+				break;
+
+			} else if(sortedListCount == titleListSorted.size() - 1) {
+				titleListSorted.add(buffer.get(listCount));
+				break;
+			}
+		}
+		return titleListSorted;
+	}
+
+	protected static LinkedList<Assignment> insertionSortDeadline(LinkedList<Assignment> buffer) {
+
+		LinkedList<Assignment> deadlineSorted = new LinkedList<Assignment>();
+
+		for(listCount = 0; listCount < buffer.size(); listCount++) {
+			if(deadlineSorted.size() == 0) {
+				deadlineSorted.add(buffer.get(listCount));
+			} else if(listCount == listCount - 1) {
+				deadlineSorted.addLast(buffer.get(listCount));
+			} else if (deadlineSorted.size() >= 1) {
+			
+				deadlineSorted = insertionSortDeadline2(buffer, deadlineSorted);
+			} 
+		}
+		return deadlineSorted;
+	}
+
+	private static LinkedList<Assignment> insertionSortDeadline2(LinkedList<Assignment> buffer, 
+			LinkedList<Assignment> deadlineSorted) {
+
+		int position;
+
+		if(buffer.get(listCount).getIsDone() == true) {
+			deadlineSorted.addFirst(buffer.get(listCount));
+
+		} else if(buffer.get(listCount).getAssignType().equals(AssignmentType.APPT)) {
+			Appointment appointment = (Appointment) buffer.get(listCount);
+			position = Comparator.addToBigBuffer(appointment);
+			deadlineSorted.add(position, appointment);
+
+		} else if(buffer.get(listCount).getAssignType().equals(AssignmentType.TASK)) {
+			Task task = (Task) buffer.get(listCount);
+			position = Comparator.addTaskToBigBuffer(task);
+			deadlineSorted.add(position, task);
+			
+		} else if(buffer.get(listCount).getAssignType().equals(AssignmentType.ASGN)) {
+			Assignment assignment = buffer.get(listCount);
+			deadlineSorted = insertionSortDeadline3(assignment, deadlineSorted);
+			
+		} else if(buffer.get(listCount).getAssignType().equals(AssignmentType.TNTV)) {
+			Tentative tentative = (Tentative) buffer.get(listCount);
+			position = Comparator.addTentativeToBigBuffer(tentative);
+			deadlineSorted.add(position, tentative);
+		}
+		return deadlineSorted;
+	}
+	
+	private static LinkedList<Assignment> insertionSortDeadline3(Assignment assignment,
+			LinkedList<Assignment> deadlineSorted) {
+		
+		int position;
+		int size = InternalStorage.getLineCount();
+		
+		for(int i = 0; i < size; i++) {
+			if(!deadlineSorted.get(i).getIsDone()) {
+				deadlineSorted.add(i, assignment);
+				break;
+				
+			} else if(i == size - 1) {
+				position = i;
+				deadlineSorted.add(position + 1, assignment);
+				break;
+			}
+		}
+		return deadlineSorted;
+	}
+}
+	// End of segment: C:\Code\main\SparkMoWare\logic\Sort.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\logic\SparkMoVare.java
+	 */
+
+
+public class SparkMoVare {
+
+	protected static final int SYSTEM_EXIT_NO_ERROR = 0;
+	protected static final int SYSTEM_EXIT_ERROR = -1;
+	protected static final boolean IS_NOT_STATS_OR_INVALID = false;
+
+	public static void main(String[] args) {
+	
+		Print.printToUser(Message.WELCOME);
+			Storage.openFile(InternalStorage.getFilePath(), InternalStorage.getBuffer());
+			toDoManager();
+	}
+
+	public static void toDoManager() {
+
+		Output returnOutput = new Output();
+
+		while (true) {
+			Print.printToUser(Message.PROMPT);
+
+			returnOutput = executeCommand(InternalStorage.getScanner().nextLine());
+
+			Print.printList(returnOutput.getReturnBuffer());
+			Print.printToUser(returnOutput.getFeedback());
+			System.out.println(returnOutput.getTotalAssignment());
+			System.out.println(returnOutput.getTotalCompleted());
+			System.out.println(returnOutput.getTotalOnTime());
+		}		
+	} 
+
+	public static Output storageSetup() {
+		Storage.openFile(InternalStorage.getFilePath(), InternalStorage.getBuffer());
+		
+		return executeCommand("Display");
+	}
+
+	public static RefinedUserInput parse (String userStringInput) {
+		return Interpreter.reader(userStringInput);
+	}
+	
+	public static Output updateImportant () {
+		LinkedList<Assignment> filteredBuffer = new LinkedList<Assignment>();
+
+		filteredBuffer = Filter.filterMain(InternalStorage.getBuffer(), "important", 
+				"01/01/01", "31/12/99");
+		
+		return  ModifyOutput.returnModification(filteredBuffer,
+				Message.FILTER, InternalStorage.getLineCount(), Statistic.getCompleted(), 
+				Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
+	}
+	
+	public static Output executeCommand(String userStringInput) {
+
+		FutureHistory futureHistory = new FutureHistory();
+		Output returnOutput = new Output();
+		RefinedUserInput userInput = new RefinedUserInput();
+		int id;
+		int position;
+
+		userInput = Interpreter.reader(userStringInput);
+
+		CommandType command = userInput.getCommandType();
+		System.out.println(userInput.toString());
+		System.out.println();
+		if (command != CommandType.UNDO && command != CommandType.REDO ) {
+			while (!InternalStorage.getFuture().empty()){
+				InternalStorage.popFuture();
+			}
+		}		
+		switch (command) {
+		case ADD:
+			id = Add.addSomething(userInput);
+
+			futureHistory = RedoUndoUpdate.updateAdd(id);
+
+			InternalStorage.pushHistory(futureHistory);
+
+			returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
+					Message.ADDED, InternalStorage.getLineCount(), Statistic.getCompleted(), 
+					Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
+			
+			break;
+
+		case EDIT:
+			futureHistory = RedoUndoUpdate.updateEdit(userInput.getIndex());
+
+			InternalStorage.pushHistory(futureHistory);
+
+			Edit.editAssignment(userInput);
+
+			returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
+					Message.EDITED, InternalStorage.getLineCount(), Statistic.getCompleted(), 
+					Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
+			
+			break;
+
+		case DELETE:
+			position = InternalStorage.getBufferPosition(userInput.getIndex());
+
+			futureHistory = RedoUndoUpdate.updateDelete(position);
+
+			InternalStorage.pushHistory(futureHistory);
+
+			Delete.delete(userInput.getIndex());
+
+			returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
+					Message.DELETED, InternalStorage.getLineCount(), Statistic.getCompleted(), 
+					Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
+
+			break;
+
+		case TENTATIVE:
+			id = SetTentative.addTentative(userInput.getTitle(), userInput.getTentativeDates(), userInput.getTentativeTimes());
+
+			futureHistory = RedoUndoUpdate.updateTentative(id);
+
+			InternalStorage.pushHistory(futureHistory);
+
+			returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
+					Message.TENTATIVE_ADDED, InternalStorage.getLineCount(), Statistic.getCompleted(), 
+					Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
+
+			break;
+
+		case CONFIRM:
+			position = InternalStorage.getBufferPosition(userInput.getIndex());
+
+			Tentative tentative = ((Tentative) InternalStorage.getBuffer().get(position)); 
+
+			id = ConfirmTentative.confirmTentative(userInput.getIndex(), userInput.getStartDate(),
+					userInput.getStartTime(), userInput.getEndDate(), userInput.getEndTime());
+
+			futureHistory = RedoUndoUpdate.updateConfirm(tentative, id);
+
+			InternalStorage.pushHistory(futureHistory);
+
+			returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
+					Message.TENTATIVE_CONFIRM, InternalStorage.getLineCount(), Statistic.getCompleted(), 
+					Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
+			
+			break;
+
+		case CLEAR:
+			LinkedList<Assignment> deleted = new LinkedList<Assignment>();
+
+			deleted = Delete.deleteAll(userInput.getSpecialContent(), userInput.getStartDate(), userInput.getEndDate());
+
+			futureHistory = RedoUndoUpdate.updateClear(deleted);
+
+			InternalStorage.pushHistory(futureHistory);
+
+			returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
+					Message.DELETE_ALL, InternalStorage.getLineCount(), Statistic.getCompleted(), 
+					Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
+			
+			break;
+
+		case SORT:
+			LinkedList<Assignment> sortedBuffer = new LinkedList<Assignment>();
+
+			sortedBuffer = Sort.sortRequired(InternalStorage.getBuffer(), userInput.getSpecialContent(),
+					userInput.getStartDate(), userInput.getEndDate());
+
+			returnOutput = ModifyOutput.returnModification(sortedBuffer,
+					Message.SORT, InternalStorage.getLineCount(), Statistic.getCompleted(), 
+					Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
+
+			break;
+
+		case SEARCH:
+			LinkedList<Assignment> searchBuffer = new LinkedList<Assignment>();
+
+			searchBuffer = SearchAll.searchAll(InternalStorage.getBuffer(), userInput.getSpecialContent());
+
+			if(searchBuffer.size() == 0) {
+				returnOutput = ModifyOutput.returnModification(searchBuffer,
+						Message.INVALID_SEARCH_PARAMETER, InternalStorage.getLineCount(), Statistic.getCompleted(), 
+						Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
+			} else {
+				returnOutput = ModifyOutput.returnModification(searchBuffer,
+						Message.SEARCH, InternalStorage.getLineCount(), Statistic.getCompleted(), 
+						Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
+			}
+			break;
+
+		case DONE:
+			id = userInput.getIndex();
+
+			position = Edit.completeAssignment(id);
+
+			futureHistory = RedoUndoUpdate.updateDone(id, position);
+
+			InternalStorage.pushHistory(futureHistory);
+
+			returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
+					Message.DONE, InternalStorage.getLineCount(), Statistic.getCompleted(), 
+					Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
+
+			break;
+
+		case STATISTIC:
+			returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
+					Message.STATISTIC, InternalStorage.getLineCount(), Statistic.getCompleted(), 
+					Statistic.getIsOnTime(), true, IS_NOT_STATS_OR_INVALID);
+
+			break;
+
+		case UNDO:
+			if(InternalStorage.getHistory().isEmpty()) {
+				returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
+						Message.UNABLE_TO_UNDO, InternalStorage.getLineCount(), Statistic.getCompleted(), 
+						Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
+			} else {
+				UndoTask.undo();
+
+				returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
+						Message.UNDO, InternalStorage.getLineCount(), Statistic.getCompleted(), 
+						Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
+			}
+			break;
+
+		case REDO:
+			if(InternalStorage.getFuture().isEmpty()) {
+				returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
+						Message.UNABLE_TO_REDO, InternalStorage.getLineCount(), Statistic.getCompleted(), 
+						Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
+			} else {
+				RedoTask.redo();
+
+				returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
+						Message.REDO, InternalStorage.getLineCount(), Statistic.getCompleted(), 
+						Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
+			}
+			break;
+
+		case DISPLAY:
+			returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
+					Message.DISPLAY, InternalStorage.getLineCount(), Statistic.getCompleted(), 
+					Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
+			Print.display();
+			break;
+
+		case FILTER:
+			LinkedList<Assignment> filteredBuffer = new LinkedList<Assignment>();
+
+			filteredBuffer = Filter.filterMain(InternalStorage.getBuffer(), userInput.getSpecialContent(), 
+					userInput.getStartDate(), userInput.getEndDate());
+
+			returnOutput = ModifyOutput.returnModification(filteredBuffer,
+					Message.FILTER, InternalStorage.getLineCount(), Statistic.getCompleted(), 
+					Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, IS_NOT_STATS_OR_INVALID);
+			break;
+			
+		case EXIT:
+			System.exit(SYSTEM_EXIT_NO_ERROR);
+			break;
+
+		default:
+			returnOutput = ModifyOutput.returnModification(InternalStorage.getBuffer(),
+					Message.INVALID_COMMAND, InternalStorage.getLineCount(), Statistic.getCompleted(), 
+					Statistic.getIsOnTime(), IS_NOT_STATS_OR_INVALID, true);
+
+			break;
+		}
+		System.out.println("File saved");
+		Storage.saveFile(InternalStorage.getFilePath(), InternalStorage.getBuffer());
+
+		return returnOutput;
+	}
+}
+	// End of segment: C:\Code\main\SparkMoWare\logic\SparkMoVare.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\logic\Statistic.java
+	 */
+
+
+public class Statistic {
+	
+	private static LinkedList<Assignment> requiredCompleted = new LinkedList<Assignment>();
+	private static LinkedList<Assignment> requiredOnTime = new LinkedList<Assignment>();
+	
+	protected static int getCompleted() {
+		
+		requiredCompleted = SearchAll.searchAll(InternalStorage.getBuffer(), "completed");
+		
+		return requiredCompleted.size();
+	}
+
+	protected static int getIsOnTime() {
+
+		requiredOnTime = SearchAll.searchAll(InternalStorage.getBuffer(), "isontime");
+		
+		return requiredOnTime.size();
+	}
+}
+	// End of segment: C:\Code\main\SparkMoWare\logic\Statistic.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\logic\Task.java
+	 */
+
+
+public class Task extends Assignment{
+
+	/************** Data members **********************/
+
+	private String endDate; 
+	private String endTime;
+
+	/************** Constants **********************/
+
+	private static final String DEFAULT_DATE = "01012014";
+	private static final String DEFAULT_TIME = "0000";
+
+	/************** Constructors **********************/
+	// Default constructor
+	public Task() {
+		this(DEFAULT_DATE,DEFAULT_TIME);
+
+	}
+	public Task(String endDate, String endTime) {
+
+		super();
+		setEndDate(endDate);
+		setEndTime(endTime);
+		setAssignType(AssignmentType.TASK);
+	}
+
+	/**************** Accessors ***********************/
+
+	public String getEndDate() {
+		return this.endDate;
+	}
+
+	public String getEndTime() {
+		return this.endTime;
+	}
+
+	/**************** Mutators ************************/
+
+	public void setEndDate(String newEndDate) {
+		endDate = newEndDate;
+	}
+
+	public void setEndTime(String newEndTime) {
+		endTime = newEndTime;
+	}
+
+	/**************** Overriding ************************/
+
+	@Override
+	public String toString() {
+		return getIndex() + "~" + getAssignType() + "~" + getTitle() + "~"
+				+ getEndDate() + "~" + getEndTime() + "~" + getIsDone() + "~"
+				+ getIsOnTime() + "~" + getPriority();
+	}
+}
+	// End of segment: C:\Code\main\SparkMoWare\logic\Task.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\logic\Tentative.java
+	 */
+
+
+public class Tentative extends Assignment {
+	
+	/************** Data members **********************/
+	
+	private Vector<String> startDate;
+	private Vector<String> startTime;
+	private Vector<String> endDate;
+	private Vector<String> endTime;
+	
+	/************** Constants **********************/
+	
+	/************** Constructors **********************/
+	public Tentative() {
+		
+		super();
+		startDate = new Vector<String>();
+		startTime = new Vector<String>();
+		endDate = new Vector<String>();
+		endTime = new Vector<String>();
+		setAssignType(AssignmentType.TNTV);
+	}
+	
+	public Vector<String> getStartDate() {
+		return this.startDate;
+	}
+	
+	public Vector<String> getStartTime() {
+		return this.startTime;
+	}
+	
+	public Vector<String> getEndDate() {
+		return this.endDate;
+	}
+	
+	public Vector<String> getEndTime() {
+		return this.endTime;
+	}
+	
+	/**************** Mutators ************************/
+	
+	public void addStartDate(String newstartDate) {
+		this.startDate.add(newstartDate);
+	}
+	
+	public void addStartTime(String newStartTime) {
+		this.startTime.add(newStartTime);
+	}
+	
+	public void addEndDate(String newEndDate) {
+		this.endDate.add(newEndDate);
+	}
+	
+	public void addEndTime(String newEndTime) {
+		this.endTime.add(newEndTime);
+	}
+	
+	/**************** Overriding ************************/
+	
+	public String toString() {
+		return getIndex() + "~" + getAssignType() + "~" + getTitle() + 
+				"~" + getStartDate() + "~" + getStartTime() + "~" + getEndDate() + "~" + 
+				getEndTime() + "~" + getIsDone() + "~" + getIsOnTime() + "~" + getPriority();
+	}
+}
+	// End of segment: C:\Code\main\SparkMoWare\logic\Tentative.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\logic\UndoTask.java
+	 */
+
+
+public class UndoTask {
+	
+	private static int position;
+	
+	public static void undo() {
+		
+		FutureHistory futureHistory = InternalStorage.popHistory();
+		
+		if(futureHistory.getCommand().equals(CommandType.ADD)) {
+			undoAdd(futureHistory.getSerial());
+			
+		} else if(futureHistory.getCommand().equals(CommandType.DONE)) {
+			position = futureHistory.getPosition();
+			undoDone(futureHistory.getSerial(), position);
+			
+		} else if(futureHistory.getCommand().equals(CommandType.EDIT)) {
+			undoEdit(futureHistory);
+
+		} else if(futureHistory.getCommand().equals(CommandType.DELETE)) {
+			undoDelete(futureHistory);
+			
+		} else if(futureHistory.getCommand().equals(CommandType.CLEAR)) {
+			LinkedList<Assignment> buffer = new LinkedList<Assignment>(); 
+			buffer = futureHistory.getClearedHistory();
+			undoClear(buffer);
+			
+		} else if(futureHistory.getCommand().equals(CommandType.TENTATIVE)) {
+			undoTentative(futureHistory.getSerial());
+		}else {
+			position = InternalStorage.getBufferPosition(futureHistory.getSerial());
+			undoConfirm(position, futureHistory.getTentative());
+		}
+	}
+	
+	private static void undoAdd(int id) {
+	
+		FutureHistory historyFuture = new FutureHistory();
+		position = InternalStorage.getBufferPosition(id);
+		
+		historyFuture = RedoUndoUpdate.updateDelete(position);
+		InternalStorage.pushFuture(historyFuture);
+		Delete.delete(id);
+	}
+	
+	private static void undoTentative(int id) {
+		
+		FutureHistory historyFuture = new FutureHistory();
+		position = InternalStorage.getBufferPosition(id);
+		
+		historyFuture = RedoUndoUpdate.updateDeleteTentative(position);
+		InternalStorage.pushFuture(historyFuture);
+		Delete.delete(id);
+	}
+	
+	private static void undoDone(int id, int position) {
+		
+		FutureHistory historyFuture = new FutureHistory();
+		int newPosition = InternalStorage.getBufferPosition(id);
+		
+		InternalStorage.getBuffer().get(newPosition).setIsDone(false);
+		InternalStorage.addBuffer(position, InternalStorage.getBuffer().remove(newPosition));
+		historyFuture = RedoUndoUpdate.updateDone(id, 0);
+		
+		InternalStorage.pushFuture(historyFuture);
+	}
+	
+	private static void undoEdit(FutureHistory futureHistory) {
+		
+		FutureHistory historyFuture = new FutureHistory();
+		position = InternalStorage.getBufferPosition(futureHistory.getSerial());
+		
+		historyFuture = undoEdit2(futureHistory);
+		InternalStorage.pushFuture(historyFuture);
+	}
+	
+	private static FutureHistory undoEdit2(FutureHistory futureHistory) {
+		
+		FutureHistory historyFuture = new FutureHistory();
+		
+		if(futureHistory.getAssignType().equals(AssignmentType.ASGN)) {
+			Assignment assignment = InternalStorage.getBuffer().get(position);
+			InternalStorage.getBuffer().remove(position);
+			Add.addAssignmentToBuffer(futureHistory.getAssignment());
+			historyFuture = RedoUndoUpdate.updateEditOver(assignment);
+			
+		} else if(futureHistory.getAssignType().equals(AssignmentType.APPT)) {
+			Appointment appointment = (Appointment) InternalStorage.getBuffer().get(position);
+			InternalStorage.getBuffer().remove(position);
+			Add.addAppointmentToBuffer(futureHistory.getAppointment());
+			historyFuture = RedoUndoUpdate.updateEditOver(appointment);
+			
+		} else if(futureHistory.getAssignType().equals(AssignmentType.TASK)) {
+			Task task = (Task) InternalStorage.getBuffer().get(position);
+			InternalStorage.getBuffer().remove(position);
+			Add.addTaskToBuffer(futureHistory.getTask());
+			historyFuture = RedoUndoUpdate.updateEditOver(task);
+			
+		} else {
+			Tentative tentative = (Tentative) InternalStorage.getBuffer().get(position);
+			InternalStorage.getBuffer().remove(position);
+			SetTentative.addTentativeToBuffer(futureHistory.getTentative());
+			historyFuture = RedoUndoUpdate.updateEditOver(tentative);
+		}
+		return historyFuture;
+	}
+	
+	private static void undoDelete(FutureHistory futureHistory) {
+		
+		FutureHistory historyFuture = new FutureHistory();
+		position = InternalStorage.getBufferPosition(futureHistory.getSerial());
+		int id;
+		
+		id = undoDelete2(futureHistory);
+		
+		historyFuture = RedoUndoUpdate.updateAdd(id);
+		
+		InternalStorage.pushFuture(historyFuture);
+	}
+	
+	private static int undoDelete2(FutureHistory futureHistory) {
+		
+		int id;
+		
+		if(futureHistory.getAssignType().equals(AssignmentType.ASGN)) {
+			Add.addAssignmentToBuffer(futureHistory.getAssignment());
+			id = futureHistory.getAssignment().getIndex();
+			
+		} else if(futureHistory.getAssignType().equals(AssignmentType.APPT)) {
+			Add.addAppointmentToBuffer(futureHistory.getAppointment());
+			id = futureHistory.getAppointment().getIndex();
+			
+		} else if(futureHistory.getAssignType().equals(AssignmentType.TASK)) {
+			Add.addTaskToBuffer(futureHistory.getTask());
+			id = futureHistory.getTask().getIndex();
+			
+		} else {
+			SetTentative.addTentativeToBuffer(futureHistory.getTentative());
+			id = futureHistory.getTentative().getIndex();
+		}
+		return id;
+	}
+	private static void undoClear(LinkedList<Assignment> buffer) {
+		
+		FutureHistory historyFuture = new FutureHistory();
+		
+		historyFuture = RedoUndoUpdate.updateAddBack();
+		InternalStorage.getBuffer().addAll(buffer);
+		
+		buffer = Sort.insertionSortDeadline(InternalStorage.getBuffer());
+		InternalStorage.setBuffer(buffer);
+		
+		InternalStorage.pushFuture(historyFuture);
+	}
+	
+	private static void undoConfirm(int position, Tentative tentative) {
+		
+		FutureHistory historyFuture = new FutureHistory();
+		Appointment appointment = ((Appointment) InternalStorage.getBuffer().get(position));
+		historyFuture = RedoUndoUpdate.updateConfirmBack(appointment, tentative.getIndex());
+		
+		InternalStorage.getBuffer().remove(position);
+		SetTentative.addTentativeToBuffer(tentative);
+		
+		InternalStorage.pushFuture(historyFuture);
+	}
+}
+	// End of segment: C:\Code\main\SparkMoWare\logic\UndoTask.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\storage\AssignValidCheck.java
+	 */
+
+
+public class AssignValidCheck {
+	
+	private static boolean checkValid = false;
+	private static boolean checkType = false;
+	private static boolean checkIndex = false;
+	private static boolean checkPriority = false;
+	private static boolean checkEndDate = false;
+	private static boolean checkEndTime = false;
+	private static boolean checkStartDate = false;
+	private static boolean checkStartTime = false;
+	
+	protected static boolean checkAssignment(String[] line) {
+
+		checkIndex = ValidityCheck.indexFormat(line[0]);
+		checkType = ValidityCheck.validType(line[1]);
+		checkPriority = ValidityCheck.priorityChecker(line[5]);
+
+		if(checkType && checkIndex && checkPriority) {
+			checkValid = true;
+		}
+		return checkValid;
+	}
+	
+	protected static boolean checkTask(String[] line){
+		
+		checkIndex = ValidityCheck.indexFormat(line[0]);
+		checkType = ValidityCheck.validType(line[1]);
+		checkEndDate = ValidityCheck.dateFormatValid(line[3]);
+		checkEndTime = ValidityCheck.timeFormatValid(line[4]);
+		checkPriority = ValidityCheck.priorityChecker(line[7]);
+		
+		if(checkType && checkIndex && checkPriority && checkEndDate &&
+				checkEndTime) {
+			checkValid = true;
+		}
+		return checkValid;
+	}
+	
+	protected static boolean checkAppointment(String[] line) {
+		
+		checkIndex = ValidityCheck.indexFormat(line[0]);
+		checkType = ValidityCheck.validType(line[1]);
+		checkEndDate = ValidityCheck.dateFormatValid(line[5]);
+		checkEndTime = ValidityCheck.timeFormatValid(line[6]);
+		checkStartDate = ValidityCheck.dateFormatValid(line[3]);
+		checkStartTime = ValidityCheck.timeFormatValid(line[4]);
+		checkPriority = ValidityCheck.priorityChecker(line[9]);
+		
+		if(checkType && checkIndex && checkPriority
+				&& checkEndDate && checkEndTime && checkStartDate && checkStartTime) {
+			checkValid = true;
+		}
+		return checkValid;
+	}
+	
+	protected static boolean checkTentative(String[] line) {
+		
+		checkIndex = ValidityCheck.indexFormat(line[0]);
+		checkType = ValidityCheck.validType(line[1]);
+		checkPriority = ValidityCheck.priorityChecker(line[9]);
+		checkStartDate = ValidityCheck.checkDates(line[3]);
+		checkStartTime = ValidityCheck.checkTimes(line[4]);
+		checkEndDate = ValidityCheck.checkDates(line[5]);
+		checkEndTime = ValidityCheck.checkTimes(line[6]);
+		
+		if(checkType && checkIndex && checkPriority	&& checkEndDate && checkEndTime
+				&& checkStartDate && checkStartTime) {
+			checkValid = true;
+		}
+		return checkValid;
+	}
+}
+	// End of segment: C:\Code\main\SparkMoWare\storage\AssignValidCheck.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\storage\StorageMessage.java
+	 */
+
+
+public class StorageMessage {
+
+	protected static final String STORAGE_FILE_ERROR = "Exception encountered while initalising the Storage file";
+	protected static final String SAVE_FILE_ERROR = "Exception encountered while saving the textfile";
+}
+
+	// End of segment: C:\Code\main\SparkMoWare\storage\StorageMessage.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\storage\ToBuffer.java
+	 */
+
+
+public class ToBuffer {
+
+	private static final int  ASSIGNMENT_LENGTH = 6;
+	private static final int TASK_LENGTH = 8;
+	private static final int APPOINTMENT_LENGTH = 10;
+
+	protected static LinkedList<Assignment> addToBuffer(String[] lineArray) {
+
+		LinkedList<Assignment> buffer = new LinkedList<Assignment>();
+
+		if(lineArray.length == ASSIGNMENT_LENGTH) {
+			toBuffer(lineArray, buffer);
+			
+		} else if (lineArray.length == TASK_LENGTH) {
+			toBuffer2(lineArray, buffer);
+			
+		} else if(lineArray.length == APPOINTMENT_LENGTH && lineArray[4].contains("[")) {
+			toBuffer3(lineArray, buffer);
+			
+		} else if(lineArray.length == APPOINTMENT_LENGTH) {
+			toBuffer4(lineArray, buffer);
+		}
+		return buffer;
+	}
+	
+	private static void toBuffer(String[] lineArray, LinkedList<Assignment> buffer) {
+		
+		boolean check = false;
+		int serial = 0;
+		check = AssignValidCheck.checkAssignment(lineArray);
+
+		if(check) {
+			serial = Integer.parseInt(lineArray[0]);
+			Id.setLatestSerialNumber(serial);
+			buffer.add(toBufferAssignment(lineArray));
+		}
+	}
+	
+	private static void toBuffer2(String[] lineArray, LinkedList<Assignment> buffer) {
+		
+		boolean check = false;
+		int serial = 0;
+		check = AssignValidCheck.checkTask(lineArray);
+
+		if(check) {
+			serial = Integer.parseInt(lineArray[0]);
+			Id.setLatestSerialNumber(serial);
+			buffer.add(toBufferTask(lineArray));
+		}
+	}
+	
+	private static void toBuffer3(String[] lineArray, LinkedList<Assignment> buffer) {
+		
+		boolean check = false;
+		int serial = 0;
+		check = AssignValidCheck.checkTentative(lineArray);
+
+		if(check) {
+			serial = Integer.parseInt(lineArray[0]);
+			Id.setLatestSerialNumber(serial);
+			buffer.add(toBufferTentative(lineArray));
+		}
+	}
+	
+	private static void toBuffer4(String[] lineArray, LinkedList<Assignment> buffer) {
+
+		boolean check = false;
+		int serial = 0;
+		check = AssignValidCheck.checkAppointment(lineArray);
+
+		if(check) {
+			serial = Integer.parseInt(lineArray[0]);
+			Id.setLatestSerialNumber(serial);
+			buffer.add(toBufferAppointment(lineArray));
+		}
+	}
+	
+	private static Assignment toBufferAssignment(String[] lineArray) {
+
+		// adding as Assignment
+		Assignment temp = new Assignment();
+
+		temp.setIndex(Integer.parseInt(lineArray[0]));
+		temp.setTitle(lineArray[2]);
+		temp.setIsDone(Boolean.parseBoolean(lineArray[3]));
+		temp.setIsOnTime(Boolean.parseBoolean(lineArray[4]));
+		temp.setPriority(lineArray[5]);
+
+		return temp;
+	}
+
+	private static Task toBufferTask(String[] lineArray) {
+
+		// adding as Task
+		Task temp = new Task();
+
+		temp.setIndex(Integer.parseInt(lineArray[0]));
+		temp.setTitle(lineArray[2]);
+		temp.setIsDone(Boolean.parseBoolean(lineArray[5]));
+		temp.setIsOnTime(Boolean.parseBoolean(lineArray[6]));
+		temp.setPriority(lineArray[7]);
+		temp.setEndDate(lineArray[3]);
+		temp.setEndTime(lineArray[4]);
+
+		return temp;	
+	}
+
+	private static Appointment toBufferAppointment(String[] lineArray) {
+
+		// adding as Appointment
+		Appointment temp = new Appointment();
+		
+		temp.setIndex(Integer.parseInt(lineArray[0]));
+		temp.setTitle(lineArray[2]);
+		temp.setStartDate(lineArray[3]);
+		temp.setStartTime(lineArray[4]);
+		temp.setEndDate(lineArray[5]);
+		temp.setEndTime(lineArray[6]);
+		temp.setIsDone(Boolean.parseBoolean(lineArray[7]));
+		temp.setIsOnTime(Boolean.parseBoolean(lineArray[8]));
+		temp.setPriority(lineArray[9]);
+
+		return temp;	
+	}
+
+	private static Tentative toBufferTentative(String[] lineArray) {
+
+		Tentative temp = new Tentative();
+		
+		temp.setIndex(Integer.parseInt(lineArray[0]));
+		temp.setTitle(lineArray[2]);
+		setTimeSlot(temp, lineArray[3], lineArray[4], lineArray[5], lineArray[6]);
+		temp.setIsDone(Boolean.parseBoolean(lineArray[7]));
+		temp.setIsOnTime(Boolean.parseBoolean(lineArray[8]));
+		temp.setPriority(lineArray[9]);
+
+		return temp;
+	}
+
+	private static void setTimeSlot(Tentative temp, String startDate, String startTime, String endDate, String endTime) {
+
+		String[] startDates = startDate.split(",");
+		String[] startTimes = startTime.split(",");
+		String[] endDates = endDate.split(",");
+		String[] endTimes = endTime.split(",");
+
+		for(int i = 0; i < startDates.length; i++) {
+			startDates[i].trim();
+			startTimes[i].trim();
+			endDates[i].trim();
+			endTimes[i].trim();
+		}
+		
+		if(startDates.length > 1) {
+			
+			startDates[0] = removeSqBracket(startDates[0], 1, 9);
+			startDates[startDates.length - 1] = removeSqBracket(startDates[startDates.length - 1], 1, 9);
+			startTimes[0] = removeSqBracket(startTimes[0], 1, 5);
+			startTimes[startTimes.length - 1] = removeSqBracket(startTimes[startTimes.length - 1], 1, 5);
+			endDates[0] = removeSqBracket(endDates[0], 1, 9);
+			endDates[endDates.length - 1] = removeSqBracket(endDates[endDates.length - 1], 1, 9);
+			endTimes[0] = removeSqBracket(endTimes[0], 1, 5);
+			endTimes[endTimes.length - 1] = removeSqBracket(endTimes[startTimes.length - 1], 1, 5);
+
+			for(int slotsCount = 0; slotsCount < startDates.length; slotsCount++) {
+				temp.addStartDate(startDates[slotsCount]);
+				temp.addStartTime(startTimes[slotsCount]);
+				temp.addEndDate(endDates[slotsCount]);
+				temp.addEndTime(endTimes[slotsCount]);
+			}
+		} else {
+			startDates[0] = removeSqBracket(startDates[0], 1, 9);
+			startTimes[0] = removeSqBracket(startTimes[0], 1, 5);
+			endDates[0] = removeSqBracket(endDates[0], 1, 9);
+			endTimes[0] = removeSqBracket(endTimes[0], 1, 5);
+			
+			temp.addStartDate(startDates[0]);
+			temp.addStartTime(startTimes[0]);
+			temp.addEndDate(endDates[0]);
+			temp.addEndTime(endTimes[0]);
+		}
+	}
+	
+	private static String removeSqBracket(String obj, int a, int b) {
+		
+		String objDone;
+		objDone = obj.substring(a, b);
+		
+		return objDone;
+	}
+}
+
+	// End of segment: C:\Code\main\SparkMoWare\storage\ToBuffer.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\storage\ValidityCheck.java
+	 */
+
+
+public class ValidityCheck {
+
+	private static final boolean DEFAULT_NONE = false;
+
+	protected static boolean validType(String assignType) {
+
+		boolean typeChecked = DEFAULT_NONE;
+
+		if(assignType.equalsIgnoreCase("task")) {
+			typeChecked = true;
+		} else if(assignType.equalsIgnoreCase("appt")) {
+			typeChecked = true;
+		} else if(assignType.equalsIgnoreCase("asgn")) {
+			typeChecked = true;
+		} else if(assignType.equalsIgnoreCase("tntv")) {
+			typeChecked = true;
+		}
+		return typeChecked;
+	}
+
+	protected static boolean indexFormat(String index) {
+
+		boolean checkIndex = false;
+
+		if(index.matches("\\d+")) {
+			if(Integer.parseInt(index) > 0) {
+				checkIndex = true;
+			}
+		}
+		return checkIndex;
+	}
+
+	protected static boolean dateFormatValid(String date) {
+
+		boolean validDateFormat = true;
+
+		if (date.length() != 8) {
+			validDateFormat = false;
+		} else if (!date.contains("/")) {
+			validDateFormat = false;
+		} else if (!dateExists(date)) {
+			validDateFormat = false;
+		}
+		return validDateFormat;
+	}
+
+	private static boolean dateExists(String date) {
+
+		int day = dateConversion(date, 0, 2);
+		int month = dateConversion(date, 3, 5);
+		int year = dateConversion(date, 6, 8);
+
+		return checkDateExist(day, month, year);
+	}
+
+	private static int dateConversion(String date, int lower, int higher) {
+		int number;
+
+		String dateString = date.substring(lower, higher);
+		number = Integer.parseInt(dateString);
+
+		return number;
+	}
+
+	private static boolean checkDateExist(int day, int month, int year) {
+
+		boolean leapYear = false;
+		boolean dateExist = false;
+
+		if (year % 4 == 0) {
+			leapYear = true;
+		}
+		if (month > 12 || month < 1) {
+			dateExist = false;
+		}
+		if (day < 29) {
+			dateExist = true;
+		} else if (day == 29 && month == 02 && leapYear) {
+			dateExist = true;
+		} else if (day <= 30 && month != 2) {
+			dateExist = true;
+		} else if (day <= 31 && month != 2 && month != 4 && month != 6
+				&& month != 9 && month != 11) {
+			dateExist = true;
+		}
+		return dateExist;
+	}
+
+	protected static boolean timeFormatValid(String time) {
+
+		boolean timeValidity = true;
+
+		if (time.length() != 4) {
+			timeValidity = false;
+		} else if (!time.matches("[0-9]+")) {
+			timeValidity = false;
+		} else if (!timeExists(Integer.parseInt(time))) {
+			timeValidity = false;
+		}
+		return timeValidity;
+	}
+
+	private static boolean timeExists(int time) {
+
+		boolean timeExist = false;
+
+		int min = time % 100;
+		int hr = time / 100;
+
+		if (min <= 59 && min >= 0) {
+			timeExist = true;
+		} else if (hr <= 23 && hr >= 0) {
+			timeExist = true;
+		}
+		return timeExist;
+	}
+
+	protected static boolean priorityChecker(String priority) {
+
+		boolean priorityChecked = false;
+
+		if (priority.equalsIgnoreCase("NIMPT") || priority.equalsIgnoreCase("IMPT")) {
+			priorityChecked = true;
+		}
+		return priorityChecked;
+	}
+
+	protected static boolean checkDates(String dates) {
+
+		boolean checkDates = false;
+
+		if(!dates.contains("[") && !dates.contains("]")) {
+			return checkDates;
+			
+		} else {
+			return checkDates2(dates);
+		}
+	}
+	
+	private static boolean checkDates2(String dates) {
+		
+		boolean checkDates = false;
+		String[] datesSlot = dates.split(",");
+
+
+		for(int i = 0; i < datesSlot.length; i++) {
+			datesSlot[i].trim();
+		}
+		if(datesSlot.length > 1) {
+			checkDates = checkDates3(datesSlot);
+		} else {
+			datesSlot[0] = datesSlot[0].substring(1,9);
+			checkDates = dateFormatValid(datesSlot[0]);
+		}
+		return checkDates;
+	}
+	
+	private static boolean checkDates3(String[] datesSlot) {
+		
+		int count = 0;
+		boolean checkDates = false;
+		
+		datesSlot[0] = datesSlot[0].substring(1, 9);
+		datesSlot[datesSlot.length - 1] = datesSlot[datesSlot.length - 1].substring(1, 9);
+
+		while(checkDates && count < datesSlot.length) {
+			checkDates = dateFormatValid(datesSlot[count]);
+			count++;
+		}
+		return checkDates;
+	}
+	
+	protected static boolean checkTimes(String times) {
+
+		boolean checkTimes = false;
+		
+		if(!times.contains("[") && !times.contains("]")) {
+			return checkTimes;
+		} else {
+			return checkTimes2(times);
+		}
+	}
+	
+	private static boolean checkTimes2(String times) {
+		
+		boolean checkTimes = false;
+		String[] timesSlot = times.split(",");
+
+		for(int i = 0; i < timesSlot.length; i++) {
+			timesSlot[i].trim();
+		}
+		if(timesSlot.length > 1) {
+			checkTimes = checkTimes3(timesSlot);
+		} else {
+			timesSlot[0] = timesSlot[0].substring(1, 5);
+			checkTimes = timeFormatValid(timesSlot[0]);
+		}
+		return checkTimes;
+	}
+	
+	private static boolean checkTimes3(String[] timesSlot) {
+		
+		boolean checkTimes = false;
+		int count = 0;
+		
+		timesSlot[0] = timesSlot[0].substring(1, 5);
+		timesSlot[timesSlot.length - 1] = timesSlot[timesSlot.length - 1].substring(1, 5);
+
+		while(checkTimes && count < timesSlot.length){
+			checkTimes = timeFormatValid(timesSlot[count]);
+			count++;
+		}
+		return checkTimes;
+	}
+}
+	// End of segment: C:\Code\main\SparkMoWare\storage\ValidityCheck.java
+
+
+
+
+

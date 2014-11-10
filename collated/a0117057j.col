@@ -1,0 +1,1248 @@
+//@author: a0117057j
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\junit\SparkMoVareTest.java
+	 */
+
+
+public class SparkMoVareTest {
+	
+	LinkedList<Assignment> bufferTest = new LinkedList<Assignment>();
+	RefinedUserInput userInput = new RefinedUserInput();
+	
+	Vector<RefinedUserInput> multiUserInput = new Vector<RefinedUserInput>();
+	
+	Assignment testAssignment = new Assignment();
+	Task testTask = new Task();
+	Appointment testAppointment = new Appointment();
+	
+	Output testOutput = new Output();
+	
+	public void test() {
+		
+		userInput = Interpreter.reader("add buy fish");
+		multiUserInput.add(userInput);
+		
+		userInput = Interpreter.reader("add buy chicken 09/09/2014 2359");
+		multiUserInput.add(userInput);
+		
+		userInput = Interpreter.reader("add buy pork 01/09/2014 0700 01/09/2014 1000");
+		multiUserInput.add(userInput);
+		
+		for(int i = 0; i < multiUserInput.size(); i++) {
+			LogicTestDrive.addSomething(multiUserInput.get(i));
+		}
+		bufferTest = InternalStorage.getBuffer();
+		
+		assertEquals(3, bufferTest.size());
+		
+		
+	}
+}
+	// End of segment: C:\Code\main\SparkMoWare\junit\SparkMoVareTest.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\junit\StorageTest.java
+	 */
+
+
+public class StorageTest {
+
+	@Test 
+	public void test() {
+		
+		LinkedList<Assignment> testSaveBuffer = new LinkedList<Assignment>();
+		String testString = "020819930001~Test Title~17071992~0000~28072013~2359~false~false~low";
+		Assignment Test = Storage.toBufferAssignment(testString.split("~"));
+		testSaveBuffer.add(Test);
+		try {
+			Storage.saveFile("storageTest.txt",testSaveBuffer);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		//test for toBufferAssignment see if the function is convert the storage string correctly
+		String testString0 = "020819930001~Test Title~appointment~17071992~0000~28072013~2359~false~false~nimpt";
+		Appointment Test1 = Storage.toBufferAppointment(testString0.split("~"));
+
+		assertTrue(Test1.getId().equals("020819930001"));
+		assertTrue(Test1.getTitle().equals("Test Title"));
+		assertTrue(Test1.getStartDate().equals("17071992"));
+		assertTrue(Test1.getStartTime().equals("0000"));
+		assertTrue(Test1.getEndDate().equals("28072013"));
+		assertTrue(Test1.getEndTime().equals("2359"));
+		assertTrue(Test1.getIsDone()==(Boolean.parseBoolean("false")));
+		assertTrue(Test1.getIsOnTime()==(Boolean.parseBoolean("false")));
+		assertTrue(Test1.getPriority().equalsIgnoreCase("nimpt"));
+		
+		//prepping the test clear any existing files from previous test
+		File file = new File("storageTest.txt");
+		if(file.delete()) {
+		} else {
+		}
+
+		//Testing the save and load
+		String latestSerialNumber = "020819940001";
+		Id.setLatestSerialNumber(latestSerialNumber);
+		
+		String testString1 = "020819940001~Test Title~appointment~17071992~0000~28072013~2359~false~false~NIMPT";
+		String testString2 = "020819940002~Test Title~appointment~17071992~0000~28072013~2359~false~false~NIMPT";
+		String testString3 = "020819940003~Test Title~appointment~17071992~0000~28072013~2359~false~false~NIMPT";
+		String testString4 = "020819940004~Test Title~appointment~17071992~0000~28072013~2359~false~false~NIMPT";
+		String testString5 = "020819940005~Test Title~appointment~17071992~0000~28072013~2359~false~false~NIMPT";
+		
+		LinkedList<Assignment> testSaveBuffer1 = new LinkedList<Assignment>();
+
+		testSaveBuffer1.addAll(Storage.addToBuffer(testString1.split("~")));
+		testSaveBuffer1.addAll(Storage.addToBuffer(testString2.split("~")));
+		testSaveBuffer1.addAll(Storage.addToBuffer(testString3.split("~")));
+		testSaveBuffer1.addAll(Storage.addToBuffer(testString4.split("~")));
+		testSaveBuffer1.addAll(Storage.addToBuffer(testString5.split("~")));
+		Storage.saveFile("storageTest.txt",testSaveBuffer1);
+		LinkedList<Assignment> testLoadBuffer = new LinkedList<Assignment>();
+
+		Storage.openFile("storageTest.txt",latestSerialNumber,testLoadBuffer);
+
+		for(int i=0; i<testSaveBuffer1.size();i++) {
+			Appointment testingFromSave =  ((Appointment) testSaveBuffer1.get(i));
+			Appointment testingFromLoad =  ((Appointment) testLoadBuffer.get(i));
+			
+			assertTrue(testingFromSave.getId().equals(testingFromLoad.getId()));
+			assertTrue(testingFromSave.getTitle().equals(testingFromLoad.getTitle()));
+			assertTrue(testingFromSave.getStartDate().equals(testingFromLoad.getStartDate()));
+			assertTrue(testingFromSave.getStartTime().equals(testingFromLoad.getStartTime()));
+			assertTrue(testingFromSave.getEndDate().equals(testingFromLoad.getEndDate()));
+			assertTrue(testingFromSave.getEndTime().equals(testingFromLoad.getEndTime()));
+			assertTrue(testingFromSave.getIsDone()==(testingFromLoad.getIsDone()));
+			assertTrue(testingFromSave.getIsOnTime()==(testingFromLoad.getIsOnTime()));
+			assertTrue(testingFromSave.getPriority().equalsIgnoreCase(testingFromLoad.getPriority()));
+		}
+		System.out.println(Id.getLatestSerialNumber());
+		// test extraction of latest serial number
+		assertTrue(Id.getLatestSerialNumber().equals("020819940005"));
+	}
+}
+	// End of segment: C:\Code\main\SparkMoWare\junit\StorageTest.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\logic\DateLocal.java
+	 */
+
+
+public class DateLocal {
+
+	protected static String dateString(){
+
+		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yy");
+		Date todayDate = new Date();
+
+		return dateFormat.format(todayDate);
+	}
+
+	protected static String updateDate(String date) {
+
+		String[] endDate = date.split("/");
+
+		int[] intEndDate = new int[3];
+
+		intEndDate = dateConversionToInt(endDate);
+		
+		if ((intEndDate[0] - 1) == 0) {
+			if ((intEndDate[1] - 1) == 0) {
+				intEndDate[2]--;
+				intEndDate[1] = 12;
+				intEndDate[0] = 31;
+
+			} else {
+				intEndDate[0] = updateByMonth(intEndDate[1], intEndDate[2]);
+				intEndDate[1]--;
+			}
+		} else { 
+			intEndDate[0]--;
+		}
+		return convertDateBack(intEndDate);
+	}
+	
+	private static int[] dateConversionToInt(String[] endDate) {
+		int[] intEndDate = new int[3];
+		
+		for(int dateCharCount = 0; dateCharCount < endDate.length; dateCharCount++) {
+			endDate[dateCharCount] = Comparator.removeFrontZero(endDate[dateCharCount]);
+			intEndDate[dateCharCount] = Integer.parseInt(endDate[dateCharCount]); 
+		}
+		return intEndDate;
+	}
+	
+	private static String convertDateBack(int[] intEndDate) {
+		
+		String updatedDate = "";
+		
+		for(int dateIntCount = 0; dateIntCount < intEndDate.length; dateIntCount++) {
+
+			String newDate;
+
+			if(intEndDate[dateIntCount] < 10) {
+				newDate = "0" + Integer.toString(intEndDate[dateIntCount]);
+			} else {
+				newDate = Integer.toString(intEndDate[dateIntCount]);
+			}
+
+			if(!(dateIntCount == intEndDate.length - 1)) {
+				newDate += "/";
+			}
+			updatedDate += newDate;
+		}
+		return updatedDate;
+	}
+	
+	private static int updateByMonth(int intEndMonth, int intEndYear) {
+
+		if(intEndMonth == 2){			
+			if (intEndYear % 4 == 0){
+				return 29;
+			} else {
+				return 28;
+			}				
+		} else if(intEndMonth == 4 || intEndMonth == 6 || intEndMonth == 9 || intEndMonth == 11) {
+			return 30;
+		} 
+		return 31;	
+	}
+
+	protected static String getStartDate() {
+
+		String startDate = "01/01/01";
+
+		ListIterator<Assignment> listIterate = InternalStorage.getBuffer().listIterator();
+
+		while(listIterate.hasNext()) {
+			Assignment assignment = listIterate.next();
+
+			startDate = firstDate(assignment);
+		}
+		return startDate;
+	}
+	
+	private static String firstDate(Assignment assignment) {
+		
+		String startDate = "01/01/01";
+		
+		if(assignment.equals(AssignmentType.TASK)) {
+			Task firstTask = ((Task) assignment);
+			startDate = firstTask.getEndDate();
+			
+		} else if(assignment.equals(AssignmentType.APPT)) {
+			Appointment firstAppointment = ((Appointment) assignment);
+			startDate = firstAppointment.getStartDate();
+		}
+		return startDate;
+	}
+
+	protected static boolean dateFormatValid(String date) {
+
+		boolean validDateFormat = true;
+
+		if (date.length() != 8) {
+			validDateFormat = false;
+		} else if (!date.contains("/")) {
+			validDateFormat = false;
+		} else if (!dateExists(date)) {
+			validDateFormat = false;
+		}
+		return validDateFormat;
+	}
+
+	private static boolean dateExists(String date) {
+
+		int day = dateConversion(date, 0, 2);
+		int month = dateConversion(date, 3, 5);
+		int year = dateConversion(date, 6, 8);
+
+		return checkDateExist(day, month, year);
+	}
+
+	private static int dateConversion(String date, int lower, int higher) {
+		
+		int number;
+
+		String dateString = date.substring(lower, higher);
+		number = Integer.parseInt(dateString);
+
+		return number;
+	}
+
+	private static boolean checkDateExist(int day, int month, int year) {
+
+		boolean leapYear = false;
+		boolean dateExist = false;
+
+		if (year % 4 == 0) {
+			leapYear = true;
+		}
+		if (month > 12 || month < 1) {
+			dateExist = false;
+		}
+		if (day < 29) {
+			dateExist = true;
+		} else if (day == 29 && month == 02 && leapYear) {
+			dateExist = true;
+		} else if (day <= 30 && month != 2) {
+			dateExist = true;
+		} else if (day <= 31 && month != 2 && month != 4 && month != 6
+				&& month != 9 && month != 11) {
+			dateExist = true;
+		}
+		return dateExist;
+	}
+}
+	// End of segment: C:\Code\main\SparkMoWare\logic\DateLocal.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\logic\Delete.java
+	 */
+
+
+public class Delete {
+	
+	enum DeleteAllType {
+		DELETEALL_ON, DELETEALL_BEFORE, DELETEALL_BETWEEN, CLEAR;
+	}
+	
+	protected static LinkedList<Assignment> deleteAll(String duration, String startDate, String endDate) {
+		
+		LinkedList<Assignment> deleted = new LinkedList<Assignment>();
+		
+		switch (getDuration(duration)) {
+
+		case DELETEALL_ON:
+			deleted = deleteOn(endDate);
+			break;
+
+		case DELETEALL_BEFORE:
+			startDate = DateLocal.getStartDate();
+			deleted = deleteBetween(endDate, startDate);
+			break;
+
+		case DELETEALL_BETWEEN:
+			deleted = deleteBetween(endDate, startDate);
+			break;
+
+		default:
+			deleted = InternalStorage.getBuffer();
+			InternalStorage.getBuffer().clear();
+			
+			break;
+		}
+		return deleted;
+	}
+	
+	protected static void delete(int id) {
+		 
+		LinkedList<Assignment> idFound = new LinkedList<Assignment>();
+		idFound = SearchAll.searchAll(InternalStorage.getBuffer(), String.valueOf(id));
+		
+		if(idFound.size() > 0) {
+			int bufferPosition = InternalStorage.getBufferPosition(id);
+			
+			InternalStorage.getBuffer().remove(bufferPosition);
+		}
+	}
+
+	private static DeleteAllType getDuration(String duration) {
+
+		if (duration.length() == 2) {
+			return DeleteAllType.DELETEALL_ON;
+		} else if (duration.length() == 6) {
+			return DeleteAllType.DELETEALL_BEFORE;
+		} else if (duration.length() == 7) {
+			return DeleteAllType.DELETEALL_BETWEEN;
+		} else {
+			return DeleteAllType.CLEAR;
+		}
+	}
+
+	private static LinkedList<Assignment> deleteOn(String deleteOnDate) {
+
+		LinkedList<Assignment> toDelete = new LinkedList<Assignment>();
+		toDelete = SearchAll.searchByDeadline(InternalStorage.getBuffer(), deleteOnDate);
+
+		for (int toDeleteCount = 0; toDeleteCount < toDelete.size(); toDeleteCount++) {
+			delete(toDelete.get(toDeleteCount).getIndex());
+		}
+		return toDelete;
+	}
+
+	private static LinkedList<Assignment> deleteBetween(String deleteTill, String startDate) {
+		
+		LinkedList<Assignment> deleteInBetween = new LinkedList<Assignment>();
+		
+		while (!deleteTill.equals(startDate)) {
+			deleteInBetween.addAll(deleteOn(deleteTill));
+			deleteTill = DateLocal.updateDate(deleteTill);
+		}
+		deleteInBetween.addAll(deleteOn(startDate));
+		
+		return deleteInBetween;
+	}
+}
+	// End of segment: C:\Code\main\SparkMoWare\logic\Delete.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\logic\Edit.java
+	 */
+
+
+public class Edit {
+	
+	private static final String DEFAULT_TIME = "2359";
+	private static final String DEFAULT_START_TIME = "0000";
+	
+	protected static String editAssignment(RefinedUserInput userInput) {
+
+		LinkedList<Assignment> idFound = new LinkedList<Assignment>();
+		idFound = SearchAll.searchAll(InternalStorage.getBuffer(), Integer.toString(userInput.getIndex()));
+
+		if(idFound.size() == 0) {
+			
+			String toUser = "";
+
+			return toUser;
+		} else {
+
+			int bufferPosition = InternalStorage.getBufferPosition(userInput.getIndex());
+			
+			switch(getEditType(userInput.getSpecialContent())) {
+
+			case TITLE:
+				InternalStorage.getBuffer().get(bufferPosition).setTitle(userInput.getTitle());
+				break;
+
+			case START_DATE:
+				editStartDate(bufferPosition, userInput.getStartDate());
+				System.out.println("editing start date1");
+				break;
+
+			case START_TIME:
+				editStartTime(bufferPosition, userInput.getStartTime());
+				break;
+
+			case END_DATE:
+				editEndDate(bufferPosition, userInput.getEndDate());
+				break;
+
+			case END_TIME:
+				editEndTime(bufferPosition, userInput.getEndTime());
+				break;
+
+			case PRIORITY:
+				InternalStorage.getBuffer().get(bufferPosition).setPriority(userInput.getPriority());
+				break;
+
+			case INVALID:
+				Print.printToUser(Message.INVALID_SEARCH_PARAMETER);
+				break;
+				
+			default:
+				Print.printToUser(Message.INVALID_SEARCH_PARAMETER);
+			}
+
+			return Message.EDITED; 
+		}
+	}
+
+	private static EditType getEditType(String attributeName) { 
+
+		if (attributeName.length() < 1) {
+			return EditType.INVALID;
+		}
+		if (attributeName.equalsIgnoreCase("title")) {
+			return EditType.TITLE;
+		} else if (attributeName.equalsIgnoreCase("start date")) {
+			return EditType.START_DATE;
+		} else if (attributeName.equalsIgnoreCase("start time")) {
+			return EditType.START_TIME;
+		} else if (attributeName.equalsIgnoreCase("end date")) {
+			return EditType.END_DATE;
+		} else if (attributeName.equalsIgnoreCase("end time")) {
+			return EditType.END_TIME;
+		} else if (attributeName.equalsIgnoreCase("priority")) {
+			return EditType.PRIORITY;
+		} else {
+			return EditType.INVALID;
+		}
+	}
+
+	private static void editStartDate(int bufferPosition, String date) {
+		
+		Appointment appointmentInBuffer = new Appointment();
+		
+		if(InternalStorage.getBuffer().get(bufferPosition).getAssignType().equals(AssignmentType.APPT)) {
+			appointmentInBuffer = ((Appointment) InternalStorage.getBuffer().get(bufferPosition));
+			appointmentInBuffer.setStartDate(date);
+			
+		} else if(InternalStorage.getBuffer().get(bufferPosition).getAssignType().equals(AssignmentType.TASK)) {
+			Task appointmentTemp = ((Task) InternalStorage.getBuffer().remove(bufferPosition));
+			setNewAppointment(date, DEFAULT_START_TIME, appointmentTemp.getEndDate(), appointmentTemp.getEndTime(), 
+					appointmentTemp);
+			
+		} else if(InternalStorage.getBuffer().get(bufferPosition).getAssignType().equals(AssignmentType.ASGN)) {
+			Assignment appointmentTemp = InternalStorage.getBuffer().remove(bufferPosition);
+			setNewAppointment(date, DEFAULT_START_TIME, date, DEFAULT_TIME, appointmentTemp);
+		}
+	}
+
+	private static void editStartTime(int bufferPosition, String time) {
+		
+		Appointment appointmentInBuffer = new Appointment();
+
+		if(InternalStorage.getBuffer().get(bufferPosition).getAssignType().equals(AssignmentType.APPT)) {
+			appointmentInBuffer = ((Appointment) InternalStorage.getBuffer().get(bufferPosition));
+			appointmentInBuffer.setStartTime(time);
+			
+		} else if(InternalStorage.getBuffer().get(bufferPosition).getAssignType().equals(AssignmentType.TASK)) {
+			Task appointmentTemp = ((Task) InternalStorage.getBuffer().remove(bufferPosition));
+			setNewAppointment(appointmentTemp.getEndDate(), time, appointmentTemp.getEndDate(),
+					appointmentTemp.getEndTime(), appointmentTemp);
+		}
+	}
+	
+	private static void setNewAppointment(String startDate, String startTime, String endDate, String endTime,
+			Assignment appointmentTemp) {
+		
+		Appointment appointmentInBuffer = new Appointment();
+		
+		appointmentInBuffer.setEndDate(endDate);
+		appointmentInBuffer.setEndTime(endTime);
+		appointmentInBuffer.setStartDate(startDate);
+		appointmentInBuffer.setStartTime(startTime);
+		appointmentInBuffer.setIndex(appointmentTemp.getIndex());
+		appointmentInBuffer.setIsDone(appointmentTemp.getIsDone());
+		appointmentInBuffer.setIsOnTime(appointmentTemp.getIsOnTime());
+		appointmentInBuffer.setPriority(appointmentTemp.getPriority());
+		appointmentInBuffer.setTitle(appointmentTemp.getTitle());
+		
+		Add.addAppointmentToBuffer(appointmentInBuffer);	
+	}
+	
+	private static void editEndDate(int bufferPosition, String date) {
+
+		Appointment appointmentInBuffer = new Appointment();
+		Task taskInBuffer = new Task();
+
+		if(InternalStorage.getBuffer().get(bufferPosition).getAssignType().equals(AssignmentType.APPT)) {
+			appointmentInBuffer = ((Appointment) InternalStorage.getBuffer().get(bufferPosition));
+			appointmentInBuffer.setEndDate(date);
+			InternalStorage.getBuffer().remove(bufferPosition);
+			Add.addAppointmentToBuffer(appointmentInBuffer);
+			
+		} else if(InternalStorage.getBuffer().get(bufferPosition).getAssignType().equals(AssignmentType.TASK)) {
+			taskInBuffer = ((Task) InternalStorage.getBuffer().get(bufferPosition));
+			taskInBuffer.setEndDate(date);
+			InternalStorage.getBuffer().remove(bufferPosition);
+			Add.addTaskToBuffer(taskInBuffer);
+			
+		}else if(InternalStorage.getBuffer().get(bufferPosition).getAssignType().equals(AssignmentType.ASGN)){
+			Assignment assignmentTemp = (Assignment) InternalStorage.getBuffer().remove(bufferPosition);
+			setNewTask(DateLocal.dateString(), DEFAULT_TIME, assignmentTemp);
+		}
+	}
+
+	private static void editEndTime(int bufferPosition, String time) {
+
+		Appointment appointmentInBuffer = new Appointment();
+		Task taskInBuffer = new Task();
+
+		if(InternalStorage.getBuffer().get(bufferPosition).getAssignType().equals(AssignmentType.APPT)) {
+			appointmentInBuffer = ((Appointment) InternalStorage.getBuffer().get(bufferPosition));
+			appointmentInBuffer.setEndTime(time);
+			InternalStorage.getBuffer().remove(bufferPosition);
+			Add.addAppointmentToBuffer(appointmentInBuffer);
+			
+		} else if(InternalStorage.getBuffer().get(bufferPosition).getAssignType().equals(AssignmentType.TASK)) {
+			taskInBuffer = ((Task) InternalStorage.getBuffer().get(bufferPosition));
+			taskInBuffer.setEndTime(time);
+			InternalStorage.getBuffer().remove(bufferPosition);
+			Add.addTaskToBuffer(taskInBuffer);
+			
+		}else if(InternalStorage.getBuffer().get(bufferPosition).getAssignType().equals(AssignmentType.ASGN)){
+			Assignment assignmentTemp = (Assignment) InternalStorage.getBuffer().remove(bufferPosition);
+			setNewTask(DateLocal.dateString(), time, assignmentTemp);
+		}
+	}
+	
+	private static void setNewTask(String endDate, String endTime,
+			Assignment assignmentTemp) {
+		
+		Task taskInBuffer = new Task();
+		
+		taskInBuffer.setEndDate(endDate);
+		taskInBuffer.setEndTime(endTime);
+		taskInBuffer.setIndex(assignmentTemp.getIndex());
+		taskInBuffer.setIsDone(assignmentTemp.getIsDone());
+		taskInBuffer.setIsOnTime(assignmentTemp.getIsOnTime());
+		taskInBuffer.setPriority(assignmentTemp.getPriority());
+		taskInBuffer.setTitle(assignmentTemp.getTitle());
+		
+		Add.addTaskToBuffer(taskInBuffer);
+	}
+	
+	protected static int completeAssignment(int index) {
+		
+		int bufferPosition;
+		
+		bufferPosition = InternalStorage.getBufferPosition(index);
+		
+		InternalStorage.getBuffer().get(bufferPosition).setIsDone(true);
+		setIsOnTime(bufferPosition);
+		
+		InternalStorage.addBufferFirst(InternalStorage.getBuffer().get(bufferPosition));
+		InternalStorage.getBuffer().remove(bufferPosition + 1);
+		
+		return bufferPosition;
+	}
+	
+	private static void setIsOnTime(int bufferPosition) {
+
+		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yy HHmm");
+		Date todayDate = new Date();
+		System.out.println(dateFormat.format(todayDate));
+		String currentDate = dateFormat.format(todayDate);
+		
+		String[] dateTime = currentDate.split(" ");
+		
+		Comparator.checkOnTime(dateTime[0], dateTime[1], bufferPosition);
+	}
+}
+	// End of segment: C:\Code\main\SparkMoWare\logic\Edit.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\logic\Filter.java
+	 */
+
+
+public class Filter {
+	
+	private static final int FORMAT_DEADLINE = 8;
+	private static final String IMPORTANT = "important";
+	
+	private static final String TYPE_TASK = "task";
+	private static final String TYPE_ASSIGNMENT = "assignment";
+	private static final String TYPE_APPOINTMENT = "appointment";
+	private static final String TYPE_TENTATIVE = "tentative";
+	
+	private static LinkedList<Assignment> multipleFilter(LinkedList<Assignment> filterBuffer,
+			String userInput) {
+		
+		String[] multipleFilterInput = userInput.split(" ");
+		
+		for(int searchCount = 0; searchCount < multipleFilterInput.length; searchCount++) {
+			filterBuffer = filter(filterBuffer, multipleFilterInput[searchCount]);
+		}
+		return filterBuffer;
+	}
+		
+	protected static LinkedList<Assignment> filterMain(LinkedList<Assignment> buffer, String filterType,
+			String startDate, String endDate) {
+		
+		LinkedList<Assignment> filteredList = new LinkedList<Assignment> ();
+		
+		filteredList = multipleFilter(buffer, filterType);
+		
+		if(startDate != null && endDate != null) {
+			filteredList = Truncation.truncateList(filteredList, startDate, endDate);
+		}
+		return filteredList;
+	}
+
+	private static LinkedList<Assignment> filter(LinkedList<Assignment> buffer, String type) {
+		
+		LinkedList<Assignment> filterList = new LinkedList<Assignment>();
+		
+		if(type.contains("/")) {
+			if(type.length() == FORMAT_DEADLINE) {
+				filterList = SearchAll.searchByDeadline(buffer, type);
+			} else {
+				filterList = SearchAll.searchAll(buffer, type);
+			}
+		} else if(type.equals(IMPORTANT)){
+			filterList = SearchAll.searchAll(buffer, "IMPT");
+		} else if(type.equalsIgnoreCase(TYPE_TASK)) {
+			filterList = SearchAll.searchAll(buffer, TYPE_TASK);
+		} else if(type.equalsIgnoreCase(TYPE_ASSIGNMENT)) {
+			filterList = SearchAll.searchAll(buffer, TYPE_ASSIGNMENT);
+		} else if(type.equalsIgnoreCase(TYPE_APPOINTMENT)) {
+			filterList = SearchAll.searchAll(buffer, TYPE_APPOINTMENT);
+		} else if(type.equalsIgnoreCase(TYPE_TENTATIVE)) {
+			filterList = SearchAll.searchAll(buffer, TYPE_TENTATIVE);
+		}
+		return filterList; 
+	}
+}
+	// End of segment: C:\Code\main\SparkMoWare\logic\Filter.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\logic\LogicTestDrive.java
+	 */
+
+
+public class LogicTestDrive {
+
+	public static String addSomething(RefinedUserInput userInput){
+		return addSomething(userInput);
+	}
+
+	public static boolean serialNumberComparator(int idA, int idB){
+		return Comparator.serialNumberComparator(idA, idB);
+	}
+
+	public static int dateComparator(String dateA, String dateB){
+		return Comparator.dateComparator(dateA, dateB);
+	}	
+
+	public static int timeComparator(String timeA, String timeB){
+		return Comparator.timeComparator(timeA, timeB);
+	}	
+
+	public static int addToBigBuffer(Appointment newAppointment) {
+		return Comparator.addToBigBuffer(newAppointment);
+	}
+
+	public static boolean isClashing(Appointment newAppointment){
+		return Comparator.isClashing(newAppointment);
+	}	
+
+	public static String updateDate(String date){
+		return DateLocal.updateDate(date);
+	}
+
+	public static void deleteAll(String duration, String startDate, String endDate){
+		Delete.deleteAll(duration, startDate, endDate);
+	}
+
+	public static void delete(int id){
+		Delete.delete(id);
+	}
+
+	public static LinkedList<Assignment> filterMain(LinkedList<Assignment> buffer, String filterType, String startDate, String endDate) {
+		return Filter.filterMain(buffer, filterType, startDate, endDate);
+	}
+
+	public static String removeFrontZero(String input) {
+		return Comparator.removeFrontZero(input);
+	}
+
+	public static Output returnModification(LinkedList<Assignment> buffer,
+			String message, int totalAssignment, int totalCompleted, int totalOnTime,
+			boolean isStats, boolean isInValid) {
+		return returnModification(buffer, message, totalAssignment, totalCompleted, totalOnTime, isStats, isInValid);
+	}
+
+	public static LinkedList<Assignment> searchAll(LinkedList<Assignment> buffer, String userInput){
+		return searchAll(buffer, userInput);
+	}
+
+	public static LinkedList<Assignment> searchByDeadline(LinkedList<Assignment> buffer, String searchDeadline) {
+		return searchByDeadline(buffer, searchDeadline);
+	}
+
+	public static LinkedList<Assignment> multipleSortRequired(LinkedList<Assignment> sortBuffer, String sortType, String startDate, String endDate){
+		return multipleSortRequired(sortBuffer, sortType, startDate, endDate);
+	}
+
+	public static LinkedList<Assignment> truncateList(LinkedList<Assignment> truncatedList, String startDate, String endDate) {
+		return truncateList(truncatedList, startDate, endDate);
+	}
+}
+
+	// End of segment: C:\Code\main\SparkMoWare\logic\LogicTestDrive.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\logic\Message.java
+	 */
+
+
+public class Message {
+	
+	public static final String WELCOME = "Welcome to SparkMoWare!";
+	protected static final String PROMPT = "command: ";
+	protected static final String ADDED = "You have added one more job! You may carry on:)";
+	protected static final String EDITED = "Content has already been edited! Are you sure?";
+	
+	protected static final String TENTATIVE_ADDED = "Why you can't confirm the appointment yet?";	
+	protected static final String TENTATIVE_CONFIRM = "Your appointment has finally been approved!";
+	
+	protected static final String DELETED = "Another job is gone! I assumed you have done a good job?";
+	protected static final String DELETE_ALL = "Now they can't trace back what you have did!";
+	
+	protected static final String SEARCH = "Is this what you really want?";
+	protected static final String SORT = "This is so much organized:)";
+	
+	protected static final String STATISTIC = "Let me see how well are you doing recently!";
+	protected static final String DISPLAY = "Original list is up!";
+	
+	protected static final String FILTER = "Why do you not want to see the rest?!";
+	protected static final String DONE = "Good job completing a job!";
+	
+	protected static final String INVALID_COMMAND = "Why you no follow the format?!";
+	
+	protected static final String REDO = "Last action has been implemented";
+	protected static final String UNDO = "Last action has been reverted";
+	
+	protected static final String UNABLE_TO_REDO = "Stop typing redo! There's nothing for you inside already!";
+	protected static final String UNABLE_TO_UNDO = "Stop typing undo! This is what you want from the start!";
+	
+	protected static final String INVALID_SEARCH_PARAMETER = "Sorry, what you want is not found!";
+}
+
+	// End of segment: C:\Code\main\SparkMoWare\logic\Message.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\logic\Print.java
+	 */
+
+
+public class Print {
+
+	public static String display() {
+
+		for(int i = 0; i < InternalStorage.getBuffer().size(); i++){
+			String lineToAdd = "";
+			lineToAdd += String.valueOf(i+1);
+			lineToAdd += ". ";
+			lineToAdd += InternalStorage.getBuffer().get(i);
+			System.out.println(lineToAdd);
+		}
+
+		if (InternalStorage.getLineCount() == 0){
+			return (InternalStorage.getFilePath() + " is empty");
+		}
+		else{
+			return "";
+		}	
+	}
+
+	public static void printList(LinkedList<Mission> list) {
+
+		ListIterator<Mission> listIterate = list.listIterator();
+
+		while(listIterate.hasNext()) {
+			System.out.println(listIterate.next().toString());
+		}
+	}
+	
+	public static void printAssignmentList(LinkedList<Assignment> list) {
+
+		ListIterator<Assignment> listIterate = list.listIterator();
+
+		while(listIterate.hasNext()) {
+			System.out.println(listIterate.next().toString());
+		}
+	}
+	
+	public static void printToUser(String output) {
+
+		if (!output.equals("")) {
+			System.out.println(output);
+		}
+	}
+}
+	// End of segment: C:\Code\main\SparkMoWare\logic\Print.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\logic\Truncation.java
+	 */
+
+
+public class Truncation {
+
+	private static Appointment appointmentInList = new Appointment();
+	private static Task taskInList = new Task();
+
+	protected static LinkedList<Assignment> truncateList(LinkedList<Assignment> truncatedList, String startDate,
+			String endDate) {
+
+		LinkedList<Assignment> limitRemoved = new LinkedList<Assignment>();
+
+		limitRemoved = removeLowerLimit(truncatedList, startDate); 
+		limitRemoved = removeUpperLimit(truncatedList, endDate);
+
+		return limitRemoved;
+	}
+
+	private static LinkedList<Assignment> removeLowerLimit(LinkedList<Assignment> truncatedList, String date) {
+
+		for(int truncatedCount = truncatedList.size() - 1; truncatedCount >= 0; truncatedCount--) {
+
+			if(truncatedList.get(truncatedCount).getAssignType().equals(AssignmentType.TASK)) {
+				taskInList = ((Task) truncatedList.get(truncatedCount));
+
+				if(Comparator.dateComparator(taskInList.getEndDate(), date) == -1) {
+					truncatedList.remove(truncatedCount);
+				}
+			} else if(truncatedList.get(truncatedCount).getAssignType().equals(AssignmentType.APPT)) {
+				appointmentInList = ((Appointment) truncatedList.get(truncatedCount));
+
+				if(Comparator.dateComparator(appointmentInList.getEndDate(), date) == -1) {
+					truncatedList.remove(truncatedCount);
+				}
+			}
+		}
+		return truncatedList;
+	}
+
+	private static LinkedList<Assignment> removeUpperLimit(LinkedList<Assignment> truncatedList, String date) {
+
+		for(int truncatedCount = truncatedList.size() - 1; truncatedCount >= 0; truncatedCount--) {
+
+			if(truncatedList.get(truncatedCount).getAssignType().equals(AssignmentType.TASK)) {
+				taskInList = ((Task) truncatedList.get(truncatedCount));
+
+				if(Comparator.dateComparator(taskInList.getEndDate(), date) == 1) {
+					truncatedList.remove(truncatedCount);
+				}
+			} else if(truncatedList.get(truncatedCount).getAssignType().equals(AssignmentType.APPT)) {
+				appointmentInList = ((Appointment) truncatedList.get(truncatedCount));
+
+				if(Comparator.dateComparator(appointmentInList.getEndDate(), date) == 1) {
+					truncatedList.remove(truncatedCount);
+				}
+			}
+		}
+		return truncatedList;
+	}
+}
+	// End of segment: C:\Code\main\SparkMoWare\logic\Truncation.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\parser\ParserDateLocal.java
+	 */
+
+
+/**
+ * Class containing all relevant methods involving dates.
+ */
+public class ParserDateLocal {
+
+	private static final int SMALLER = -1;
+	private static final int SAME = 0;
+	private static final int LARGER = 1;
+
+	/**
+	 * Method compares the two date inputs to determine if they are equal, larger or smaller.
+	 * The case are as follows:
+	 * <br><br>
+	 * -1 id dateA < dateB
+	 * <br><br>
+	 * 0 if dateA = dateB
+	 * <br><br>
+	 * 1 if dateA > dateB
+	 * 
+	 * @param dateA first date input to be compared.
+	 * @param dateB second date input to be compared.
+	 * @return int value representing result -1 id dateA < dateB, 0 if dateA = dateB and 1 if dateA > dateB
+	 */
+	protected static int dateComparator(String dateA, String dateB) {
+		Matcher symbolMatcherA =  ParserPatternLocal.separatorPattern.matcher(dateA);
+		Matcher symbolMatcherB =  ParserPatternLocal.separatorPattern.matcher(dateB);
+
+		if(symbolMatcherA.find()) {
+			dateA = symbolMatcherA.replaceAll("");
+		}
+
+		if(symbolMatcherB.find()) {
+			dateB = symbolMatcherB.replaceAll("");
+		}
+
+		String yearA = dateA.trim().substring(4, 6);
+		String yearB = dateB.trim().substring(4, 6);
+
+		String monthA = dateA.trim().substring(2, 4);
+		String monthB = dateB.trim().substring(2, 4);
+
+		String dayA = dateA.trim().substring(0, 2);
+		String dayB = dateB.trim().substring(0, 2);
+
+		yearA = Misc.removeFrontZero(yearA);
+		yearB = Misc.removeFrontZero(yearB);
+
+		monthA = Misc.removeFrontZero(monthA);
+		monthB = Misc.removeFrontZero(monthB);
+
+		dayA = Misc.removeFrontZero(dayA);
+		dayB = Misc.removeFrontZero(dayB);
+
+		if (dateA.equals(dateB)) {
+			return SAME;
+		} else if (Integer.parseInt(yearA) > Integer.parseInt(yearB)) {
+			return LARGER;
+		} else if (Integer.parseInt(yearA) < Integer.parseInt(yearB)) {
+			return SMALLER;
+		} else if (Integer.parseInt(monthA) > Integer.parseInt(monthB)) {
+			return LARGER;
+		} else if (Integer.parseInt(monthA) < Integer.parseInt(monthB)) {
+			return SMALLER;
+		} else if (Integer.parseInt(dayA) > Integer.parseInt(dayB)) {
+			return LARGER;
+		}
+		return SMALLER;
+	}
+
+	/**
+	 * Method extracts the end date from the String input. If no date is detected, the system's current date is returned.
+	 * If more than one date is found, the first date input is replaced, and the second is extracted.
+	 * 
+	 * @param input String to have the end date extracted from.
+	 * @return end date String
+	 */
+	protected static String extractEndDate(String input) {
+		Matcher dateMatcher = ParserPatternLocal.datePattern.matcher(input);
+
+		if(!dateMatcher.find()) {
+			String date = ParserDateLocal.dateString();
+			String newDateFormat = date.substring(0, 2) + "/" + date.substring(2, 4) + "/" + date.substring(4, 6);
+			return newDateFormat;
+		}
+
+		if(hasTwoDateInputs(input)) {
+			input = dateMatcher.replaceFirst("");
+		}
+
+		String endDate = extractStartDate(input);
+
+		return endDate;
+	}
+
+	/**
+	 * Method determines if input String has 2, and only 2, dates. Returns false otherwise.
+	 * 
+	 * @param input String to be checked.
+	 * @return true if there are two date within the input.
+	 */
+	protected static boolean hasTwoDateInputs(String input) {		
+		Matcher dateMatcher = ParserPatternLocal.datePattern.matcher(input);
+		int n = 0;
+
+		while(dateMatcher.find()) {
+			input = dateMatcher.replaceFirst("");
+
+			Matcher timeMatcher = ParserPatternLocal.timePattern.matcher(input);
+			input = timeMatcher.replaceFirst("");
+			dateMatcher = ParserPatternLocal.datePattern.matcher(input);
+
+			n++;
+		}
+
+		if(n > 1) {
+			assert(n==2);
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * Method extracts the start date from the String input. Method converts date input into the following format:
+	 * DD/MM/YY. If date extracted from input is in an invalid format, an empty String is returned.
+	 * 
+	 * @param input String to have the start date extracted from.
+	 * @return start date String.
+	 */
+	protected static String extractStartDate(String input) {
+		Matcher dateMatcher = ParserPatternLocal.datePattern.matcher(input);
+		String startDate = new String();
+		String temp = new String();
+		String newDateFormat = new String();
+
+
+		if(dateMatcher.find()) {
+			String group2 = dateMatcher.group(2);
+			String group3 = dateMatcher.group(3);
+
+			if(group2.length() !=2) {
+				startDate = "0".concat(dateMatcher.group(2));
+			} else {
+				startDate = dateMatcher.group(2);
+			}
+
+			if(group3.length() !=2) {
+				temp = "0".concat(dateMatcher.group(3));
+				startDate = startDate.concat(temp);
+			} else {
+				startDate = startDate.concat(dateMatcher.group(3));
+			}
+			startDate = startDate.concat(dateMatcher.group(4));
+		}
+		String date = determineDateValidity(startDate);
+
+		if(!date.isEmpty()) {
+			if(!date.contains("/")) {
+				newDateFormat = date.substring(0, 2) + "/" + date.substring(2, 4) + "/" + date.substring(4, 6);
+			}
+		}
+
+		return newDateFormat;
+	}	
+
+	/**
+	 * Method returns the inputDate String if format is valid, empty String otherwise.
+	 * 
+	 * @param inputDate String to be checked.
+	 * @return the inputDate String if format is valid, empty String otherwise.
+	 */
+	public static String determineDateValidity(String inputDate) { 
+		if(!dateFormatValid(inputDate)) {
+			return "";
+		}
+		return inputDate;
+	}
+
+/**
+ * Method checks if the date format is valid and returns true if so.
+ * 
+ * @param date String to be checked.
+ * @return true if date format is valid.
+ */
+	public static boolean dateFormatValid(String date) {
+		boolean validDateFormat = true;
+
+		if(date.length() != 6) {
+			validDateFormat = false;
+		} else if(!date.matches("[0-9]+")) {
+			validDateFormat = false;
+		} else if(!dateExists(Integer.parseInt(date))) {
+			validDateFormat = false;
+		} 
+		return validDateFormat;
+	}
+
+	/**
+	 * Method checks if date exists.
+	 * 
+	 * @param date String to be checked.
+	 * @return true if date exists.
+	 */
+	protected static boolean dateExists(int date) {
+		boolean leapYear = false;
+		boolean dateExist = false;
+
+		int day = date / 10000;
+		int month = (date / 100) % 100;
+		int year = date % 100;
+
+		if(year % 4 == 0 && year % 100 != 0) {
+			leapYear = true;
+		}
+		if(month > 12 || month < 1) {
+			return false;
+		}
+		if(day < 29) {
+			dateExist = true;
+		} else if(day == 29 && month == 02 && leapYear) {
+			dateExist = true;
+		} else if(day <= 30 && month != 2){
+			dateExist = true;
+		} else if(day <= 31 && month != 2  && month != 4 && month != 6 && month != 9 && month != 11) {
+			dateExist = true;
+		}
+		return dateExist;
+	}
+
+	/**
+	 * Method returns system's current date.
+	 * 
+	 * @return system's current date String
+	 */
+	public static String dateString(){
+		DateFormat dateFormat = new SimpleDateFormat("ddMMyy");
+		Date todayDate = new Date();
+
+		return dateFormat.format(todayDate);
+	}
+
+	/**
+	 * Method replaces all dates found.  
+	 * 
+	 * @param input String to be changed
+	 * @return input String with dates removed
+	 */
+	protected static String replaceAllDate(String input) {
+		Matcher dateMatcher = ParserPatternLocal.datePattern.matcher(input);
+
+		input = dateMatcher.replaceAll("");
+
+		return input;
+	}
+
+	/**
+	 * Method to extract tentative dates.
+	 * 
+	 * @param input String to have tentative dates extracted from.
+	 * @return tentative dates Vector.
+	 */
+	protected static Vector<String> extractTentativeDates(String input) {
+		Vector<String> tentativeDates = new Vector<String> ();
+		Matcher dateMatcher = ParserPatternLocal.datePattern.matcher(input);
+		String temp = new String();
+
+		while(dateMatcher.find()) {
+			tentativeDates.add(extractEndDate(dateMatcher.group()));
+			input = dateMatcher.replaceFirst("");
+
+			Matcher timeMatcher = ParserPatternLocal.timePattern.matcher(input);
+			input = timeMatcher.replaceFirst("");
+
+			dateMatcher = ParserPatternLocal.datePattern.matcher(input);
+		}
+
+		return tentativeDates;
+	}
+}
+
+	// End of segment: C:\Code\main\SparkMoWare\parser\ParserDateLocal.java
+
+
+
+
+

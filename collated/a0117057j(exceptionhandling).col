@@ -1,0 +1,234 @@
+//@author: a0117057j(exceptionhandling)
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\parser\InputIsAdd.java
+	 */
+
+public class InputIsAdd {
+
+	/**
+	 * Method creates a RefinedUserInput for the add command. The cases are as follow:
+	 * <br><br>
+	 * 1. Floating Assignment: no date and time are detected in the input. If the title is empty, an Invalid
+	 * Format CommandType is returned. 
+	 * <br><br>
+	 * 2. Assignment: A single date and/or time input is detected in the input. If the input date and/or time
+	 * is in an invalid format, an Invalid Format CommandType is returned.
+	 * <br><br>
+	 * 3. Appointment: Two date inputs are detected in the input. If any of the input dates and/or times are
+	 * in an invalid format, an Invalid Format CommandType is returned. 
+	 * 
+	 * @param userInput the String with all the relevant information to be extracted.
+	 * @return a RefinedUserInput object for the add command.
+	 */
+	protected static RefinedUserInput refineInput(String userInput) {
+		RefinedUserInput inputAdd = new RefinedUserInput();
+		String title = Misc.extractTitle(userInput, "add");
+		String endDate = ParserDateLocal.extractEndDate(userInput);
+		String endTime = ParserTimeLocal.extractEndTime(userInput);
+		String priority = Misc.extractPriority(userInput);
+		Exception exception = null;
+		
+		try {
+			if (title.isEmpty()) {
+				throw exception;
+			}
+
+			if (Misc.isFloatingAssignment(userInput)) {
+				inputAdd.setCommandType(EnumGroup.CommandType.ADD);
+				inputAdd.setTitle(title);
+				inputAdd.setPriority(priority);
+				inputAdd.setAssignmentType(AssignmentType.ASGN);
+				return inputAdd;
+			}
+
+			if (endDate.isEmpty() || endTime.isEmpty()) {
+				throw exception;
+			}
+
+			if (ParserDateLocal.hasTwoDateInputs(userInput)) {
+				String startDate = ParserDateLocal.extractStartDate(userInput);
+				String startTime = ParserTimeLocal.extractStartTime(userInput);
+
+				if (startDate.isEmpty() || startTime.isEmpty()) {
+					throw exception;
+				}
+
+				inputAdd.setStartTime(startTime);
+				inputAdd.setEndTime(endTime);
+
+				if (ParserDateLocal.dateComparator(startDate, endDate) == -1) {
+					inputAdd.setStartDate(startDate);
+					inputAdd.setEndDate(endDate);
+
+				} else if (ParserDateLocal.dateComparator(startDate, endDate) == 1) {
+					inputAdd.setStartDate(endDate);
+					inputAdd.setEndDate(startDate);
+
+				} else {
+
+					inputAdd.setStartDate(startDate);
+					inputAdd.setEndDate(endDate);
+
+					if (ParserTimeLocal.timeComparator(startTime, endTime) == -1) {
+						inputAdd.setStartTime(startTime);
+						inputAdd.setEndTime(endTime);
+
+					} else if (ParserTimeLocal.timeComparator(startTime,
+							endTime) == 1) {
+						inputAdd.setStartTime(endTime);
+						inputAdd.setEndTime(startTime);
+
+					} else {
+						throw exception;
+					}
+				}
+
+				inputAdd.setCommandType(EnumGroup.CommandType.ADD);
+				inputAdd.setTitle(title);
+				inputAdd.setPriority(priority);
+				inputAdd.setAssignmentType(AssignmentType.APPT);
+
+			} else {
+
+				inputAdd.setCommandType(EnumGroup.CommandType.ADD);
+				inputAdd.setTitle(title);
+				inputAdd.setEndDate(endDate);
+				inputAdd.setEndTime(endTime);
+				inputAdd.setPriority(priority);
+				inputAdd.setAssignmentType(AssignmentType.TASK);
+			}
+		} catch (Exception e) {
+			inputAdd.setCommandType(EnumGroup.CommandType.INVALID_FORMAT);
+			return inputAdd;
+		}
+
+		return inputAdd;
+	}
+}
+	// End of segment: C:\Code\main\SparkMoWare\parser\InputIsAdd.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\parser\InputIsEdit.java
+	 */
+
+public class InputIsEdit {
+
+	/**
+	 * Method creates a RefinedUserInput for the edit command. After extracting the target id to be modified,
+	 * the EditType will be extracted to determine which attribute is to be modified. A switch case is used to
+	 * determine the EditType. If no index is detected, an invalid or empty EditType is detected, or the new
+	 * replacement is in an invalid format, an Invalid Format CommandType is returned.
+	 * 
+	 * @param userInput the String with all the relevant information to be extracted.
+	 * @return a RefinedUserInput object for the edit command.
+	 */
+	protected static RefinedUserInput refineInput(String userInput) {
+		RefinedUserInput inputEdit = new RefinedUserInput();
+		int index = ParserIndexLocal.extractIndex(userInput, "edit");
+		Exception exception = null;
+		
+		 try {
+				if (index == -1) {
+					throw exception;
+				}
+
+				switch (Determine.getEditType(userInput)) {
+
+				case TITLE:
+					userInput = Misc.removeEditTitle(userInput);
+					userInput = ParserIndexLocal.removeIndex(userInput);
+					String title = Misc.extractTitle(userInput, "edit");
+
+					Matcher symbolMatcher = ParserPatternLocal.symbolsPattern
+							.matcher(title);
+
+					if (title.isEmpty()) {
+						throw exception;
+					}
+
+					if (symbolMatcher.find()) {
+						title = symbolMatcher.replaceFirst("");
+					}
+
+					inputEdit.setTitle(title.trim());
+					inputEdit.setSpecialContent("title");
+					break;
+
+				case END_DATE:
+					String endDate = ParserDateLocal.extractEndDate(userInput);
+
+					if (endDate.isEmpty()) {
+						throw exception;
+					}
+					inputEdit.setEndDate(endDate);
+					inputEdit.setSpecialContent("end date");
+					break;
+
+				case END_TIME:
+					String endTime = ParserTimeLocal.extractEndTime(userInput);
+
+					if (endTime.isEmpty()) {
+						throw exception;
+					}
+					inputEdit.setEndTime(endTime);
+					inputEdit.setSpecialContent("end time");
+					break;
+
+				// if user leaves priority blank, system automatically changes it to
+				// not important
+				case PRIORITY:
+					String priority = Misc.extractPriority(userInput);
+
+					inputEdit.setPriority(priority);
+					inputEdit.setSpecialContent("priority");
+					break;
+
+				case START_DATE:
+					String startDate = ParserDateLocal.extractStartDate(userInput);
+
+					if (startDate.isEmpty()) {
+						throw exception;
+					}
+					inputEdit.setSpecialContent("start date");
+					inputEdit.setStartDate(startDate);
+					break;
+
+				case START_TIME:
+					String startTime = ParserTimeLocal.extractStartTime(userInput);
+
+					if (startTime.isEmpty()) {
+						throw exception;
+					}
+					inputEdit.setSpecialContent("start time");
+					inputEdit.setStartTime(startTime);
+					break;
+
+				case INVALID:
+					throw exception;
+
+				default:
+					throw exception;
+				}
+			} catch (Exception e) {
+				inputEdit.setCommandType(EnumGroup.CommandType.INVALID_FORMAT);
+				return inputEdit;
+			}
+		inputEdit.setCommandType(EnumGroup.CommandType.EDIT);
+		inputEdit.setIndex(index);
+		
+		return inputEdit;
+	}
+}
+	// End of segment: C:\Code\main\SparkMoWare\parser\InputIsEdit.java
+
+
+
+
+

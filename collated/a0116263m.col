@@ -1,0 +1,1348 @@
+//@author: a0116263m
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\gui\BtnEnterManager.java
+	 */
+
+
+public class BtnEnterManager {
+	
+	/**
+	 * Setup "Enter" Button for GUI
+	 * @param shell
+	 * @return Button btnEnter
+	 */
+	protected static Button butEnterSetup(Shell shell) {
+		Button btnEnter = new Button(shell, SWT.NONE);
+		btnEnter.setBounds(GUISize.BTN_ENTER_XCOOD, GUISize.BTN_ENTER_YCOOD, GUISize.BTN_ENTER_WIDTH, GUISize.BTN_ENTER_HEIGHT);
+		btnEnter.setText("Enter");
+		return btnEnter;
+	}
+}
+
+	// End of segment: C:\Code\main\SparkMoWare\gui\BtnEnterManager.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\gui\CLImanager.java
+	 */
+
+
+public class CLImanager {
+	
+	/**
+	 * Setup CLI for GUI
+	 * @param shell
+	 * @return Text cli
+	 */
+	protected static Text cliSetup(Shell shell) {
+		Text cli = new Text(shell, SWT.NONE);
+		cli.setBounds(GUISize.CLI_XCOOD, GUISize.CLI_YCOOD, GUISize.CLI_WIDTH, GUISize.CLI_HEIGHT);
+		return cli;
+	}
+
+}
+
+	// End of segment: C:\Code\main\SparkMoWare\gui\CLImanager.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\gui\ClockAndDateManager.java
+	 */
+
+
+public class ClockAndDateManager {
+	
+	/**
+	 * Setup Clock and date for GUI
+	 * @param shell
+	 * @return Text clock and date display
+	 */
+	protected static Text clockDisplaySetup(Shell shell) {
+		Text clockDisplay = new Text(shell, SWT.BORDER | SWT.CENTER);
+		clockDisplay.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
+		clockDisplay.setFont(SWTResourceManager.getFont("Segoe UI", 13, SWT.NORMAL));
+		clockDisplay.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		clockDisplay.setEnabled(false);
+		clockDisplay.setEditable(false);
+		clockDisplay.setBounds(GUISize.CND_XCOOD, GUISize.CND_YCOOD, GUISize.CND_WIDTH, GUISize.CND_HEIGHT);
+		return clockDisplay;
+	}
+}
+
+	// End of segment: C:\Code\main\SparkMoWare\gui\ClockAndDateManager.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\gui\CommandHandler.java
+	 */
+
+
+public class CommandHandler {
+
+	/**
+	 * commandHandle collect the user input from cli and send the string to logic for processing
+	 * It will also handle the Output from logic accordingly and call for functions to perform
+	 * respective action related to the command detected.
+	 * 
+	 * @param cli 
+	 * 				SWT textbox which the GUI get the user input
+	 * @param feedback
+	 * 				Display the feedback from logic to user in this text
+	 * @param tableViewer
+	 * 				Display the table from logic to user in this tableviewer
+	 */
+	public static void commandHandle(Text cli, Text feedback, Table table, Table important) {
+		String userInput= cli.getText().toString();
+		System.out.println(userInput);
+		Output output = logic.SparkMoVare.executeCommand(userInput);
+		cli.setText("");
+		feedback.setText(output.getFeedback());
+		if(output.getIsStats()) {
+			StatsPopup.statsAppear(output.getTotalAssignment(), output.getTotalCompleted(), output.getTotalOnTime());
+		} else {
+			TablerLoader.populateTable(table,important, output.getReturnBuffer());
+		}
+	}
+}
+
+	// End of segment: C:\Code\main\SparkMoWare\gui\CommandHandler.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\gui\CommandHistory.java
+	 */
+
+
+public class CommandHistory {
+	
+	protected static Stack<String> history = new Stack<String>();
+	protected static Stack<String> future = new Stack<String>();
+	
+	/**
+	 * addCmd adds user input to history
+	 * @param input
+	 * 					user input string to be saved in history
+	 */
+	protected static void addCmd(String input) {
+		history.add(input);
+	}
+	
+	/**
+	 *
+	 * @return next user input		
+	 */
+	protected static String getNextCmd() {
+		if (future.isEmpty()) {
+			return "";
+		}
+		else {
+			history.push(future.peek());
+			return future.pop();
+		}
+	}
+	
+	/**
+	 * @return previous user input
+	 */
+	protected static String getPrevCmd() {
+		if (history.isEmpty()) {
+			System.out.println("empty history");
+			return "";
+		}
+		else {
+			future.push(history.peek());
+			System.out.println("returned ~ "+history.peek());
+			return history.pop();
+		}
+	}
+}
+
+	// End of segment: C:\Code\main\SparkMoWare\gui\CommandHistory.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\gui\FeedbackManager.java
+	 */
+
+
+public class FeedbackManager {
+
+	/**
+	 * Setup feedback for GUI
+	 * @param shell
+	 * @return Text feedback
+	 */
+	protected static Text feedbackSetup(Shell shell) {
+		Text feedback = new Text(shell, SWT.BORDER | SWT.CENTER);
+		feedback.setEnabled(false);
+		feedback.setEditable(false);
+		feedback.setBounds(GUISize.FB_XCOOD, GUISize.FB_YCOOD, GUISize.FB_WIDTH, GUISize.FB_HEIGHT);
+		return feedback;
+	}
+}
+
+	// End of segment: C:\Code\main\SparkMoWare\gui\FeedbackManager.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\gui\GUISize.java
+	 */
+
+
+/**
+ * Master List of all the size and cood for GUI
+ */
+
+public class GUISize {
+	
+	//Enter Button
+	protected static int BTN_ENTER_XCOOD = 700;
+	protected static int BTN_ENTER_YCOOD = 527;
+	protected static int BTN_ENTER_WIDTH = 96;
+	protected static int BTN_ENTER_HEIGHT = 26;
+	
+	
+	//CLI
+	protected static int CLI_XCOOD = 53;
+	protected static int CLI_YCOOD = 527;
+	protected static int CLI_WIDTH = 610;
+	protected static int CLI_HEIGHT = 23;
+	
+	
+	//Clock and date
+	protected static int CND_XCOOD = 295;
+	protected static int CND_YCOOD = 40;
+	protected static int CND_WIDTH = 280;
+	protected static int CND_HEIGHT = 32;
+	
+	
+	//Feedback
+	protected static int FB_XCOOD = 280;
+	protected static int FB_YCOOD = 96;
+	protected static int FB_WIDTH = 310;
+	protected static int FB_HEIGHT = 26;
+	
+	
+	//HelpList
+	protected static int HELP_SHELL_WIDTH = 570;
+	protected static int HELP_SHELL_HEIGHT = 681;
+
+	
+	protected static int HELP_XCOOD = 0;
+	protected static int HELP_YCOOD = 0;
+	protected static int HELP_WIDTH = 560;
+	protected static int HELP_HEIGHT = 653;
+	
+	
+	//Hotkey Hint
+	protected static int HOTKEY_XCOOD = 0;
+	protected static int HOTKEY_YCOOD = 615;
+	protected static int HOTKEY_WIDTH = 808;
+	protected static int HOTKEY_HEIGHT = 21;
+
+	
+	//Quote Viewer
+	protected static int QUOTE_VIEWER_XCOOD = 43;
+	protected static int QUOTE_VIEWER_YCOOD = 569;
+	protected static int QUOTE_VIEWER_WIDTH = 765;
+	protected static int QUOTE_VIEWER_HEIGHT = 35;
+	
+	
+	//Stats Viewer
+	protected static int STAT_SHELL_WIDTH = 464;
+	protected static int STAT_SHELL_HEIGHT = 285;
+
+	protected static int STAT_PROGRESS_XCOOD = 55;
+	protected static int STAT_PROGRESS_YCOOD = 110;
+	protected static int STAT_PROGRESS_WIDTH = 320;
+	protected static int STAT_PROGRESS_HEIGHT = 67;
+	
+	protected static int STAT_BAR_XCOOD = 86;
+	protected static int STAT_BAR_YCOOD = 83;
+	protected static int STAT_BAR_WIDTH = 202;
+	protected static int STAT_BAR_HEIGHT = 21;
+	
+	protected static int STAT_TITLE_XCOOD = 86;
+	protected static int STAT_TITLE_YCOOD = 32;
+	protected static int STAT_TITLE_WIDTH = 251;
+	protected static int STAT_TITLE_HEIGHT = 33;
+	
+	protected static int STAT_QUOTE_XCOOD = 10;
+	protected static int STAT_QUOTE_YCOOD = 205;
+	protected static int STAT_QUOTE_WIDTH = 438;
+	protected static int STAT_QUOTE_HEIGHT = 27;
+	
+	protected static int STAT_COL1 = 219;
+	protected static int STAT_COL2 = 94;
+	
+	protected static int STAT_PERCENT_XCOOD = 294;
+	protected static int STAT_PERCENT_YCOOD = 83;
+	protected static int STAT_PERCENT_WIDTH = 52;
+	protected static int STAT_PERCENT_HEIGHT = 21;
+	
+	//important table
+	protected static int IMPT_WIDTHHINT = 212;
+	protected static int IMPT_HEIGHTHINT = 323;
+	
+	//main controller
+	protected static int MAIN_EXTENDED_WIDTH = 1100;
+	protected static int MAIN_WIDTH = 855;
+	protected static int MAIN_HEIGHT = 686;
+	
+	protected static int COMPOSITE_XCOOD = 855;
+	protected static int COMPOSITE_YCOOD = 10;
+	protected static int COMPOSITE_WIDTH = 239;
+	protected static int COMPOSITE_HEIGHT = 651;
+	
+	//main table
+	protected static int MAIN_TABLE_XCOOD = 43;
+	protected static int MAIN_TABLE_YCOOD = 140;
+	protected static int MAIN_TABLE_WIDTH = 765;
+	protected static int MAIN_TABLE_HEIGHT = 371;
+	
+}
+
+	// End of segment: C:\Code\main\SparkMoWare\gui\GUISize.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\gui\HelplistPopup.java
+	 */
+
+
+public class HelplistPopup {
+	
+	private static Table table;
+	private static LinkedList<String> helplistBuffer = new LinkedList<String>();
+
+	/**
+	 * helplistPopup open up the helplist in a new shell
+	 * @wbp.parser.entryPoint
+	 */
+	protected static void helplistPopup() {
+		Shell helpList = new Shell(SWT.CLOSE);
+		helpList.setSize(GUISize.HELP_SHELL_WIDTH, GUISize.HELP_SHELL_HEIGHT);
+		helpList.setText("Help List");
+		Image trayicon = SWTResourceManager.getImage(MainController.class, "/resource/image/SparkMoVareTrayIcon.png");
+		helpList.setImage(trayicon);
+
+		Font title = new Font(helpList.getDisplay(), "Papyrus", 13, SWT.BOLD );
+
+		TableViewer tableViewer = new TableViewer(helpList, SWT.BORDER | SWT.FULL_SELECTION);
+		table = tableViewer.getTable();
+		table.setBounds(GUISize.HELP_XCOOD, GUISize.HELP_YCOOD, GUISize.HELP_WIDTH, GUISize.HELP_HEIGHT);
+		openFile();
+		Iterator<String> tableLoaderIterator = helplistBuffer.iterator();
+		while (tableLoaderIterator.hasNext()) {
+			String textToDisplay = tableLoaderIterator.next();
+			TableItem item = new TableItem(table,SWT.LEFT);
+			if (textToDisplay.contains(":")) {
+				item.setFont(title);
+			}
+			item.setText(textToDisplay);
+		}
+		helpList.open();
+	}
+
+
+
+	/**
+	 * openFile loads the help list from file
+	 */
+	protected static void openFile() {
+		try { 
+			InputStream in = HelplistPopup.class.getResourceAsStream("/resource/text/HelpList.txt");
+			BufferedReader input = new BufferedReader(new InputStreamReader(in));
+			String line;
+			while ((line = input.readLine()) != null) {
+				helplistBuffer.add(line);
+			}
+			in.close();
+		} catch (IOException e) {
+			System.out.println("MESSAGE_FILE_INITIALISATION_ERROR");
+		}
+	}
+}
+
+	// End of segment: C:\Code\main\SparkMoWare\gui\HelplistPopup.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\gui\HotkeyHintManager.java
+	 */
+
+
+public class HotkeyHintManager {
+	
+	private static final String HINTTEXT = "F1: Help  |  F5: Refresh Interface  |  F6: Play/Stop Music  |  F12: Expand/Hide Tab  |  UP/DOWN Arrow: Command History";
+	
+	/**
+	 * Setup Hotkey hint for GUI
+	 * @param shell
+	 * @return Text feedback
+	 */
+	protected static Text hotkeySetup(Shell shell) {
+		Text text = new Text(shell, SWT.CENTER);
+		text.setEditable(false);
+		text.setEnabled(false);
+		text.setBounds(GUISize.HOTKEY_XCOOD, GUISize.HOTKEY_YCOOD, GUISize.HOTKEY_WIDTH, GUISize.HOTKEY_HEIGHT);
+		//formToolkit.adapt(text, true, true);
+		text.setText(HINTTEXT);
+		return text;
+	}
+}
+
+	// End of segment: C:\Code\main\SparkMoWare\gui\HotkeyHintManager.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\gui\ImageGetter.java
+	 */
+
+
+public class ImageGetter {
+	
+	private static Vector<Image> imageRepo = new Vector<Image>(); 
+	private static boolean isLoaded = false;
+
+	/**
+	 * loadimage loads all required image from resource into holding imageRepo and update boolean that it has done so
+	 */
+	protected static void loadimage() {
+		imageRepo.add(SWTResourceManager.getImage(MainController.class, "/resource/image/wallpaper1.jpg"));
+		imageRepo.add(SWTResourceManager.getImage(MainController.class, "/resource/image/wallpaper.jpg"));
+		imageRepo.add(SWTResourceManager.getImage(MainController.class, "/resource/image/cloud.jpg"));
+		imageRepo.add(SWTResourceManager.getImage(MainController.class, "/resource/image/highway.jpg"));
+		imageRepo.add(SWTResourceManager.getImage(MainController.class, "/resource/image/nebula.jpg"));
+		imageRepo.add(SWTResourceManager.getImage(MainController.class, "/resource/image/sunset.jpg"));
+		isLoaded = true;
+	}
+	
+	/**
+	 * imageGen returns a random image generated from imageRepo in ImagaGetter
+	 * @return Image
+	 */
+	protected static Image imageGen() {
+		if (!isLoaded) {
+			loadimage();
+		}
+		Random gen = new Random();
+		return imageRepo.get(gen.nextInt(imageRepo.size()));
+	}
+}
+
+	// End of segment: C:\Code\main\SparkMoWare\gui\ImageGetter.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\gui\ImportantManager.java
+	 */
+
+
+public class ImportantManager {
+	
+	private static final String COL_ONE_TITLE = "SIN";
+	private static final String COL_TWO_TITLE = "Important Task";
+	
+	/**
+	 * Setup Important table for GUI
+	 * @param composite
+	 * @return Important table
+	 */
+	protected static Table imptDisplaySetup(Composite composite) {
+			
+		Table imptDisplay = new Table(composite, SWT.BORDER | SWT.FULL_SELECTION);
+		GridData gd_table_1 = new GridData(SWT.NONE, SWT.FILL, true, true, 1, 1);
+		gd_table_1.widthHint = GUISize.IMPT_WIDTHHINT;
+		gd_table_1.heightHint = GUISize.IMPT_HEIGHTHINT;
+		imptDisplay.setLayoutData(gd_table_1);
+		imptDisplay.setHeaderVisible(true);
+		imptDisplay.setLinesVisible(false);
+
+		//due to SWT limitation in Windows, first col cannot be center aligned
+		TableColumn dummy1 = new TableColumn(imptDisplay, SWT.CENTER);
+		dummy1.setResizable(false);
+		TableColumn id = new TableColumn(imptDisplay, SWT.CENTER);
+		id.setResizable(false);
+		id.setText(COL_ONE_TITLE);
+		TableColumn title1 = new TableColumn(imptDisplay, SWT.CENTER);
+		title1.setResizable(false);
+		dummy1.setWidth(0);
+		id.setWidth(50);
+		title1.setWidth(179);
+		title1.setText(COL_TWO_TITLE);
+		
+		return imptDisplay;
+	}
+}
+
+	// End of segment: C:\Code\main\SparkMoWare\gui\ImportantManager.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\gui\MainController.java
+	 */
+
+
+public class MainController {
+
+	public static final String SONGNAME = "soundtrack.mp3";
+	public static final String ERROR_SOUNDNOTFOUND = "Song not found";
+	public static final int DELAY = 1000;
+
+	private static DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss ");
+	private static DateFormat dateFormat = new SimpleDateFormat("EEEE, d MMM yyyy");
+	private static Date date = new Date();
+	private static Shell shell;
+	static Timer clockUpdater = new Timer("clockUpdater", true);
+	private Text clockDisplay;
+	private Text cli;
+	private Text quoteViewer;
+	private Text feedback;
+	@SuppressWarnings("unused")
+	private Text hotkeyGuide;
+	private Button btnEnter;
+	private Table table;
+	private Table imptDisplay;
+	@SuppressWarnings("unused")
+	private Table  realTimeFeedback;
+	@SuppressWarnings("unused")
+	private Tray tray;
+	private boolean isPlaying = false;
+	private boolean isReady = false;
+	private boolean isExpose = true;
+	private static MediaPlayer mediaPlayer;
+
+	
+	public static void main(String[] args) {
+
+		System.out.println(Message.WELCOME);
+
+		Display display = new Display();
+		new MainController(display);
+
+		display.dispose();
+		mediaPlayer.stop();
+		mediaPlayer.dispose();
+	}
+
+	/**
+	 *  Sets up the GUI for user
+	 * @param display
+	 */
+	public MainController(Display display) {
+
+		shell = new Shell(display, SWT.CLOSE);
+		shell.setSize(GUISize.MAIN_EXTENDED_WIDTH, GUISize.MAIN_HEIGHT);
+		Image background = SWTResourceManager.getImage(MainController.class, "/resource/image/wallpaper1.jpg");
+		shell.setBackgroundImage(background);
+		shell.setText("SparkMoVare");
+
+		Composite composite = new Composite(shell, SWT.NONE);
+		composite.setBounds(GUISize.COMPOSITE_XCOOD ,GUISize.COMPOSITE_YCOOD ,GUISize.COMPOSITE_WIDTH ,GUISize.COMPOSITE_HEIGHT);
+		composite.setLayout(new GridLayout(1, false));
+
+		new DateTime (composite, SWT.CALENDAR | SWT.BORDER);
+
+		realTimeFeedback = RealTimeFeedbackManager.RealTimeFeedbackSetup(composite);
+		TableItem r_commandtype = RealTimeFeedbackManager.getCommandtype();
+		TableItem r_title =  RealTimeFeedbackManager.getTitle();
+		TableItem r_startDate =  RealTimeFeedbackManager.getStartDate();
+		TableItem r_startTime =  RealTimeFeedbackManager.getStartTime();
+		TableItem r_endDate =  RealTimeFeedbackManager.getEndDate();
+		TableItem r_endTime =  RealTimeFeedbackManager.getEndTime();
+		TableItem r_priority =  RealTimeFeedbackManager.getPriority();
+
+
+		imptDisplay = ImportantManager.imptDisplaySetup(composite);
+
+		//Setting up the various components of GUI
+		hotkeyGuide = HotkeyHintManager.hotkeySetup(shell);
+		table = TableManager.setupTable(shell);
+		cli = CLImanager.cliSetup(shell);
+		btnEnter = BtnEnterManager.butEnterSetup(shell);
+		quoteViewer = QuoteViewerManager.quoteViewerSetup(shell);
+		feedback = FeedbackManager.feedbackSetup(shell);
+		clockDisplay = ClockAndDateManager.clockDisplaySetup(shell);
+		tray = TrayIconManager.trayIconSetup(shell, display);
+
+
+		//initial loading
+		TablerLoader.populateTable(table,imptDisplay,SparkMoVare.storageSetup().getReturnBuffer());
+		quoteViewer.setText(QuoteLib.getQuote());
+		clockDisplay.setText(timeFormat.format(date));
+
+		// detecting MP3 and update option
+		try {
+			new JFXPanel();
+			File f = new File(SONGNAME);
+			Media hit = new Media(f.toURI().toString());
+			mediaPlayer = new MediaPlayer(hit);
+			isReady=true;
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			System.out.println(ERROR_SOUNDNOTFOUND);
+		}
+
+		// activate thread to run clock
+		clockUpdater.schedule(new UpdateTimerTask(), DELAY, DELAY);
+
+		// set listeners for hotkeys
+		shell.getDisplay().addFilter(SWT.KeyUp, new Listener()
+		{
+			@Override
+			public void handleEvent(Event e) {
+				if (e.keyCode == SWT.ESC) {
+					if(shell.getVisible() == true) {
+						shell.setVisible(false);
+					}
+				} else if (e.keyCode == SWT.F1) {
+					HelplistPopup.helplistPopup();
+					feedback.setText("Help List Selected");
+				} else if (e.keyCode == SWT.F5) {
+					shell.setBackgroundImage(ImageGetter.imageGen());
+					quoteViewer.setText(QuoteLib.getQuote());
+					feedback.setText("User Interface Refreshed");
+				} else if (e.keyCode == SWT.F6) {
+
+					if (!isPlaying && isReady) {
+						mediaPlayer.play();
+						isPlaying = true;
+						feedback.setText("Playing Music");
+					}
+					else if (isPlaying && isReady) {
+						mediaPlayer.stop();
+						isPlaying = false;
+						feedback.setText("Music Stopped!");
+					}
+
+				} else if (e.keyCode == SWT.F12) {
+					if (!isExpose) {
+						shell.setSize(GUISize.MAIN_EXTENDED_WIDTH, GUISize.MAIN_HEIGHT);
+						isExpose = true;
+					}
+					else {
+						shell.setSize(GUISize.MAIN_WIDTH , GUISize.MAIN_HEIGHT);
+						isExpose = false;
+					}
+				}
+			}
+		});
+
+		// set cli listener
+		cli.addModifyListener(new ModifyListener(){
+			public void modifyText(ModifyEvent event) {
+				RefinedUserInput input = SparkMoVare.parse(cli.getText());
+				if (input.getCommandType() != EnumGroup.CommandType.INVALID_FORMAT ) {
+					r_commandtype.setText(2,input.getCommandType().toString());
+					// title
+					if (input.getTitle().equalsIgnoreCase("default")){
+						r_title.setText(2, "" );
+					}
+					else {
+						r_title.setText(2, input.getTitle());
+					}
+					//start date
+					if (input.getStartDate().equalsIgnoreCase("default")){
+						r_startDate.setText(2, "" );
+					}
+					else {
+						r_startDate.setText(2, input.getStartDate());
+					}
+					//start time
+					if (input.getStartTime().equalsIgnoreCase("default")){
+						r_startTime.setText(2, "" );
+					}
+					else {
+						r_startTime.setText(2, input.getStartTime());
+					}
+					//end date
+					if (input.getEndDate().equalsIgnoreCase("default")){
+						r_endDate.setText(2, "" );
+					}
+					else {
+						r_endDate.setText(2, input.getEndDate());
+					}
+					//end time
+					if (input.getEndTime().equalsIgnoreCase("default")){
+						r_endTime.setText(2, "" );
+					}
+					else {
+						r_endTime.setText(2, input.getEndTime());
+					}
+					r_priority.setText(2, input.getPriority());
+				} else {
+					r_commandtype.setText(2,"");
+					r_title.setText(2, "");
+					r_startDate.setText(2, "");
+					r_startTime.setText(2, "");
+					r_endDate.setText(2, "");
+					r_endTime.setText(2, "");
+					r_priority.setText(2, "");
+				}
+
+			}
+		});
+		cli.addKeyListener(new KeyListener() {
+			public void keyReleased(KeyEvent e) {
+				if (e.keyCode == SWT.CR || e.keyCode == SWT.LF) {
+					CommandHistory.addCmd(cli.getText());
+					CommandHandler.commandHandle(cli, feedback, table, imptDisplay);
+				}else if (e.keyCode == SWT.ARROW_UP) {
+					String commandCheck = CommandHistory.getPrevCmd();
+					if (!commandCheck.equals("")) {
+						cli.setText(commandCheck);
+					}
+				}else if (e.keyCode == SWT.ARROW_DOWN) {
+					String commandCheck = CommandHistory.getNextCmd();
+					if (!commandCheck.equals("")) {
+						cli.setText(commandCheck);
+					}
+				}
+			}
+			public void keyPressed(KeyEvent e) {
+			}
+		});
+
+		// set button listener
+		btnEnter.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				CommandHandler.commandHandle(cli, feedback, table, imptDisplay);
+			}
+		});
+		composite.pack();
+		shell.open();
+
+		while (!shell.isDisposed()) {
+			if (!display.readAndDispatch()) {
+				display.sleep();
+			}
+		}        
+	}
+	
+	private class UpdateTimerTask extends TimerTask
+	{
+		@Override
+		public void run()
+		{
+			// Timer task runs in a background thread, 
+			// so use Display.asyncExec to run SWT code in UI thread
+			Display.getDefault().asyncExec(new Runnable() 
+			{
+				@Override
+				public void run()
+				{	
+					date = new Date();
+					clockDisplay.setText(dateFormat.format(date).toString()+", "+ timeFormat.format(date).toString());
+				}
+			});  
+		}
+	}
+}
+	// End of segment: C:\Code\main\SparkMoWare\gui\MainController.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\gui\QuoteLib.java
+	 */
+
+
+public class QuoteLib {
+	
+	private static LinkedList<String> buffer = new LinkedList<String>();
+	
+	/**
+	 * openFile loads the help list from file
+	 */
+	protected static void openFile() {
+		try { 
+			InputStream in = QuoteLib.class.getResourceAsStream("/resource/text/quoteList.txt");
+			BufferedReader input = new BufferedReader(new InputStreamReader(in));
+			String line;
+			while ((line = input.readLine()) != null) {
+				buffer.add(line);
+			}
+			in.close();
+		} catch (IOException e) {
+			System.out.println("MESSAGE_FILE_INITIALISATION_ERROR");
+		}
+	}
+	/**
+	 * getQuote returns a random quote loaded buy QuoteLib
+	 * @return String of random quote
+	 */
+	public static String getQuote() {
+		openFile();
+		Random gen = new Random();
+		return buffer.get(gen.nextInt(buffer.size()));
+	}
+
+
+}
+
+	// End of segment: C:\Code\main\SparkMoWare\gui\QuoteLib.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\gui\QuoteViewerManager.java
+	 */
+
+
+public class QuoteViewerManager {
+
+	/**
+	 * Setup Quoteviewer for GUI
+	 * @param shell
+	 * @return Text quoteviewer
+	 */
+	protected static Text quoteViewerSetup(Shell shell) {
+		Text quoteViewer = new Text(shell, SWT.CENTER);
+		quoteViewer.setFont(SWTResourceManager.getFont("Segoe UI", 11, SWT.NORMAL));
+		quoteViewer.setEnabled(false);
+		quoteViewer.setEditable(false);
+		quoteViewer.setBounds(GUISize.QUOTE_VIEWER_XCOOD, GUISize.QUOTE_VIEWER_YCOOD, GUISize.QUOTE_VIEWER_WIDTH, GUISize.QUOTE_VIEWER_HEIGHT);
+		
+		return quoteViewer;
+	}
+
+}
+
+	// End of segment: C:\Code\main\SparkMoWare\gui\QuoteViewerManager.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\gui\RealTimeFeedbackManager.java
+	 */
+
+
+public class RealTimeFeedbackManager {
+
+	private static TableItem commandtype;
+	private static TableItem title;
+	private static TableItem startDate;
+	private static TableItem startTime;
+	private static TableItem endDate;
+	private static TableItem endTime;
+	private static TableItem priority;
+
+	/**
+	 * Setup RealTimeFeedbac for GUI
+	 * @param composite
+	 * @return Table realTimeFeedBack
+	 */
+	protected static Table RealTimeFeedbackSetup(Composite composite) {
+		Table realTimeFeedBack = new Table(composite, SWT.BORDER | SWT.FULL_SELECTION);
+		realTimeFeedBack.setEnabled(false);
+		GridData gd_table_2 = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
+		gd_table_2.heightHint = 115;
+		realTimeFeedBack.setLayoutData(gd_table_2);
+		realTimeFeedBack.setHeaderVisible(false);
+		realTimeFeedBack.setLinesVisible(true);
+		TableColumn dummy = new TableColumn(realTimeFeedBack, SWT.CENTER);
+		dummy.setResizable(false);
+		TableColumn tc = new TableColumn(realTimeFeedBack, SWT.CENTER);
+		tc.setResizable(false);
+		TableColumn tc1 = new TableColumn(realTimeFeedBack, SWT.CENTER);
+		tc1.setResizable(false);
+		dummy.setWidth(0);
+		tc.setWidth(118);
+		tc1.setWidth(117);
+		commandtype = new TableItem(realTimeFeedBack, SWT.CENTER);
+		title = new TableItem(realTimeFeedBack, SWT.CENTER);
+		startDate = new TableItem(realTimeFeedBack, SWT.CENTER);
+		startTime = new TableItem(realTimeFeedBack, SWT.CENTER);
+		endDate = new TableItem(realTimeFeedBack, SWT.CENTER);
+		endTime = new TableItem(realTimeFeedBack, SWT.CENTER);
+		priority = new TableItem(realTimeFeedBack, SWT.CENTER);
+		commandtype.setText(1, "Command Type");
+		title.setText(1, "Title");
+		startDate.setText(1, "Start Date");
+		startTime.setText(1, "Start Time");
+		endDate.setText(1, "End Date");
+		endTime.setText(1, "End Time");
+		priority.setText(1,"Prority");
+		return realTimeFeedBack;
+	}
+	/**
+	 * 
+	 * @return commandtype
+	 */
+	protected static TableItem getCommandtype() {
+		return commandtype;
+	}
+	/**
+	 * 
+	 * @return title
+	 */
+	protected static TableItem getTitle() {
+		return title;
+	}
+	/**
+	 * 
+	 * @return startDate
+	 */
+	protected static TableItem getStartDate() {
+		return startDate;
+	}
+	/**
+	 * 
+	 * @return startTime
+	 */
+	protected static TableItem getStartTime() {
+		return startTime;
+	}
+	/**
+	 * 
+	 * @return endDate
+	 */
+	protected static TableItem getEndDate() {
+		return endDate;
+	}
+	/**
+	 * 
+	 * @return endTime
+	 */
+	protected static TableItem getEndTime() {
+		return endTime;
+	}
+	/**
+	 * 
+	 * @return priority
+	 */
+	protected static TableItem getPriority() {
+		return priority;
+	}
+}
+
+	// End of segment: C:\Code\main\SparkMoWare\gui\RealTimeFeedbackManager.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\gui\StatsPopup.java
+	 */
+
+
+public class StatsPopup {
+	private static Table table;
+	private static Text Percentage;
+	private static Text txtUserStatistics;
+	private static Text QuoteFeedback;
+	
+	/**
+	 * statsAppear takes in the inputs and popup a summary of how the user has been performing
+	 * @param totalTask
+	 * @param completedTask
+	 * @param onTimeTask
+	 */
+	protected static void statsAppear(int totalTask, int completedTask, int onTimeTask){
+		
+		//ensure valid stats are displayed
+	    assert (totalTask >= completedTask) : "Value of " + totalTask + " < " + completedTask + " is too large to add.";
+	    assert (totalTask >= onTimeTask) : "Value of " + totalTask + " < " + onTimeTask + " is too large to add.";
+	    assert (onTimeTask <= completedTask) : "Value of " + onTimeTask + " < " + completedTask + " is too large to add.";
+
+		int percentageOntime = (int)(((float)completedTask/totalTask)*100);
+		Shell popup = new Shell(SWT.CLOSE);
+		popup.setText("User Statistics");
+		Image background = SWTResourceManager.getImage(MainController.class, "/resource/image/wallpaper.jpg");
+		Image trayicon = SWTResourceManager.getImage(MainController.class, "/resource/image/SparkMoVareTrayIcon.png");
+		popup.setImage(trayicon);
+		popup.setBackgroundImage(background);
+		popup.setSize(GUISize.STAT_SHELL_WIDTH, GUISize.STAT_SHELL_HEIGHT);
+		
+		ProgressBar progressBar = new ProgressBar(popup, SWT.CENTER);
+		progressBar.setBounds(GUISize.STAT_BAR_XCOOD, GUISize.STAT_BAR_YCOOD, GUISize.STAT_BAR_WIDTH, GUISize.STAT_BAR_HEIGHT);
+		progressBar.setMinimum(0);
+		progressBar.setMaximum(100);
+		progressBar.setSelection((int)(((float)completedTask/totalTask)*100));
+		
+		table = new Table(popup, SWT.BORDER | SWT.FULL_SELECTION);
+		table.setBounds(GUISize.STAT_PROGRESS_XCOOD, GUISize.STAT_PROGRESS_YCOOD, GUISize.STAT_PROGRESS_WIDTH, GUISize.STAT_PROGRESS_HEIGHT);
+		TableColumn tc0 = new TableColumn(table, SWT.CENTER);
+		tc0.setResizable(false);
+		tc0.setWidth(GUISize.STAT_COL1);
+		TableColumn tc1 = new TableColumn(table, SWT.CENTER);
+		tc1.setResizable(false);
+		tc1.setWidth(GUISize.STAT_COL2);
+		table.setHeaderVisible(false);
+		table.setLinesVisible(true);
+		
+		Percentage = new Text(popup, SWT.BORDER | SWT.READ_ONLY | SWT.CENTER);
+		Percentage.setBounds(GUISize.STAT_PERCENT_XCOOD, GUISize.STAT_PERCENT_YCOOD, GUISize.STAT_PERCENT_WIDTH, GUISize.STAT_PERCENT_HEIGHT);
+		Percentage.setText(Integer.toString(percentageOntime)+"%");
+		
+		txtUserStatistics = new Text(popup, SWT.BORDER | SWT.READ_ONLY | SWT.CENTER);
+		txtUserStatistics.setFont(SWTResourceManager.getFont("Showcard Gothic", 16, SWT.BOLD));
+		txtUserStatistics.setText("User Statistics");
+		txtUserStatistics.setBounds(GUISize.STAT_TITLE_XCOOD , GUISize.STAT_TITLE_YCOOD , GUISize.STAT_TITLE_WIDTH , GUISize.STAT_TITLE_HEIGHT );
+		
+		QuoteFeedback = new Text(popup, SWT.BORDER | SWT.READ_ONLY | SWT.CENTER);
+		QuoteFeedback.setBounds(GUISize.STAT_QUOTE_XCOOD, GUISize.STAT_QUOTE_YCOOD, GUISize.STAT_QUOTE_WIDTH, GUISize.STAT_QUOTE_HEIGHT);
+	    if (totalTask==0) {
+			QuoteFeedback.setText("You have yet to set any item, start one today!");
+	    } else if (percentageOntime<33) {
+			QuoteFeedback.setText("You have much room for improvement, keep trying!");
+		} else if (percentageOntime<66) {
+			QuoteFeedback.setText("You are doing decently but there is still room for improvment, keep trying!");
+		} else {
+			QuoteFeedback.setText("Well done! You are doing a great job! keep it up!");
+		}
+		
+		String totalTaskString = "Total number of Assignments: ~ "+ Integer.toString(totalTask);
+		String lateTaskString = "Number of Completed Assignments: ~"+ Integer.toString(completedTask);
+		String onTimeTaskString = "Number of on time Assignments: ~ "+ Integer.toString(onTimeTask);
+		
+		LinkedList<String> stringToDisplay = new LinkedList<String>();
+		stringToDisplay.add(totalTaskString);
+		stringToDisplay.add(lateTaskString);
+		stringToDisplay.add(onTimeTaskString);
+		
+		
+		for (int i=0; i<stringToDisplay.size();i++) {
+			String[] holding = stringToDisplay.get(i).toString().split("~");
+			TableItem item = new TableItem(table,SWT.NONE);
+			item.setText(holding);
+		}
+		
+		popup.open();
+		
+	}
+}
+
+	// End of segment: C:\Code\main\SparkMoWare\gui\StatsPopup.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\gui\TableManager.java
+	 */
+
+
+public class TableManager {
+	
+	/**
+	 * Setup main table for GUI
+	 * @param shell
+	 * @return table table
+	 */
+	protected static Table setupTable(Shell shell) {
+		Table table = new Table(shell, SWT.BORDER | SWT.FULL_SELECTION);
+		//table = tableViewer.getTable();
+		table.setBounds(GUISize.MAIN_TABLE_XCOOD, GUISize.MAIN_TABLE_YCOOD, GUISize.MAIN_TABLE_WIDTH, GUISize.MAIN_TABLE_HEIGHT);
+		table.setLinesVisible(true);
+		//formToolkit.paintBordersFor(table);
+		TableColumn tc = new TableColumn(table, SWT.CENTER);
+		tc.setResizable(false);
+		TableColumn tc1 = new TableColumn(table, SWT.CENTER);
+		tc1.setResizable(false);
+		TableColumn tc2 = new TableColumn(table, SWT.CENTER);
+		tc2.setResizable(false);
+		TableColumn tc3 = new TableColumn(table, SWT.CENTER);
+		tc3.setResizable(false);
+		TableColumn tc4 = new TableColumn(table, SWT.CENTER);
+		tc4.setResizable(false);
+		tc1.setText("SIN");
+		tc2.setText("Title");
+		tc3.setText("Start");
+		tc4.setText("End");
+		tc.setWidth(0);
+		tc1.setWidth(100);
+		tc2.setWidth(360);
+		tc3.setWidth(150);
+		tc4.setWidth(150);
+		table.setHeaderVisible(true);
+		
+		return table;
+	}
+
+}
+
+	// End of segment: C:\Code\main\SparkMoWare\gui\TableManager.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\gui\TablerLoader.java
+	 */
+
+
+public class TablerLoader {
+	/**
+	 * Populate the table based on tableBuffer and updates important table
+	 * @param table
+	 * @param important
+	 * @param tableBuffer
+	 */
+	protected static void populateTable(Table table, Table important, LinkedList<Mission> tableBuffer) {
+		//Table table = tableViewer.getTable();
+		Device device = Display.getCurrent ();
+		Color Pink = new Color (device, 255, 182, 193);
+		Color Orange = new Color (device, 255, 153, 51);
+
+		table.removeAll();
+		Iterator<Mission> TableLoaderiterator = tableBuffer.iterator();
+		while (TableLoaderiterator.hasNext()) {
+			Mission appointmentToLoad = TableLoaderiterator.next();
+			TableItem item = new TableItem(table,SWT.NONE);
+			String[] displayFormat = new String[5];
+			displayFormat[1] = Integer.toString(appointmentToLoad.getIndex());
+			displayFormat[2] = appointmentToLoad.getTitle();
+			if(!appointmentToLoad.getStartDate().equals("-"))	{
+				displayFormat[3] = appointmentToLoad.getStartDate()+", "+appointmentToLoad.getStartTime();
+			}
+			if(!appointmentToLoad.getEndDate().equals("-"))	{
+				displayFormat[4] = appointmentToLoad.getEndDate()+", "+appointmentToLoad.getEndTime();
+			}
+			item.setText(displayFormat);
+			if (appointmentToLoad.getPriority().toString().equals("IMPT")) {
+				//	item.setForeground(Red);
+				item.setBackground(Pink);
+			}
+			if (appointmentToLoad.getAssignType().toString().equals("TNTV")) {
+				//	item.setForeground(Red);
+				item.setBackground(Orange);
+			}
+		}
+
+		TableItem item = new TableItem(table,SWT.NONE);
+		table.showItem(item);
+		updateImportant(important);
+
+	}
+	
+	/**
+	 * updates important table
+	 * @param important
+	 */
+	protected static void updateImportant(Table important) {
+		Device device = Display.getCurrent ();
+		Color Pink = new Color (device, 255, 182, 193);
+		Output test = SparkMoVare.updateImportant();
+		LinkedList<Mission> tableBuffer = test.getReturnBuffer();
+		important.removeAll();
+		Iterator<Mission> TableLoaderiterator = tableBuffer.iterator();
+		while (TableLoaderiterator.hasNext()) {
+			Mission appointmentToLoad = TableLoaderiterator.next();
+			if (!appointmentToLoad.getIsDone()) {
+				String[] holding =(" ~" + appointmentToLoad.toString()).split("~");
+				TableItem item = new TableItem(important,SWT.NONE);
+				item.setBackground(Pink);
+				item.setText(holding);
+			}
+		}		
+	}
+
+	protected static String convertDate (String date) {
+		return date.substring(0, 2) + "/" + date.substring(2, 4) + "/" + date.substring(4);
+	}
+}
+
+	// End of segment: C:\Code\main\SparkMoWare\gui\TablerLoader.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\gui\TrayIconManager.java
+	 */
+
+
+public class TrayIconManager {
+
+	/**
+	 * Setup trayicon for GUI
+	 * @param shell
+	 * @param display
+	 * @return Tray tray
+	 */
+	protected static Tray trayIconSetup(Shell shell, Display display) {
+		
+		Tray tray = display.getSystemTray();
+		if (tray == null) {
+			System.out.println("The system tray is not available");
+		} else {
+			final TrayItem item = new TrayItem(tray, SWT.NONE);
+			item.setToolTipText("SparkMoVare");
+			Image trayicon = SWTResourceManager.getImage(MainController.class, "/resource/image/SparkMoVareTrayIcon.png");
+			item.setImage(trayicon);
+			shell.setImage(trayicon);
+			item.addListener(SWT.Selection, new Listener() {
+				public void handleEvent(Event event) {
+					if(shell.getVisible() == false) {
+						shell.setVisible(true);
+					}
+					shell.setFocus();
+					shell.setActive();
+				}
+			});
+			final Menu menu = new Menu(shell, SWT.POP_UP);
+			MenuItem miHide = new MenuItem(menu, SWT.PUSH);
+			miHide.setText("Hide" );
+			miHide.addListener(SWT.Selection, new Listener() {
+				public void handleEvent(Event event) {
+					if(shell.getVisible() == true) {
+						shell.setVisible(false);
+					}
+				}
+			});
+			MenuItem miRestore = new MenuItem(menu, SWT.PUSH);
+			miRestore.setText("Restore" );
+			miRestore.addListener(SWT.Selection, new Listener() {
+				public void handleEvent(Event event) {
+					if(shell.getVisible() == false) {
+						shell.setVisible(true);
+					}
+					shell.setFocus();
+					shell.setActive();
+				}
+			});
+			MenuItem miExit = new MenuItem(menu, SWT.PUSH);
+			miExit.setText("Exit" );
+			miExit.addListener(SWT.Selection, new Listener() {
+				public void handleEvent(Event event) {
+					System.exit(0);
+				}
+			});
+			item.addListener(SWT.MenuDetect, new Listener() {
+				public void handleEvent(Event event) {
+					menu.setVisible(true);
+				}
+			});
+		}
+		
+		return tray;
+	}
+}
+
+	// End of segment: C:\Code\main\SparkMoWare\gui\TrayIconManager.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\storage\Storage.java
+	 */
+
+
+public class Storage {
+
+	public static final int SYSTEM_EXIT_ERROR = 0;
+	public static final String ERRORMESSAGELOADFAIL = "File loading failed!";
+
+	public static LinkedList<Assignment> saveFile(String filePath, LinkedList<Assignment> buffer) {
+
+		File file = new File(filePath);
+		if(file.delete()) {
+		} else {
+			System.out.println("failed");
+		}
+
+		try {
+			FileWriter fw = new FileWriter(file.getAbsoluteFile());
+			BufferedWriter bw = new BufferedWriter(fw);
+
+			for(int i = 0; i < buffer.size(); i++) {
+				bw.write(buffer.get(i).toString());
+				if (i<buffer.size() - 1) {
+					bw.newLine(); 
+				}
+			}
+			bw.close();
+
+		} catch (IOException e) {
+			Print.printToUser(StorageMessage.SAVE_FILE_ERROR);
+			System.exit(SYSTEM_EXIT_ERROR);
+		}		
+		return buffer;
+	}
+
+	public static LinkedList<Assignment> openFile(String filePath, LinkedList<Assignment> buffer) {
+
+		try {
+			File file = new File(filePath);
+			if (!file.exists()) {
+				file.createNewFile();
+			}
+
+			FileReader fileReader = new FileReader(file);
+			BufferedReader bufferedReader = new BufferedReader(fileReader);
+			String line = bufferedReader.readLine();
+
+			while (line != null ) {
+
+				String[] lineArray = line.split("~");
+
+				buffer.addAll(ToBuffer.addToBuffer(lineArray));
+
+				line = bufferedReader.readLine();
+			}
+			fileReader.close();
+		} catch (IOException e) {
+
+			Print.printToUser(StorageMessage.STORAGE_FILE_ERROR);
+			System.exit(SYSTEM_EXIT_ERROR);
+		}
+		return buffer;
+	}
+}
+	// End of segment: C:\Code\main\SparkMoWare\storage\Storage.java
+
+
+
+
+

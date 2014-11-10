@@ -1,0 +1,2384 @@
+//@author: a0110788b
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\junit\ParserAllTest.java
+	 */
+
+
+public class ParserAllTest {
+
+	@Test
+	public void test() {
+		
+		/*************ParserDateLocal Tests*************/
+		
+		//Test extractEndDate()
+
+		//confirm method returns date input
+		assertEquals("09091234", ParserTestDriver.testExtractEndDate("add 09/09/1234"));
+
+		//confirm method returns second date input
+		assertEquals("02032345", ParserTestDriver.testExtractEndDate("add 09/09/1234 2/3/2345"));
+		
+		//confirm method fills in today's date if no date is detected
+		//change date input accordingly
+		//assertEquals("16102014", ParserTestDriver.testExtractEndDate("add"));
+
+		//following test case is "pointless" since it assumes that the dateString
+		//method already works and returns current date.
+		assertEquals(ParserDateLocal.dateString(), ParserTestDriver.testExtractEndDate("add"));
+		
+		/**************************/		
+		
+		//Test hasTwoDateInputsTest
+
+		//confirm method returns true if 2 date inputs
+		assertTrue(ParserTestDriver.testHasTwoDateInputs("09/09/1234 2/3/2345"));
+
+		//confirm method returns true if 2 date inputs with additional portions
+		assertTrue(ParserTestDriver.testHasTwoDateInputs("add 09/09/1234 nothing 2/3/2345 works"));
+		assertTrue(ParserTestDriver.testHasTwoDateInputs("add 09/09/1234 nothing 2/3/2345"));
+		assertTrue(ParserTestDriver.testHasTwoDateInputs("add buy eggs 09/09/1234 0900 2/3/2345 0800"));
+		assertTrue(ParserTestDriver.testHasTwoDateInputs("add title 09091234 0900 02032345 0800"));
+
+		//confirm method returns false if only 1 date input
+		assertFalse(ParserTestDriver.testHasTwoDateInputs("09/08/1245"));
+		
+		//case of inputs around date
+		assertFalse(ParserTestDriver.testHasTwoDateInputs("add assignment due 09/09/1234 IMPT"));
+		
+		//negative test 1
+		//assertTrueParserTestDriver.testHasTwoDateInputs("add assignment 12345678 due 09/09/1234 IMPT"));
+		
+		/**************************/
+		
+		//Test extractStartdate
+		
+		//confirm method returns first date input
+		assertEquals("09091234", ParserTestDriver.testExtractStartDate("add 09/09/1234 2/3/2345"));
+		
+		//Failure test
+		//assertEquals("09091234", ParserTestDriver.testExtractStartDate("add 9091234"));
+		
+		/**************************/
+		
+		//Test determineDateValidity
+		//Essentially is the method dateFormatValid
+		
+		/**************************/
+		
+		//Test dateFormatValid
+		
+		//generalised test case
+		assertTrue(ParserTestDriver.testDateFormatValid("23122013"));
+		
+		//test for length of string !=8
+		assertFalse(ParserTestDriver.testDateFormatValid("123456789"));
+		assertFalse(ParserTestDriver.testDateFormatValid("1234567"));
+		
+		//test if String isn't only made of int
+		assertFalse(ParserTestDriver.testDateFormatValid("2902201a"));
+		
+		/**************************/
+		
+		//Test dateExists
+		
+		//test for leap year, 29th feb
+		assertTrue(ParserTestDriver.testDateExists(29022004));
+		
+		//test for non-leap year, 29th feb
+		assertFalse(ParserTestDriver.testDateExists(29022014));
+		
+		/**************************/
+		
+		//Test replaceAllDate
+
+		//confirm method replaces date input
+		assertEquals("", ParserTestDriver.testReplaceAllDate("09/08/1223"));
+
+		//confirm method replaces date input with additional portions
+		//note: each space/symbol around the date is left behind
+		assertEquals("add  work", ParserTestDriver.testReplaceAllDate("add 09/08/1223 work"));
+		assertEquals("add~%work", ParserTestDriver.testReplaceAllDate("add~09/08/1223%work"));
+
+		//confirm method replaces date input according to actual ideal user add appointment input
+		assertEquals("add  0900  0800 work", ParserTestDriver.testReplaceAllDate("add 09/08/1223 0900 2/3/2345 0800 work"));
+		
+		//negative test 2
+		//assertEquals("add 0900 0800", ParserTestDriver.testReplaceAllDate("add 0900 0800"));
+		
+		/**************************/
+		
+		//Test extractTentativeDates
+		
+		//single tentative
+		assertEquals("[09081234]", ParserTestDriver.testExtractTentativeDates("09/08/1234 0900"));
+		
+		//two tentatives
+		assertEquals("[09081234, 02031234]", ParserTestDriver.testExtractTentativeDates("09/08/1234 0900 02/03/1234 0800"));
+		
+		/***********ParserTimeLocal Tests***************/
+		
+		//Test extractEndTime
+		
+		//confirm method returns second time input
+		assertEquals("0800", ParserTestDriver.testExtractEndTime("add 09/09/1234 0900 2/3/2345 0800"));
+		
+		/**************************/
+		
+		//Test hasTwoTimeInputsTest	
+
+		//confirm method returns true if 2 time inputs
+		assertTrue(ParserTestDriver.testHasTwoTimeInputs("0900 0800"));
+
+		//confirm method returns true if 2 time inputs with additional portions
+		assertTrue(ParserTestDriver.testHasTwoTimeInputs("add 0900 nothing 0800 work"));
+		assertTrue(ParserTestDriver.testHasTwoTimeInputs("add 0900 nothing 0800"));
+		assertTrue(ParserTestDriver.testHasTwoTimeInputs("0900 nothing 0800 work"));
+		assertTrue(ParserTestDriver.testHasTwoTimeInputs("0900 nothing 0800"));
+
+		//confirm method returns false if only 1 date input
+		assertFalse(ParserTestDriver.testHasTwoTimeInputs("0900"));
+				
+		/**************************/
+		
+		//Test extractStartTime
+		
+		//confirm method returns time input
+		assertEquals("0900", ParserTestDriver.testExtractStartTime("0900"));
+
+		//confirm method returns first time input
+		assertEquals("0900", ParserTestDriver.testExtractStartTime("add void 0900 nada 0800 nothing"));
+		
+		//negative test 3
+		//assertEquals("0900", ParserTestDriver.testExtractStartTime("add 0900 0800"));
+
+		//confirm method returns time input instead of the year 2345
+		assertEquals("0900", ParserTestDriver.testExtractStartTime("add 12/11/2345 0900"));
+		
+		/**************************/
+		
+		//Test determineTimeValidity
+		//Essentially is the method timeFormatValid
+		
+		/**************************/
+		
+		//Test timeFormatValid
+		
+		//generalise test case
+		assertTrue(ParserTestDriver.testTimeFormatValid("1245"));
+		
+		//Test for length!=4
+		assertFalse(ParserTestDriver.testTimeFormatValid("12345"));
+		assertFalse(ParserTestDriver.testTimeFormatValid("123"));
+		
+		//Test if String isn't only made of int
+		assertFalse(ParserTestDriver.testTimeFormatValid("123A"));
+		
+		/**************************/
+		
+		//Test timeExists
+		
+		//Test on "Midnight"
+		assertTrue(ParserTestDriver.testTimeFormatValid("0000"));
+		
+		//Test for minute greater than 59
+		assertFalse(ParserTestDriver.testTimeFormatValid("1260"));
+		
+		//Test for hour greater than 23
+		assertFalse(ParserTestDriver.testTimeFormatValid("2400"));
+		
+		/**************************/
+		
+		//Test replaceAllTime
+
+		//confirm method replaces time input
+		assertEquals("", ParserTestDriver.testReplaceAllTime("0900"));
+
+		//confirm method replaces date input with additional portions
+		//note: each space/symbol around the date is left behind
+		assertEquals("add  work", ParserTestDriver.testReplaceAllTime("add 0900 work"));
+		assertEquals("add~%work", ParserTestDriver.testReplaceAllTime("add~0900%work"));
+
+		//negative test 3
+		//assertEquals("add 09/08/1223  2/3/2345  work", ParserTestDriver.testReplaceAllTime("add 09/08/1223 0900 2/3/2345 0800 work"));
+		
+		//Negative test: So long as this test returns true, design flaw has not been addressed
+		assertEquals("90 21", ParserTestDriver.testReplaceAllTime("1234567890 0987654321"));
+		
+		/**************************/
+		
+		//Test extractTentativeDates
+		
+		//single tentative
+		assertEquals("[0900]", ParserTestDriver.testExtractTentativeTimes("tentative 09/08/1234 0900"));
+		
+		//two tentatives
+		assertEquals("[09081234, 02031234]", ParserTestDriver.testExtractTentativeDates("tentative 09/08/1234 0900 02/03/1234 0800"));
+		
+		/*************ParserIdLocal Tests*************/
+			
+		//Test refineId
+		//no need to check if date portion is correct. In the ParserIdLocal class, date validity
+		//is checked before this method is carried out 
+
+		//generalised test case
+		assertEquals("090820141000", ParserTestDriver.testRefineId("09082014", "1000"));
+
+		//test if index is  3 digits long
+		assertEquals("090820140100", ParserTestDriver.testRefineId("09082014", "100"));
+
+		//test if index is  2 digits long
+		assertEquals("090820140010", ParserTestDriver.testRefineId("09082014", "10"));
+
+		//test if index is  1 digit long
+		assertEquals("090820140001", ParserTestDriver.testRefineId("09082014", "1"));
+
+		//test if no index
+		assertEquals("", ParserTestDriver.testRefineId("09082014", ""));
+		
+		//test if index is greater than 4 digits
+		assertEquals("", ParserTestDriver.testRefineId("09082014", "10000"));
+
+		/**************************/
+		
+		//Test extractId
+
+		//generalised test case
+		assertEquals("090820140001", ParserTestDriver.testExtractId("delete 09082014.0001"));
+
+		//test decreasing number of digits and differing  symbols
+		assertEquals("090820140200", ParserTestDriver.testExtractId("delete 09082014/200"));
+		assertEquals("090820140020", ParserTestDriver.testExtractId("delete 09082014-20"));
+		assertEquals("090820140002", ParserTestDriver.testExtractId("delete 09082014_2"));
+
+		//test without seperator
+		//negative test 4
+		//cannot interpret digits only
+		//assertEquals("090820140001", ParserTestDriver.testExtractId("delete 090820140001"));
+		
+		/*************Misc Tests*************/
+		
+		//Test isFloatingAssignment
+		
+		//confirm method returns true if no date and time
+		assertTrue(ParserTestDriver.testIsFloatingAssignment("add buy eggs"));
+		
+		//confirm method returns false with either date and/or time
+		assertFalse(ParserTestDriver.testIsFloatingAssignment("add buy eggs 0900"));
+		assertFalse(ParserTestDriver.testIsFloatingAssignment("add buy eggs 21072014"));
+		assertFalse(ParserTestDriver.testIsFloatingAssignment("add buy eggs 0900 21072014"));
+		
+		/**************************/
+		
+		//Test extractTitle
+		
+		//confirm method returns nothing with only date and time input and add command
+		assertEquals("", ParserTestDriver.testExtractTitle("add 12/23/1234 0900", "add"));
+
+		//confirm method returns title
+		assertEquals("work to do", ParserTestDriver.testExtractTitle("add 12/23/1234 0900 work to do", "add"));
+
+		//confirm method returns title in appropriate form
+		assertEquals("work to do", ParserTestDriver.testExtractTitle("add work 12/23/1234 to 0900 do", "add"));
+
+		/**************************/
+		
+		//Test removeCommand
+		
+		//test for add command
+		assertEquals("buy a duck", ParserTestDriver.testRemoveCommand("add buy a duck", "add"));
+		
+		//test for tentative command
+		assertEquals("consultation", ParserTestDriver.testRemoveCommand("tentative consultation", "tentative"));
+		
+		/**************************/
+		
+		//Test removePriority
+		
+		//test removal of various pattern of important
+		assertEquals("add buy eggs 0900 21072014", ParserTestDriver.testRemovePriority("add buy eggs 0900 21072014 Important"));
+		assertEquals("add buy eggs 0900 21072014", ParserTestDriver.testRemovePriority("add buy eggs 0900 21072014 Impt"));
+		assertEquals("add buy eggs 0900 21072014", ParserTestDriver.testRemovePriority("add buy eggs 0900 21072014 IMPT"));
+		
+		//test removal of various patterns of not important
+		assertEquals("add buy eggs 0900 21072014", ParserTestDriver.testRemovePriority("add buy eggs 0900 21072014 Nimportant"));
+		assertEquals("add buy eggs 0900 21072014", ParserTestDriver.testRemovePriority("add buy eggs 0900 21072014 NIMPT"));
+
+		/**************************/
+		
+		//Test refineString
+
+		String[] testArray = {"work ", "to  ", "do "};
+
+		//Confirm method returns string with only single spaces
+		assertEquals("work to do", ParserTestDriver.testRefineString(testArray));
+
+		/**************************/
+		
+		//Test extractPriority
+		
+		//generalised test cases
+		assertEquals("NIMPT", ParserTestDriver.testExtractPriority("add buy eggs 0900 21072014"));
+		assertEquals("IMPT", ParserTestDriver.testExtractPriority("add buy eggs 0900 21072014 Important"));
+		assertEquals("NIMPT", ParserTestDriver.testExtractPriority("add buy eggs 0900 21072014 Nimportant"));
+		
+		/**************************/
+		
+		//Test determinePriorityValidty
+		
+		//generalised test cases
+		assertTrue(ParserTestDriver.testDeterminePriorityValidity("important"));
+		assertTrue(ParserTestDriver.testDeterminePriorityValidity("nimportant"));
+		
+		/*************InvalidSpecialContent Tests*************/
+		
+		//Test contentForClear
+
+		//confirm method returns true for ideal cases
+		assertTrue(ParserTestDriver.testContentForClear("on "));
+		assertTrue(ParserTestDriver.testContentForClear(" before"));
+		assertTrue(ParserTestDriver.testContentForClear("between"));
+
+		//confirm method can and does return false
+		assertFalse(ParserTestDriver.testContentForClear("o n"));
+
+		//confirm method will not return true if word is in a long sequence
+		assertFalse(ParserTestDriver.testContentForClear("ion"));
+		assertFalse(ParserTestDriver.testContentForClear("beforetime"));
+		assertFalse(ParserTestDriver.testContentForClear("isbetween"));	
+		
+		/**************************/
+
+		//Test forSort
+		
+		//stub
+		
+		
+		/**************************/
+		
+		//Test forFilter
+		
+		//stub
+		
+		
+		/***********ExtractSpecialContent Tests***************/
+		
+		//Test forClear
+		assertEquals("between", ParserTestDriver.testforClear("clear between 09/08/2014 10/8/2014"));
+		assertEquals("on", ParserTestDriver.testforClear("clear on 09/08/2014"));
+		assertEquals("before", ParserTestDriver.testforClear("clear before 09/08/2014"));
+		
+		/**************************/
+		
+		//Test forSearch
+		
+		//generalised test case
+		assertEquals("assignment", ParserTestDriver.testforSearch("search assignment"));
+		
+		/**************************/
+	
+		//Test forSort
+		
+		//generalised test case
+		assertEquals("start date", ParserTestDriver.testforSort("sort start date"));
+		
+		/**************************/
+		
+		//Test forFilter
+		
+		//generalised test case
+		assertEquals("start date", ParserTestDriver.testforFilter("filter start date"));
+
+		/*************InputIsAdd Tests*************/
+
+		//confirm method returns invalid for single command
+		assertEquals("INVALID_FORMAT~default~default~default~default"
+				+ "~default~default~DEFAULT~NIMPT"
+				+ "~false~default~null~null", ParserTestDriver.testInputIsAdd("Add"));
+
+		//confirm method for floating tasks/assignment && without indication of importance
+		assertEquals("ADD~default~EAT DINNER~default~default"
+				+ "~default~default~ASSIGNMENT~NIMPT"
+				+ "~false~default~null~null", ParserTestDriver.testInputIsAdd("Add EAT DINNER"));
+
+		//confirm method for task with single date input
+		assertEquals("ADD~default~assignment due~default~default"
+				+ "~23122014~2359~TASK~IMPT"
+				+ "~false~default~null~null",
+				ParserTestDriver.testInputIsAdd("Add assignment due IMPT 23/12/2014"));
+
+		//ZY 1
+		assertEquals("ADD~default~buy fish~default~default"
+				+ "~31102014~2359~TASK~NIMPT"
+				+ "~false~default~null~null",
+				ParserTestDriver.testInputIsAdd("Add buy fish 31/10/2014 2359"));
+
+		//ZY 2
+		assertEquals("ADD~default~buy fish~31102014~2359"
+				+ "~01102015~2359~APPOINTMENT~NIMPT"
+				+ "~false~default~null~null",
+				ParserTestDriver.testInputIsAdd("Add buy fish 31/10/2014 2359 01/10/2015 2359"));
+
+		//confirm method for task with single time input
+		//test case requires update for date output to current/system date 
+		/*assertEquals("ADD~default~assignment due~default~default"
+				+ "~27102014~2300~TASK~IMPT"
+				+ "~false~default",
+				ParserTestDriver.testInputIsAdd("Add assignment due IMPT 2300"));
+		 */
+
+		//confirm method returns correct output for full input
+		assertEquals("ADD~default~buy chicken~09091234~0900"
+				+ "~02032345~0800~APPOINTMENT~IMPT"
+				+ "~false~default~null~null",
+				ParserTestDriver.testInputIsAdd("add buy chicken 09/09/1234 0900 2/3/2345 0800 Important"));
+
+		//negative test case 5
+		/*assertEquals("ADD~default~go 2103T lecture~31102014~1400"
+				+ "~31102014~1600~APPOINTMENT~NMPT"
+				+ "~false~default",
+				ParserTestDriver.testInputIsAdd("Add go 2103T lecture 31/10/2014 1400 31/10/2014 1600"));
+		 */
+		//Design flaw: returns <go T lecture> instead of <go 2103T lecture>
+		//The replace time method replaces the any 4 number pattern
+
+		/*************InputIsClear Tests*************/
+
+		//confirm method returns invalid for single command
+		assertEquals("INVALID_FORMAT~default~default~default~default"
+				+ "~default~default~DEFAULT~NIMPT"
+				+ "~false~default~null~null", ParserTestDriver.testInputIsClear("clear"));
+
+		assertEquals("CLEAR~default~default~29082014~default"
+				+ "~03092014~default~DEFAULT~NIMPT"
+				+ "~false~between~null~null",
+				ParserTestDriver.testInputIsClear("clear between 29/08/2014 3/9/2014"));
+
+		/*************InputIsConfirm Tests*************/
+
+		//confirm method returns invalid for single command
+		assertEquals("INVALID_FORMAT~default~default~default~default"
+				+ "~default~default~DEFAULT~NIMPT"
+				+ "~false~default~null~null", ParserTestDriver.testInputIsConfirm("confirm"));
+
+		/*************InputIsEdit Tests*************/
+
+		//confirm method returns invalid for single command
+		assertEquals("INVALID_FORMAT~default~default~default~default"
+				+ "~default~default~DEFAULT~NIMPT"
+				+ "~false~default~null~null", ParserTestDriver.testInputIsEdit("edit"));
+
+		/*************InputIsTentative Tests*************/
+
+		//confirm method returns invalid for single command
+		assertEquals("INVALID_FORMAT~default~default~default~default"
+				+ "~default~default~DEFAULT~NIMPT"
+				+ "~false~default~null~null", ParserTestDriver.testInputIsTentative("tentative"));
+
+		//single tentative
+		assertEquals("TENTATIVE~010320140001~consultation~default~default"
+				+ "~default~default~DEFAULT~NIMPT"
+				+ "~true~default~[12082014]~[0900]", ParserTestDriver.testInputIsTentative("Tentative 010320140001 consultation 12/8/2014 0900"));
+
+		//more than one tentative
+		assertEquals("TENTATIVE~010320140001~consultation~default~default"
+				+ "~default~default~DEFAULT~NIMPT"
+				+ "~true~default~[12082014, 01092014, 01092014]"
+				+ "~[0900, 1000, 1100]", ParserTestDriver.testInputIsTentative("Tentative 010320140001 consultation 12/8/2014 0900 1/09/2014 1000 1/9/2014 1100"));
+
+		//confirm invalid if number of date and times dont correspond
+		assertEquals("INVALID_FORMAT~default~default~default~default"
+				+ "~default~default~DEFAULT~NIMPT"
+				+ "~false~default~null~null", ParserTestDriver.testInputIsTentative("Tentative 010320140001 consultation 12/8/2014 0900 1/09/2014 1000 1/9/2014"));
+
+		//confirm invalid if title is empty
+		assertEquals("INVALID_FORMAT~default~default~default~default"
+				+ "~default~default~DEFAULT~NIMPT"
+				+ "~false~default~null~null", ParserTestDriver.testInputIsTentative("Tentative 010320140001 12/8/2014 0900 1/09/2014 1000 1/9/2014 1100"));
+
+		/*************RefineInputWithId Tests*************/
+
+		//test inputIsDelete
+
+		//confirm method returns invalid for single command
+		assertEquals("INVALID_FORMAT~default~default~default~default"
+				+ "~default~default~DEFAULT~NIMPT"
+				+ "~false~default~null~null", ParserTestDriver.testInputIsDelete("delete"));
+		
+		//generalised test  case
+		/*assertEquals("INVALID_FORMAT~default~default~default~default"
+				+ "~default~default~DEFAULT~NIMPT"
+				+ "~false~default~null~null", ParserTestDriver.testInputIsDelete("delete 090820140001"));*/
+
+		/**************************/
+
+		//test inputIsFinish
+
+		//confirm method returns invalid for single command
+		assertEquals("INVALID_FORMAT~default~default~default~default"
+				+ "~default~default~DEFAULT~NIMPT"
+				+ "~false~default~null~null", ParserTestDriver.testInputIsFinish("finish"));
+		
+		//generalised test case
+		assertEquals("DONE~090812340002~default~default~default"
+				+ "~default~default~DEFAULT~NIMPT"
+				+ "~false~default~null~null", ParserTestDriver.testInputIsFinish("finish 09081234.0002"));
+
+		/*************RefineInputWithSpecial Tests*************/
+
+		//test inputIsFilter
+
+		//confirm method returns invalid for single command
+		assertEquals("INVALID_FORMAT~default~default~default~default"
+				+ "~default~default~DEFAULT~NIMPT"
+				+ "~false~default~null~null", ParserTestDriver.testInputIsFilter("filter"));
+		
+		//generalised test case
+		assertEquals("FILTER~default~default~default~default"
+				+ "~default~default~DEFAULT~NIMPT"
+				+ "~false~assignment~null~null", ParserTestDriver.testInputIsFilter("filter assignment"));
+
+		/**************************/
+
+		//test inputIsSearch
+
+		//confirm method returns invalid for single command
+		assertEquals("INVALID_FORMAT~default~default~default~default"
+				+ "~default~default~DEFAULT~NIMPT"
+				+ "~false~default~null~null", ParserTestDriver.testInputIsSearch("search"));
+		
+		//generalised test case
+		assertEquals("SEARCH~default~default~default~default"
+				+ "~default~default~DEFAULT~NIMPT"
+				+ "~false~assignment~null~null", ParserTestDriver.testInputIsSearch("search assignment"));
+		
+		/**************************/
+
+		//test inputIsSort
+
+		//confirm method returns invalid for single command
+		assertEquals("INVALID_FORMAT~default~default~default~default"
+				+ "~default~default~DEFAULT~NIMPT"
+				+ "~false~default~null~null", ParserTestDriver.testInputIsSort("sort"));
+		
+		//generalised test case
+		assertEquals("SORT~default~default~default~default"
+				+ "~default~default~DEFAULT~NIMPT"
+				+ "~false~id~null~null", ParserTestDriver.testInputIsSort("sort id"));	
+		
+		/***********Interpreter***************/
+		
+		//confirm method returns invalid if non supported command is entered
+		assertEquals("DEFAULT~default~default~default~default"
+				+ "~default~default~DEFAULT~NIMPT"
+				+ "~false~default~null~null", ParserTestDriver.testReader("play"));
+	}
+}
+
+	// End of segment: C:\Code\main\SparkMoWare\junit\ParserAllTest.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\parser\Determine.java
+	 */
+
+
+public class Determine {
+	
+	/**
+	 * Method checks to see if input String matches any of the available CommandType patterns, and returns the relevant CommandType.
+	 * If a match is not found, an invalid CommandType is thrown.
+	 * @param command The String to be checked.
+	 * @return the CommandType that matches the pattern of the input command.
+	 */
+	protected static EnumGroup.CommandType getCommandType(String command) {
+		Matcher addMatcher = ParserPatternLocal.addPattern.matcher(command);
+		Matcher tentativeMatcher = ParserPatternLocal.tentativePattern.matcher(command);
+		Matcher confirmMatcher = ParserPatternLocal.confirmPattern.matcher(command);
+		Matcher deleteMatcher = ParserPatternLocal.deletePattern.matcher(command);
+		Matcher searchMatcher = ParserPatternLocal.searchPattern.matcher(command);
+		Matcher editMatcher = ParserPatternLocal.editPattern.matcher(command);
+		Matcher clearMatcher = ParserPatternLocal.clearPattern.matcher(command);
+		Matcher sortMatcher = ParserPatternLocal.sortPattern.matcher(command);
+		Matcher statisticMatcher = ParserPatternLocal.statisticPattern.matcher(command);
+		Matcher undoMatcher = ParserPatternLocal.undoPattern.matcher(command);
+		Matcher redoMatcher = ParserPatternLocal.redoPattern.matcher(command);
+		Matcher helpMatcher = ParserPatternLocal.helpPattern.matcher(command);
+		Matcher exitMatcher = ParserPatternLocal.exitPattern.matcher(command);
+		Matcher displayMatcher = ParserPatternLocal.displayPattern.matcher(command);
+		Matcher finishMatcher = ParserPatternLocal.finishPattern.matcher(command);
+		Matcher filterMatcher = ParserPatternLocal.filterPattern.matcher(command);
+		
+		try {
+			if (addMatcher.find()) {
+				return EnumGroup.CommandType.ADD;
+			} else if (tentativeMatcher.find()) {
+				return EnumGroup.CommandType.TENTATIVE;
+			} else if (confirmMatcher.find()) {
+				return EnumGroup.CommandType.CONFIRM;
+			} else if (deleteMatcher.find()) {
+				return EnumGroup.CommandType.DELETE;
+			} else if (searchMatcher.find()) {
+				return EnumGroup.CommandType.SEARCH;
+			} else if (editMatcher.find()) {
+				return EnumGroup.CommandType.EDIT;
+			} else if (clearMatcher.find()) {
+				return EnumGroup.CommandType.CLEAR;
+			} else if (filterMatcher.find()) {
+				return EnumGroup.CommandType.FILTER;
+			} else if (sortMatcher.find()) {
+				return EnumGroup.CommandType.SORT;
+			} else if (statisticMatcher.find()) {
+				return EnumGroup.CommandType.STATISTIC;
+			} else if (undoMatcher.find()) {
+				return EnumGroup.CommandType.UNDO;
+			} else if (redoMatcher.find()) {
+				return EnumGroup.CommandType.REDO;
+			} else if (helpMatcher.find()) {
+				return EnumGroup.CommandType.HELP;
+			} else if (exitMatcher.find()) {
+				return EnumGroup.CommandType.EXIT;
+			} else if (displayMatcher.find()) {
+				return EnumGroup.CommandType.DISPLAY;
+			} else if (finishMatcher.find()) {
+				return EnumGroup.CommandType.DONE;
+			} else {
+				Exception Exception = null;
+				throw Exception;
+			}
+		} catch (Exception e) {
+			return EnumGroup.CommandType.INVALID;
+		}
+	}
+	
+	/**
+	 * Method checks to see if input String matches any of the available EditType patterns, and returns the relevant EditType.
+	 * If a match is not found, invalid EditType is thrown. 
+	 * @param input The String to be checked
+	 * @return the EditType that matches the pattern of the input
+	 */
+	protected static EnumGroup.EditType getEditType(String input) {
+		Matcher titleMatcher = ParserPatternLocal.titlePattern.matcher(input);
+		Matcher startDateMatcher = ParserPatternLocal.startDatePattern.matcher(input);
+		Matcher startTimeMatcher = ParserPatternLocal.startTimePattern.matcher(input);
+		Matcher endDateMatcher = ParserPatternLocal.endDatePattern.matcher(input);
+		Matcher endTimeMatcher = ParserPatternLocal.endTimePattern.matcher(input);
+		Matcher priorityMatcher = ParserPatternLocal.priorityPattern.matcher(input);
+		
+		try {
+			if (titleMatcher.find()) {
+				return EnumGroup.EditType.TITLE;
+			} else if (startDateMatcher.find()) {
+				return EnumGroup.EditType.START_DATE;
+			} else if (startTimeMatcher.find()) {
+				return EnumGroup.EditType.START_TIME;
+			} else if (endDateMatcher.find()) {
+				return EnumGroup.EditType.END_DATE;
+			} else if (endTimeMatcher.find()) {
+				return EnumGroup.EditType.END_TIME;
+			} else if (priorityMatcher.find()) {
+				return EnumGroup.EditType.PRIORITY;
+			} else {
+				Exception Exception = null;
+				throw Exception;
+			}
+		} catch (Exception e) {
+			return EnumGroup.EditType.INVALID;
+		}
+	}
+}
+	// End of segment: C:\Code\main\SparkMoWare\parser\Determine.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\parser\EnumGroup.java
+	 */
+
+public class EnumGroup {
+
+	/**
+	 * The enums of the supported commands.
+	 */
+	public enum CommandType {
+		ADD, EDIT, DELETE, TENTATIVE, CONFIRM, SORT, SEARCH, FILTER,
+		CLEAR, UNDO, REDO, STATISTIC, EXIT, INVALID, DISPLAY, HELP,
+		DONE, DEFAULT, INVALID_FORMAT, EDITED
+	}
+	
+	/**
+	 * The enums of what can be edited.
+	 */
+	public enum EditType {
+		TITLE, START_DATE, START_TIME, END_DATE, END_TIME, INVALID, PRIORITY, DONE
+	}
+}
+	// End of segment: C:\Code\main\SparkMoWare\parser\EnumGroup.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\parser\ExtractSpecialContent.java
+	 */
+
+
+/**
+ * The ExtractSpecial Content class is used for the following methods: Clear, Search, Sort and Filter.
+ */
+public class ExtractSpecialContent {
+
+	/**
+	 * Method extracts a String from the input and checks its validity for the clear command.
+	 * If content is invalid or empty, an empty String is returned.
+	 * @param input the String to be checked for special content.
+	 * @return the special content extracted from the given input.
+	 */
+	protected static String forClear(String input) {
+		Matcher clearMatcher = ParserPatternLocal.clearPattern.matcher(input);
+		
+		input = ParserDateLocal.replaceAllDate(input);
+		
+		if(clearMatcher.find()) {
+			input = Misc.removeCommand(input, "clear");
+
+			input = input.trim();
+		} else {
+			return "";
+		}
+
+		if(!InvalidSpecialContent.contentForClear(input)) {
+			return "";
+		}
+
+		return input.trim();
+	}
+
+	/**
+	 * Method extracts a String from the input for search command. 
+	 * @param input the String to be checked for special content.
+	 * @return the special content extracted from the given input.
+	 */
+	protected static String forSearch(String input) {
+		Matcher searchMatcher = ParserPatternLocal.searchPattern.matcher(input);
+
+		if(searchMatcher.find()) {
+			input = Misc.removeCommand(input, "search");
+
+			return input.trim();
+		} else {
+			return "";
+		}
+	}
+	
+	/**
+	 * Method extracts a String from the input for sort command. 
+	 * @param input the String to be checked for special content.
+	 * @return the special content extracted from the given input.
+	 */
+	protected static String forSort(String input) {
+		Matcher sortMatcher = ParserPatternLocal.sortPattern.matcher(input);
+
+		if(sortMatcher.find()) {
+			input = Misc.removeCommand(input, "sort");
+
+			return input.trim();
+		} else {
+			return "";
+		}
+	}
+
+	/**
+	 * Method extracts a String from the input for filter command. 
+	 * @param input the String to be checked for special content.
+	 * @return the special content extracted from the given input.
+	 */
+	protected static String forFilter(String input) {
+		Matcher filterMatcher = ParserPatternLocal.filterPattern.matcher(input);
+		
+		if(filterMatcher.find()) {
+			input = Misc.removeCommand(input, "filter");
+
+			return input.trim();
+		} else {
+			return "";
+		}
+	}
+}
+
+	// End of segment: C:\Code\main\SparkMoWare\parser\ExtractSpecialContent.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\parser\InputIsAdd.java
+	 */
+
+	// End of segment: C:\Code\main\SparkMoWare\parser\InputIsAdd.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\parser\InputIsConfirm.java
+	 */
+
+public class InputIsConfirm {
+	
+	/**
+	 * Method creates a RefinedUserInput for the confirm command. If the input does not contain an index
+	 * start date, start time, end date and end time, or any are in the incorrect format, an Invalid
+	 * Format CommandType is returned.
+	 * 
+	 * @param userInput the String with all the relevant information to be extracted.
+	 * @return a RefinedUserInput object for the confirm command.
+	 */
+	protected static RefinedUserInput refineInput(String userInput) {
+		
+		RefinedUserInput inputConfirm = new RefinedUserInput();
+		int index = ParserIndexLocal.extractIndex(userInput, "confirm");
+		String startDate = ParserDateLocal.extractStartDate(userInput);
+		String startTime = ParserTimeLocal.extractStartTime(userInput);
+		String endDate = ParserDateLocal.extractEndDate(userInput);
+		String endTime = ParserTimeLocal.extractEndTime(userInput);
+		
+		if(index == -1 || startDate.isEmpty() || startTime.isEmpty() || endDate.isEmpty() || endTime.isEmpty()) {
+			inputConfirm.setCommandType(EnumGroup.CommandType.INVALID_FORMAT);
+			return inputConfirm;
+		}
+		
+		inputConfirm.setCommandType(EnumGroup.CommandType.CONFIRM);
+		inputConfirm.setIndex(index);
+		inputConfirm.setStartDate(startDate);
+		inputConfirm.setStartTime(startTime);
+		inputConfirm.setEndDate(endDate);
+		inputConfirm.setEndTime(endTime);
+		
+		return inputConfirm;
+	}
+}
+
+	// End of segment: C:\Code\main\SparkMoWare\parser\InputIsConfirm.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\parser\InputIsEdit.java
+	 */
+
+	// End of segment: C:\Code\main\SparkMoWare\parser\InputIsEdit.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\parser\InputIsFilter.java
+	 */
+
+public class InputIsFilter {
+	
+	static final String START_DATE= "01/01/01";
+	static final String END_DATE = "31/12/99";
+	
+	/**
+	 * Method creates a RefinedUserInput for the filter command. If no date or special content is
+	 * found, an Invalid Format CommandType is returned.
+	 * 
+	 * @param userInput the String with all the relevant information to be extracted.
+	 * @return a RefinedUserInput object for the filter command.
+	 */
+	protected static RefinedUserInput refineInput(String userInput) {
+		Matcher dateMatcher = ParserPatternLocal.datePattern.matcher(userInput);
+		RefinedUserInput inputFilter = new RefinedUserInput(); 
+		String specialContent  = ExtractSpecialContent.forFilter(userInput);
+	
+		if(!dateMatcher.find() && specialContent.isEmpty()) {
+			inputFilter.setCommandType(EnumGroup.CommandType.INVALID_FORMAT);
+			return inputFilter;
+		} else if(dateMatcher.find() && specialContent.isEmpty()) {
+			String deadline = ParserDateLocal.extractEndDate(userInput);
+			
+			if(deadline.isEmpty()) {
+				inputFilter.setCommandType(EnumGroup.CommandType.INVALID_FORMAT);
+				return inputFilter;
+			}
+			
+			inputFilter.setCommandType(EnumGroup.CommandType.FILTER);
+			inputFilter.setStartDate(START_DATE);
+			inputFilter.setEndDate(deadline);
+		} else if(!dateMatcher.find() && !specialContent.isEmpty()) {
+			
+			inputFilter.setCommandType(EnumGroup.CommandType.FILTER);
+			inputFilter.setStartDate(START_DATE);
+			inputFilter.setEndDate(END_DATE);
+			inputFilter.setSpecialContent(specialContent);
+		} else if(dateMatcher.find() && !specialContent.isEmpty()){
+			String deadline = ParserDateLocal.extractEndDate(userInput);
+			
+			if(deadline.isEmpty()) {
+				inputFilter.setCommandType(EnumGroup.CommandType.INVALID_FORMAT);
+				return inputFilter;
+			}
+			
+			inputFilter.setCommandType(EnumGroup.CommandType.FILTER);
+			inputFilter.setStartDate(START_DATE);
+			inputFilter.setEndDate(deadline);
+			inputFilter.setSpecialContent(specialContent);
+		}
+		
+		return inputFilter;
+	}
+}
+	// End of segment: C:\Code\main\SparkMoWare\parser\InputIsFilter.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\parser\InputIsSearch.java
+	 */
+
+public class InputIsSearch {
+	
+	/**
+	 * Method creates a RefinedUserInput for the search command. If no special content is
+	 * found, an Invalid Format CommandType is returned.
+	 * 
+	 * @param userInput the String with all the relevant information to be extracted.
+	 * @return a RefinedUserInput object for the filter command.
+	 */
+	protected static RefinedUserInput refineInput(String userInput) {
+		RefinedUserInput inputSearch = new RefinedUserInput(); 
+		String specialContent  = ExtractSpecialContent.forSearch(userInput);
+		Matcher dateMatcher = ParserPatternLocal.datePattern.matcher(specialContent);
+		
+		if(dateMatcher.find()) {
+			specialContent = ParserDateLocal.extractEndDate(specialContent);
+		}
+		
+		if(specialContent.isEmpty()) {
+			inputSearch.setCommandType(EnumGroup.CommandType.INVALID_FORMAT);
+			return inputSearch;
+		}
+		
+		inputSearch.setCommandType(EnumGroup.CommandType.SEARCH);
+		inputSearch.setSpecialContent(specialContent);
+		
+		return inputSearch;
+	}
+}
+
+	// End of segment: C:\Code\main\SparkMoWare\parser\InputIsSearch.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\parser\InputIsTentative.java
+	 */
+
+public class InputIsTentative {
+
+	/**
+	 * Method creates a RefinedUserInput for the tentative command. Method extracts all the input dates
+	 * and times and stores each in a vector. If the dates and times are found to be in an incorrect
+	 * format, or the number of tentative dates and times are not equal to one another, or either
+	 * tentative dates or times are empty, an Invalid Format CommandType is returned.
+	 * 
+	 * @param userInput the String with all the relevant information to be extracted.
+	 * @return a RefinedUserInput object for the tentative command.
+	 */
+	protected static RefinedUserInput refineInput(String userInput) {
+		RefinedUserInput inputTentative = new RefinedUserInput();
+		Vector<String> tentativeDates = new Vector<String>();
+		Vector<String> tentativeTimes = new Vector<String>();
+		
+		Matcher dateMatcher = ParserPatternLocal.datePattern.matcher(userInput);
+		Matcher timeMatcher = ParserPatternLocal.timePattern.matcher(userInput);
+		
+		tentativeDates = ParserDateLocal.extractTentativeDates(userInput);
+		tentativeTimes = ParserTimeLocal.extractTentativeTimes(userInput);
+		String title = Misc.extractTitle(userInput, "tentative");
+		
+		if(tentativeDates.size() == 0 || tentativeTimes.size() == 0 || !(tentativeDates.size() == tentativeTimes.size()) ||
+		   title.isEmpty()) {
+			inputTentative.setCommandType(EnumGroup.CommandType.INVALID_FORMAT);
+			
+			return inputTentative;
+		} else {
+
+			inputTentative.setCommandType(EnumGroup.CommandType.TENTATIVE);
+			inputTentative.setTitle(title);
+			inputTentative.setAssignmentType(AssignmentType.TNTV);
+			inputTentative.setIsNewTentative(true);
+			inputTentative.setTentativeDates(tentativeDates);
+			inputTentative.setTentativeTimes(tentativeTimes);
+
+			return inputTentative;
+		}
+	}
+}
+
+	// End of segment: C:\Code\main\SparkMoWare\parser\InputIsTentative.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\parser\Interpreter.java
+	 */
+
+public class Interpreter {
+
+	/**
+	 * Method determines which is the command to be executed. If no match is found, a default is returned
+	 * 
+	 * @param userInput the String with all the relevant information to be extracted.
+	 * @return a RefinedUserInput object.
+	 */
+	public static RefinedUserInput reader(String userInput) {
+		
+		switch (Determine.getCommandType(userInput)) {
+		case ADD:
+			return InputIsAdd.refineInput(userInput);
+			
+		case EDIT:
+			return InputIsEdit.refineInput(userInput);
+
+		case DELETE:
+			return RefineInputWithIndex.inputIsDelete(userInput);
+
+		case TENTATIVE:
+			return InputIsTentative.refineInput(userInput);
+
+		case CONFIRM:
+			return InputIsConfirm.refineInput(userInput);
+
+		case CLEAR:
+			return InputIsClear.refineInput(userInput);
+
+		case SORT:
+			return InputIsSort.refineInput(userInput);
+
+		case SEARCH:
+			return InputIsSearch.refineInput(userInput);
+
+		case STATISTIC:
+			RefinedUserInput inputStatistic = new RefinedUserInput();
+			inputStatistic.setCommandType(EnumGroup.CommandType.STATISTIC);
+			return inputStatistic;
+
+		case UNDO:
+			RefinedUserInput inputUndo = new RefinedUserInput();
+			inputUndo.setCommandType(EnumGroup.CommandType.UNDO);
+			return inputUndo;
+
+		case REDO:
+			RefinedUserInput inputRedo = new RefinedUserInput();
+			inputRedo.setCommandType(EnumGroup.CommandType.REDO);
+			return inputRedo;
+
+		case DISPLAY:
+			RefinedUserInput inputDisplay = new RefinedUserInput();
+			inputDisplay.setCommandType(EnumGroup.CommandType.DISPLAY);
+			return inputDisplay;
+		
+		case FILTER:
+			return InputIsFilter.refineInput(userInput);
+		
+		case EXIT:
+			RefinedUserInput inputExit = new RefinedUserInput();
+			inputExit.setCommandType(EnumGroup.CommandType.EXIT);
+			return inputExit;
+
+		case HELP:
+			RefinedUserInput inputHelp = new RefinedUserInput();
+			inputHelp.setCommandType(EnumGroup.CommandType.HELP);
+			return inputHelp;
+			
+		case DONE:
+			return RefineInputWithIndex.inputIsFinish(userInput);
+
+		default:
+			return new RefinedUserInput();
+			
+		}
+	}
+}
+	// End of segment: C:\Code\main\SparkMoWare\parser\Interpreter.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\parser\InvalidSpecialContent.java
+	 */
+
+public class InvalidSpecialContent {
+
+	/**
+	 * Method checks if content matches the available choices for the clear command  
+	 * 
+	 * @param input String to be checked.
+	 * @return Boolean true if the input matches any of the available choices for the clear command.
+	 */
+	protected static Boolean contentForClear(String input) {
+		input = input.trim();
+		Matcher onMatcher = ParserPatternLocal.onPattern.matcher(input);
+		
+		if(onMatcher.matches()){
+			return true;
+		}
+		
+		Matcher beforeMatcher = ParserPatternLocal.beforePattern.matcher(input);
+				
+		if(beforeMatcher.matches()) {
+			return true;
+		}
+		
+		Matcher betweenMatcher = ParserPatternLocal.betweenPattern.matcher(input);
+		
+		if(betweenMatcher.matches()) {
+			return true;
+		}
+		
+		return false;
+	}
+}
+
+	// End of segment: C:\Code\main\SparkMoWare\parser\InvalidSpecialContent.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\parser\Misc.java
+	 */
+
+
+/**
+ * Collection of miscellaneous methods used by the Parser.
+ */
+public class Misc {
+	
+	/**
+	 * Method checks if input contains any date or time.
+	 * 
+	 * @param input String to be checked.
+	 * @return true if no date or time inputs are detected.
+	 */
+    protected static Boolean isFloatingAssignment(String input) {
+        Matcher dateMatcher = ParserPatternLocal.datePattern.matcher(input);
+        Matcher timeMatcher = ParserPatternLocal.timePattern.matcher(input);
+        
+        if(!dateMatcher.find() && !timeMatcher.find()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+	
+    /**
+     * Method extracts title from input by removing unnecessary information. All dates and times,
+     * the String command in the input and the priority.
+     * 
+     * @param input String to have title extracted from.
+     * @param command String command to be removed.
+     * @return title String
+     */
+	protected static String extractTitle(String input, String command) {
+		input = ParserDateLocal.replaceAllDate(input);
+		input = ParserTimeLocal.replaceAllTime(input);
+		input = removeCommand(input, command);
+		input = removePriority(input);
+		
+		input = input.trim();
+		String[] temp = input.split(" ");
+		
+		if(temp.length == 0) {
+			return "";
+		}
+		
+		return refineString(temp);
+	}
+	
+	/**
+	 * Method removes the first instance of the String command matching the String input. If no
+	 * match is found, the same input is returned.
+	 * 
+	 * @param input String to be changed.
+	 * @param command String to be removed from input String.
+	 * @return String after the removal of the String command.
+	 */
+	protected static String removeCommand(String input, String command) {
+		if(command.equals("add")) {
+			Matcher addMatcher = ParserPatternLocal.addPattern.matcher(input);
+			
+			return addMatcher.replaceFirst("").trim();
+		} else if(command.equals("tentative")) {
+			Matcher tentativeMatcher = ParserPatternLocal.tentativePattern.matcher(input);
+			
+			return tentativeMatcher.replaceFirst("").trim();
+		} else if(command.equals("edit")) {
+			Matcher editMatcher = ParserPatternLocal.editPattern.matcher(input);
+
+			return editMatcher.replaceFirst("").trim();
+		} else if(command.equals("confirm")) {
+			Matcher confirmMatcher = ParserPatternLocal.confirmPattern.matcher(input);
+
+			return confirmMatcher.replaceFirst("").trim();
+		} else if(command.equals("delete")) {
+			Matcher deleteMatcher = ParserPatternLocal.deletePattern.matcher(input);
+
+			return deleteMatcher.replaceFirst("").trim();
+		} else if(command.equals("clear")) {
+			Matcher clearMatcher = ParserPatternLocal.clearPattern.matcher(input);
+			
+			return clearMatcher.replaceFirst("");
+		} else if(command.equals("search")) {
+			Matcher searchMatcher = ParserPatternLocal.searchPattern.matcher(input);
+			
+			return searchMatcher.replaceFirst("");
+		} else if(command.equals("sort")) {
+			Matcher sortMatcher = ParserPatternLocal.sortPattern.matcher(input);
+			
+			return sortMatcher.replaceFirst("");
+		} else if(command.equals("filter")) {
+			Matcher filterMatcher = ParserPatternLocal.filterPattern.matcher(input);
+			
+			return filterMatcher.replaceFirst("");
+		} else if(command.equals("finish")) {
+			Matcher finishMatcher = ParserPatternLocal.finishPattern.matcher(input);
+			
+			return finishMatcher.replaceFirst("");
+		}
+		return input;
+	}
+	
+	/**
+	 * Method removes any matching instances of priority.
+	 * 
+	 * @param input String to be changed.
+	 * @return String after removal of priority.
+	 */
+	protected static String removePriority(String input) {
+		Matcher importantMatcher = ParserPatternLocal.importantPattern.matcher(input);
+		Matcher notImportantMatcher = ParserPatternLocal.notImportantPattern.matcher(input);
+		
+		if(notImportantMatcher.find()) {
+			input = notImportantMatcher.replaceAll("");
+		} else if(importantMatcher.find()) {
+			input = importantMatcher.replaceAll("");
+		}
+		return input.trim();
+	}
+	
+	/**
+	 * Method removes any extra whitepaces between words.
+	 * 
+	 * @param unrefinedString String Array to be combined.
+	 * @return String with only single whitespaces between the words.
+	 */
+	protected static String refineString(String [] unrefinedString) {
+		int length = unrefinedString.length;
+		String refinedString = new String();
+		
+		for(int counter = 0; counter<length; counter ++) {
+			unrefinedString[counter] = unrefinedString[counter].trim();
+			refinedString = refinedString.concat(unrefinedString[counter]);
+			
+			if(!unrefinedString[counter].isEmpty()){
+				refinedString = refinedString.concat(" ");
+			}
+		}
+		return refinedString.trim();
+	}
+	
+	/**
+	 * Method to extract priority. If not matching priority is found, returns not important.
+	 * 
+	 * @param input String to have priority extracted from.
+	 * @return priority String
+	 */
+	protected static String extractPriority(String input) {
+		Matcher notimportantMatcher = ParserPatternLocal.notImportantPattern.matcher(input);
+		Matcher importantMatcher = ParserPatternLocal.importantPattern.matcher(input);
+		String notImportant = "NIMPT";
+		String important = "IMPT";
+		
+		if(notimportantMatcher.find()) {
+			return notImportant;
+		} else if(importantMatcher.find()) {
+			return important;
+		} else {
+			return notImportant;
+		}
+	}
+
+	/**
+	 * Method removes the first instance of title from the String input.
+	 * 
+	 * @param input String to be changed.
+	 * @return String after removal of the String title from input.
+	 */
+	protected static String removeEditTitle(String input) {
+		Matcher titleMatcher = ParserPatternLocal.titlePattern.matcher(input);
+		
+		if(titleMatcher.find()) {
+			input = titleMatcher.replaceFirst("");
+		}
+		return input;
+	}
+	
+	/**
+	 * Method removes zeroes until input is empty or encounters a non-zero character.
+	 * 
+	 * @param input String to be changed
+	 * @return String with leading zeroes removed.
+	 */
+	protected static String removeFrontZero(String input) {
+		while (input.length() > 0 && input.charAt(0) == '0') {
+			input = input.substring(1);
+		}
+		return input;
+	}
+}
+
+	// End of segment: C:\Code\main\SparkMoWare\parser\Misc.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\parser\ParserIndexLocal.java
+	 */
+
+
+/**
+ * Class containing all relevant methods involving the index.
+ */
+public class ParserIndexLocal {
+	
+	/**
+	 * Method extracts index from String input. If no index is found, -1 is returned to
+	 * indicate no index found.
+	 * 
+	 * @param input String to have index extracted from.
+	 * @param command String to be removed.
+	 * @return index int.
+	 */
+	protected static int extractIndex(String input, String command) {
+		int index = -1;
+		
+		input = Misc.removeCommand(input, command).trim();
+		input = ParserDateLocal.replaceAllDate(input);
+		input = ParserTimeLocal.replaceAllTime(input);
+		
+		input = input.replaceAll("[a-zA-Z]+", "").trim();
+		
+		if(input.matches("[0-9]+")) {
+			index = Integer.parseInt(input);
+		}
+		return index;
+	}
+		
+	/**
+	 * Method to remove index from input String.
+	 * 
+	 * @param input String to be changed.
+	 * @return String with index removed.
+	 */
+	protected static String removeIndex(String input) {
+		
+		if(indexExists(input)) {
+			int i = 0;
+			int length = input.length();
+			String temp = new String();
+			
+			while (!Character.isDigit(input.charAt(i))) {
+				i++;
+			}
+			
+			int j = i;
+			
+			while ( j != length && Character.isDigit(input.charAt(j))) {
+				j++;
+			}
+			temp = input.substring(i, j);
+			
+			input = input.replaceFirst(temp, "");
+		}
+		
+		return input.trim();
+	}
+	
+	/**
+	 * Method determines if index exists.
+	 * 
+	 * @param input String to be checked.
+	 * @return true if index exists.
+	 */
+	protected static boolean indexExists(String input) {
+		input = ParserDateLocal.replaceAllDate(input);
+		input = ParserTimeLocal.replaceAllTime(input);
+		
+		int length = input.length();
+		
+		for(int i=0; i < length;  i++) {
+			if(Character.isAlphabetic(input.charAt(i))) {
+				input =  input.replace(input.charAt(i), ' ');
+			}
+		}
+		
+		if(input.matches(".*\\d+.*"))    {
+			return true;
+		} else {
+			return false;
+		}
+	}
+}
+
+	// End of segment: C:\Code\main\SparkMoWare\parser\ParserIndexLocal.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\parser\ParserPatternLocal.java
+	 */
+
+
+/**
+ * Class contains all relevant pattern for Parser package.
+ */
+public class ParserPatternLocal {
+
+	protected static Pattern addPattern = Pattern.compile("add|Add|Create|create");
+	
+	protected static Pattern editPattern = Pattern.compile("edit|Edit");
+	
+	protected static Pattern deletePattern = Pattern.compile("delete|Delete");
+	
+	protected static Pattern tentativePattern = Pattern.compile("tentative|Tentative");
+	
+	protected static Pattern confirmPattern = Pattern.compile("confirm|Confirm");
+	
+	protected static Pattern sortPattern = Pattern.compile("sort|Sort");
+	
+	protected static Pattern searchPattern = Pattern.compile("search|Search");
+	
+	protected static Pattern filterPattern = Pattern.compile("filter|Filter");
+	
+	protected static Pattern clearPattern = Pattern.compile("clear|Clear");
+	
+	protected static Pattern undoPattern = Pattern.compile("undo|Undo");
+	
+	protected static Pattern redoPattern = Pattern.compile("redo|Redo");
+	
+	protected static Pattern statisticPattern = Pattern.compile("statistic|stat|Statistic|Stat|"
+															  + "statistics|stats|Statistics|Stats");
+	
+	protected static Pattern exitPattern = Pattern.compile("exit|Exit");
+	
+	protected static Pattern displayPattern = Pattern.compile("display|Display");
+	
+	protected static Pattern helpPattern = Pattern.compile("help|Help");
+	
+	protected static Pattern finishPattern = Pattern.compile("finish|fin|Finish|Fin|"
+														   + "done|Done");
+	
+	protected static Pattern timePattern = Pattern.compile("([0-9]{4})");
+	
+	protected static Pattern datePattern = Pattern.compile("(([0-9]?[0-9])/([0-9]?[0-9])/([0-9]{2}))|"
+														 + "(([0-9]?[0-9])_([0-9]?[0-9])_([0-9]{2}))|"
+														 + "(([0-9]?[0-9])-([0-9]?[0-9])-([0-9]{2}))");
+	
+	protected static Pattern onPattern = Pattern.compile("on|On");
+	
+	protected static Pattern beforePattern = Pattern.compile("before|Before");
+	
+	protected static Pattern betweenPattern = Pattern.compile("between|Between");
+	
+	
+	protected static Pattern todayPattern = Pattern.compile("today|Today");
+	
+	protected static Pattern importantPattern = Pattern.compile("important|IMPT|Impt|impt|Important|"
+															  + "urgent|Urgent");
+
+    protected static Pattern notImportantPattern = Pattern.compile("NIMPT|nIMPT|Nimportant|nimportant|"
+    															 + "nimpt|NIMPORTANT");
+
+    protected static Pattern startDatePattern = Pattern.compile("start date|start_date|start-date|-sd|"
+    														  + "Start Date|Start_Date|Start-Date|-SD|"
+    														  + "Start date|Start_date|Start-date|-Sd|"
+    														  + "start Date|start_Date|start-Date|-sD|"
+    														  + "startdate|STARTDATE|Startdate|StartDate");
+    
+    protected static Pattern startTimePattern = Pattern.compile("start time|start_time|start-time|-st|"
+    														  + "Start Time|Start_Time|Start-Time|-ST|"
+    														  + "Start time|Start_time|Start-time|-St|"
+    														  + "start Time|start_Time|start-Time|-sT|"
+    														  + "starttime|STARTTIME|Starttime|StartTime");
+    
+    protected static Pattern endDatePattern = Pattern.compile("end date|end_date|end-date|-ed|"
+			  												+ "End Date|End_Date|End-Date|-ED|"
+			  												+ "End date|End_date|End-date|-Ed|"
+			  												+ "end Date|end_Date|end-Date|-eD|"
+			  												+ "enddate|ENDDATE|Enddate|EndDate");
+    
+    protected static Pattern endTimePattern = Pattern.compile("end time|end_time|endtime|-et|"
+    														+ "End Time|End_Time|End-Time|-ET|"
+    														+ "End time|End_time|End-time|-Et|"
+  														  	+ "end Time|end_Time|end-Time|-eT|"
+  														  	+ "endtime|ENDTIME|Endtime|EndTime");
+    
+    protected static Pattern titlePattern = Pattern.compile("title|name|Title|Name");
+    
+    protected static Pattern priorityPattern = Pattern.compile("priority|Priority|-pri|-Pri");
+    
+    
+    private static String symbols = Pattern.quote(")");
+    protected static Pattern symbolsPattern = Pattern.compile(symbols);
+    
+    protected static Pattern separatorPattern = Pattern.compile("/");
+}
+	// End of segment: C:\Code\main\SparkMoWare\parser\ParserPatternLocal.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\parser\ParserTestDriver.java
+	 */
+
+
+/**
+ * Class to allow testing of any method in the Parser Package.
+ */
+public class ParserTestDriver {
+
+	/***********Major Component***************/
+	
+	public static String testInputIsAdd(String testInput) {
+		return InputIsAdd.refineInput(testInput).toString();
+	}
+	
+	public static String testInputIsTentative(String testInput) {
+		return InputIsTentative.refineInput(testInput).toString();
+	}
+	
+	public static String testInputIsClear(String testInput) {
+		return InputIsClear.refineInput(testInput).toString();
+	}
+	
+	public static String testInputIsConfirm(String testInput) {
+		return InputIsConfirm.refineInput(testInput).toString();
+	}
+	
+	public static String testInputIsEdit(String testInput) {
+		return InputIsEdit.refineInput(testInput).toString();
+	}
+	
+	public static String testInputIsFilter(String testInput) {
+		return InputIsFilter.refineInput(testInput).toString();
+	}
+	
+	public static String testInputIsSearch(String testInput) {
+		return InputIsSearch.refineInput(testInput).toString();
+	}
+	
+	public static String testInputIsSort(String testInput) {
+		return InputIsSort.refineInput(testInput).toString();
+	}
+	
+	/***********RefineInputWithId Component***************/
+	
+	public static String testInputIsDelete(String testInput) {
+		return RefineInputWithIndex.inputIsDelete(testInput).toString();
+	}
+	
+	public static String testInputIsFinish(String testInput) {
+		return RefineInputWithIndex.inputIsFinish(testInput).toString();
+	}
+	
+	/************ParserDateLocal Component**************/
+
+	public static int testDateComparator(String testInput1, String testInput2) {
+		return ParserDateLocal.dateComparator(testInput1, testInput2);
+	}
+
+	public static Boolean testHasTwoDateInputs(String testInput) {
+		return ParserDateLocal.hasTwoDateInputs(testInput);
+	}
+	
+	public static String testExtractStartDate(String testInput) {
+		return ParserDateLocal.extractStartDate(testInput);
+	}
+	
+	public static String testExtractEndDate(String testInput) {
+		return ParserDateLocal.extractEndDate(testInput);
+	}
+	
+	//unsused test
+	public static String testDetermineDateValidity(String testInput) {
+		return ParserDateLocal.determineDateValidity(testInput);
+	}
+	
+	public static boolean testDateFormatValid(String testInput) {
+		return ParserDateLocal.dateFormatValid(testInput);
+	}
+	
+	public static boolean testDateExists(int testInput) {
+		return ParserDateLocal.dateExists(testInput);
+	}
+	
+	public static String testReplaceAllDate(String testInput) {
+		return ParserDateLocal.replaceAllDate(testInput);
+	}
+	
+	public static String testExtractTentativeDates(String testInput) {
+		return ParserDateLocal.extractTentativeDates(testInput).toString();
+	}
+	
+	/************ParserTimeLocal Component**************/
+	
+
+	public static int testTimeComparator(String testInput1, String testInput2) {
+		return ParserTimeLocal.timeComparator(testInput1, testInput2);
+	}
+	
+	public static String testExtractStartTime(String testInput) {
+		return ParserTimeLocal.extractStartTime(testInput);
+	}
+	
+	public static boolean testHasTwoTimeInputs(String testInput) {
+		return ParserTimeLocal.hasTwoTimeInputs(testInput);
+	}
+
+	public static String testExtractEndTime(String testInput) {
+		return ParserTimeLocal.extractEndTime(testInput);
+	}
+	
+	public static String testReplaceAllTime(String testInput) {
+		return ParserTimeLocal.replaceAllTime(testInput);
+	}
+	
+	public static String testDetermineTimeValidity(String testInput) {
+		return ParserTimeLocal.determineTimeValidity(testInput);
+	}
+	
+	public static boolean testTimeFormatValid(String testInput) {
+		return ParserTimeLocal.timeFormatValid(testInput);
+	}
+
+	public static boolean testTimeExists(int testInput) {
+		return ParserTimeLocal.timeExists(testInput);
+	}
+
+	public static String testExtractTentativeTimes(String testInput) {
+		return ParserTimeLocal.extractTentativeTimes(testInput).toString();
+	}
+	
+	/************ParserIdLocal Component**************/
+	
+	public static boolean testIndexExists(String testInput) {
+		return ParserIndexLocal.indexExists(testInput);
+	}
+	
+	public static int testExtractIndex(String testInput, String command) {
+		return ParserIndexLocal.extractIndex(testInput, command);
+	}
+
+	public static String testRemoveIndex(String testInput) {
+		return ParserIndexLocal.removeIndex(testInput);
+	}
+
+	/************Misc Component**************/
+
+	public static String testRefineString(String[] testInput) {
+		return Misc.refineString(testInput);
+	}
+
+	public static String testExtractTitle(String testInput, String command) {
+		return Misc.extractTitle(testInput, command);
+	}
+
+	public static boolean testIsFloatingAssignment(String testInput) {
+		return Misc.isFloatingAssignment(testInput);
+	}
+
+	public static String testExtractPriority(String testInput) {
+		return Misc.extractPriority(testInput);
+	}
+	
+	public static String testRemoveCommand(String testInput, String command) {
+		return Misc.removeCommand(testInput, command);
+	}
+	
+	public static String testRemovePriority(String testInput) {
+		return Misc.removePriority(testInput);
+	}
+	
+	public static String testRemoveFrontZero(String testInput) {
+		return Misc.removeFrontZero(testInput);
+	}
+	
+	/************InvalidSpecialContent Component**************/
+	
+	public static boolean testContentForClear(String testInput) {
+		return InvalidSpecialContent.contentForClear(testInput);
+	}
+
+	/*public static boolean testContentForSearch(String testInput) {
+		return InvalidSpecialContent.contentForSearch(testInput);
+	}*/
+	
+	/************ExtractSpecialContent Component**************/
+		
+	public static String testforClear(String testInput) {
+		return ExtractSpecialContent.forClear(testInput);
+	}
+
+	public static String testforSearch(String testInput) {
+		return ExtractSpecialContent.forSearch(testInput);
+	}
+	
+	public static String testforSort(String testInput) {
+		return ExtractSpecialContent.forSort(testInput);
+	}
+	
+	public static String testforFilter(String testInput) {
+		return ExtractSpecialContent.forFilter(testInput);
+	}
+
+	/************Interpreter Component**************/
+	
+	public static String testReader(String testInput) {
+		return Interpreter.reader(testInput).toString();
+	}
+
+
+}
+
+	// End of segment: C:\Code\main\SparkMoWare\parser\ParserTestDriver.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\parser\ParserTimeLocal.java
+	 */
+
+
+/**
+ * Class containing all relevant methods involving time.
+ */
+public class ParserTimeLocal {
+	
+	private static final int SMALLER = -1;
+	private static final int SAME = 0;
+	private static final int LARGER = 1;
+	protected static String defaultEndTime = "2359";
+	protected static String defaultStartTime = "0000";
+	
+	/**
+	 * Method compares the two time inputs to determine if they are equal, larger or smaller.
+	 * The case are as follows:
+	 * <br><br>
+	 * -1 id timeA < timeB
+	 * <br><br>
+	 * 0 if timeA = timeB
+	 * <br><br>
+	 * 1 if timeA > timeB
+	 *  
+	 * @param timeA first time input to be compared.
+	 * @param timeB second time input to be compared.
+	 * @return int value representing result -1 id timeA < timeB, 0 if timeA = timeB and 1 if timeA > timeB
+	 */
+	protected static int timeComparator(String timeA, String timeB) {
+
+		String hourA = timeA.trim().substring(0, 2);
+		String hourB = timeB.trim().substring(0, 2);
+
+		String minA = timeA.trim().substring(2, 4);
+		String minB = timeB.trim().substring(2, 4);
+
+		if(hourA.equals(hourB)) {
+			if(!minA.equals(minB)) {
+
+				if(minA.equals("00") && !minB.equals("00")) {
+					return SMALLER;
+				} else if(!minA.equals("00") && minB.equals("00")) {
+					return LARGER;
+				} else if(!minA.equals("00") && !minB.equals("00")) {
+					minA = Misc.removeFrontZero(minA);
+					minB = Misc.removeFrontZero(minB);
+
+					if(Integer.parseInt(minA) > Integer.parseInt(minB)) {
+						return LARGER;
+					} else {
+						return SMALLER;
+					}
+				}
+			} else {
+				return SAME;
+			}
+		} else if(hourA.equals("00") && !hourB.equals("00")) {
+			return SMALLER;
+		} else if(!hourA.equals("00") && hourB.equals("00")) {
+			return LARGER;
+		} else if(!hourA.equals("00") && !hourB.equals("00")) {
+			hourA = Misc.removeFrontZero(hourA);
+			hourB = Misc.removeFrontZero(hourB);
+
+			if(Integer.parseInt(hourA) > Integer.parseInt(hourB)) {
+				return LARGER;
+			} else {
+				return SMALLER;
+			}
+		}
+		return SAME;
+	}
+
+	/**
+	 * Method extracts the end time from the String input. If no time is detected, the default end
+	 * time 2359 is entered. If more than one time is found, the first time input is replaced and
+	 * the second is extracted.
+	 * 
+	 * @param input String to have the end time extracted from.
+	 * @return end time String.
+	 */
+	protected static String extractEndTime(String input) {
+		input = ParserDateLocal.replaceAllDate(input);
+		Matcher timeMatcher = ParserPatternLocal.timePattern.matcher(input);
+		String endTime = new String();
+
+		if(hasTwoTimeInputs(input)) {
+			input = timeMatcher.replaceFirst("");
+		}
+
+		endTime = extractStartTime(input);
+
+		if(!timeMatcher.find()) {
+			endTime = ParserTimeLocal.defaultEndTime;
+		}
+
+		return endTime;
+	}
+
+	/**
+	 * Method determines if input String has 2 time. Returns false otherwise.
+	 * 
+	 * @param input String to be checked.
+	 * @return true if there are two time with the input.
+	 */
+	protected static boolean hasTwoTimeInputs(String input) {
+		Matcher timeMatcher = ParserPatternLocal.timePattern.matcher(input);
+		int n = 0;
+		
+		while(timeMatcher.find()) {
+			input = timeMatcher.replaceFirst("");
+			timeMatcher = ParserPatternLocal.timePattern.matcher(input);
+			n++;
+		}
+
+		if(n > 1) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * Method extracts the start time from the String input. If time extracted from input is in an invalid format,
+	 * an empty String is returned.
+	 * 
+	 * @param input String to have start time extracted from.
+	 * @return start time String.
+	 */
+	protected static String extractStartTime(String input) {
+		input = ParserDateLocal.replaceAllDate(input);
+		Matcher timeMatcher = ParserPatternLocal.timePattern.matcher(input);
+		String startTime = new String();
+
+		if(timeMatcher.find()) {
+			startTime = timeMatcher.group();
+		} else if(!timeMatcher.find()) {
+			startTime = ParserTimeLocal.defaultStartTime; 
+		}
+
+		return determineTimeValidity(startTime);
+	}
+
+	/**
+	 * Method returns the inputTime String if format is valid, empty String otherwise.
+	 * 
+	 * @param inputTime String to be checked.
+	 * @return the inputTime String if format is valid, empty String otherwise.
+	 */
+	public static String determineTimeValidity(String inputTime) {
+        if(!timeFormatValid(inputTime)) {
+        	return "";
+		}
+		return inputTime;
+	}
+
+	/**
+	 * Method checks if time format is valid and returns true if so.
+	 * 
+	 * @param time String to be checked.
+	 * @return true if time is valid.
+	 */
+	public static boolean timeFormatValid(String time) {
+		boolean timeValidity = true;
+
+		if(time.length() != 4) {
+			timeValidity = false;
+		} else if(!time.matches("[0-9]+")) {
+			timeValidity = false;
+		} else if(!timeExists(Integer.parseInt(time))) {
+			timeValidity = false;
+		}
+		return timeValidity;
+	}
+
+	/**
+	 * Method to check if time exists.
+	 * 
+	 * @param time String to be checked.
+	 * @return true if time exists.
+	 */
+	public static boolean timeExists(int time) {
+		boolean timeExist = false;
+
+		int min = time % 100;
+		int hr = time / 100;
+
+		if(min <= 59 && min >= 0 && hr <= 23 && hr >= 0) {
+			timeExist = true;
+		}
+		return timeExist;
+	}
+
+	//DESIGN FLAW: method will replace any and all 4 number input
+	//for eg. the year part of date or even in a long sequence of numbers
+	/**
+	 * Method replaces all time found.  
+	 * <br><br>
+	 * Flaw: Method replaces any and all numerical String portions found to have 4 digits.
+	 * 
+	 * @param input String to be changed.
+	 * @return input String with time removed.
+	 */
+	protected static String replaceAllTime(String input) {
+		Matcher timeMatcher = ParserPatternLocal.timePattern.matcher(input);
+		
+			input = timeMatcher.replaceAll("");
+			
+		return input;
+	}
+
+	/**
+	 * Method to extract tentative time.
+	 * 
+	 * @param input String to have tentative time extracted from.
+	 * @return tentative time Vector.
+	 */
+	public static Vector<String> extractTentativeTimes(String input) {
+		Vector<String> tentativeTimes = new Vector<String> ();
+		Matcher dateMatcher = ParserPatternLocal.datePattern.matcher(input);
+		input = dateMatcher.replaceFirst("");
+		Matcher timeMatcher = ParserPatternLocal.timePattern.matcher(input);
+		
+		while(timeMatcher.find()) {
+			tentativeTimes.add(timeMatcher.group());
+			input = timeMatcher.replaceFirst("");
+			
+			dateMatcher = ParserPatternLocal.datePattern.matcher(input);
+			
+			if(dateMatcher.find()) {
+				input = dateMatcher.replaceFirst("");
+			}
+			
+			timeMatcher = ParserPatternLocal.timePattern.matcher(input);
+		}
+		
+		return tentativeTimes;
+	}
+}
+
+
+	// End of segment: C:\Code\main\SparkMoWare\parser\ParserTimeLocal.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\parser\RefinedUserInput.java
+	 */
+
+
+/**
+ * The RefinedUserInput object contains all relevant information that is interpreted by the Parser and organised accordingly.
+ */
+public class RefinedUserInput {
+	
+	/************** Data members **********************/
+	
+	private CommandType command;
+	private int index;
+	private String title;
+	private String startDate;
+	private String startTime;
+	private String endDate;
+	private String endTime;
+	private AssignmentType assignment;
+	private String priority;
+	private boolean isNewTentative;
+	private String specialContent;
+	/* Special content is for the following command cases:
+	 * delete all (on, before, during)
+	 * tentative (number of days)
+	 * sort and search (date, serial number, etc.)
+	 */
+	private Vector<String> tentativeDates;
+	private Vector<String> tentativeTimes;
+	
+	private static final String DEFAULT_CONTENT = "default";
+	private static final String DEFAULT_PRIORITY = "NIMPT";
+	private static final int DEFAULT_INDEX = 0;
+	/************** Constructors **********************/
+	
+	/**
+	 * Default Constructor for RefinedUserInput object. By default, all String content are "default",
+	 * priority is not "NIMPT" and index is 0. 
+	 */
+	public RefinedUserInput() {
+		
+		setCommandType(EnumGroup.CommandType.DEFAULT);
+		setIndex(DEFAULT_INDEX);
+		setTitle(DEFAULT_CONTENT);
+		setStartDate(DEFAULT_CONTENT);
+		setStartTime(DEFAULT_CONTENT);
+		setEndDate(DEFAULT_CONTENT);
+		setEndTime(DEFAULT_CONTENT);
+		setAssignmentType(AssignmentType.DEFAULT);
+		setPriority(DEFAULT_PRIORITY);
+		setIsNewTentative(false);
+		setSpecialContent(DEFAULT_CONTENT);
+	}
+	
+	/**************** Accessors ***********************/
+	
+	/**
+	 * 
+	 * @return the CommandType of this RefinedUserInput.
+	 */
+	public CommandType getCommandType() {
+		return this.command;
+	}
+	
+	/**
+	 * 
+	 * @return the Index of this RefinedUserInput.
+	 */
+	public int getIndex() {
+		return this.index;
+	}
+	
+	/**
+	 * 
+	 * @return the Title of this RefinedUserInput.
+	 */
+	public String getTitle() {
+		return this.title;
+	}
+	
+	/**
+	 * 
+	 * @return the StartDate of this RefinedUserInput.
+	 */
+	public String getStartDate() {
+		return this.startDate;
+	}
+
+	/**
+	 * 
+	 * @return the StartTime of this RefinedUserInput.
+	 */
+	public String getStartTime() {
+		return this.startTime;
+	}
+	
+	/**
+	 * 
+	 * @return the EndDate of this RefinedUserInput.
+	 */
+	public String getEndDate() {
+		return this.endDate;
+	}
+	
+	/**
+	 * 
+	 * @return the EndTime of this RefinedUserInput.
+	 */
+	public String getEndTime() {
+		return this.endTime;
+	}
+	
+	/**
+	 * 
+	 * @return the AssignmentType of this RefinedUserInput.
+	 */
+	public AssignmentType getAssignmentType() {
+		return this.assignment;
+	}
+	
+	/**
+	 * 
+	 * @return the Priority of this RefinedUserInput.
+	 */
+	public String getPriority() {
+		return this.priority;
+	}
+	
+	/**
+	 * 
+	 * @return true if this RefinedUserInput contains information for a new tentative input.
+	 */
+	public Boolean getIsNewTentative() {
+		return this.isNewTentative;
+	}
+	
+	/**
+	 * 
+	 * @return the SpecialContent of this RefinedUserInput.
+	 */
+	public String getSpecialContent() {
+		return this.specialContent;
+	}
+	
+	/**
+	 * 
+	 * @return the tentative dates of this RefinedUserInput.
+	 */
+	public Vector<String> getTentativeDates() {
+		return this.tentativeDates;
+	}
+	
+	/**
+	 * 
+	 * @return the tentative times of this RefinedUserInput.
+	 */
+	public Vector<String> getTentativeTimes() {
+		return this.tentativeTimes;
+	}
+	
+	/**************** Mutators **************************/
+	
+	/**
+	 * Changes the current CommandType to the new command.
+	 * @param command The new CommandType of this RefinedUserInput.
+	 */
+	protected void setCommandType(CommandType command) {
+		this.command = command;
+	}
+	
+	/**
+	 * Changes the current index to the new index.
+	 * @param index The new int index of this RefinedUserInput.
+	 */
+	protected void setIndex(int index) {
+		this.index = index;
+	}
+	
+	/**
+	 * Changes the current title to the new title.
+	 * @param title The new String title of this RefinedUserInput.
+	 */
+	protected void setTitle(String title) {
+		this.title = title;
+	}
+	
+	/**
+	 * Changes the current start date to the new start date.
+	 * @param startDate The new String start date of this RefinedUSerInput.
+	 */
+	protected void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+	
+	/**
+	 * Changes the current start time to the new start time.
+	 * @param startTime The new String start time of this RefinedUserInput.
+	 */
+	protected void setStartTime(String startTime) {
+		this.startTime = startTime;
+	}
+	
+	/**
+	 * Changes the current end date to the new end date.
+	 * @param endDate The new String end date of this RefinedUserInput.
+	 */
+	protected void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
+	
+	/**
+	 * Changes the current end time to the new .
+	 * @param endTime The new end time of this RefinedUserIput.
+	 */
+	protected void setEndTime(String endTime) {
+		this.endTime = endTime;
+	}
+	
+	/**
+	 * Changes the current AssignmentType to the new AssignmentType.
+	 * @param assignment The new AssignmentType of this RefinedUserInput.
+	 */
+	protected void setAssignmentType(AssignmentType assignment) {
+		this.assignment = assignment;
+	}
+	
+	/**
+	 * Changes the current priority to the new priority.
+	 * @param priority The new String priority of this RefinedUserInput.
+	 */
+	protected void setPriority(String priority) {
+		this.priority = priority;
+	}
+	
+	/**
+	 * Changes the current Boolean state of new tentative information to the new Boolean state of new tentative information.
+	 * @param isNewTentative The Boolean state of whether this RefinedUserInput contains new tentative information.
+	 */
+	protected void setIsNewTentative(Boolean isNewTentative) {
+		this.isNewTentative = isNewTentative;
+	}
+	
+	/**
+	 * Changes the current special content to the new special content.
+	 * @param specialContent The new String special content of this RefinedUserInput.
+	 */
+	protected void setSpecialContent(String specialContent) {
+		this.specialContent = specialContent;
+	}
+	
+	/**
+	 * Overrides the old vector of tentative dates with the new vector of tentative dates.
+	 * @param tentativeDate The new Vector of tentative dates of this RefinedUserInput.
+	 */
+	protected void setTentativeDates(Vector <String> tentativeDate) {
+		this.tentativeDates = (tentativeDate);
+	}
+	
+	/**
+	 * Overrides the old vector of tentative times with the new vector of tentative times.
+	 * @param tentativeTime the new Vector of tentative times of this RefinedUserInput.
+	 */
+	protected void setTentativeTimes(Vector <String> tentativeTime) {
+		this.tentativeTimes = (tentativeTime);
+	}
+	
+	/**************** Overriding ************************/
+	
+	public String toString() {
+		return getCommandType() + "~" + getIndex() + "~" + getTitle() + "~" + getStartDate() + "~" + getStartTime() + "~"
+				+ getEndDate() + "~" + getEndTime() + "~" + getAssignmentType() + "~" + getPriority( )+ "~"
+				+ getIsNewTentative() + "~" + getSpecialContent() + "~" + getTentativeDates() + "~" + getTentativeTimes();
+	}
+}
+	// End of segment: C:\Code\main\SparkMoWare\parser\RefinedUserInput.java
+
+
+
+
+
+	/**
+	 * origin: C:\Code\main\SparkMoWare\parser\RefineInputWithIndex.java
+	 */
+
+
+/**
+ * Class containing the various RefinedUserInput object involving only index.
+ */
+public class RefineInputWithIndex {
+
+	/**
+	 * Method creates a RefinedUserInput for the delete command. If no index is found (index = -1),
+	 * an Invalid Format CommandType is returned.
+	 * 
+	 * @param userInput the String with all the relevant information to be extracted.
+	 * @return a RefinedUserInput object for the delete command.
+	 */
+	protected static RefinedUserInput inputIsDelete(String userInput) {
+		int index = ParserIndexLocal.extractIndex(userInput, "delete");
+		RefinedUserInput inputDelete = new RefinedUserInput();
+
+		if(index == -1) {
+			inputDelete.setCommandType(EnumGroup.CommandType.INVALID_FORMAT);
+			return inputDelete;
+		} else {
+
+			inputDelete.setCommandType(EnumGroup.CommandType.DELETE);
+			inputDelete.setIndex(index);
+
+			return inputDelete;
+		}
+	}
+
+	/**
+	 * Method creates a RefinedUserInput for the finish command. If no index is found (index = -1),
+	 * an Invalid Format CommandType is returned.
+	 * 
+	 * @param userInput the String with all the relevant information to be extracted.
+	 * @return a RefinedUserInput object for the finish command.
+	 */
+	protected static RefinedUserInput inputIsFinish(String userInput) {
+		RefinedUserInput inputFinish = new RefinedUserInput();
+		int index = ParserIndexLocal.extractIndex(userInput, "finish");		
+
+		if(index == -1) {
+			inputFinish.setCommandType(EnumGroup.CommandType.INVALID_FORMAT);
+			return inputFinish;
+		} else {
+
+			inputFinish.setCommandType(EnumGroup.CommandType.DONE);
+			inputFinish.setIndex(index);
+
+			return inputFinish;
+		}
+	}
+}
+
+	// End of segment: C:\Code\main\SparkMoWare\parser\RefineInputWithIndex.java
+
+
+
+
+
