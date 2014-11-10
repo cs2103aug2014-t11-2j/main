@@ -11,13 +11,11 @@ import logic.Assignment;
 import logic.Print;
 
 //@author A0116263M
-//@author A0117057J 
 
 public class Storage {
 
 	public static final int SYSTEM_EXIT_ERROR = 0;
 	public static final String ERRORMESSAGELOADFAIL = "File loading failed!";
-
 
 	public static LinkedList<Assignment> saveFile(String filePath, LinkedList<Assignment> buffer) {
 

@@ -24,7 +24,7 @@ public class AssignValidCheck {
 		}
 		return checkValid;
 	}
-
+	
 	protected static boolean checkTask(String[] line){
 		
 		checkIndex = ValidityCheck.indexFormat(line[0]);
@@ -39,7 +39,7 @@ public class AssignValidCheck {
 		}
 		return checkValid;
 	}
-
+	
 	protected static boolean checkAppointment(String[] line) {
 		
 		checkIndex = ValidityCheck.indexFormat(line[0]);
