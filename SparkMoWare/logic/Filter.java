@@ -3,6 +3,7 @@ package logic;
 import java.util.LinkedList;
 
 //@author A0111572R
+//@author A0117057J
 
 public class Filter {
 	
