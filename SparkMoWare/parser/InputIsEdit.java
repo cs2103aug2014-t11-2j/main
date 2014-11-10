@@ -3,6 +3,7 @@ package parser;
 import java.util.regex.Matcher;
 
 //@author A0110788B
+//@author A0117057J (exception handling)
 public class InputIsEdit {
 
 	/**

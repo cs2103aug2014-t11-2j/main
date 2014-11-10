@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.Vector;
 import java.util.regex.Matcher;
 
-//@author Varunica
+//@author A0117057J
 
 /**
  * Class containing all relevant methods involving dates.
