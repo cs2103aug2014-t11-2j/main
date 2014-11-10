@@ -2,11 +2,7 @@ package logic;
 
 import java.util.Vector;
 
-/**
- * Logic: Tentative component to set tentative appointments
- * 		  Convert the appointment to tentative if there is clashing timeslot
- * @author Teck Zhi
- */
+//@author A0111572R
 
 public class SetTentative {
 

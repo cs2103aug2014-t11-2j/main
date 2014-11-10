@@ -2,10 +2,7 @@ package logic;
 
 import java.util.LinkedList;
 
-/**
- * Logic: Delete component to remove required jobs from the list.
- * @author Varunica
- */
+//@author A0117057J
 
 public class Delete {
 	

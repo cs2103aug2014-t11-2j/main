@@ -3,11 +3,7 @@ package logic;
 import logic.Assignment.AssignmentType;
 import parser.RefinedUserInput;
 
-/**
- * Logic: Add component to add Assignment, Appointment and Task
- * 		  to the internal storage buffer.
- * @author Teck Zhi
- */
+//@author A0111572R
 
 public class Add {
 	

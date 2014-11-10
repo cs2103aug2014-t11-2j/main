@@ -5,10 +5,7 @@ import java.util.LinkedList;
 import logic.Assignment.AssignmentType;
 import parser.EnumGroup.CommandType;
 
-/**
- * Logic: RedoTask component to redo all adjustment to the main list.
- * @author Teck Zhi
- */
+//@author A0111572R
 
 public class RedoTask {
 

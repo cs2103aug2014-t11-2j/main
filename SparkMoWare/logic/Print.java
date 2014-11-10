@@ -3,10 +3,7 @@ package logic;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
-/**
- * Logic: Print component, mainly for testing purposes.
- * @author Varunica
- */
+//@author A0117057J
 
 public class Print {
 

@@ -7,13 +7,7 @@ import java.util.ListIterator;
 
 import logic.Assignment.AssignmentType;
 
-/**
- * Logic: Date component to retrieve the current date,
- * 		  get the earliest date in the list,
- * 		  update the date for clear purpose,
- * 		  and check for date exist. 
- * @author Teck Zhi
- */
+//@author A0117057J
 
 public class DateLocal {
 
@@ -148,6 +142,7 @@ public class DateLocal {
 	}
 
 	private static int dateConversion(String date, int lower, int higher) {
+		
 		int number;
 
 		String dateString = date.substring(lower, higher);

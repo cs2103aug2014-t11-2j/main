@@ -4,10 +4,7 @@ import java.util.LinkedList;
 import logic.Assignment.AssignmentType;
 import parser.EnumGroup.CommandType;
 
-/**
- * Logic: Undo component to undo all necessary adjustment to the main list.
- * @author Teck Zhi
- */
+//@author A0111572R
 
 public class UndoTask {
 	

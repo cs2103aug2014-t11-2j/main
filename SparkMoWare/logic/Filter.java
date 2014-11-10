@@ -2,6 +2,8 @@ package logic;
 
 import java.util.LinkedList;
 
+//@author A0111572R
+
 public class Filter {
 	
 	private static final int FORMAT_DEADLINE = 8;

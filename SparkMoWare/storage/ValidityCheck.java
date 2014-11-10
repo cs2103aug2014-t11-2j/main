@@ -1,9 +1,6 @@
 package storage;
 
-/**
- * Storage: ValidityCheck component to check each attributes whether they are in the correct format.
- * @author Teck Zhi
- */
+//@author A0111572R
 
 public class ValidityCheck {
 

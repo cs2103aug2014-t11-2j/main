@@ -5,6 +5,8 @@ import java.util.ListIterator;
 
 import logic.Assignment.AssignmentType;
 
+//@author A0111572R
+
 public class ModifyOutput {
 
 	private static Output returnOutput = new Output();

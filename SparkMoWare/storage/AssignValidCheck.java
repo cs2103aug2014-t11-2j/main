@@ -1,10 +1,6 @@
 package storage;
 
-/**
- * Storage: AssignValidCheck component to check all attribute from storage.txt
- * 		  before assigning to the internal storage buffer list.
- * @author Teck Zhi
- */
+//@author A0111572R
 
 public class AssignValidCheck {
 	

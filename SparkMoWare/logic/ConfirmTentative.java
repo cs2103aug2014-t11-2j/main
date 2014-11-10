@@ -3,11 +3,7 @@ package logic;
 import java.util.LinkedList;
 import java.util.Vector;
 
-/**
- * Logic: Confirm component to confirm any tentative appointment
- * 		  with the time slot input.
- * @author Teck Zhi
- */
+//@author A0111572R
 
 public class ConfirmTentative {
 

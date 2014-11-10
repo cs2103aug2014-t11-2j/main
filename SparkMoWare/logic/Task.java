@@ -1,9 +1,6 @@
 package logic;
 
-/**
- * Logic: Task class extended from Assignment class
- * @author Teck Zhi
- */
+//@author A0111572R
 
 public class Task extends Assignment{
 

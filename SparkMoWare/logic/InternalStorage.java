@@ -4,10 +4,7 @@ import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.Stack;
 
-/**
- * Logic: Internal storage to store action stacks, scanner and buffer
- * @author Teck Zhi
- */
+//@author A0111572R
 
 public class InternalStorage {
 

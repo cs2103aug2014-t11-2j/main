@@ -1,9 +1,6 @@
 package logic;
 
-/**
- * Logic: Message component to store all the necessary messages.
- * @author Varunica
- */
+//@author A0117057J
 
 public class Message {
 	

@@ -10,10 +10,7 @@ import java.util.LinkedList;
 import logic.Assignment;
 import logic.Print;
 
-/**
- * Storage: Storage component to save and load file with respect to storage.txt.
- * @author Zheng Yang
- */
+//@author A0116263M
 
 public class Storage {
 

@@ -7,10 +7,7 @@ import parser.Interpreter;
 import parser.RefinedUserInput;
 import storage.Storage;
 
-/**
- * Logic: Main Component of the logic to connect between parser, GUI and storage together.
- * @author Teck Zhi
- */
+//@author A0111572R
 
 public class SparkMoVare {
 

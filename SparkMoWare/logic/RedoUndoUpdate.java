@@ -5,10 +5,7 @@ import java.util.LinkedList;
 import logic.Assignment.AssignmentType;
 import parser.EnumGroup.CommandType;
 
-/**
- * Logic: RedoUndoUpdate component to store the necessary information for the actions done.
- * @author Teck Zhi
- */
+//@author A0111572R
 
 public class RedoUndoUpdate {
 	

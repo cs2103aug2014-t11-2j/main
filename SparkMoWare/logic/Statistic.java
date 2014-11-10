@@ -2,11 +2,7 @@ package logic;
 
 import java.util.LinkedList;
 
-/**
- * Logic: Statistic component to make the show the number of job completed
- * 		  and whether they are completed on time.
- * @author Teck Zhi
- */
+//@author A0111572R
 
 public class Statistic {
 	

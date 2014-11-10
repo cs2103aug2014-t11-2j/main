@@ -4,11 +4,7 @@ import java.util.ListIterator;
 
 import logic.Assignment.AssignmentType;
 
-/**
- * Logic: Comparator component to compare dates, times, on time,
- * 		  whether the appointment has clash time slot, and compare deadline 
- * @author Teck Zhi
- */
+//@author A0111572R
 
 public class Comparator {
 
@@ -157,7 +153,6 @@ public class Comparator {
 	}
 
 	protected static int addToBigBuffer(Appointment newAppointment) {
-
 
 		int count = 0;
 

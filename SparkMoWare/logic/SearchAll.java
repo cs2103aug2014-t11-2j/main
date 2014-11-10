@@ -3,11 +3,7 @@ package logic;
 import java.util.LinkedList;
 import logic.Assignment.AssignmentType;
 
-/**
- * Logic: Search component to search for time, date, assignment type, completion
- * 	      on time, keyword, priority.
- * @author Teck Zhi
- */
+//@author A0111572R
 
 public class SearchAll {
 

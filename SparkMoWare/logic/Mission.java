@@ -1,10 +1,6 @@
 package logic;
 
-/**
- * Logic: Mission class extended frm Assignment.
- * 		  Return to GUI for proper format in the table.
- * @author Teck Zhi
- */
+//@author A0111572R
 
 public class Mission extends Assignment {
 	

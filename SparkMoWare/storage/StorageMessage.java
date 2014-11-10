@@ -1,9 +1,6 @@
 package storage;
 
-/**
- * Storage: StorageMessage component to store all necessary storage messages.
- * @author Teck Zhi
- */
+//@author A0111572R
 
 public class StorageMessage {
 

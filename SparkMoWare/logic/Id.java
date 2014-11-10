@@ -1,17 +1,12 @@
 package logic;
 
-/**
- * Logic: Id component to set the latest index and the give the
- * 		  next serial number.
- * @author Teck Zhi
- */
+//@author A0111572R
 
 public class Id {
 
 	protected static int latestSerialNumber = 0;
 
 	public static void setLatestSerialNumber(int newSn) {
-		
 		if(newSn > latestSerialNumber) {
 			latestSerialNumber = newSn;
 		}

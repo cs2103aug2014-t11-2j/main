@@ -1,9 +1,6 @@
 package logic;
 
-/**
- * Logic: Assignment class to store floating task
- * @author Teck Zhi
- */
+//@author A0111572R
 
 public class Assignment {
 

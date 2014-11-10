@@ -6,10 +6,7 @@ import logic.Assignment.AssignmentType;
 import parser.EnumGroup.CommandType;
 import parser.RefinedUserInput;
 
-/**
- * Logic: Action class for undo and redo methods.
- * @author Teck Zhi
- */
+//@author A0111572R
 
 public class FutureHistory {
 	

@@ -5,12 +5,7 @@ import logic.Assignment.AssignmentType;
 
 import java.util.LinkedList;
 
-/**
- * Logic: Sort component to sort the list according to title,
- * 		  index(SIN) and the priority level.
- * 		  In addition, it also has a sort deadline for undo edit purpose.
- * @author Teck Zhi
- */
+//@author A0111572R
 
 public class Sort {
 
@@ -31,9 +26,9 @@ public class Sort {
 		} else if(sortType.equalsIgnoreCase("important")){
 			sortedList = insertionSortPriority(buffer);
 		}
-		if(startDate != null && endDate != null) {
-			sortedList = Truncation.truncateList(sortedList, startDate, endDate);
-		}
+		
+		sortedList = Truncation.truncateList(sortedList, startDate, endDate);
+		
 		return sortedList;
 	}
 
@@ -41,8 +36,7 @@ public class Sort {
 
 		LinkedList<Assignment> prioritySortList = new LinkedList<Assignment>();
 
-		prioritySortList.addAll(SearchAll.searchAll(buffer, "IMPT"));
-
+		prioritySortList.addAll(SearchAll.searchAll(buffer, "important"));
 		prioritySortList.addAll(SearchAll.searchAll(buffer, "NIMPT"));
 
 		return prioritySortList;

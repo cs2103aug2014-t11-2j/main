@@ -8,10 +8,7 @@ import logic.Id;
 import logic.Task;
 import logic.Tentative;
 
-/**
- * Storage: ToBuffer component to check and assign all correct format jobs into the internal storage list.
- * @author Teck Zhi
- */
+//@author A0111572R
 
 public class ToBuffer {
 
