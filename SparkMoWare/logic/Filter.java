@@ -2,6 +2,10 @@ package logic;
 
 import java.util.LinkedList;
 
+<<<<<<< HEAD
+=======
+//@author A0111572R
+>>>>>>> origin/master
 //@author A0117057J
 
 public class Filter {
