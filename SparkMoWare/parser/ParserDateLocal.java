@@ -6,11 +6,10 @@ import java.util.Date;
 import java.util.Vector;
 import java.util.regex.Matcher;
 
+//@author Varunica
+
 /**
  * Class containing all relevant methods involving dates.
- * 
- * @author Matthew Song
- *
  */
 public class ParserDateLocal {
 
@@ -43,7 +42,6 @@ public class ParserDateLocal {
 		if(symbolMatcherB.find()) {
 			dateB = symbolMatcherB.replaceAll("");
 		}
-
 
 		String yearA = dateA.trim().substring(4, 6);
 		String yearB = dateB.trim().substring(4, 6);

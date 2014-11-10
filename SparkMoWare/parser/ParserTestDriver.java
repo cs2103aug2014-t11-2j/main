@@ -1,10 +1,9 @@
 package parser;
 
+//@author A0110788B
+
 /**
  * Class to allow testing of any method in the Parser Package.
- * 
- * @author Matthew Song
- *
  */
 public class ParserTestDriver {
 

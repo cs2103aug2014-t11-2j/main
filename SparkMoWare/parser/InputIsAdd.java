@@ -2,11 +2,7 @@ package parser;
 
 import logic.Assignment.AssignmentType;
 
-/**
- * 
- * @author Matthew Song
- *
- */
+//@author A0110788B
 public class InputIsAdd {
 
 	/**

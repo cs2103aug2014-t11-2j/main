@@ -2,10 +2,10 @@ package parser;
 
 import java.util.regex.Matcher;
 
+//@author A0110788B
+
 /**
  * The ExtractSpecial Content class is used for the following methods: Clear, Search, Sort and Filter.
- * @author Matthew Song
- *
  */
 public class ExtractSpecialContent {
 

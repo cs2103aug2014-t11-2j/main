@@ -2,11 +2,10 @@ package parser;
 
 import java.util.regex.Pattern;
 
+//@author A0110788B
+
 /**
  * Class contains all relevant pattern for Parser package.
- * 
- * @author Matthew Song
- *
  */
 public class ParserPatternLocal {
 

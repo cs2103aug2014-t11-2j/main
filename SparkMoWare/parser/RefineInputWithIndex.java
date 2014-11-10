@@ -1,10 +1,9 @@
 package parser;
 
+//@author A0110788B
+
 /**
  * Class containing the various RefinedUserInput object involving only index.
- * 
- * @author Matthew Song
- *
  */
 public class RefineInputWithIndex {
 

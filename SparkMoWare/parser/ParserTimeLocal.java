@@ -3,11 +3,10 @@ package parser;
 import java.util.Vector;
 import java.util.regex.Matcher;
 
+//@author A0110788B
+
 /**
  * Class containing all relevant methods involving time.
- * 
- * @author Matthew Song
- *
  */
 public class ParserTimeLocal {
 	

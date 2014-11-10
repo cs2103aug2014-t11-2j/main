@@ -1,10 +1,6 @@
 package parser;
 
-/**
- * 
- * @author Matthew Song
- *
- */
+//@author A0110788B/
 public class InputIsSort {
 	
 	static final String START_DATE= "01/01/01";

@@ -2,16 +2,11 @@
 
 package parser;
 
-/**
- * 
- * @author Matthew Song
- *
- */
+//@author A0110788B
 public class EnumGroup {
 
 	/**
 	 * The enums of the supported commands.
-	 * @author Matthew Song
 	 */
 	public enum CommandType {
 		ADD, EDIT, DELETE, TENTATIVE, CONFIRM, SORT, SEARCH, FILTER,
@@ -21,8 +16,6 @@ public class EnumGroup {
 	
 	/**
 	 * The enums of what can be edited.
-	 * @author Matthew Song
-	 *
 	 */
 	public enum EditType {
 		TITLE, START_DATE, START_TIME, END_DATE, END_TIME, INVALID, PRIORITY, DONE

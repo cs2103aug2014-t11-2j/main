@@ -1,10 +1,6 @@
 package parser;
 
-/**
- * 
- * @author Matthew Song
- *
- */
+//@author A0110788B
 public class InputIsConfirm {
 	
 	/**

@@ -5,10 +5,10 @@ import java.util.Vector;
 import logic.Assignment.AssignmentType;
 import parser.EnumGroup.CommandType;
 
+//@author A0110788B
+
 /**
  * The RefinedUserInput object contains all relevant information that is interpreted by the Parser and organised accordingly.
- * @author Matthew Song
- *
  */
 public class RefinedUserInput {
 	

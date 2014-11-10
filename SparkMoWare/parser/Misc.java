@@ -2,10 +2,10 @@ package parser;
 
 import java.util.regex.Matcher;
 
+//@author A0110788B
+
 /**
  * Collection of miscellaneous methods used by the Parser.
- * @author Matthew Song
- *
  */
 public class Misc {
 	

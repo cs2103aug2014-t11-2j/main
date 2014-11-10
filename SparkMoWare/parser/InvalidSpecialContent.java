@@ -2,11 +2,7 @@ package parser;
 
 import java.util.regex.Matcher;
 
-/**
- * 
- * @author Matthew Song
- *
- */
+//@author A0110788B
 public class InvalidSpecialContent {
 
 	/**

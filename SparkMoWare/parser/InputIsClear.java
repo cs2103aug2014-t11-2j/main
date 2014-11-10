@@ -2,11 +2,7 @@ package parser;
 
 import java.util.regex.Matcher;
 
-/**
- * 
- * @author Matthew Song
- *
- */
+//@author A0110788
 public class InputIsClear {
 	
 	private static final String START_DATE = "01/01/01";

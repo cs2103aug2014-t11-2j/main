@@ -5,11 +5,7 @@ import java.util.regex.Matcher;
 
 import logic.Assignment.AssignmentType;
 
-/**
- * 
- * @author blu
- *
- */
+//@author A0110788B
 public class InputIsTentative {
 
 	/**

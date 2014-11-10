@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import parser.ParserTestDriver;
 
+//@author A0110788B
 public class ParserAllTest {
 
 	@Test
@@ -646,7 +647,8 @@ public class ParserAllTest {
 		assertEquals("DEFAULT~0~default~default~default"
 				+ "~default~default~DEFAULT~NIMPT"
 				+ "~false~default~null~null", ParserTestDriver.testReader("play"));
-		
+
+		//@author Varunica
 		/**************Exceptions testing***********/
 /*		assertEquals(EnumGroup.CommandType.INVALID, Determine.getCommandType("askjbd"));
 		assertEquals(EnumGroup.EditType.INVALID, Determine.getEditType("askjbd"));

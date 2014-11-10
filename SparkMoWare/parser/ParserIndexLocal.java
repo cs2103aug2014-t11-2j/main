@@ -1,10 +1,9 @@
 package parser;
 
+//@author A0110788B
+
 /**
  * Class containing all relevant methods involving the index.
- * 
- * @author Matthew Song
- *
  */
 public class ParserIndexLocal {
 	
